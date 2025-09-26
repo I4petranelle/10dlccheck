@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10DLC Compliance Check — Free SMS Validator</title>
+</head>
+<body>
+  <h1>10DLC Compliance Check</h1>
+  <textarea id="msg" placeholder="Paste your SMS here..." rows="6" cols="50"></textarea>
+  <button onclick="runCheck()">Check Message</button>
+
+  <div id="result"></div>
+
+  <!-- Turnstile widget -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+
+  <script>
+    async function runCheck() {
+      const message = document.getElementById("msg").value;
+      const token = document.querySelector("[name='cf-turnstile-response']")?.value || '';
+
+      const res = await fetch("/api/check-compliance", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ message, turnstile: token })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
