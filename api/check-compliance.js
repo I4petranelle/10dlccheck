@@ -1,260 +1,194 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+// api/check-compliance.js  — Vercel Serverless Function (Node.js, CommonJS)
 
-  const { message, turnstile } = req.body || {};
-  if (!message || !turnstile) return res.status(400).json({ ok:false, error:'Missing input' });
-
-  // Verify Turnstile
-  const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type":"application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      secret: process.env.TURNSTILE_SECRET,
-      response: turnstile
-    })
-  }).then(r=>r.json());
-
-  if (!verify.success) {
-    return res.status(403).json({ ok:false, error:"Human verification failed" });
+module.exports = async (req, res) => {
+  // Only allow POST
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ ok: false, error: 'Method Not Allowed' });
   }
 
-// 10DLC compliance rules and checks based on CTIA guidelines and SBG Funding requirements
-const complianceRules = {
+  // Parse body (Vercel usually parses JSON already, but be defensive)
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+
+  const { message, turnstile } = body || {};
+  if (!message || !turnstile) {
+    return res.status(400).json({ ok: false, error: 'Missing input', need: ['message', 'turnstile'] });
+  }
+
+  // --- 1) Verify Cloudflare Turnstile ---
+  try {
+    const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        secret: process.env.TURNSTILE_SECRET || '',
+        response: turnstile
+      })
+    });
+    const verify = await resp.json();
+    if (!verify.success) {
+      return res.status(403).json({ ok: false, error: 'Human verification failed', meta: verify['error-codes'] });
+    }
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: 'Verification service unavailable' });
+  }
+
+  // --- 2) Compliance rules (keywords are examples; tune as you like) ---
+  const rules = {
     characterLimit: {
-        limit: 160,
-        severity: 'low',
-        message: 'Message exceeds 160 characters (may split into multiple SMS)'
+      limit: 160,
+      severity: 'low',
+      message: 'Message exceeds 160 characters (may split into multiple SMS)'
     },
     highRiskFinancial: {
-        keywords: ['payday loan', 'cash advance', 'short-term loan', 'cryptocurrency', 'crypto', 'bitcoin', 'debt collection', 'stock alert', 'tax relief'],
-        severity: 'high',
-        message: 'Contains high-risk financial services content - may require special arrangements'
+      keywords: ['payday loan','cash advance','short-term loan','cryptocurrency','crypto','bitcoin','debt collection','stock alert','tax relief'],
+      severity: 'high',
+      message: 'Contains high-risk financial services content — may require special arrangements'
     },
     getRichQuick: {
-        keywords: ['work from home', 'make money fast', 'secret shopper', 'easy money', 'multi-level marketing', 'mlm', 'gambling', 'sweepstakes', 'get rich', 'passive income', 'financial dreams', 'dreams come true', 'change your life'],
-        severity: 'high',
-        message: 'Contains get-rich-quick scheme language - restricted on 10DLC'
+      keywords: ['work from home','make money fast','secret shopper','easy money','multi-level marketing','mlm','gambling','sweepstakes','get rich','passive income','change your life','dreams come true','financial dreams'],
+      severity: 'high',
+      message: 'Contains get-rich-quick language — restricted on 10DLC'
     },
     thirdPartyServices: {
-        keywords: ['debt consolidation', 'debt relief', 'debt reduction', 'debt forgiveness', 'credit repair', 'lead generation', 'job alert', 'broker'],
-        severity: 'high',
-        message: 'Contains third-party services content - restricted on 10DLC'
+      keywords: ['debt consolidation','debt relief','debt reduction','debt forgiveness','credit repair','lead generation','job alert','broker'],
+      severity: 'high',
+      message: 'Contains third-party services content — restricted on 10DLC'
     },
     controlledSubstances: {
-        keywords: ['tobacco', 'vaping', 'vape', 'cannabis', 'cbd', 'marijuana', 'weed', 'illegal drug', 'prescription'],
-        severity: 'high',
-        message: 'Contains controlled substances content - restricted on 10DLC'
+      keywords: ['tobacco','vaping','vape','cannabis','cbd','marijuana','weed','illegal drug','prescription'],
+      severity: 'high',
+      message: 'Contains controlled-substances content — restricted on 10DLC'
     },
     shaft: {
-        keywords: ['sex', 'adult', 'hate', 'alcohol', 'beer', 'wine', 'firearm', 'gun', 'weapon', 'tobacco', 'fuck', 'shit', 'damn', 'bitch'],
-        severity: 'high',
-        message: 'Contains SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco, Profanity) - restricted on 10DLC'
+      keywords: ['sex','adult','hate','alcohol','beer','wine','firearm','gun','weapon','tobacco','fuck','shit','damn','bitch'],
+      severity: 'high',
+      message: 'Contains SHAFT (Sex, Hate, Alcohol, Firearms, Tobacco, Profanity) — restricted on 10DLC'
     },
     scams: {
-        keywords: ['phishing', 'fraud', 'spam', 'deceptive', 'fake', 'scam', 'virus', 'malware', 'click here now', 'urgent action', 'verify account', 'suspended account', 'limited time offer'],
-        severity: 'high',
-        message: 'Contains potential scam/phishing content - strictly prohibited on 10DLC'
+      keywords: ['phishing','fraud','spam','deceptive','fake','scam','virus','malware','click here now','urgent action','verify account','suspended account','limited time offer'],
+      severity: 'high',
+      message: 'Contains potential scam/phishing content — prohibited on 10DLC'
     },
     charity: {
-        keywords: ['donation', 'donate', 'charity', 'fundraising', 'contribute', 'help victims', 'disaster relief'],
-        severity: 'medium',
-        message: 'Contains charity/donation content - requires case-by-case approval on 10DLC'
+      keywords: ['donation','donate','charity','fundraising','contribute','help victims','disaster relief'],
+      severity: 'medium',
+      message: 'Charity/donation content — requires case-by-case approval'
     },
     personalFinancialQuestions: {
-        keywords: ['how much do you have outstanding', 'outstanding in total', 'current debt', 'existing loans', 'how much do you owe', 'financial situation', 'credit situation', 'debt situation'],
-        severity: 'high',
-        message: 'Requesting detailed personal financial information - privacy violation'
+      keywords: ['how much do you have outstanding','outstanding in total','current debt','existing loans','how much do you owe','financial situation','credit situation','debt situation'],
+      severity: 'high',
+      message: 'Requests detailed personal financial info — possible privacy violation'
     },
     personalInfo: {
-        keywords: ['ssn', 'social security', 'credit card', 'password', 'pin number', 'bank account', 'routing number'],
-        severity: 'high',
-        message: 'Requesting sensitive personal information via SMS violates 10DLC guidelines'
+      keywords: ['ssn','social security','credit card','password','pin number','bank account','routing number'],
+      severity: 'high',
+      message: 'Requests sensitive personal information — not allowed via SMS'
     },
     aggressiveMarketing: {
-        keywords: ['act now', 'limited time', 'free money', 'guaranteed', 'risk-free', 'no obligation', 'call now', 'urgent', 'expires today', 'once in lifetime', 'time to kickstart', 'kickstart your', 'dive in', 'make your dreams', 'dreams a reality', 'dont miss out', 'exclusive offer', 'special deal', 'amazing opportunity', 'incredible deal', 'unbelievable offer', 'life-changing', 'transform your life', 'financial breakthrough', 'breakthrough opportunity'],
-        severity: 'high',
-        message: 'Contains aggressive marketing language that carriers flag as suspicious'
+      keywords: ['act now','limited time','free money','guaranteed','risk-free','no obligation','call now','urgent','expires today','once in lifetime','time to kickstart','kickstart your','dive in','make your dreams','dreams a reality','dont miss out','exclusive offer','special deal','amazing opportunity','incredible deal','unbelievable offer','life-changing','transform your life','financial breakthrough','breakthrough opportunity'],
+      severity: 'high',
+      message: 'Aggressive marketing language that carriers may flag'
     },
     competitorMention: {
-        keywords: ['headway', 'mulligan', 'credibly', 'on deck', 'ondeck', 'libertas', 'alliance funding group', 'cfg', 'peac solutions', 'kcg', 'byzfunder', 'good funding', 'channel partners', 'elevate', 'expansion', 'forward financing', 'fox', 'fundation', 'pearl', 'kapitus'],
-        severity: 'low',
-        message: 'Message mentions other lenders - may confuse recipients about message sender'
+      keywords: ['headway','mulligan','credibly','on deck','ondeck','libertas','alliance funding group','cfg','peac solutions','kcg','byzfunder','good funding','channel partners','elevate','expansion','forward financing','fox','fundation','pearl','kapitus'],
+      severity: 'low',
+      message: 'Mentions other lenders — may confuse recipients about sender'
     },
     consentDocumentation: {
-        keywords: ['consent documentation', 'opt-in record', 'agreement record'],
-        severity: 'low',
-        message: 'Ensure consent documentation is maintained per CTIA requirements'
+      keywords: ['consent documentation','opt-in record','agreement record'],
+      severity: 'low',
+      message: 'Ensure consent documentation is maintained per CTIA'
     },
     consentScope: {
-        keywords: ['different service', 'other products', 'additional offers', 'partner services'],
-        severity: 'medium', 
-        message: 'Message content may exceed scope of original consent - verify consent covers this communication type'
+      keywords: ['different service','other products','share with partners','sell data','transfer consent'],
+      severity: 'medium',
+      message: 'Consent scope ambiguity — clarify what users opted into'
     },
     urlSecurity: {
-        pattern: /https?:\/\/[^\s]+/gi,
-        severity: 'medium',
-        message: 'URLs must be from dedicated domains and clearly identify the sender'
-    },
-    spoofingRisk: {
-        keywords: ['different number', 'reply to different', 'not from this number'],
-        severity: 'high', 
-        message: 'Message spoofing detected - replies may go to different number than sender'
-    },
-    ftcCompliance: {
-        keywords: ['guaranteed', 'risk-free', 'no risk', 'cant lose', 'sure thing', 'easy money'],
-        severity: 'high',
-        message: 'Content may violate FTC Truth-in-Advertising rules - avoid misleading claims'
+      shortenerPattern: /(bit\.ly|tinyurl\.com|goo\.gl|t\.co|is\.gd|ow\.ly|rebrand\.ly)/i,
+      severity: 'medium',
+      message: 'Public link shortener detected — use branded HTTPS links'
     }
+  };
+
+  // --- 3) Analyze the message ---
+  const issues = [];
+
+  // length
+  if (message.length > rules.characterLimit.limit) {
+    issues.push({ rule: 'characterLimit', severity: rules.characterLimit.severity, message: rules.characterLimit.message });
+  }
+
+  // keyword-based categories
+  const keywordRules = [
+    'highRiskFinancial','getRichQuick','thirdPartyServices','controlledSubstances',
+    'shaft','scams','charity','personalFinancialQuestions','personalInfo',
+    'aggressiveMarketing','competitorMention','consentDocumentation','consentScope'
+  ];
+  for (const key of keywordRules) {
+    const list = rules[key].keywords;
+    if (list.some(word => new RegExp(`\\b${escapeRegex(word)}\\b`, 'i').test(message))) {
+      issues.push({ rule: key, severity: rules[key].severity, message: rules[key].message });
+    }
+  }
+
+  // STOP/HELP presence
+  const hasStop = /\bSTOP\b/i.test(message);
+  const hasHelp = /\bHELP\b/i.test(message);
+  if (!hasStop) issues.push({ rule: 'optOut', severity: 'high', message: 'Missing STOP opt-out (marketing/mixed campaigns)' });
+  if (!hasHelp) issues.push({ rule: 'help', severity: 'medium', message: 'Missing HELP contact' });
+
+  // URL checks
+  const urls = message.match(/https?:\/\/\S+/gi) || [];
+  if (urls.length) {
+    if (urls.some(u => rules.urlSecurity.shortenerPattern.test(u))) {
+      issues.push({ rule: 'urlSecurity', severity: rules.urlSecurity.severity, message: rules.urlSecurity.message });
+    }
+  }
+
+  // --- 4) Build a suggested compliant rewrite ---
+  let suggestion = message;
+
+  // soften some marketing phrases (simple examples)
+  const soften = [
+    [/act now/gi,'get started'],
+    [/limited time/gi,'limited-time'],
+    [/guaranteed/gi,'designed to'],
+    [/urgent/gi,'important'],
+    [/click here now/gi,'learn more'],
+  ];
+  soften.forEach(([from,to]) => { suggestion = suggestion.replace(from, to); });
+
+  // fix links: enforce https and replace public shorteners with branded URL
+  suggestion = suggestion.replace(/https?:\/\/\S+/gi, (m) => {
+    if (rules.urlSecurity.shortenerPattern.test(m)) return 'https://yourbrand.com/sms';
+    return m.replace(/^http:\/\//i, 'https://');
+  });
+
+  // add HELP/STOP if missing
+  if (!hasHelp) suggestion += (/[.!?]\s*$/.test(suggestion) ? '' : '.') + ' HELP: support@example.com';
+  if (!hasStop) suggestion += ' Reply STOP to opt out.';
+
+  // trim to ~160 chars without cutting words (optional)
+  suggestion = trimToLength(suggestion, 160);
+
+  // simple score
+  const score = Math.max(0, 100 - issues.filter(i => i.severity === 'high').length * 20 - issues.filter(i => i.severity !== 'high').length * 10);
+
+  return res.status(200).json({ ok: true, score, issues, suggestion });
 };
 
-function performComplianceCheck(message) {
-    const issues = [];
-    const messageLower = message.toLowerCase();
-    const detectedCategories = [];
-    
-    // Check character limit
-    if (message.length > complianceRules.characterLimit.limit) {
-        issues.push({
-            severity: complianceRules.characterLimit.severity,
-            message: `${complianceRules.characterLimit.message} (${message.length} characters)`,
-            suggestion: 'Consider shortening the message to fit within 160 characters'
-        });
-    }
-
-    // Check all restricted content categories with campaign categorization
-    const restrictedCategories = [
-        { 
-            rule: 'highRiskFinancial', 
-            categoryName: 'High-Risk Financial Services',
-            suggestion: 'Financial services messaging may require special arrangements with carriers',
-            impact: 'RESTRICTED - May require carrier pre-approval and enhanced monitoring'
-        },
-        { 
-            rule: 'getRichQuick', 
-            categoryName: 'Get Rich Quick Schemes',
-            suggestion: 'Get-rich-quick schemes are prohibited - remove this content',
-            impact: 'PROHIBITED - Campaign will be rejected'
-        },
-        { 
-            rule: 'thirdPartyServices', 
-            categoryName: 'Third-Party Services',
-            suggestion: 'Third-party services content is restricted - ensure direct relationship',
-            impact: 'RESTRICTED - Requires proof of direct relationship with customers'
-        },
-        { 
-            rule: 'controlledSubstances', 
-            categoryName: 'Controlled Substances',
-            suggestion: 'Controlled substances content is prohibited on 10DLC',
-            impact: 'PROHIBITED - Campaign will be rejected'
-        },
-        { 
-            rule: 'shaft', 
-            categoryName: 'SHAFT Content',
-            suggestion: 'SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco, Profanity) is prohibited',
-            impact: 'PROHIBITED - Campaign will be rejected'
-        },
-        { 
-            rule: 'scams', 
-            categoryName: 'Suspicious/Scam Content',
-            suggestion: 'This content appears suspicious - ensure legitimate business practices',
-            impact: 'PROHIBITED - Campaign will be rejected for suspicious content'
-        },
-        { 
-            rule: 'charity', 
-            categoryName: 'Charity/Donation',
-            suggestion: 'Charity/donation content requires case-by-case approval',
-            impact: 'RESTRICTED - Requires case-by-case approval and extended review'
-        },
-        { 
-            rule: 'personalFinancialQuestions', 
-            categoryName: 'Personal Financial Information Request',
-            suggestion: 'Avoid requesting detailed financial information via SMS',
-            impact: 'PROHIBITED - Privacy violation and potential security risk'
-        },
-        { 
-            rule: 'personalInfo', 
-            categoryName: 'Personal Information Request',
-            suggestion: 'Never request sensitive personal information via SMS',
-            impact: 'PROHIBITED - Violates privacy and security guidelines'
-        },
-        { 
-            rule: 'aggressiveMarketing', 
-            categoryName: 'Aggressive Marketing Language',
-            suggestion: 'Use professional, non-promotional language to avoid carrier filtering',
-            impact: 'HIGH RISK - Carriers actively filter this type of language'
-        },
-        { 
-            rule: 'competitorMention', 
-            categoryName: 'Other Lender/Competitor Mention',
-            suggestion: 'Mentioning other lenders may confuse recipients - focus on SBG Funding services',
-            impact: 'BRANDING CONCERN - May dilute brand messaging and confuse recipients'
-        },
-        { 
-            rule: 'consentDocumentation', 
-            categoryName: 'Consent Documentation',
-            suggestion: 'Maintain CTIA-required records of consent acquisition',
-            impact: 'COMPLIANCE - Ensure proper consent documentation'
-        },
-        { 
-            rule: 'consentScope', 
-            categoryName: 'Consent Scope Verification',
-            suggestion: 'Verify message content aligns with original consent scope',
-            impact: 'COMPLIANCE - May exceed consent boundaries'
-        },
-        { 
-            rule: 'spoofingRisk', 
-            categoryName: 'Number Spoofing Risk',
-            suggestion: 'Ensure replies go to the same number that sent the message',
-            impact: 'PROHIBITED - Number spoofing violates carrier policies'
-        },
-        { 
-            rule: 'ftcCompliance', 
-            categoryName: 'FTC Truth-in-Advertising Violation',
-            suggestion: 'Remove misleading claims and guarantee language',
-            impact: 'PROHIBITED - Violates federal advertising regulations'
-        }
-    ];
-
-    restrictedCategories.forEach(category => {
-        const rule = complianceRules[category.rule];
-        if (rule.keywords) {
-            const foundWords = rule.keywords.filter(keyword =>
-                messageLower.includes(keyword)
-            );
-            
-            if (foundWords.length > 0) {
-                issues.push({
-                    severity: rule.severity,
-                    message: `${rule.message}: "${foundWords.join('", "')}"`,
-                    suggestion: category.suggestion
-                });
-
-                detectedCategories.push({
-                    name: category.categoryName,
-                    impact: category.impact,
-                    keywords: foundWords,
-                    severity: rule.severity
-                });
-            }
-        }
-    });
-
-    // Check for URLs with enhanced security requirements
-    const urls = message.match(complianceRules.urlSecurity.pattern);
-    if (urls) {
-        issues.push({
-            severity: complianceRules.urlSecurity.severity,
-            message: `${complianceRules.urlSecurity.message}: ${urls.length} URL(s) found`,
-            suggestion: 'Use dedicated domains with clear sender identification and avoid URL shorteners unless dedicated to your organization'
-        });
-    }
-
-    return {
-        isCompliant: issues.filter(issue => issue.severity === 'high').length === 0,
-        issues: issues,
-        messageLength: message.length,
-        wordCount: message.split(/\s+/).length,
-        restrictedContent: issues.filter(issue => issue.severity === 'high').length,
-        detectedCategories: detectedCategories
-    };
+// --- helpers ---
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function trimToLength(text, limit) {
+  if (text.length <= limit) return text;
+  const cut = text.slice(0, limit);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + '…';
 }

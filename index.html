@@ -80,6 +80,47 @@
             box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1);
         }
 
+        .verification-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .math-challenge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .math-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .math-input {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .math-input:focus {
+            outline: none;
+            border-color: #374151;
+        }
+
+        .verification-note {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
         .button-container {
             text-align: center;
             margin: 30px 0;
@@ -418,6 +459,15 @@
             margin: 0 auto;
         }
 
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -428,7 +478,7 @@
     <div class="container">
         <div class="header">
             <h1>📱 10DLC Compliance Checker</h1>
-            <p>Powered by SBG Funding - Analyze your SMS messages for 10DLC compliance</p>
+            <p> Analyze your SMS messages for 10DLC compliance</p>
         </div>
 
         <div class="content">
@@ -438,6 +488,14 @@
                     id="message" 
                     placeholder="Example: Hi John! Thanks for signing up for our newsletter. You'll receive weekly updates about our latest products. Reply STOP to opt out at any time."
                 ></textarea>
+            </div>
+
+            <div class="verification-section">
+                <div class="math-challenge">
+                    <span class="math-question">Verification: What is <span id="mathQuestion">5 + 3</span>?</span>
+                    <input type="number" id="mathAnswer" class="math-input" placeholder="?">
+                </div>
+                <div class="verification-note">Please solve this simple math problem to verify you're human</div>
             </div>
 
             <div class="button-container">
@@ -452,7 +510,7 @@
             <div id="results" style="display: none;"></div>
 
             <div class="guidelines">
-                <h4 onclick="toggleCollapse(this, 'compliance-list')">🔍 10DLC Compliance Guidelines (SBG Funding Context)</h4>
+                <h4 onclick="toggleCollapse(this, 'compliance-list')">🔍 10DLC Compliance Guidelines</h4>
                 <ul id="compliance-list">
                     <li><strong>Consent basis:</strong> Merchants provide SMS consent when entering your system - ensure scope covers communication type</li>
                     <li><strong>Consent documentation:</strong> Maintain records of when/how consent was obtained per CTIA requirements</li>
@@ -466,7 +524,7 @@
                 <ul id="restricted-list">
                     <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection (legitimate business lending is generally acceptable)</li>
                     <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes</li>
-                    <li><strong>Third-party Services:</strong> Services not directly related to SBG Funding business</li>
+                    <li><strong>Third-party Services:</strong> Services not directly related to your company</li>
                     <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs</li>
                     <li><strong>SHAFT Content:</strong> Sex, Hate speech, Alcohol, Firearms, Tobacco, Profanity</li>
                     <li><strong>Scams:</strong> Phishing, fraud, spam, deceptive marketing</li>
@@ -476,13 +534,208 @@
         </div>
     </div>
 
-    <script src="compliance-rules.js"></script>
     <script>
+        // Math verification variables
+        let mathAnswer = 0;
+
+        // Enhanced compliance rules
+        const complianceRules = {
+            characterLimit: {
+                limit: 160,
+                severity: 'low',
+                message: 'Message exceeds 160 characters (may split into multiple SMS)',
+                suggestion: 'Shorten your message to under 160 characters to avoid splitting'
+            },
+            highRiskFinancial: {
+                keywords: ['payday loan', 'cash advance', 'short-term loan', 'cryptocurrency', 'crypto', 'bitcoin', 'debt collection', 'stock alert', 'tax relief'],
+                severity: 'high',
+                message: 'Contains high-risk financial services content - may require special arrangements',
+                suggestion: 'Replace with general business funding language'
+            },
+            getRichQuick: {
+                keywords: ['work from home', 'make money fast', 'secret shopper', 'easy money', 'multi-level marketing', 'mlm', 'gambling', 'sweepstakes', 'get rich', 'passive income'],
+                severity: 'high',
+                message: 'Contains get-rich-quick scheme language - restricted on 10DLC',
+                suggestion: 'Focus on legitimate business services and professional growth'
+            },
+            thirdPartyServices: {
+                keywords: ['debt consolidation', 'debt relief', 'debt reduction', 'debt forgiveness', 'credit repair', 'lead generation', 'job alert', 'broker'],
+                severity: 'high',
+                message: 'Contains third-party services content - restricted on 10DLC',
+                suggestion: 'Focus on direct services only'
+            },
+            controlledSubstances: {
+                keywords: ['tobacco', 'vaping', 'vape', 'cannabis', 'cbd', 'marijuana', 'weed', 'illegal drug', 'prescription'],
+                severity: 'high',
+                message: 'Contains controlled substances content - restricted on 10DLC',
+                suggestion: 'Remove all references to controlled substances'
+            },
+            shaft: {
+                keywords: ['sex', 'adult', 'hate', 'alcohol', 'beer', 'wine', 'firearm', 'gun', 'weapon', 'tobacco', 'fuck', 'shit', 'damn', 'bitch'],
+                severity: 'high',
+                message: 'Contains SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco, Profanity) - restricted on 10DLC',
+                suggestion: 'Use professional, family-friendly language'
+            },
+            scams: {
+                keywords: ['phishing', 'fraud', 'spam', 'deceptive', 'fake', 'scam', 'virus', 'malware', 'click here now', 'urgent action', 'verify account', 'suspended account'],
+                severity: 'high',
+                message: 'Contains potential scam/phishing content - strictly prohibited on 10DLC',
+                suggestion: 'Use transparent, honest communication without urgency tactics'
+            },
+            aggressiveMarketing: {
+                keywords: ['act now', 'limited time', 'free money', 'guaranteed', 'risk-free', 'no obligation', 'call now', 'urgent', 'expires today'],
+                severity: 'high',
+                message: 'Contains aggressive marketing language that carriers flag as suspicious',
+                suggestion: 'Use professional, consultative language instead of high-pressure tactics'
+            },
+            personalInfo: {
+                keywords: ['ssn', 'social security', 'credit card', 'password', 'pin number', 'bank account', 'routing number'],
+                severity: 'high',
+                message: 'Requesting sensitive personal information via SMS violates 10DLC guidelines',
+                suggestion: 'Direct users to secure portal for sensitive information'
+            }
+        };
+
+        // Generate a new math question
+        function generateMathQuestion() {
+            const num1 = Math.floor(Math.random() * 20) + 1;
+            const num2 = Math.floor(Math.random() * 20) + 1;
+            const operations = ['+', '-', '×'];
+            const operation = operations[Math.floor(Math.random() * operations.length)];
+            
+            let question, answer;
+            switch(operation) {
+                case '+':
+                    question = `${num1} + ${num2}`;
+                    answer = num1 + num2;
+                    break;
+                case '-':
+                    // Ensure positive result
+                    const larger = Math.max(num1, num2);
+                    const smaller = Math.min(num1, num2);
+                    question = `${larger} - ${smaller}`;
+                    answer = larger - smaller;
+                    break;
+                case '×':
+                    // Use smaller numbers for multiplication
+                    const small1 = Math.floor(Math.random() * 10) + 1;
+                    const small2 = Math.floor(Math.random() * 10) + 1;
+                    question = `${small1} × ${small2}`;
+                    answer = small1 * small2;
+                    break;
+            }
+            
+            document.getElementById('mathQuestion').textContent = question;
+            mathAnswer = answer;
+        }
+
+        // Initialize with a math question
+        generateMathQuestion();
+
+        function performComplianceCheck(message) {
+            const issues = [];
+            const messageLower = message.toLowerCase();
+            const detectedCategories = [];
+            
+            // Check character limit
+            if (message.length > complianceRules.characterLimit.limit) {
+                issues.push({
+                    severity: complianceRules.characterLimit.severity,
+                    message: `${complianceRules.characterLimit.message} (${message.length} characters)`,
+                    suggestion: complianceRules.characterLimit.suggestion
+                });
+            }
+
+            // Check all restricted content categories
+            const restrictedCategories = [
+                { 
+                    rule: 'highRiskFinancial', 
+                    categoryName: 'High-Risk Financial Services',
+                    impact: 'RESTRICTED - May require carrier pre-approval and enhanced monitoring'
+                },
+                { 
+                    rule: 'getRichQuick', 
+                    categoryName: 'Get Rich Quick Schemes',
+                    impact: 'PROHIBITED - Campaign will be rejected'
+                },
+                { 
+                    rule: 'thirdPartyServices', 
+                    categoryName: 'Third-Party Services',
+                    impact: 'RESTRICTED - Requires proof of direct relationship with customers'
+                },
+                { 
+                    rule: 'controlledSubstances', 
+                    categoryName: 'Controlled Substances',
+                    impact: 'PROHIBITED - Campaign will be rejected'
+                },
+                { 
+                    rule: 'shaft', 
+                    categoryName: 'SHAFT Content',
+                    impact: 'PROHIBITED - Campaign will be rejected'
+                },
+                { 
+                    rule: 'scams', 
+                    categoryName: 'Suspicious/Scam Content',
+                    impact: 'PROHIBITED - Campaign will be rejected for suspicious content'
+                },
+                { 
+                    rule: 'aggressiveMarketing', 
+                    categoryName: 'Aggressive Marketing Language',
+                    impact: 'HIGH RISK - Carriers actively filter this type of language'
+                },
+                { 
+                    rule: 'personalInfo', 
+                    categoryName: 'Personal Information Request',
+                    impact: 'PROHIBITED - Violates privacy and security guidelines'
+                }
+            ];
+
+            restrictedCategories.forEach(category => {
+                const rule = complianceRules[category.rule];
+                const foundWords = rule.keywords.filter(keyword =>
+                    messageLower.includes(keyword)
+                );
+                
+                if (foundWords.length > 0) {
+                    issues.push({
+                        severity: rule.severity,
+                        message: `${rule.message}: "${foundWords.join('", "')}"`,
+                        suggestion: rule.suggestion
+                    });
+
+                    detectedCategories.push({
+                        name: category.categoryName,
+                        impact: category.impact,
+                        keywords: foundWords,
+                        severity: rule.severity
+                    });
+                }
+            });
+
+            return {
+                isCompliant: issues.filter(issue => issue.severity === 'high').length === 0,
+                issues: issues,
+                messageLength: message.length,
+                wordCount: message.split(/\s+/).length,
+                restrictedContent: issues.filter(issue => issue.severity === 'high').length,
+                detectedCategories: detectedCategories
+            };
+        }
+
         async function analyzeMessage() {
             const messageText = document.getElementById('message').value.trim();
+            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
             
             if (!messageText) {
                 alert('Please enter a message to analyze.');
+                return;
+            }
+
+            // Verify math answer
+            if (!userAnswer || userAnswer !== mathAnswer) {
+                alert('Please solve the math problem correctly to verify you\'re human.');
+                generateMathQuestion(); // Generate new question
+                document.getElementById('mathAnswer').value = '';
                 return;
             }
 
@@ -491,18 +744,32 @@
             document.getElementById('results').style.display = 'none';
             document.querySelector('.check-btn').disabled = true;
 
-            // Simulate AI analysis delay
+            // Simulate analysis delay
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            const analysis = performComplianceCheck(messageText);
-            displayResults(analysis);
-
-            // Hide loading state
-            document.getElementById('loading').style.display = 'none';
-            document.querySelector('.check-btn').disabled = false;
+            try {
+                const analysis = performComplianceCheck(messageText);
+                displayResults(analysis, messageText);
+                
+                // Generate new math question for next use
+                generateMathQuestion();
+                document.getElementById('mathAnswer').value = '';
+                
+            } catch (error) {
+                console.error('Analysis failed:', error);
+                const results = document.getElementById('results');
+                results.innerHTML = `
+                    <div class="error-message">
+                        <strong>Analysis Failed:</strong> ${error.message || 'Unable to check compliance right now.'}
+                    </div>`;
+                results.style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.check-btn').disabled = false;
+            }
         }
 
-        function displayResults(analysis) {
+        function displayResults(analysis, originalMessage) {
             const resultsDiv = document.getElementById('results');
             const isCompliant = analysis.isCompliant;
             
@@ -530,7 +797,7 @@
                 analysis.detectedCategories.forEach(category => {
                     const impactClass = category.impact.includes('PROHIBITED') ? 'prohibited' : 
                                        category.impact.includes('RESTRICTED') ? 'restricted' : 
-                                       category.impact.includes('BRANDING') ? 'branding' : 'warning';
+                                       category.impact.includes('HIGH RISK') ? 'warning' : 'branding';
                     
                     html += `<span class="category-badge ${impactClass}">${category.name}</span>`;
                 });
@@ -627,6 +894,14 @@
         // Allow Enter key to trigger analysis (with Shift+Enter for new lines)
         document.getElementById('message').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                analyzeMessage();
+            }
+        });
+
+        // Allow Enter key in math input to trigger analysis
+        document.getElementById('mathAnswer').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
                 e.preventDefault();
                 analyzeMessage();
             }
