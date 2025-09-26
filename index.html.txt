@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10DLC Message Compliance Checker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #374151;
+            box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1);
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .check-btn {
+            background: #1f2937;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(31, 41, 55, 0.3);
+        }
+
+        .check-btn:hover {
+            background: #374151;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
+        }
+
+        .check-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+
+        .results.compliant {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .results.non-compliant {
+            background: #f8fafc;
+            border-color: #ef4444;
+            color: #1e293b;
+        }
+
+        .results h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .issue-list {
+            list-style: none;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .issue-list.show {
+            display: block;
+        }
+
+        .issue-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid;
+        }
+
+        .issue-list li.high {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .issue-list li.medium {
+            border-color: #f59e0b;
+            background: #fefbeb;
+        }
+
+        .issue-list li.low {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .issue-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .issue-summary {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .issue-count {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .issue-count.high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .issue-count.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .issue-count.low {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .issue-message {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .issue-suggestion {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .toggle-issues {
+            background: none;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-issues:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .guidelines {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .guidelines h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .guidelines h4:hover {
+            background-color: #e2e8f0;
+        }
+
+        .guidelines h4::before {
+            content: "▶";
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .guidelines h4.expanded::before {
+            content: "▼";
+            transform: rotate(0deg);
+        }
+
+        .guidelines ul {
+            padding-left: 20px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .guidelines ul.expanded {
+            max-height: 1000px;
+            opacity: 1;
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .guidelines li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .category-warning {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #dc2626;
+            background: #fef2f2;
+        }
+
+        .category-warning h4 {
+            color: #991b1b;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .category-summary {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .category-badge.prohibited {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #f87171;
+        }
+
+        .category-badge.restricted {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fbbf24;
+        }
+
+        .category-badge.warning {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #60a5fa;
+        }
+
+        .category-badge.branding {
+            background: #e0e7ff;
+            color: #4338ca;
+            border-color: #818cf8;
+        }
+
+        .category-details {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .category-details.show {
+            display: block;
+        }
+
+        .category-item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .category-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-details {
+            background: none;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-details:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .category-keywords {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #1f2937;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 10DLC Compliance Checker</h1>
+            <p>Powered by SBG Funding - Analyze your SMS messages for 10DLC compliance</p>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
+                <textarea 
+                    id="message" 
+                    placeholder="Example: Hi John! Thanks for signing up for our newsletter. You'll receive weekly updates about our latest products. Reply STOP to opt out at any time."
+                ></textarea>
+            </div>
+
+            <div class="button-container">
+                <button class="check-btn" onclick="analyzeMessage()">Check Compliance</button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing message...</p>
+            </div>
+
+            <div id="results" style="display: none;"></div>
+
+            <div class="guidelines">
+                <h4 onclick="toggleCollapse(this, 'compliance-list')">🔍 10DLC Compliance Guidelines (SBG Funding Context)</h4>
+                <ul id="compliance-list">
+                    <li><strong>Consent basis:</strong> Merchants provide SMS consent when entering your system - ensure scope covers communication type</li>
+                    <li><strong>Consent documentation:</strong> Maintain records of when/how consent was obtained per CTIA requirements</li>
+                    <li><strong>Content matching:</strong> Messages should align with the services merchants consented to receive communications about</li>
+                    <li><strong>Professional tone:</strong> Maintain appropriate business communication standards</li>
+                    <li><strong>Opt-out availability:</strong> While not required for every message, ensure merchants can opt out if requested</li>
+                    <li><strong>Anti-abuse compliance:</strong> Avoid snowshoe messaging patterns and number spoofing</li>
+                </ul>
+                
+                <h4 onclick="toggleCollapse(this, 'restricted-list')">🚫 Restricted Content Categories</h4>
+                <ul id="restricted-list">
+                    <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection (legitimate business lending is generally acceptable)</li>
+                    <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes</li>
+                    <li><strong>Third-party Services:</strong> Services not directly related to SBG Funding business</li>
+                    <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs</li>
+                    <li><strong>SHAFT Content:</strong> Sex, Hate speech, Alcohol, Firearms, Tobacco, Profanity</li>
+                    <li><strong>Scams:</strong> Phishing, fraud, spam, deceptive marketing</li>
+                    <li><strong>Misleading Claims:</strong> False guarantees, "risk-free" promises that violate FTC rules</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="compliance-rules.js"></script>
+    <script>
+        async function analyzeMessage() {
+            const messageText = document.getElementById('message').value.trim();
+            
+            if (!messageText) {
+                alert('Please enter a message to analyze.');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.querySelector('.check-btn').disabled = true;
+
+            // Simulate AI analysis delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            const analysis = performComplianceCheck(messageText);
+            displayResults(analysis);
+
+            // Hide loading state
+            document.getElementById('loading').style.display = 'none';
+            document.querySelector('.check-btn').disabled = false;
+        }
+
+        function displayResults(analysis) {
+            const resultsDiv = document.getElementById('results');
+            const isCompliant = analysis.isCompliant;
+            
+            resultsDiv.className = `results ${isCompliant ? 'compliant' : 'non-compliant'}`;
+            
+            const iconSvg = isCompliant ? 
+                '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' :
+                '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
+
+            let html = `
+                <h3>
+                    ${iconSvg}
+                    ${isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found'}
+                </h3>
+                <p><strong>Message Length:</strong> ${analysis.messageLength} characters (${analysis.wordCount} words)</p>
+            `;
+
+            // Display detected restricted categories
+            if (analysis.detectedCategories && analysis.detectedCategories.length > 0) {
+                html += '<div class="category-warning">';
+                html += '<h4>⚠️ Detected Issues - Campaign Impact Analysis</h4>';
+                
+                // Create summary badges
+                html += '<div class="category-summary">';
+                analysis.detectedCategories.forEach(category => {
+                    const impactClass = category.impact.includes('PROHIBITED') ? 'prohibited' : 
+                                       category.impact.includes('RESTRICTED') ? 'restricted' : 
+                                       category.impact.includes('BRANDING') ? 'branding' : 'warning';
+                    
+                    html += `<span class="category-badge ${impactClass}">${category.name}</span>`;
+                });
+                html += '</div>';
+                
+                html += `<button class="toggle-details" onclick="toggleCategoryDetails(this)">Show Details</button>`;
+                
+                html += '<div class="category-details">';
+                analysis.detectedCategories.forEach(category => {
+                    html += `
+                        <div class="category-item">
+                            <div class="category-title">${category.name}</div>
+                            <p><strong>Impact:</strong> ${category.impact.split(' - ')[1] || category.impact}</p>
+                            <div class="category-keywords">Keywords found: "${category.keywords.join('", "')}"</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                html += '</div>';
+            }
+
+            if (analysis.issues.length > 0) {
+                // Create issue summary
+                const highIssues = analysis.issues.filter(issue => issue.severity === 'high').length;
+                const mediumIssues = analysis.issues.filter(issue => issue.severity === 'medium').length;
+                const lowIssues = analysis.issues.filter(issue => issue.severity === 'low').length;
+
+                html += '<div class="issue-header">';
+                html += '<div class="issue-summary">';
+                if (highIssues > 0) html += `<span class="issue-count high">${highIssues} Critical</span>`;
+                if (mediumIssues > 0) html += `<span class="issue-count medium">${mediumIssues} Medium</span>`;
+                if (lowIssues > 0) html += `<span class="issue-count low">${lowIssues} Minor</span>`;
+                html += '</div>';
+                html += '<button class="toggle-issues" onclick="toggleIssueDetails(this)">Show Issues</button>';
+                html += '</div>';
+
+                html += '<ul class="issue-list">';
+                analysis.issues.forEach(issue => {
+                    html += `
+                        <li class="${issue.severity}">
+                            <div class="issue-message">${issue.message}</div>
+                            ${issue.suggestion ? `<div class="issue-suggestion">${issue.suggestion}</div>` : ''}
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+            } else if (analysis.detectedCategories.length === 0) {
+                html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
+            }
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+
+        function toggleIssueDetails(button) {
+            const issueList = button.parentElement.nextElementSibling;
+            const isShowing = issueList.classList.contains('show');
+            
+            if (isShowing) {
+                issueList.classList.remove('show');
+                button.textContent = 'Show Issues';
+            } else {
+                issueList.classList.add('show');
+                button.textContent = 'Hide Issues';
+            }
+        }
+
+        function toggleCategoryDetails(button) {
+            const details = button.nextElementSibling;
+            const isShowing = details.classList.contains('show');
+            
+            if (isShowing) {
+                details.classList.remove('show');
+                button.textContent = 'Show Details';
+            } else {
+                details.classList.add('show');
+                button.textContent = 'Hide Details';
+            }
+        }
+
+        function toggleCollapse(header, listId) {
+            const list = document.getElementById(listId);
+            const isExpanded = list.classList.contains('expanded');
+            
+            if (isExpanded) {
+                list.classList.remove('expanded');
+                header.classList.remove('expanded');
+            } else {
+                list.classList.add('expanded');
+                header.classList.add('expanded');
+            }
+        }
+
+        // Allow Enter key to trigger analysis (with Shift+Enter for new lines)
+        document.getElementById('message').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                analyzeMessage();
+            }
+        });
+    </script>
+</body>
+</html>
