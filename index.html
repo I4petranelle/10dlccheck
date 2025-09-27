@@ -7,6 +7,7 @@
   <meta name="description" content="Free 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content, and best practices to avoid filtering." />
   <link rel="canonical" href="https://10dlccheck.com/" />
   <meta name="robots" content="index,follow" />
+  <meta name="msvalidate.01" content="C6E8DF27CF0116B9CB943FBF365C9F06" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary" />
@@ -128,7 +129,7 @@
     .verify-note { margin-left:auto; font-size:.85rem; color:#6b7280; font-style:italic; white-space:nowrap; }
 
     .button-container { text-align:center; margin:14px 0 16px; }
-    .check-btn { background:#1f2937; color:#fff; padding:12px 28px; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:.2s; box-shadow:0 4px 15px rgba(31,41,55,.3); }
+    .check-btn { background:#1f2937; color:#fff; padding:12px 28px; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:.2s; box-shadow: 0 4px 15px rgba(31,41,55,.3); }
     .check-btn:hover { background:#374151; transform:translateY(-1px); box-shadow:0 6px 20px rgba(31,41,55,.4); }
     .check-btn:disabled { background:#9ca3af; cursor:not-allowed; transform:none; }
 
@@ -249,85 +250,10 @@
 
       <div id="results" role="status" aria-live="polite" style="display:none;"></div>
 
-      <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
-      <section class="panel" aria-labelledby="quickRef">
-        <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
-        <div class="grid">
-          <div class="card">
-            <h5>✅ Compliant Promo (Cautious)</h5>
-            <div class="sample">ExampleCo: Weekend offer — save 15% with SAVE15 through Sunday. Details: exampleco.example/sale. Reply STOP to opt out.</div>
-            <p class="note">Clear brand + soft CTA + opt-out.</p>
-          </div>
-          <div class="card">
-            <h5>✅ Appointment Reminder</h5>
-            <div class="sample">ExampleCo Dental: Reminder for 10/04 at 2:30 PM with Dr. Lin. Reply C to confirm or R to reschedule. STOP to opt out.</div>
-            <p class="note">Utility content with concise actions.</p>
-          </div>
-          <div class="card">
-            <h5>✅ Order Update</h5>
-            <div class="sample">ExampleCo: Order #48217 shipped! Track: https://exampleco.example/track/48217. Questions? Reply HELP. STOP to opt out.</div>
-            <p class="note">Transactional message with help/opt-out.</p>
-          </div>
-          <div class="card">
-            <h5>✅ 2FA / OTP</h5>
-            <div class="sample">ExampleCo: Your code is 593814. Don’t share this code. If you didn’t request it, reply STOP.</div>
-            <p class="note">Security-focused and minimal.</p>
-          </div>
-          <div class="card">
-            <h5>❌ Risky Copy (Avoid)</h5>
-            <div class="sample">ACT NOW!!! Get RICH quick 💰 click here for FREE MONEY → bit.ly/xyz</div>
-            <p class="note">Aggressive claims &amp; link shorteners will be filtered.</p>
-          </div>
-          <div class="card">
-            <h5>❌ Risky Copy (Sensitive Info)</h5>
-            <div class="sample">ExampleCo: Please send your SSN and bank account details to verify your prize claim.</div>
-            <p class="note">Never request personal identifiers (SSN, bank details, passwords) by SMS — violates 10DLC &amp; privacy rules.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Real-Time Examples / Templates -->
-      <section class="panel" aria-labelledby="templates">
-        <h4 id="templates">Real-Time Examples &amp; Templates</h4>
-        <div class="grid">
-          <div class="card">
-            <h5>New Subscriber Welcome</h5>
-            <div class="sample">ExampleCo: Thanks for subscribing! Expect 1–2 msgs/week about product tips &amp; offers. STOP to end, HELP for help.</div>
-          </div>
-          <div class="card">
-            <h5>Event Reminder</h5>
-            <div class="sample">ExampleCo: Your webinar “SMS Deliverability 101” starts in 1 hour. Join: exampleco.example/join. Reply STOP to opt out.</div>
-          </div>
-          <div class="card">
-            <h5>Service Notice</h5>
-            <div class="sample">ExampleCo Support: We’ve updated your ticket #7342. View: exampleco.example/t/7342. Reply HELP for assistance. STOP to opt out.</div>
-          </div>
-        </div>
-        <p class="note">Copy any block above and paste it into the checker to test and tailor for your use case.</p>
-      </section>
-
-      <!-- Existing collapsible guideline sections -->
-      <div class="guidelines">
-        <h4 id="g1">🔍 10DLC Compliance Guidelines</h4>
-        <ul id="compliance-list">
-          <li><strong>Consent basis:</strong> Message only opted-in recipients; keep records (CTIA).</li>
-          <li><strong>Branding:</strong> Identify your business early in the message.</li>
-          <li><strong>Opt-out:</strong> Provide a clear opt-out path when requested (e.g., “Reply STOP”).</li>
-          <li><strong>Content matching:</strong> Align content with what users consented to receive.</li>
-          <li><strong>Professional tone:</strong> Avoid profanity or pushy sales copy.</li>
-          <li><strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing, and number rotation.</li>
-        </ul>
-
-        <h4 id="g2">🚫 Restricted Content Categories</h4>
-        <ul id="restricted-list">
-          <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection.</li>
-          <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes.</li>
-          <li><strong>Third-party Services:</strong> Services not directly provided by your brand.</li>
-          <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.</li>
-          <li><strong>SHAFT Content:</strong> Sex, Hate, Alcohol, Firearms, Tobacco, Profanity.</li>
-          <li><strong>Scams &amp; Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”</li>
-        </ul>
-      </div>
+      <!-- Lazy-loaded sections (kept out of view-source) -->
+      <div data-load="partials/reference.html"></div>
+      <div data-load="partials/templates.html"></div>
+      <div data-load="partials/guidelines.html"></div>
     </div>
   </div>
 
@@ -336,5 +262,24 @@
       <div class="foot-small">Powered by <strong>A Problem Solver</strong></div>
     </div>
   </footer>
+
+  <!-- Loader: fetch partials after the page loads -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slots = document.querySelectorAll('[data-load]');
+      slots.forEach(async (slot) => {
+        const url = slot.getAttribute('data-load');
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const html = await res.text();
+          slot.innerHTML = html;
+        } catch (err) {
+          console.error('Failed to load', url, err);
+          slot.remove();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
