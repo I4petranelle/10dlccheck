@@ -268,41 +268,36 @@
 
 
 
-			  <div class="content">
-  
-  <!-- Input section -->
-  <div class="input-section">
-    <label for="sms">Enter your SMS message to check for 10DLC compliance:</label>
-    <textarea id="sms" name="sms" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates.&#10;Reply STOP to opt out."></textarea>
-    <p class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</p>
-  </div>
+					<div class="content">
+		  <div class="input-section">
+			<label for="sms">Enter your SMS message to check for 10DLC compliance:</label>
+			<textarea id="sms" name="sms" placeholder="ExampleCo: Thanks for joining!&#10;Reply STOP to opt out."></textarea>
+			<p class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</p>
+		  </div>
 
-  <!-- textarea -->
-<textarea id="sms" name="sms" placeholder="..."></textarea>
+		  <div class="verify-bar">
+			<span class="verify-label">Verification:</span>
+			<div class="math-inline">
+			  <span id="mathQuestion">9 × 5 =</span>
+			  <input id="mathAnswer" type="text" placeholder="?" />
+			</div>
+			<span class="verify-note">Solve to verify your entry</span>
+		  </div>
 
-<!-- verification -->
-<div class="verify-bar">
-  <span class="verify-label">Verification:</span>
-  <div class="math-inline">
-    <span>9 × 5 =</span>
-    <input id="verifyAnswer" type="text" placeholder="?" />
-  </div>
-  <span class="verify-note">Solve to verify your entry</span>
-</div>
+		  <div class="button-container">
+			<button id="checkBtn" type="button" class="check-btn" disabled>Check Compliance</button>
+		  </div>
 
-<!-- button -->
-<div class="button-container">
-  <button id="checkBtn" type="button" class="check-btn" disabled>Check Message</button>
-</div>
+		  <!-- ONE loading block -->
+		  <div id="loading" class="loading" aria-live="polite" style="display:none;">
+			<div class="spinner"></div>
+			Analyzing message...
+		  </div>
 
+		  <!-- ONE results block -->
+		  <div id="results" class="results non-compliant" role="status" aria-live="polite" style="display:none;"></div>
+		</div>
 
-
-      <div id="loading" class="loading" aria-live="polite">
-        <div class="spinner"></div>
-        <p>Analyzing message...</p>
-      </div>
-
-      <div id="results" role="status" aria-live="polite" style="display:none;"></div>
 	  
 	  <script>
 document.addEventListener('DOMContentLoaded', () => {
