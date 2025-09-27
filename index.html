@@ -25,10 +25,7 @@
   <!-- Icon -->
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" type="image/png" />
 
-  <!-- App JS -->
-  <script src="app.js" defer></script>
-
-  <!-- WebSite schema (optional) -->
+  <!-- Schema: WebSite -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -43,7 +40,7 @@
   }
   </script>
 
-  <!-- FAQ schema (hidden SEO content) -->
+  <!-- Schema: FAQ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -60,40 +57,39 @@
   </script>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; min-height: 100vh; padding: 20px; color:#111827; }
-    .container { max-width: 1000px; margin: 0 auto; background: rgba(255,255,255,.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,.1); backdrop-filter: blur(10px); overflow: hidden; }
-    .header { background:#1f2937; color:#fff; padding:22px 30px; text-align:center; }
-    .head-row { display:flex; align-items:center; gap:14px; justify-content:center; flex-wrap:wrap; }
-    .logo-icon { width:34px; height:34px; display:inline-block; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
-    .header h1 { font-size:2rem; font-weight:800; letter-spacing:-.01em; }
-    .header p { font-size:.98rem; opacity:.9; margin-top:4px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f1f5f9; min-height:100vh; padding:20px; color:#111827; }
+    .container { max-width:1000px; margin:0 auto; background:rgba(255,255,255,.95); border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,.1); backdrop-filter:blur(10px); overflow:visible !important; }
+    .header { background:#1f2937; color:#fff; padding:30px; text-align:center; }
+    .header h1 { font-size:2.2rem; margin-bottom:8px; font-weight:800; letter-spacing:-.01em; }
+    .header p { font-size:1rem; opacity:.9; }
+
+    /* Stats (local only) */
     .stats-bar { margin-top:10px; display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap; }
-    .badge { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#e5e7eb; padding:6px 10px; border-radius:999px; font-size:.9rem; font-weight:600; }
+    .badge { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#e5e7eb; padding:6px 10px; border-radius:999px; font-size:.9rem; font-weight:600; }
 
-    .content { padding:24px 30px 18px; text-align:left; }
+    .content { padding:30px; text-align:left; }
 
-    .input-section { margin-bottom:18px; }
+    .input-section { margin-bottom:20px; }
     label { display:block; margin-bottom:10px; font-weight:700; color:#374151; font-size:1.05rem; }
     textarea { width:100%; min-height:120px; padding:15px; border:2px solid #e5e7eb; border-radius:12px; font-size:16px; font-family:inherit; transition:.3s; resize:vertical; }
     textarea:focus { outline:none; border-color:#374151; box-shadow:0 0 0 3px rgba(55,65,81,.1); }
-    .helper { margin-top:6px; font-size:.86rem; color:#6b7280; }
 
-    .verify-bar { margin-top:10px; margin-bottom:16px; display:flex; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#f8fafc; border-radius:10px; padding:8px 10px; }
-    .verify-label { font-size:.9rem; color:#374151; font-weight:700; white-space:nowrap; }
-    .math-inline { display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:.9rem; color:#374151; }
-    .math-inline input { width:72px; padding:6px 8px; text-align:center; border:2px solid #e5e7eb; border-radius:8px; font-size:.95rem; }
-    .math-inline input:focus { outline:none; border-color:#374151; }
-    .verify-note { margin-left:auto; font-size:.85rem; color:#6b7280; font-style:italic; white-space:nowrap; }
+    .verification-section { margin-bottom:16px; padding:12px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; }
+    .math-challenge { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+    .math-question { font-size:1rem; font-weight:700; color:#374151; }
+    .math-input { padding:6px 10px; border:2px solid #e5e7eb; border-radius:8px; font-size:16px; width:80px; text-align:center; }
+    .math-input:focus { outline:none; border-color:#374151; }
+    .verification-note { font-size:.85rem; color:#6b7280; font-style:italic; }
 
     .button-container { text-align:center; margin:14px 0 16px; }
-    .check-btn { background:#1f2937; color:#fff; padding:12px 28px; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:.2s; box-shadow: 0 4px 15px rgba(31,41,55,.3); }
+    .check-btn { background:#1f2937; color:#fff; padding:12px 28px; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:.2s; box-shadow:0 4px 15px rgba(31,41,55,.3); }
     .check-btn:hover { background:#374151; transform:translateY(-1px); box-shadow:0 6px 20px rgba(31,41,55,.4); }
     .check-btn:disabled { background:#9ca3af; cursor:not-allowed; transform:none; }
 
-    .loading { text-align:left; padding:10px; display:none; }
-    .spinner { border:3px solid #f3f4f6; border-top:3px solid #1f2937; border-radius:50%; width:28px; height:28px; animation:spin 1s linear infinite; margin:0 0 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading { text-align:center; padding:12px; display:none; }
+    .spinner { border:3px solid #f3f4f6; border-top:3px solid #1f2937; border-radius:50%; width:28px; height:28px; animation:spin 1s linear infinite; margin:0 auto 8px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
     .results { margin-top:10px; padding:18px; border-radius:12px; border-left:5px solid; display:none; }
     .results.compliant { background:#ecfdf5; border-color:#10b981; color:#065f46; }
@@ -101,13 +97,12 @@
     .results h3 { font-size:1.15rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
     .icon { width:22px; height:22px; }
 
-    .issue-header { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:10px; }
+    .issue-header { display:flex; align-items:center; justify-content:space-between; margin:10px 0; }
     .issue-summary { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
     .issue-count { padding:4px 8px; border-radius:12px; font-size:.8rem; font-weight:600; }
     .issue-count.high { background:#fee2e2; color:#991b1b; }
     .issue-count.medium { background:#fef3c7; color:#92400e; }
     .issue-count.low { background:#dbeafe; color:#1e40af; }
-
     .toggle-issues, .toggle-details { background:none; border:1px solid #d1d5db; color:#6b7280; padding:6px 12px; border-radius:6px; font-size:.85rem; cursor:pointer; transition:.15s; }
     .toggle-issues:hover, .toggle-details:hover { background:#f3f4f6; color:#374151; }
     .issue-list { list-style:none; margin-top:8px; display:none; }
@@ -118,6 +113,25 @@
     .issue-list li.low { border-color:#3b82f6; background:#eff6ff; }
     .issue-message { font-weight:600; margin-bottom:4px; color:#374151; }
     .issue-suggestion { font-size:.9rem; color:#6b7280; font-style:italic; }
+
+    /* Card panels */
+    .panel { margin-top:18px; padding:16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; overflow:visible; }
+    .panel h4 { font-size:1rem; color:#111827; margin-bottom:10px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
+    .card { border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; padding:12px; }
+    .card h5 { margin-bottom:6px; font-size:.98rem; color:#111827; }
+    .sample { white-space:pre-wrap; font-size:.93rem; color:#374151; background:#fff; border:1px dashed #d1d5db; border-radius:8px; padding:10px; }
+    .note { font-size:.85rem; color:#6b7280; margin-top:6px; }
+
+    /* Collapsible guidelines */
+    .guidelines { margin-top:18px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; }
+    .guidelines h4 { color:#1e293b; margin-bottom:8px; font-size:1rem; cursor:pointer; display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; transition:.2s; }
+    .guidelines h4:hover { background:#e2e8f0; }
+    .guidelines h4::before { content:"▶"; font-size:.8rem; transition:transform .2s; }
+    .guidelines h4.expanded::before { content:"▼"; }
+    .guidelines ul { transition: all .2s ease; overflow:hidden; max-height:0; opacity:0; margin:0; padding:0 0 0 18px; list-style:disc; }
+    .guidelines ul.expanded { max-height:1000px; opacity:1; margin:8px 0; }
+    .guidelines li { margin-bottom:6px; color:#475569; }
 
     .category-warning { margin-top:12px; padding:12px; border-radius:12px; border-left:4px solid #dc2626; background:#fef2f2; }
     .category-warning h4 { color:#991b1b; margin-bottom:8px; font-size:1.05rem; font-weight:600; }
@@ -131,78 +145,37 @@
     .category-details.show { display:block; }
     .category-item { margin-bottom:10px; padding:10px; background:rgba(255,255,255,.8); border-radius:8px; border:1px solid rgba(0,0,0,.05); }
     .category-title { font-weight:600; font-size:.98rem; margin-bottom:4px; }
-
-    .guidelines { margin-top:18px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; }
-    .guidelines h4 { color:#1e293b; margin-bottom:8px; font-size:1rem; cursor:pointer; display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; transition:.2s; }
-    .guidelines h4:hover { background:#e2e8f0; }
-    .guidelines h4::before { content:"▶"; font-size:.8rem; transition:transform .2s; }
-    .guidelines h4.expanded::before { content:"▼"; }
-    .guidelines ul { transition: all .2s ease; overflow:hidden; max-height:0; opacity:0; margin:0; padding:0 0 0 18px; list-style:disc; }
-    .guidelines ul.expanded { max-height:1000px; opacity:1; margin:8px 0; }
-    .guidelines li { margin-bottom:6px; color:#475569; }
-
-    /* Card sections (partials) */
-    .panel { margin-top:18px; padding:16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; }
-    .panel h4 { font-size:1rem; color:#111827; margin-bottom:10px; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
-    .card { border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; padding:12px; }
-    .card h5 { margin-bottom:6px; font-size:.98rem; color:#111827; }
-    .sample { white-space:pre-wrap; font-size:.93rem; color:#374151; background:#fff; border:1px dashed #d1d5db; border-radius:8px; padding:10px; }
-    .note { font-size:.85rem; color:#6b7280; margin-top:6px; }
+    .category-keywords { font-size:.85rem; color:#6b7280; margin-top:6px; }
 
     footer { padding:14px 16px; background:#f8fafc; border-top:1px solid #e5e7eb; text-align:center; color:#475569; }
     .foot-line { margin:4px auto; max-width:1000px; }
     .foot-small { font-size:.9rem; }
     .foot-small a { color:#374151; text-decoration:underline; }
   </style>
-
-  <!-- Prevent dynamic sections from being clipped + small helpers -->
-  <style>
-    .container { overflow: visible !important; }
-    .panel, .guidelines { overflow: visible; }
-    .link-list { list-style: disc; margin: 8px 0 0 18px; }
-    .link-list a { color:#1f2937; text-decoration: underline; }
-  </style>
 </head>
 <body>
   <div class="container">
     <div class="header" role="banner">
-      <div class="head-row">
-        <img class="logo-icon" alt="Chat icon" src="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" loading="lazy" width="34" height="34" />
-        <h1>10DLC Compliance Checker</h1>
-      </div>
-      <p>Analyze your SMS messages for US 10DLC compliance before you send.</p>
-
-      <!-- Validation Stats (social proof) -->
+      <h1>📱 10DLC Compliance Checker</h1>
+      <p>Analyze your SMS messages for 10DLC compliance.</p>
       <div class="stats-bar" aria-live="polite">
-        <span class="badge">🔢 Your 10DLC checks: <span id="localCount">0</span></span>
-        <span class="badge">🌍 Site-wide checks: <span id="globalCount">—</span></span>
+        <span class="badge">🔢 Your checks: <span id="localCount">0</span></span>
         <span class="badge">⚡ Avg. analysis: <span id="avgTime">—</span></span>
       </div>
     </div>
 
     <div class="content">
-      <p class="intro">
-        Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending.
-        Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and
-        other <strong>10DLC compliance issues</strong> that may trigger carrier filtering.
-        Quickly validate your text messages, avoid penalties and ensure your campaigns reach customers without being blocked.
-      </p>
-
       <div class="input-section">
         <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
         <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
-        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+      </div>
 
-        <!-- Tiny UX: compact inline verification -->
-        <div class="verify-bar" title="Quick human verification">
-          <span class="verify-label">Verification:</span>
-          <div class="math-inline">
-            <span id="mathQuestion">5 + 3 =</span>
-            <input type="text" id="mathAnswer" inputmode="numeric" placeholder="?" aria-label="Answer" />
-          </div>
-          <span class="verify-note">Solve to verify you're human</span>
+      <div class="verification-section">
+        <div class="math-challenge">
+          <span class="math-question">Verification: What is <span id="mathQuestion">5 + 3</span>?</span>
+          <input type="number" id="mathAnswer" class="math-input" inputmode="numeric" placeholder="?" aria-label="Answer" />
         </div>
+        <div class="verification-note">Please solve this simple math problem to verify you're human.</div>
       </div>
 
       <div class="button-container">
@@ -216,34 +189,88 @@
 
       <div id="results" class="results" role="status" aria-live="polite" style="display:none;"></div>
 
-      <!-- Lazy-loaded sections (kept out of view-source) -->
-      <div data-load="partials/reference.html"></div>
-      <div data-load="partials/templates.html"></div>
-      <div data-load="partials/guidelines.html"></div>
-
-      <!-- Public links so readers can open these as standalone pages -->
-      <section class="panel" aria-labelledby="resLinks">
-        <h4 id="resLinks">Resources</h4>
-        <ul class="link-list">
-          <li><a href="/partials/reference.html" target="_blank" rel="noopener noreferrer">Quick Reference Cheat Sheet</a></li>
-          <li><a href="/partials/templates.html" target="_blank" rel="noopener noreferrer">Real-Time Examples & Templates</a></li>
-          <li><a href="/partials/guidelines.html" target="_blank" rel="noopener noreferrer">10DLC Compliance Guidelines</a></li>
-        </ul>
+      <!-- QUICK REFERENCE CARDS -->
+      <section class="panel" aria-labelledby="quickRef">
+        <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
+        <div class="grid">
+          <div class="card">
+            <h5>✅ Compliant Promo (Cautious)</h5>
+            <div class="sample">ExampleCo: Weekend offer — save 15% with SAVE15 through Sunday. Details: exampleco.example/sale. Reply STOP to opt out.</div>
+            <p class="note">Clear brand + soft CTA + opt-out.</p>
+          </div>
+          <div class="card">
+            <h5>✅ Appointment Reminder</h5>
+            <div class="sample">ExampleCo Dental: Reminder for 10/04 at 2:30 PM with Dr. Lin. Reply C to confirm or R to reschedule. STOP to opt out.</div>
+            <p class="note">Utility content with concise actions.</p>
+          </div>
+          <div class="card">
+            <h5>✅ Order Update</h5>
+            <div class="sample">ExampleCo: Order #48217 shipped! Track: https://exampleco.example/track/48217. Questions? Reply HELP. STOP to opt out.</div>
+            <p class="note">Transactional message with help/opt-out.</p>
+          </div>
+          <div class="card">
+            <h5>✅ 2FA / OTP</h5>
+            <div class="sample">ExampleCo: Your code is 593814. Don’t share this code. If you didn’t request it, reply STOP.</div>
+            <p class="note">Security-focused and minimal.</p>
+          </div>
+          <div class="card">
+            <h5>❌ Risky Copy (Avoid)</h5>
+            <div class="sample">ACT NOW!!! Get RICH quick 🔥 click here for FREE MONEY → bit.ly/xyz</div>
+            <p class="note">Aggressive claims & link shorteners will be filtered.</p>
+          </div>
+          <div class="card">
+            <h5>❌ Risky Copy (Sensitive Info)</h5>
+            <div class="sample">ExampleCo: Please send your SSN and bank account details to verify your prize claim.</div>
+            <p class="note">Never request personal identifiers (SSN, bank details, passwords) by SMS — violates 10DLC & privacy rules.</p>
+          </div>
+        </div>
       </section>
 
-      <!-- No-JS fallback -->
-      <noscript>
-        <section class="panel">
-          <h4>Resources (JavaScript disabled)</h4>
-          <ul class="link-list">
-            <li><a href="/partials/reference.html">Quick Reference Cheat Sheet</a></li>
-            <li><a href="/partials/templates.html">Real-Time Examples & Templates</a></li>
-            <li><a href="/partials/guidelines.html">10DLC Compliance Guidelines</a></li>
-          </ul>
-        </section>
-      </noscript>
-    </div> <!-- end .content -->
-  </div> <!-- end .container -->
+      <!-- REAL-TIME EXAMPLES / TEMPLATES -->
+      <section class="panel" aria-labelledby="templates">
+        <h4 id="templates">Real-Time Examples & Templates</h4>
+        <div class="grid">
+          <div class="card">
+            <h5>New Subscriber Welcome</h5>
+            <div class="sample">ExampleCo: Thanks for subscribing! Expect 1–2 msgs/week about product tips & offers. STOP to end, HELP for help.</div>
+          </div>
+          <div class="card">
+            <h5>Event Reminder</h5>
+            <div class="sample">ExampleCo: Your webinar “SMS Deliverability 101” starts in 1 hour. Join: exampleco.example/join. Reply STOP to opt out.</div>
+          </div>
+          <div class="card">
+            <h5>Service Notice</h5>
+            <div class="sample">ExampleCo Support: We’ve updated your ticket #7342. View: exampleco.example/t/7342. Reply HELP for assistance. STOP to opt out.</div>
+          </div>
+        </div>
+        <p class="note">Copy any block above and paste it into the checker to test and tailor for your use case.</p>
+      </section>
+
+      <!-- GUIDELINES (collapsible) -->
+      <div class="guidelines">
+        <h4 onclick="toggleCollapse(this, 'compliance-list')">🔍 10DLC Compliance Guidelines</h4>
+        <ul id="compliance-list">
+          <li><strong>Consent basis:</strong> Merchants provide SMS consent when entering your system — ensure scope covers communication type.</li>
+          <li><strong>Consent documentation:</strong> Maintain records of when/how consent was obtained per CTIA requirements.</li>
+          <li><strong>Content matching:</strong> Messages should align with the services merchants consented to receive communications about.</li>
+          <li><strong>Professional tone:</strong> Maintain appropriate business communication standards.</li>
+          <li><strong>Opt-out availability:</strong> While not required for every message, ensure merchants can opt out if requested.</li>
+          <li><strong>Anti-abuse compliance:</strong> Avoid snowshoe messaging patterns and number spoofing.</li>
+        </ul>
+
+        <h4 onclick="toggleCollapse(this, 'restricted-list')">🚫 Restricted Content Categories</h4>
+        <ul id="restricted-list">
+          <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection (legitimate business lending is generally acceptable).</li>
+          <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes.</li>
+          <li><strong>Third-party Services:</strong> Services not directly related to your company.</li>
+          <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.</li>
+          <li><strong>SHAFT Content:</strong> Sex, Hate speech, Alcohol, Firearms, Tobacco, Profanity.</li>
+          <li><strong>Scams:</strong> Phishing, fraud, spam, deceptive marketing.</li>
+          <li><strong>Misleading Claims:</strong> False guarantees, “risk-free” promises that violate FTC rules.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <div class="foot-line">
@@ -251,72 +278,220 @@
     </div>
   </footer>
 
-  <!-- Loader: fetch partials after the page loads -->
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Load partials
-    const slots = document.querySelectorAll('[data-load]');
-    slots.forEach(async (slot) => {
-      const url = slot.getAttribute('data-load');
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const html = await res.text();
-        slot.innerHTML = html;
-      } catch (err) {
-        console.error('Failed to load', url, err);
-        slot.remove();
+    // Math verification
+    let mathAnswer = 0;
+    function generateMathQuestion() {
+      const ops = ['+', '-', '×'];
+      const op = ops[Math.floor(Math.random()*ops.length)];
+      let a = Math.floor(Math.random()*20)+1, b = Math.floor(Math.random()*20)+1;
+      let q, ans;
+      if (op === '+') { q = `${a} + ${b}`; ans = a + b; }
+      else if (op === '-') { const L=Math.max(a,b), S=Math.min(a,b); q = `${L} - ${S}`; ans = L - S; }
+      else { a=Math.floor(Math.random()*10)+1; b=Math.floor(Math.random()*10)+1; q=`${a} × ${b}`; ans=a*b; }
+      document.getElementById('mathQuestion').textContent = q;
+      mathAnswer = ans;
+    }
+    generateMathQuestion();
+
+    // Local stats
+    function loadLocalStats() {
+      const count = Number(localStorage.getItem('dlc_local_checks') || '0');
+      document.getElementById('localCount').textContent = count;
+      document.getElementById('avgTime').textContent = '—';
+    }
+    loadLocalStats();
+
+    // Compliance rules
+    const complianceRules = {
+      characterLimit: { limit: 160, severity: 'low', message: 'Message exceeds 160 characters (may split into multiple SMS)', suggestion: 'Shorten your message to under 160 characters to avoid splitting' },
+      highRiskFinancial: { keywords:['payday loan','cash advance','short-term loan','cryptocurrency','crypto','bitcoin','debt collection','stock alert','tax relief'], severity:'high', message:'Contains high-risk financial services content - may require special arrangements', suggestion:'Replace with general business funding language' },
+      getRichQuick: { keywords:['work from home','make money fast','secret shopper','easy money','multi-level marketing','mlm','gambling','sweepstakes','get rich','passive income'], severity:'high', message:'Contains get-rich-quick scheme language - restricted on 10DLC', suggestion:'Focus on legitimate business services and professional growth' },
+      thirdPartyServices: { keywords:['debt consolidation','debt relief','debt reduction','debt forgiveness','credit repair','lead generation','job alert','broker'], severity:'high', message:'Contains third-party services content - restricted on 10DLC', suggestion:'Focus on direct services only' },
+      controlledSubstances: { keywords:['tobacco','vaping','vape','cannabis','cbd','marijuana','weed','illegal drug','prescription'], severity:'high', message:'Contains controlled substances content - restricted on 10DLC', suggestion:'Remove all references to controlled substances' },
+      shaft: { keywords:['sex','adult','hate','alcohol','beer','wine','firearm','gun','weapon','tobacco','fuck','shit','damn','bitch'], severity:'high', message:'Contains SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco, Profanity) - restricted on 10DLC', suggestion:'Use professional, family-friendly language' },
+      scams: { keywords:['phishing','fraud','spam','deceptive','fake','scam','virus','malware','click here now','urgent action','verify account','suspended account'], severity:'high', message:'Contains potential scam/phishing content - strictly prohibited on 10DLC', suggestion:'Use transparent, honest communication without urgency tactics' },
+      aggressiveMarketing: { keywords:['act now','limited time','free money','guaranteed','risk-free','no obligation','call now','urgent','expires today'], severity:'high', message:'Contains aggressive marketing language that carriers flag as suspicious', suggestion:'Use professional, consultative language instead of high-pressure tactics' },
+      personalInfo: { keywords:['ssn','social security','credit card','password','pin number','bank account','routing number'], severity:'high', message:'Requesting sensitive personal information via SMS violates 10DLC guidelines', suggestion:'Direct users to secure portal for sensitive information' }
+    };
+
+    function performComplianceCheck(message) {
+      const issues = [];
+      const messageLower = message.toLowerCase();
+      const detectedCategories = [];
+
+      // length
+      if (message.length > complianceRules.characterLimit.limit) {
+        issues.push({ severity:'low', message:`${complianceRules.characterLimit.message} (${message.length} characters)`, suggestion:complianceRules.characterLimit.suggestion });
       }
-    });
 
-    // SAFETY-NET: Ensure the "Check Compliance" button works even if app.js didn't bind.
-    const btn = document.getElementById('checkBtn');
-    const msgEl = document.getElementById('message');
-    const loading = document.getElementById('loading');
-    const results = document.getElementById('results');
+      const categories = [
+        { rule: 'highRiskFinancial', name:'High-Risk Financial Services', impact:'RESTRICTED - May require carrier pre-approval and enhanced monitoring' },
+        { rule: 'getRichQuick', name:'Get Rich Quick Schemes', impact:'PROHIBITED - Campaign will be rejected' },
+        { rule: 'thirdPartyServices', name:'Third-Party Services', impact:'RESTRICTED - Requires proof of direct relationship with customers' },
+        { rule: 'controlledSubstances', name:'Controlled Substances', impact:'PROHIBITED - Campaign will be rejected' },
+        { rule: 'shaft', name:'SHAFT Content', impact:'PROHIBITED - Campaign will be rejected' },
+        { rule: 'scams', name:'Suspicious/Scam Content', impact:'PROHIBITED - Campaign will be rejected for suspicious content' },
+        { rule: 'aggressiveMarketing', name:'Aggressive Marketing Language', impact:'HIGH RISK - Carriers actively filter this type of language' },
+        { rule: 'personalInfo', name:'Personal Information Request', impact:'PROHIBITED - Violates privacy and security guidelines' }
+      ];
 
-    if (btn && !btn.dataset.bound) {
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', async () => {
-        const text = (msgEl.value || '').trim();
-        loading.style.display = 'block';
-        results.style.display = 'none';
-
-        const start = performance.now();
-        try {
-          // If app.js exposes a richer checker, use it.
-          if (typeof window.runComplianceCheck === 'function') {
-            const outcome = await window.runComplianceCheck(text);
-            if (typeof window.renderComplianceResults === 'function') {
-              window.renderComplianceResults(outcome);
-            } else {
-              results.className = 'results ' + (outcome?.compliant ? 'compliant' : 'non-compliant');
-              results.innerHTML = `<h3>${outcome?.title || (outcome?.compliant ? 'Looks compliant' : 'We found some issues')}</h3>`;
-            }
-          } else {
-            // Minimal fallback checks (brand + STOP)
-            const issues = [];
-            if (!/^[^:]{2,}:\s*/.test(text)) issues.push({ sev: 'low', msg: 'Identify your brand at the start (e.g., "ExampleCo: ...").' });
-            if (!/\bSTOP\b/i.test(text)) issues.push({ sev: 'medium', msg: 'Include a clear opt-out (e.g., "Reply STOP to opt out").' });
-            const compliant = issues.length === 0;
-            results.className = 'results ' + (compliant ? 'compliant' : 'non-compliant');
-            const list = issues.map(i => `<li class="${i.sev}"><div class="issue-message">${i.msg}</div></li>`).join('');
-            results.innerHTML = `<h3>${compliant ? 'Looks compliant' : 'We found some issues'}</h3>` + (list ? `<ul class="issue-list show">${list}</ul>` : '');
-          }
-        } catch (e) {
-          console.error(e);
-          results.className = 'results non-compliant';
-          results.innerHTML = `<h3>We hit an error while analyzing your message.</h3><p class="note">Try again in a moment.</p>`;
-        } finally {
-          const elapsed = Math.max(1, Math.round(performance.now() - start));
-          const avgTime = document.getElementById('avgTime');
-          if (avgTime) avgTime.textContent = `${elapsed} ms`;
-          loading.style.display = 'none';
-          results.style.display = 'block';
+      categories.forEach(cat => {
+        const rule = complianceRules[cat.rule];
+        const found = rule.keywords.filter(k => messageLower.includes(k));
+        if (found.length) {
+          issues.push({ severity:rule.severity, message:`${rule.message}: "${found.join('", "')}"`, suggestion:rule.suggestion });
+          detectedCategories.push({ name:cat.name, impact:cat.impact, keywords:found, severity:rule.severity });
         }
       });
+
+      return {
+        isCompliant: issues.filter(i => i.severity === 'high').length === 0,
+        issues,
+        messageLength: message.length,
+        wordCount: message.split(/\s+/).filter(Boolean).length,
+        detectedCategories
+      };
     }
-  });
+
+    async function analyzeMessage() {
+      const start = performance.now();
+      const messageText = document.getElementById('message').value.trim();
+      const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+
+      if (!messageText) { alert('Please enter a message to analyze.'); return; }
+      if (!userAnswer || userAnswer !== mathAnswer) {
+        alert("Please solve the math problem correctly to verify you're human.");
+        generateMathQuestion();
+        document.getElementById('mathAnswer').value = '';
+        return;
+      }
+
+      const loading = document.getElementById('loading');
+      const results = document.getElementById('results');
+      const btn = document.getElementById('checkBtn');
+      loading.style.display = 'block';
+      results.style.display = 'none';
+      btn.disabled = true;
+
+      await new Promise(r => setTimeout(r, 300)); // tiny UX pause
+
+      try {
+        const analysis = performComplianceCheck(messageText);
+        displayResults(analysis);
+
+        // stats
+        const elapsed = Math.max(1, Math.round(performance.now() - start));
+        const count = Number(localStorage.getItem('dlc_local_checks') || '0') + 1;
+        localStorage.setItem('dlc_local_checks', String(count));
+        document.getElementById('localCount').textContent = count;
+        document.getElementById('avgTime').textContent = `${elapsed} ms`;
+
+        // reset math for next run
+        generateMathQuestion();
+        document.getElementById('mathAnswer').value = '';
+      } catch (e) {
+        console.error(e);
+        results.className = 'results non-compliant';
+        results.innerHTML = `<h3>We hit an error while analyzing your message.</h3><p class="note">Try again in a moment.</p>`;
+        results.style.display = 'block';
+      } finally {
+        loading.style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
+    function displayResults(analysis) {
+      const resultsDiv = document.getElementById('results');
+      const ok = analysis.isCompliant;
+      resultsDiv.className = `results ${ok ? 'compliant' : 'non-compliant'}`;
+
+      const icon = ok
+        ? '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
+        : '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
+
+      let html = `
+        <h3>${icon} ${ok ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found'}</h3>
+        <p><strong>Message Length:</strong> ${analysis.messageLength} characters (${analysis.wordCount} words)</p>
+      `;
+
+      if (analysis.detectedCategories.length) {
+        html += '<div class="category-warning">';
+        html += '<h4>⚠️ Detected Issues - Campaign Impact Analysis</h4>';
+        html += '<div class="category-summary">';
+        analysis.detectedCategories.forEach(c => {
+          const cls = c.impact.includes('PROHIBITED') ? 'prohibited' :
+                      c.impact.includes('RESTRICTED') ? 'restricted' :
+                      c.impact.includes('HIGH RISK') ? 'warning' : 'branding';
+          html += `<span class="category-badge ${cls}">${c.name}</span>`;
+        });
+        html += '</div>';
+        html += `<button class="toggle-details" onclick="toggleCategoryDetails(this)">Show Details</button>`;
+        html += '<div class="category-details">';
+        analysis.detectedCategories.forEach(c => {
+          html += `<div class="category-item">
+            <div class="category-title">${c.name}</div>
+            <p><strong>Impact:</strong> ${c.impact.split(' - ')[1] || c.impact}</p>
+            <div class="category-keywords">Keywords found: "${c.keywords.join('", "')}"</div>
+          </div>`;
+        });
+        html += '</div></div>';
+      }
+
+      if (analysis.issues.length) {
+        const hi = analysis.issues.filter(i=>i.severity==='high').length;
+        const mi = analysis.issues.filter(i=>i.severity==='medium').length;
+        const lo = analysis.issues.filter(i=>i.severity==='low').length;
+        html += '<div class="issue-header"><div class="issue-summary">';
+        if (hi) html += `<span class="issue-count high">${hi} Critical</span>`;
+        if (mi) html += `<span class="issue-count medium">${mi} Medium</span>`;
+        if (lo) html += `<span class="issue-count low">${lo} Minor</span>`;
+        html += `</div><button class="toggle-issues" onclick="toggleIssueDetails(this)">Show Issues</button></div>`;
+        html += '<ul class="issue-list">';
+        analysis.issues.forEach(i=>{
+          html += `<li class="${i.severity}">
+            <div class="issue-message">${i.message}</div>
+            ${i.suggestion ? `<div class="issue-suggestion">${i.suggestion}</div>` : ''}
+          </li>`;
+        });
+        html += '</ul>';
+      } else if (!analysis.detectedCategories.length) {
+        html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
+      }
+
+      resultsDiv.innerHTML = html;
+      resultsDiv.style.display = 'block';
+    }
+
+    function toggleIssueDetails(btn) {
+      const list = btn.parentElement.nextElementSibling;
+      const show = list.classList.contains('show');
+      list.classList.toggle('show', !show);
+      btn.textContent = show ? 'Show Issues' : 'Hide Issues';
+    }
+    function toggleCategoryDetails(btn) {
+      const details = btn.nextElementSibling;
+      const show = details.classList.contains('show');
+      details.classList.toggle('show', !show);
+      btn.textContent = show ? 'Show Details' : 'Hide Details';
+    }
+    function toggleCollapse(header, id) {
+      const list = document.getElementById(id);
+      const expanded = list.classList.contains('expanded');
+      list.classList.toggle('expanded', !expanded);
+      header.classList.toggle('expanded', !expanded);
+    }
+
+    // Keyboard shortcuts
+    document.getElementById('message').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); analyzeMessage(); }
+    });
+    document.getElementById('mathAnswer').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); analyzeMessage(); }
+    });
+
+    // Button handler (in case inline handler is removed later)
+    document.getElementById('checkBtn').addEventListener('click', analyzeMessage);
   </script>
 </body>
 </html>
