@@ -1,14 +1,31 @@
 {
   "redirects": [
-    { "source": "http://www.10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
-    { "source": "https://www.10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
-    { "source": "http://10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
-    { "source": "/:path*", "has": [{ "type": "host", "value": "10dlccheck.vercel.app" }], "destination": "https://10dlccheck.com/:path*", "permanent": true }
+    {
+      "source": "/:path*",
+      "has": [{ "type": "protocol", "value": "http" }],
+      "destination": "https://10dlccheck.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.10dlccheck.com" }],
+      "destination": "https://10dlccheck.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "10dlccheck.vercel.app" }],
+      "destination": "https://10dlccheck.com/:path*",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/partials/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
     }
   ]
 }
+
