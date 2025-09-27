@@ -197,6 +197,11 @@
     .foot-small { font-size:.9rem; }
     .foot-small a { color:#374151; text-decoration:underline; }
   </style>
+  <style>
+  .link-list { list-style: disc; margin: 8px 0 0 18px; }
+  .link-list a { color:#1f2937; text-decoration: underline; }
+</style>
+
 </head>
 <body>
   <div class="container">
@@ -256,6 +261,29 @@
       <div data-load="partials/guidelines.html"></div>
     </div>
   </div>
+ 
+<!-- Public links so readers can open these as standalone pages -->
+<section class="panel" aria-labelledby="resLinks">
+  <h4 id="resLinks">Resources</h4>
+  <ul class="link-list">
+    <li><a href="/partials/reference.html" target="_blank" rel="noopener">Quick Reference Cheat Sheet</a></li>
+    <li><a href="/partials/templates.html" target="_blank" rel="noopener">Real-Time Examples & Templates</a></li>
+    <li><a href="/partials/guidelines.html" target="_blank" rel="noopener">10DLC Compliance Guidelines</a></li>
+  </ul>
+</section>
+
+<!-- No-JS fallback -->
+<noscript>
+  <section class="panel">
+    <h4>Resources (JavaScript disabled)</h4>
+    <ul class="link-list">
+      <li><a href="/partials/reference.html">Quick Reference Cheat Sheet</a></li>
+      <li><a href="/partials/templates.html">Real-Time Examples & Templates</a></li>
+      <li><a href="/partials/guidelines.html">10DLC Compliance Guidelines</a></li>
+    </ul>
+  </section>
+</noscript>
+
 
   <footer>
     <div class="foot-line">
