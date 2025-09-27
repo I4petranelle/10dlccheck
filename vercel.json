@@ -2,12 +2,6 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "protocol", "value": "http" }],
-      "destination": "https://10dlccheck.com/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
       "has": [{ "type": "host", "value": "www.10dlccheck.com" }],
       "destination": "https://10dlccheck.com/:path*",
       "permanent": true
@@ -20,6 +14,12 @@
     }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    },
     {
       "source": "/partials/(.*)",
       "headers": [
