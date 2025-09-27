@@ -6,11 +6,18 @@
   <title>10DLC Message Compliance Checker</title>
   <meta name="description" content="Free 10DLC SMS checker. Scan your text for restricted categories, phishing language, and risky phrasing before you send." />
   <link rel="canonical" href="https://10dlccheck.vercel.app/" />
+
+  <!-- Open Graph -->
   <meta property="og:title" content="10DLC Message Compliance Checker" />
   <meta property="og:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
   <meta property="og:type" content="website" />
-  <!-- load external JS safely -->
+
+  <!-- Icon (requested) -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" type="image/png" />
+
+  <!-- Load external JS safely -->
   <script src="app.js" defer></script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; min-height: 100vh; padding: 20px; color:#111827; }
@@ -27,6 +34,7 @@
     label { display:block; margin-bottom:10px; font-weight:700; color:#374151; font-size:1.05rem; }
     textarea { width:100%; min-height:120px; padding:15px; border:2px solid #e5e7eb; border-radius:12px; font-size:16px; font-family:inherit; transition:.3s; resize:vertical; }
     textarea:focus { outline:none; border-color:#374151; box-shadow:0 0 0 3px rgba(55,65,81,.1); }
+    .helper { margin-top:6px; font-size:.86rem; color:#6b7280; }
     .verify-bar { margin-top:10px; margin-bottom:16px; display:flex; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#f8fafc; border-radius:10px; padding:8px 10px; }
     .verify-label { font-size:.9rem; color:#374151; font-weight:700; white-space:nowrap; }
     .math-inline { display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:.9rem; color:#374151; }
@@ -40,17 +48,19 @@
     .loading { text-align:left; padding:10px; display:none; }
     .spinner { border:3px solid #f3f4f6; border-top:3px solid #1f2937; border-radius:50%; width:28px; height:28px; animation:spin 1s linear infinite; margin:0 0 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .results { margin-top:10px; padding:18px; border-radius:12px; border-left:5px solid; }
+    .results { margin-top:10px; padding:18px; border-radius:12px; border-left:5px solid; display:none; }
     .results.compliant { background:#ecfdf5; border-color:#10b981; color:#065f46; }
     .results.non-compliant { background:#f8fafc; border-color:#ef4444; color:#1e293b; }
     .results h3 { font-size:1.15rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
     .icon { width:22px; height:22px; }
+
     .issue-header { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:10px; }
     .issue-summary { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
     .issue-count { padding:4px 8px; border-radius:12px; font-size:.8rem; font-weight:600; }
     .issue-count.high { background:#fee2e2; color:#991b1b; }
     .issue-count.medium { background:#fef3c7; color:#92400e; }
     .issue-count.low { background:#dbeafe; color:#1e40af; }
+
     .toggle-issues, .toggle-details { background:none; border:1px solid #d1d5db; color:#6b7280; padding:6px 12px; border-radius:6px; font-size:.85rem; cursor:pointer; transition:.15s; }
     .toggle-issues:hover, .toggle-details:hover { background:#f3f4f6; color:#374151; }
     .issue-list { list-style:none; margin-top:8px; display:none; }
@@ -61,6 +71,7 @@
     .issue-list li.low { border-color:#3b82f6; background:#eff6ff; }
     .issue-message { font-weight:600; margin-bottom:4px; color:#374151; }
     .issue-suggestion { font-size:.9rem; color:#6b7280; font-style:italic; }
+
     .category-warning { margin-top:12px; padding:12px; border-radius:12px; border-left:4px solid #dc2626; background:#fef2f2; }
     .category-warning h4 { color:#991b1b; margin-bottom:8px; font-size:1.05rem; font-weight:600; }
     .category-summary { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
@@ -73,6 +84,7 @@
     .category-details.show { display:block; }
     .category-item { margin-bottom:10px; padding:10px; background:rgba(255,255,255,.8); border-radius:8px; border:1px solid rgba(0,0,0,.05); }
     .category-title { font-weight:600; font-size:.98rem; margin-bottom:4px; }
+
     .guidelines { margin-top:18px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; }
     .guidelines h4 { color:#1e293b; margin-bottom:8px; font-size:1rem; cursor:pointer; display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; transition:.2s; }
     .guidelines h4:hover { background:#e2e8f0; }
@@ -81,6 +93,16 @@
     .guidelines ul { transition: all .2s ease; overflow:hidden; max-height:0; opacity:0; margin:0; padding:0 0 0 18px; list-style:disc; }
     .guidelines ul.expanded { max-height:1000px; opacity:1; margin:8px 0; }
     .guidelines li { margin-bottom:6px; color:#475569; }
+
+    /* Enhancements: Quick Reference + Templates */
+    .panel { margin-top:18px; padding:16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; }
+    .panel h4 { font-size:1rem; color:#111827; margin-bottom:10px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
+    .card { border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; padding:12px; }
+    .card h5 { margin-bottom:6px; font-size:.98rem; color:#111827; }
+    .sample { white-space:pre-wrap; font-size:.93rem; color:#374151; background:#fff; border:1px dashed #d1d5db; border-radius:8px; padding:10px; }
+    .note { font-size:.85rem; color:#6b7280; margin-top:6px; }
+
     footer { padding:14px 16px; background:#f8fafc; border-top:1px solid #e5e7eb; text-align:center; color:#475569; }
     .foot-line { margin:4px auto; max-width:1000px; }
     .foot-small { font-size:.9rem; }
@@ -95,16 +117,22 @@
         <h1>10DLC Compliance Checker</h1>
       </div>
       <p>Analyze your SMS messages for US 10DLC compliance before you send.</p>
+
+      <!-- Validation Stats (social proof) -->
       <div class="stats-bar" aria-live="polite">
         <span class="badge">🔢 Your 10DLC checks: <span id="localCount">0</span></span>
+        <span class="badge">🌍 Site-wide checks: <span id="globalCount">—</span></span>
+        <span class="badge">⚡ Avg. analysis: <span id="avgTime">—</span></span>
       </div>
     </div>
 
     <div class="content">
       <div class="input-section">
         <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
-        <textarea id="message" placeholder="Example: Hi John! Thanks for signing up for our newsletter. You'll receive weekly updates about our latest products. Reply STOP to opt out at any time."></textarea>
+        <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
+        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
 
+        <!-- Tiny UX: compact inline verification -->
         <div class="verify-bar" title="Quick human verification">
           <span class="verify-label">Verification:</span>
           <div class="math-inline">
@@ -124,8 +152,61 @@
         <p>Analyzing message...</p>
       </div>
 
-      <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+      <div id="results" role="status" aria-live="polite"></div>
 
+      <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
+      <section class="panel" aria-labelledby="quickRef">
+        <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
+        <div class="grid">
+          <div class="card">
+            <h5>✅ Compliant Promo (Cautious)</h5>
+            <div class="sample">ExampleCo: Weekend offer — save 15% with SAVE15 through Sunday. Details: exampleco.example/sale. Reply STOP to opt out.</div>
+            <p class="note">Clear brand + soft CTA + opt-out.</p>
+          </div>
+          <div class="card">
+            <h5>✅ Appointment Reminder</h5>
+            <div class="sample">ExampleCo Dental: Reminder for 10/04 at 2:30 PM with Dr. Lin. Reply C to confirm or R to reschedule. STOP to opt out.</div>
+            <p class="note">Utility content with concise actions.</p>
+          </div>
+          <div class="card">
+            <h5>✅ Order Update</h5>
+            <div class="sample">ExampleCo: Order #48217 shipped! Track: https://exampleco.example/track/48217. Questions? Reply HELP. STOP to opt out.</div>
+            <p class="note">Transactional message with help/opt-out.</p>
+          </div>
+          <div class="card">
+            <h5>✅ 2FA / OTP</h5>
+            <div class="sample">ExampleCo: Your code is 593814. Don’t share this code. If you didn’t request it, reply STOP.</div>
+            <p class="note">Security-focused and minimal.</p>
+          </div>
+          <div class="card">
+            <h5>❌ Risky Copy (Avoid)</h5>
+            <div class="sample">ACT NOW!!! Get RICH quick 💰 click here for FREE MONEY → bit.ly/xyz</div>
+            <p class="note">Aggressive claims &amp; link shorteners will be filtered.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-Time Examples / Templates -->
+      <section class="panel" aria-labelledby="templates">
+        <h4 id="templates">Real-Time Examples &amp; Templates</h4>
+        <div class="grid">
+          <div class="card">
+            <h5>New Subscriber Welcome</h5>
+            <div class="sample">ExampleCo: Thanks for subscribing! Expect 1–2 msgs/week about product tips &amp; offers. STOP to end, HELP for help.</div>
+          </div>
+          <div class="card">
+            <h5>Event Reminder</h5>
+            <div class="sample">ExampleCo: Your webinar “SMS Deliverability 101” starts in 1 hour. Join: exampleco.example/join. Reply STOP to opt out.</div>
+          </div>
+          <div class="card">
+            <h5>Service Notice</h5>
+            <div class="sample">ExampleCo Support: We’ve updated your ticket #7342. View: exampleco.example/t/7342. Reply HELP for assistance. STOP to opt out.</div>
+          </div>
+        </div>
+        <p class="note">Copy any block above and paste it into the checker to test and tailor for your use case.</p>
+      </section>
+
+      <!-- Existing collapsible guideline sections -->
       <div class="guidelines">
         <h4 id="g1">🔍 10DLC Compliance Guidelines</h4>
         <ul id="compliance-list">
@@ -144,7 +225,7 @@
           <li><strong>Third-party Services:</strong> Services not directly provided by your brand.</li>
           <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.</li>
           <li><strong>SHAFT Content:</strong> Sex, Hate, Alcohol, Firearms, Tobacco, Profanity.</li>
-          <li><strong>Scams & Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”</li>
+          <li><strong>Scams &amp; Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”</li>
         </ul>
       </div>
     </div>
@@ -153,7 +234,7 @@
   <footer>
     <div class="foot-line">
       <div class="foot-small">Powered by <strong>A Problem Solver</strong></div>
-      
+    </div>
   </footer>
 </body>
 </html>
