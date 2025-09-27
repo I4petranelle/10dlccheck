@@ -49,54 +49,12 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is 10DLC and why is it required?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "10DLC is the U.S. carrier-approved system for business SMS over 10-digit numbers. It improves trust, deliverability, and reduces spam. Unregistered traffic is often blocked or filtered."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What happens if I send SMS without 10DLC registration?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Unregistered SMS may be blocked, filtered, or incur higher fees. Carriers can also lower your sender reputation, reducing future deliverability."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What do AT&T and T-Mobile require for 10DLC?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AT&T enforces a Code of Conduct, while T-Mobile requires all business SMS to use sanctioned routes. Both carriers require registration, opt-in/opt-out compliance, and content rules."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What do I need to register for 10DLC?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You must provide your business name, EIN/Tax ID, website, campaign details, sample messages, and opt-in/opt-out policies. The Campaign Registry vets all submissions."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long does 10DLC registration take?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Most registrations finish in a few days, but delays can occur if information is missing or mismatched."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do throughput limits and trust work?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Carriers assign message throughput based on your campaign use case and trust score. Higher trust means higher send rates, while violations may reduce or block delivery."
-        }
-      }
+      {"@type":"Question","name":"What is 10DLC and why is it required?","acceptedAnswer":{"@type":"Answer","text":"10DLC is the U.S. carrier-approved system for business SMS over 10-digit numbers. It improves trust, deliverability, and reduces spam. Unregistered traffic is often blocked or filtered."}},
+      {"@type":"Question","name":"What happens if I send SMS without 10DLC registration?","acceptedAnswer":{"@type":"Answer","text":"Unregistered SMS may be blocked, filtered, or incur higher fees. Carriers can also lower your sender reputation, reducing future deliverability."}},
+      {"@type":"Question","name":"What do AT&T and T-Mobile require for 10DLC?","acceptedAnswer":{"@type":"Answer","text":"AT&T enforces a Code of Conduct, while T-Mobile requires all business SMS to use sanctioned routes. Both carriers require registration, opt-in/opt-out compliance, and content rules."}},
+      {"@type":"Question","name":"What do I need to register for 10DLC?","acceptedAnswer":{"@type":"Answer","text":"You must provide your business name, EIN/Tax ID, website, campaign details, sample messages, and opt-in/opt-out policies. The Campaign Registry vets all submissions."}},
+      {"@type":"Question","name":"How long does 10DLC registration take?","acceptedAnswer":{"@type":"Answer","text":"Most registrations finish in a few days, but delays can occur if information is missing or mismatched."}},
+      {"@type":"Question","name":"How do throughput limits and trust work?","acceptedAnswer":{"@type":"Answer","text":"Carriers assign message throughput based on your campaign use case and trust score. Higher trust means higher send rates, while violations may reduce or block delivery."}}
     ]
   }
   </script>
@@ -183,7 +141,7 @@
     .guidelines ul.expanded { max-height:1000px; opacity:1; margin:8px 0; }
     .guidelines li { margin-bottom:6px; color:#475569; }
 
-    /* Enhancements: Quick Reference + Templates */
+    /* Card sections (partials) */
     .panel { margin-top:18px; padding:16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; }
     .panel h4 { font-size:1rem; color:#111827; margin-bottom:10px; }
     .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
@@ -197,11 +155,14 @@
     .foot-small { font-size:.9rem; }
     .foot-small a { color:#374151; text-decoration:underline; }
   </style>
-  <style>
-  .link-list { list-style: disc; margin: 8px 0 0 18px; }
-  .link-list a { color:#1f2937; text-decoration: underline; }
-</style>
 
+  <!-- Prevent dynamic sections from being clipped + small helpers -->
+  <style>
+    .container { overflow: visible !important; }
+    .panel, .guidelines { overflow: visible; }
+    .link-list { list-style: disc; margin: 8px 0 0 18px; }
+    .link-list a { color:#1f2937; text-decoration: underline; }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -245,7 +206,7 @@
       </div>
 
       <div class="button-container">
-        <button class="check-btn" id="checkBtn">Check Compliance</button>
+        <button class="check-btn" id="checkBtn" type="button">Check Compliance</button>
       </div>
 
       <div id="loading" class="loading" aria-live="polite">
@@ -253,37 +214,36 @@
         <p>Analyzing message...</p>
       </div>
 
-      <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+      <div id="results" class="results" role="status" aria-live="polite" style="display:none;"></div>
 
       <!-- Lazy-loaded sections (kept out of view-source) -->
       <div data-load="partials/reference.html"></div>
       <div data-load="partials/templates.html"></div>
       <div data-load="partials/guidelines.html"></div>
-    </div>
-  </div>
- 
-<!-- Public links so readers can open these as standalone pages -->
-<section class="panel" aria-labelledby="resLinks">
-  <h4 id="resLinks">Resources</h4>
-  <ul class="link-list">
-    <li><a href="/partials/reference.html" target="_blank" rel="noopener">Quick Reference Cheat Sheet</a></li>
-    <li><a href="/partials/templates.html" target="_blank" rel="noopener">Real-Time Examples & Templates</a></li>
-    <li><a href="/partials/guidelines.html" target="_blank" rel="noopener">10DLC Compliance Guidelines</a></li>
-  </ul>
-</section>
 
-<!-- No-JS fallback -->
-<noscript>
-  <section class="panel">
-    <h4>Resources (JavaScript disabled)</h4>
-    <ul class="link-list">
-      <li><a href="/partials/reference.html">Quick Reference Cheat Sheet</a></li>
-      <li><a href="/partials/templates.html">Real-Time Examples & Templates</a></li>
-      <li><a href="/partials/guidelines.html">10DLC Compliance Guidelines</a></li>
-    </ul>
-  </section>
-</noscript>
+      <!-- Public links so readers can open these as standalone pages -->
+      <section class="panel" aria-labelledby="resLinks">
+        <h4 id="resLinks">Resources</h4>
+        <ul class="link-list">
+          <li><a href="/partials/reference.html" target="_blank" rel="noopener noreferrer">Quick Reference Cheat Sheet</a></li>
+          <li><a href="/partials/templates.html" target="_blank" rel="noopener noreferrer">Real-Time Examples & Templates</a></li>
+          <li><a href="/partials/guidelines.html" target="_blank" rel="noopener noreferrer">10DLC Compliance Guidelines</a></li>
+        </ul>
+      </section>
 
+      <!-- No-JS fallback -->
+      <noscript>
+        <section class="panel">
+          <h4>Resources (JavaScript disabled)</h4>
+          <ul class="link-list">
+            <li><a href="/partials/reference.html">Quick Reference Cheat Sheet</a></li>
+            <li><a href="/partials/templates.html">Real-Time Examples & Templates</a></li>
+            <li><a href="/partials/guidelines.html">10DLC Compliance Guidelines</a></li>
+          </ul>
+        </section>
+      </noscript>
+    </div> <!-- end .content -->
+  </div> <!-- end .container -->
 
   <footer>
     <div class="foot-line">
@@ -293,21 +253,70 @@
 
   <!-- Loader: fetch partials after the page loads -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const slots = document.querySelectorAll('[data-load]');
-      slots.forEach(async (slot) => {
-        const url = slot.getAttribute('data-load');
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load partials
+    const slots = document.querySelectorAll('[data-load]');
+    slots.forEach(async (slot) => {
+      const url = slot.getAttribute('data-load');
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const html = await res.text();
+        slot.innerHTML = html;
+      } catch (err) {
+        console.error('Failed to load', url, err);
+        slot.remove();
+      }
+    });
+
+    // SAFETY-NET: Ensure the "Check Compliance" button works even if app.js didn't bind.
+    const btn = document.getElementById('checkBtn');
+    const msgEl = document.getElementById('message');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+
+    if (btn && !btn.dataset.bound) {
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', async () => {
+        const text = (msgEl.value || '').trim();
+        loading.style.display = 'block';
+        results.style.display = 'none';
+
+        const start = performance.now();
         try {
-          const res = await fetch(url, { cache: 'no-store' });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const html = await res.text();
-          slot.innerHTML = html;
-        } catch (err) {
-          console.error('Failed to load', url, err);
-          slot.remove();
+          // If app.js exposes a richer checker, use it.
+          if (typeof window.runComplianceCheck === 'function') {
+            const outcome = await window.runComplianceCheck(text);
+            if (typeof window.renderComplianceResults === 'function') {
+              window.renderComplianceResults(outcome);
+            } else {
+              results.className = 'results ' + (outcome?.compliant ? 'compliant' : 'non-compliant');
+              results.innerHTML = `<h3>${outcome?.title || (outcome?.compliant ? 'Looks compliant' : 'We found some issues')}</h3>`;
+            }
+          } else {
+            // Minimal fallback checks (brand + STOP)
+            const issues = [];
+            if (!/^[^:]{2,}:\s*/.test(text)) issues.push({ sev: 'low', msg: 'Identify your brand at the start (e.g., "ExampleCo: ...").' });
+            if (!/\bSTOP\b/i.test(text)) issues.push({ sev: 'medium', msg: 'Include a clear opt-out (e.g., "Reply STOP to opt out").' });
+            const compliant = issues.length === 0;
+            results.className = 'results ' + (compliant ? 'compliant' : 'non-compliant');
+            const list = issues.map(i => `<li class="${i.sev}"><div class="issue-message">${i.msg}</div></li>`).join('');
+            results.innerHTML = `<h3>${compliant ? 'Looks compliant' : 'We found some issues'}</h3>` + (list ? `<ul class="issue-list show">${list}</ul>` : '');
+          }
+        } catch (e) {
+          console.error(e);
+          results.className = 'results non-compliant';
+          results.innerHTML = `<h3>We hit an error while analyzing your message.</h3><p class="note">Try again in a moment.</p>`;
+        } finally {
+          const elapsed = Math.max(1, Math.round(performance.now() - start));
+          const avgTime = document.getElementById('avgTime');
+          if (avgTime) avgTime.textContent = `${elapsed} ms`;
+          loading.style.display = 'none';
+          results.style.display = 'block';
         }
       });
-    });
+    }
+  });
   </script>
 </body>
 </html>
