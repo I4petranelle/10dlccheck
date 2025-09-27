@@ -275,14 +275,16 @@
 			<p class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</p>
 		  </div>
 
-		  <div class="verify-bar">
-			<span class="verify-label">Verification:</span>
-			<div class="math-inline">
-			  <span id="mathQuestion">9 × 5 =</span>
-			  <input id="mathAnswer" type="text" placeholder="?" />
+			<div class="verify-bar">
+			  <span class="verify-label">Verification:</span>
+			  <div class="math-inline">
+				<!-- ✅ add data-answer so gating can enable the button -->
+				<span id="mathQuestion" data-answer="45">9 × 5 =</span>
+				<input id="mathAnswer" type="text" placeholder="?" />
+			  </div>
+			  <span class="verify-note">Solve to verify your entry</span>
 			</div>
-			<span class="verify-note">Solve to verify your entry</span>
-		  </div>
+
 
 		  <div class="button-container">
 			<button id="checkBtn" type="button" class="check-btn" disabled>Check Compliance</button>
