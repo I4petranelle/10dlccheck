@@ -1,12 +1,8 @@
 {
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {"key":"X-Content-Type-Options","value":"nosniff"},
-        {"key":"X-Frame-Options","value":"DENY"},
-        {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}
-      ]
-    }
+  "redirects": [
+    { "source": "http://10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
+    { "source": "http://www.10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
+    { "source": "https://www.10dlccheck.com/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true },
+    { "source": "https://10dlccheck.vercel.app/:path*", "destination": "https://10dlccheck.com/:path*", "permanent": true }
   ]
 }
