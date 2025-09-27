@@ -111,7 +111,8 @@
     .header p { font-size:.98rem; opacity:.9; margin-top:4px; }
     .stats-bar { margin-top:10px; display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap; }
     .badge { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#e5e7eb; padding:6px 10px; border-radius:999px; font-size:.9rem; font-weight:600; }
-
+    .spacer { height: 20px; }
+	
     .content { padding:24px 30px 18px; text-align:left; }
 
     .input-section { margin-bottom:18px; }
@@ -224,10 +225,12 @@
 
 
 
-      <div class="input-section">
-        <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
-        <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
-        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+			  <div class="spacer"></div>
+		<div class="input-section">
+		  <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
+		  <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
+		  <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+		</div>
 
         <!-- Tiny UX: compact inline verification -->
         <div class="verify-bar" title="Quick human verification">
