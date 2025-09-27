@@ -1,0 +1,27 @@
+{
+  "name": "10dlccheck",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
+,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/I4petranelle/10dlccheck.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/I4petranelle/10dlccheck/issues"
+  },
+  "homepage": "https://github.com/I4petranelle/10dlccheck#readme",
+  "dependencies": {
+    "@upstash/redis": "^1.35.4"
+  }
+}
