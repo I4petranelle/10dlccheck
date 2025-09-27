@@ -1,5 +1,4 @@
-// api/check.js — wrapper for the extension, adds CORS + maps fields
-
+// api/check.js — extension-facing wrapper
 function send(res, status, data) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -20,10 +19,11 @@ module.exports = async (req, res) => {
     body = raw ? JSON.parse(raw) : {};
   }
   const message = (body.message || '').toString();
-  if (!message) return send(res, 400, { error: "Missing 'message'" });
+  if (!message) return send(res, 400, { status: 'fail', issues: ['Missing "message"'], tips: [] });
 
   try {
     const base = `https://${req.headers.host}`;
+    // Call the site rules (now turnstile-free)
     const r = await fetch(`${base}/api/check-compliance`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -31,20 +31,22 @@ module.exports = async (req, res) => {
     });
 
     const ct = r.headers.get('content-type') || '';
-    let upstream = ct.includes('application/json') ? await r.json() : { ok:false, error:'Upstream not JSON', detail: await r.text() };
+    const data = ct.includes('application/json') ? await r.json() : null;
 
-    if (!upstream.ok) {
-      return send(res, 502, { status: 'fail', issues: [upstream.error || 'Upstream error'], tips: [] });
+    if (!data || !data.ok) {
+      return send(res, 502, { status: 'fail', issues: [data?.error || 'Upstream error'], tips: [] });
     }
 
-    // Map: high => fail, some issues => warn, none => pass
-    const hasHigh = upstream.issues?.some(i => i.severity === 'high');
-    const status = hasHigh ? 'fail' : (upstream.issues?.length ? 'warn' : 'pass');
+    // Map from site shape -> extension shape
+    const hasHigh = data.issues?.some(i => i.severity === 'high');
+    const status  = hasHigh ? 'fail' : (data.issues?.length ? 'warn' : 'pass');
+    const issues  = (data.issues || []).map(i => i.message);
+    const tips    = (data.issues || []).map(i => i.suggestion).filter(Boolean);
 
-    const issues = (upstream.issues || []).map(i => i.message);
-    const tips = upstream.suggestion ? [`Suggested rewrite: ${upstream.suggestion}`] : [];
+    // Increment global counter (best-effort; ignore failure)
+    try { await fetch(`${base}/api/global-count`, { method: 'POST' }); } catch {}
 
-    return send(res, 200, { status, issues, tips, score: upstream.score });
+    return send(res, 200, { status, issues, tips });
   } catch (e) {
     return send(res, 500, { status: 'fail', issues: ['Server error: ' + (e.message || e)], tips: [] });
   }
