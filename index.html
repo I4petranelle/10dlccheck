@@ -248,6 +248,140 @@
       </div>
 
       <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+	  
+	  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('checkBtn');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+
+    // Your actual counter IDs:
+    const elUser = document.getElementById('localCount');
+    const elSite = document.getElementById('globalCount');
+    const elAvg  = document.getElementById('avgTime');
+
+    // Math verify elements (optional gate)
+    const qEl = document.getElementById('mathQuestion');
+    const aEl = document.getElementById('mathAnswer');
+
+    // Ensure spinner is hidden on load
+    if (loading) loading.style.display = 'none';
+    const show = (el, on) => { if (el) el.style.display = on ? '' : 'none'; };
+
+    // Initialize a simple math question if present
+    function initMath() {
+      if (!qEl || !aEl) return;
+      const a = Math.floor(Math.random() * 5) + 3; // 3..7
+      const b = Math.floor(Math.random() * 5) + 2; // 2..6
+      qEl.dataset.answer = String(a + b);
+      qEl.textContent = `${a} + ${b} =`;
+      aEl.value = '';
+    }
+
+    async function refreshGlobalTotal() {
+      if (!elSite) return;
+      try {
+        const r = await fetch('/api/global-count');
+        const { total } = await r.json();
+        elSite.textContent = (typeof total === 'number') ? total : '—';
+      } catch {
+        elSite.textContent = '—';
+      }
+    }
+
+    async function incrementGlobalTotal() {
+      try {
+        const r = await fetch('/api/global-count', { method: 'POST' });
+        const { total } = await r.json();
+        if (elSite && typeof total === 'number') elSite.textContent = total;
+      } catch {}
+    }
+
+    async function runCheck() {
+      const t0 = performance.now();
+      show(loading, true);
+      show(results, false);
+
+      try {
+        // Enforce math verification if visible
+        if (qEl && aEl) {
+          const correct = qEl.dataset.answer;
+          const given = (aEl.value || '').trim();
+          if (!given || given !== correct) {
+            results.textContent = 'Please solve the verification correctly.';
+            show(loading, false);
+            show(results, true);
+            return;
+          }
+        }
+
+        // Grab SMS text
+        const msgEl = document.getElementById('message') ||
+                      document.getElementById('messageInput') ||
+                      document.querySelector('textarea, input[type="text"]');
+        const text = msgEl ? (msgEl.value || '').trim() : '';
+
+        if (!text) {
+          results.textContent = 'Please paste a message to check.';
+          show(loading, false);
+          show(results, true);
+          return;
+        }
+
+        // Call your checker (ensure /api/check exists)
+        const res = await fetch('/api/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        if (!res.ok) throw new Error('Check failed');
+
+        const data = await res.json();
+        results.innerHTML = data.html || '✅ Check complete';
+
+        // Per-user session count
+        if (elUser) elUser.textContent = String((Number(elUser.textContent) || 0) + 1);
+
+        // Avg ms (local UX)
+        if (elAvg) {
+          const ms = Math.round(performance.now() - t0);
+          elAvg.textContent = (elAvg.textContent === '—')
+            ? ms
+            : Math.round((Number(elAvg.textContent) + ms) / 2);
+        }
+
+        // Increment site-wide total
+        await incrementGlobalTotal();
+
+        // Refresh new math question after success (optional)
+        initMath();
+      } catch (err) {
+        console.error(err);
+        results.textContent = 'Something went wrong running the check.';
+      } finally {
+        show(loading, false);
+        show(results, true);
+        if (btn) { btn.disabled = false; btn.textContent = 'Check Compliance'; }
+      }
+    }
+
+    if (btn) {
+      btn.setAttribute('type', 'button'); // avoid form submit reload
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.textContent = 'Checking…';
+        runCheck();
+      });
+    }
+
+    // Initializations
+    refreshGlobalTotal();
+    initMath();
+  });
+</script>
+
+
 
       <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
       <section class="panel" aria-labelledby="quickRef">
