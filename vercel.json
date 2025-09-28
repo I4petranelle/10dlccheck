@@ -15,12 +15,6 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
-      ]
-    },
-    {
       "source": "/partials/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "no-store" }
@@ -28,4 +22,3 @@
     }
   ]
 }
-
