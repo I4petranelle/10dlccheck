@@ -13,6 +13,18 @@
       "permanent": true
     }
   ],
+
+  "rewrites": [
+    {
+      "source": "/extension/help",
+      "destination": "/extension/index.html"
+    },
+    {
+      "source": "/extension/help/",
+      "destination": "/extension/index.html"
+    }
+  ],
+
   "headers": [
     {
       "source": "/partials/(.*)",
