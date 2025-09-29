@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Chrome Extension — Help & Guide</title>
+  <meta name="description" content="User-friendly documentation for the 10DLC Chrome Extension. Learn what it does, how to use it." />
+  <style>
+    :root{
+      --navy:#1C2D40;
+      --navy-2:#21384f;
+      --gold:#FDB813;
+      --ink:#0f172a;
+      --muted:#6b7280;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --ring:rgba(28,45,64,.12);
+      --radius:18px;
+      --shadow:0 10px 28px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(1400px 600px at 50% -50%, #e9eef5 0%, transparent 60%),
+        var(--bg);
+    }
+    a{color:var(--navy);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Header */
+    .site-header{
+      background:linear-gradient(140deg,var(--navy),var(--navy-2));
+      color:#fff;
+      padding:36px 20px 80px; /* more bottom padding */
+      position:relative;
+      overflow:hidden;
+      box-shadow:inset 0 -1px 0 rgba(255,255,255,.08);
+    }
+    .container{max-width:880px;margin:0 auto;padding:0 20px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-logo{
+      width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;
+      box-shadow:0 6px 14px rgba(0,0,0,.18)
+    }
+    .brand-logo svg{width:22px;height:22px;color:var(--navy)}
+    .brand-title{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+    .hero h1{font-size:clamp(24px,3.4vw,34px);line-height:1.2;margin:6px 0 8px}
+    .hero p{max-width:640px;color:#e7eaf0;font-size:15px;margin:0}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;font-weight:700;border:none;cursor:pointer;
+      padding:10px 16px;border-radius:999px;box-shadow:0 8px 18px rgba(0,0,0,.14)
+    }
+    .btn-primary{background:var(--gold);color:#1b2540}
+    .btn-light{background:#fff;color:var(--navy)}
+
+    /* Main – single column */
+    main{margin-top:0;margin-bottom:50px} /* no negative margin */
+    .stack{display:flex;flex-direction:column;gap:16px}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid var(--ring);
+    }
+    .card .inner{padding:22px}
+    .kicker{color:var(--gold);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+    .card h2{margin:6px 0 8px;font-size:22px;color:#122136}
+    .card p{color:var(--muted);margin:0}
+    .list{margin:12px 0 0;padding-left:18px;color:#122136}
+    .list li{margin:8px 0}
+    .callout{
+      margin-top:14px;background:#fff7e6;border:1px solid #ffe2a3;color:#6b4e00;
+      border-radius:14px;padding:12px 14px;box-shadow:0 6px 18px rgba(253,184,19,.12)
+    }
+
+    /* Spotlight/feature chips */
+    .feature-block{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+    .feature-card{
+      display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--ring);
+      border-radius:14px;padding:14px;box-shadow:var(--shadow)
+    }
+    .feature-card h3{margin:4px 0 6px;font-size:16px;color:#122136}
+    .bullets{margin:6px 0 0;padding-left:16px;color:#122136}
+    .bullets li{margin:6px 0}
+    .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em}
+    .chip-good{background:#eaf7ea;color:#155c2f;border:1px solid #cde9cf}
+    .chip-warn{background:#fff5e6;color:#8a5a00;border:1px solid #ffdf99}
+    .chip-neutral{background:#eef2ff;color:#243189;border:1px solid #e0e7ff}
+    .legend{margin-top:8px;color:var(--muted);font-size:13px}
+
+    /* FAQ */
+    .faq-item{border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:#fff}
+    .faq-q{
+      width:100%;text-align:left;background:#fff;padding:14px 16px;border:none;cursor:pointer;
+      font-weight:700;color:#122136
+    }
+    .faq-a{display:none;padding:0 16px 16px;color:var(--muted)}
+    .faq-item.active .faq-a{display:block}
+    .faq-item + .faq-item{margin-top:10px}
+
+    /* Footer */
+    footer .fineprint{
+      color:var(--muted);
+      font-size:13px;
+      padding:18px 0 48px;
+      text-align:center
+    }
+
+    /* Small tweaks */
+    @media (min-width:720px){
+      .card .inner{padding:24px 24px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="7" y="2" width="10" height="20" rx="2" ry="2"></rect>
+            <path d="M11 18h2"></path>
+            <path d="M9 7l2 2 4-4"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">10DLC Chrome Extension</div>
+          <h1 class="hero-title">Help &amp; User Guide</h1>
+        </div>
+      </div>
+
+      <div class="hero">
+        <p>This page explains what the extension does and how to use it effectively. It is an extension of <strong>10dlccheck.com</strong>.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#how-it-works">How it Works</a>
+          <a class="btn btn-light" href="#access">How to Access this Page</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container stack">
+
+      <!-- Overview -->
+      <section class="card">
+        <div class="inner">
+          <span class="kicker">Overview</span>
+          <h2>What is the 10DLC Chrome Extension?</h2>
+          <p>The extension helps Salesforce users quickly review outbound SMS text content for alignment with 10DLC expectations. It is simple, fast and private. Your text messages are not saved or stored anywhere.</p>
+          <div class="callout"><strong>Privacy-first:</strong> The extension analyzes text you select or the message in view. It returns a clear status with issues and tips.</div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="card" id="how-it-works">
+        <div class="inner">
+          <span class="kicker">How it works</span>
+          <h2 style="margin-bottom:6px">Two Ways to Run a Check</h2>
+          <p style="color:var(--muted);margin:0 0 12px">This is the core experience. Pick the flow that matches where you are working.</p>
+
+          <div class="feature-block">
+            <article class="feature-card">
+              <div class="chip chip-good">Opt-in assumed</div>
+              <h3>1) Floating Pill (Salesforce)</h3>
+              <ul class="bullets">
+                <li>Bottom-right button labeled <strong>Check 10DLC</strong> appears in Salesforce.</li>
+                <li>Click to check the message currently in view.</li>
+                <li><strong>Stop</strong> instructions and <strong>Help tips</strong> are <em>removed</em> — you’re allowed to text the merchant in this context.</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="chip chip-warn">Opt-in unknown</div>
+              <h3>2) Right-Click Menu (Anywhere)</h3>
+              <ul class="bullets">
+                <li>Highlight any text → right-click → <strong>Check 10DLC</strong>.</li>
+                <li>Works inside or outside Salesforce, on any web page.</li>
+                <li><strong>Stop</strong> and <strong>Help tips</strong> are shown when opt-in isn’t guaranteed.</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="chip chip-neutral">What you’ll see</div>
+              <h3>Results You’ll See</h3>
+              <ul class="bullets">
+                <li><strong>Status</strong>: Pass · Warning · Fail</li>
+                <li><strong>Issues</strong>: Concise reasons, no internal rules exposed</li>
+                <li><strong>Tips</strong>: Practical suggestions to improve your message</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="legend">
+            <span class="chip chip-good">Opt-in assumed</span> = Pill mode hides Stop/Help lines &nbsp;·&nbsp;
+            <span class="chip chip-warn">Opt-in unknown</span> = Right-click mode includes Stop/Help lines.
+          </div>
+        </div>
+      </section>
+
+      <!-- Access -->
+      <section class="card" id="access">
+        <div class="inner">
+          <span class="kicker">Access</span>
+          <h2>Installation &amp; How to Open this Help</h2>
+          <ol class="list">
+            <li>Install the extension (via your admin or the provided CRX/Chrome Web Store link).</li>
+            <li>After install, you’ll see the floating <em>Check 10DLC</em> pill in Salesforce and the right-click menu everywhere.</li>
+            <li><strong>To open this Help page later:</strong>
+              <ul>
+                <li>Right-click the extension icon → <em>Options</em> → <strong>Help / Documentation</strong>.</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Troubleshooting -->
+      <section class="card" id="troubleshooting">
+        <div class="inner">
+          <span class="kicker">Troubleshooting</span>
+          <h2>Quick Fixes</h2>
+          <ul class="list">
+            <li><strong>Don’t see the pill in Salesforce?</strong> Refresh the page. Ensure you’re on a Salesforce tab and the extension is enabled.</li>
+            <li><strong>Right-click item missing?</strong> Select some text first, then right-click. Reopen Chrome if needed.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="card" id="faq">
+        <div class="inner">
+          <span class="kicker">FAQ</span>
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Does the page reveal internal rules?</button>
+            <div class="faq-a">No. The extension summarizes results (Status, Issues, Tips) without storing any personal data.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
+            <div class="faq-a">Yes. Use the right-click menu to check any selected text in any Chrome tab.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
+            <div class="faq-a">Use the <em>Help Contact</em> shown on the Options page.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="container">
+    <div class="fineprint"><span id="y"></span> 10DLCCheck.com.</div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // FAQ toggle (single-open)
+    document.querySelectorAll('.faq-item').forEach((item)=>{
+      const q = item.querySelector('.faq-q');
+      q.addEventListener('click', ()=>{
+        const expanded = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i=>{
+          i.classList.remove('active');
+          const b = i.querySelector('.faq-q');
+          if(b) b.setAttribute('aria-expanded','false');
+        });
+        if(!expanded){
+          item.classList.add('active');
+          q.setAttribute('aria-expanded','true');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
