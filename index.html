@@ -1,352 +1,827 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>10DLC Message Compliance Checker | Free SMS Validator</title>
-  <meta name="description" content="Free 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content, and best practices to avoid filtering." />
-  <link rel="canonical" href="https://10dlccheck.vercel.app/" />
-  <meta name="robots" content="index,follow" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10DLC Message Compliance Checker" />
-  <meta name="twitter:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
-  <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="10DLC Message Compliance Checker" />
-  <meta property="og:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://10dlccheck.vercel.app/" />
-  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" />
-
-  <!-- Icon -->
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" type="image/png" />
-
-  <!-- App JS -->
-  <script src="app.js" defer></script>
-
-  <!-- WebSite schema (optional) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://10dlccheck.vercel.app/",
-    "name": "10DLC Compliance Checker",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://10dlccheck.vercel.app/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-
-  <!-- FAQ schema (hidden SEO content) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>10DLC Message Compliance Checker | Free SMS Validator</title>
+    <meta name="description" content="Free 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content, and best practices to avoid filtering." />
+    <link rel="canonical" href="https://10dlccheck.vercel.app/" />
+    <meta name="robots" content="index,follow" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="10DLC Message Compliance Checker" />
+    <meta name="twitter:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
+    <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="10DLC Message Compliance Checker" />
+    <meta property="og:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://10dlccheck.vercel.app/" />
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" />
+    <!-- Icon -->
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" type="image/png" />
+    <!-- App JS -->
+    <script src="app.js" defer></script>
+    <!-- WebSite schema (optional) -->
+    <script type="application/ld+json">
       {
-        "@type": "Question",
-        "name": "What is 10DLC and why is it required?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "10DLC is the U.S. carrier-approved system for business SMS over 10-digit numbers. It improves trust, deliverability, and reduces spam. Unregistered traffic is often blocked or filtered."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What happens if I send SMS without 10DLC registration?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Unregistered SMS may be blocked, filtered, or incur higher fees. Carriers can also lower your sender reputation, reducing future deliverability."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What do AT&T and T-Mobile require for 10DLC?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AT&T enforces a Code of Conduct, while T-Mobile requires all business SMS to use sanctioned routes. Both carriers require registration, opt-in/opt-out compliance, and content rules."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What do I need to register for 10DLC?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You must provide your business name, EIN/Tax ID, website, campaign details, sample messages, and opt-in/opt-out policies. The Campaign Registry vets all submissions."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long does 10DLC registration take?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Most registrations finish in a few days, but delays can occur if information is missing or mismatched."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do throughput limits and trust work?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Carriers assign message throughput based on your campaign use case and trust score. Higher trust means higher send rates, while violations may reduce or block delivery."
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://10dlccheck.com/",
+        "name": "10DLC Compliance Checker",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://10dlccheck.com/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
         }
       }
-    ]
-  }
-  </script>
+    </script>
+    <!-- FAQ schema (hidden SEO content) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+          "@type": "Question",
+          "name": "What is 10DLC and why is it required?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "10DLC is the U.S. carrier-approved system for business SMS over 10-digit numbers. It improves trust, deliverability, and reduces spam. Unregistered traffic is often blocked or filtered."
+          }
+        }, {
+          "@type": "Question",
+          "name": "What happens if I send SMS without 10DLC registration?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unregistered SMS may be blocked, filtered, or incur higher fees. Carriers can also lower your sender reputation, reducing future deliverability."
+          }
+        }, {
+          "@type": "Question",
+          "name": "What do AT&T and T-Mobile require for 10DLC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AT&T enforces a Code of Conduct, while T-Mobile requires all business SMS to use sanctioned routes. Both carriers require registration, opt-in/opt-out compliance, and content rules."
+          }
+        }, {
+          "@type": "Question",
+          "name": "What do I need to register for 10DLC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You must provide your business name, EIN/Tax ID, website, campaign details, sample messages, and opt-in/opt-out policies. The Campaign Registry vets all submissions."
+          }
+        }, {
+          "@type": "Question",
+          "name": "How long does 10DLC registration take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most registrations finish in a few days, but delays can occur if information is missing or mismatched."
+          }
+        }, {
+          "@type": "Question",
+          "name": "How do throughput limits and trust work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Carriers assign message throughput based on your campaign use case and trust score. Higher trust means higher send rates, while violations may reduce or block delivery."
+          }
+        }]
+      }
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; min-height: 100vh; padding: 20px; color:#111827; }
-    .container { max-width: 1000px; margin: 0 auto; background: rgba(255,255,255,.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,.1); backdrop-filter: blur(10px); overflow: hidden; }
-    .header { background:#1f2937; color:#fff; padding:22px 30px; text-align:center; }
-    .head-row { display:flex; align-items:center; gap:14px; justify-content:center; flex-wrap:wrap; }
-    .logo-icon { width:34px; height:34px; display:inline-block; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
-    .header h1 { font-size:2rem; font-weight:800; letter-spacing:-.01em; }
-    .header p { font-size:.98rem; opacity:.9; margin-top:4px; }
-    .stats-bar { margin-top:10px; display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap; }
-    .badge { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#e5e7eb; padding:6px 10px; border-radius:999px; font-size:.9rem; font-weight:600; }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f1f5f9;
+        min-height: 100vh;
+        padding: 20px;
+        color: #111827;
+      }
 
-    .content { padding:24px 30px 18px; text-align:left; }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, .95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .1);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+      }
 
-    .input-section { margin-bottom:18px; }
-    label { display:block; margin-bottom:10px; font-weight:700; color:#374151; font-size:1.05rem; }
-    textarea { width:100%; min-height:120px; padding:15px; border:2px solid #e5e7eb; border-radius:12px; font-size:16px; font-family:inherit; transition:.3s; resize:vertical; }
-    textarea:focus { outline:none; border-color:#374151; box-shadow:0 0 0 3px rgba(55,65,81,.1); }
-    .helper { margin-top:6px; font-size:.86rem; color:#6b7280; }
+      .header {
+        background: #1f2937;
+        color: #fff;
+        padding: 22px 30px;
+        text-align: center;
+      }
 
-    .verify-bar { margin-top:10px; margin-bottom:16px; display:flex; align-items:center; gap:10px; border:1px solid #e2e8f0; background:#f8fafc; border-radius:10px; padding:8px 10px; }
-    .verify-label { font-size:.9rem; color:#374151; font-weight:700; white-space:nowrap; }
-    .math-inline { display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:.9rem; color:#374151; }
-    .math-inline input { width:72px; padding:6px 8px; text-align:center; border:2px solid #e5e7eb; border-radius:8px; font-size:.95rem; }
-    .math-inline input:focus { outline:none; border-color:#374151; }
-    .verify-note { margin-left:auto; font-size:.85rem; color:#6b7280; font-style:italic; white-space:nowrap; }
+      .head-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
-    .button-container { text-align:center; margin:14px 0 16px; }
-    .check-btn { background:#1f2937; color:#fff; padding:12px 28px; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:.2s; box-shadow:0 4px 15px rgba(31,41,55,.3); }
-    .check-btn:hover { background:#374151; transform:translateY(-1px); box-shadow:0 6px 20px rgba(31,41,55,.4); }
-    .check-btn:disabled { background:#9ca3af; cursor:not-allowed; transform:none; }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        display: inline-block;
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25));
+      }
 
-    .loading { text-align:left; padding:10px; display:none; }
-    .spinner { border:3px solid #f3f4f6; border-top:3px solid #1f2937; border-radius:50%; width:28px; height:28px; animation:spin 1s linear infinite; margin:0 0 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -.01em;
+      }
 
-    .results { margin-top:10px; padding:18px; border-radius:12px; border-left:5px solid; display:none; }
-    .results.compliant { background:#ecfdf5; border-color:#10b981; color:#065f46; }
-    .results.non-compliant { background:#f8fafc; border-color:#ef4444; color:#1e293b; }
-    .results h3 { font-size:1.15rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-    .icon { width:22px; height:22px; }
+      .header p {
+        font-size: .98rem;
+        opacity: .9;
+        margin-top: 4px;
+      }
 
-    .issue-header { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:10px; }
-    .issue-summary { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .issue-count { padding:4px 8px; border-radius:12px; font-size:.8rem; font-weight:600; }
-    .issue-count.high { background:#fee2e2; color:#991b1b; }
-    .issue-count.medium { background:#fef3c7; color:#92400e; }
-    .issue-count.low { background:#dbeafe; color:#1e40af; }
+      .stats-bar {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
-    .toggle-issues, .toggle-details { background:none; border:1px solid #d1d5db; color:#6b7280; padding:6px 12px; border-radius:6px; font-size:.85rem; cursor:pointer; transition:.15s; }
-    .toggle-issues:hover, .toggle-details:hover { background:#f3f4f6; color:#374151; }
-    .issue-list { list-style:none; margin-top:8px; display:none; }
-    .issue-list.show { display:block; }
-    .issue-list li { padding:10px; margin-bottom:8px; border-radius:8px; background:rgba(255,255,255,.7); border-left:3px solid; }
-    .issue-list li.high { border-color:#ef4444; background:#fef2f2; }
-    .issue-list li.medium { border-color:#f59e0b; background:#fff7e6; }
-    .issue-list li.low { border-color:#3b82f6; background:#eff6ff; }
-    .issue-message { font-weight:600; margin-bottom:4px; color:#374151; }
-    .issue-suggestion { font-size:.9rem; color:#6b7280; font-style:italic; }
+      .badge {
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        color: #e5e7eb;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: .9rem;
+        font-weight: 600;
+      }
 
-    .category-warning { margin-top:12px; padding:12px; border-radius:12px; border-left:4px solid #dc2626; background:#fef2f2; }
-    .category-warning h4 { color:#991b1b; margin-bottom:8px; font-size:1.05rem; font-weight:600; }
-    .category-summary { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-    .category-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:20px; font-size:.85rem; font-weight:600; border:2px solid transparent; }
-    .category-badge.prohibited { background:#fee2e2; color:#991b1b; border-color:#f87171; }
-    .category-badge.restricted { background:#fef3c7; color:#92400e; border-color:#fbbf24; }
-    .category-badge.warning { background:#dbeafe; color:#1e40af; border-color:#60a5fa; }
-    .category-badge.branding { background:#e0e7ff; color:#4338ca; border-color:#818cf8; }
-    .category-details { display:none; margin-top:8px; padding-top:8px; border-top:1px solid rgba(0,0,0,.08); }
-    .category-details.show { display:block; }
-    .category-item { margin-bottom:10px; padding:10px; background:rgba(255,255,255,.8); border-radius:8px; border:1px solid rgba(0,0,0,.05); }
-    .category-title { font-weight:600; font-size:.98rem; margin-bottom:4px; }
+      .content {
+        padding: 24px 30px 18px;
+        text-align: left;
+      }
 
-    .guidelines { margin-top:18px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; }
-    .guidelines h4 { color:#1e293b; margin-bottom:8px; font-size:1rem; cursor:pointer; display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; transition:.2s; }
-    .guidelines h4:hover { background:#e2e8f0; }
-    .guidelines h4::before { content:"▶"; font-size:.8rem; transition:transform .2s; }
-    .guidelines h4.expanded::before { content:"▼"; }
-    .guidelines ul { transition: all .2s ease; overflow:hidden; max-height:0; opacity:0; margin:0; padding:0 0 0 18px; list-style:disc; }
-    .guidelines ul.expanded { max-height:1000px; opacity:1; margin:8px 0; }
-    .guidelines li { margin-bottom:6px; color:#475569; }
+      .input-section {
+        margin-bottom: 18px;
+      }
 
-    /* Enhancements: Quick Reference + Templates */
-    .panel { margin-top:18px; padding:16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:12px; }
-    .panel h4 { font-size:1rem; color:#111827; margin-bottom:10px; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
-    .card { border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; padding:12px; }
-    .card h5 { margin-bottom:6px; font-size:.98rem; color:#111827; }
-    .sample { white-space:pre-wrap; font-size:.93rem; color:#374151; background:#fff; border:1px dashed #d1d5db; border-radius:8px; padding:10px; }
-    .note { font-size:.85rem; color:#6b7280; margin-top:6px; }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: #374151;
+        font-size: 1.05rem;
+      }
 
-    footer { padding:14px 16px; background:#f8fafc; border-top:1px solid #e5e7eb; text-align:center; color:#475569; }
-    .foot-line { margin:4px auto; max-width:1000px; }
-    .foot-small { font-size:.9rem; }
-    .foot-small a { color:#374151; text-decoration:underline; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header" role="banner">
-      <div class="head-row">
-        <img class="logo-icon" alt="Chat icon" src="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" loading="lazy" width="34" height="34" />
-        <h1>10DLC Compliance Checker</h1>
-      </div>
-      <p>Analyze your SMS messages for US 10DLC compliance before you send.</p>
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: inherit;
+        transition: .3s;
+        resize: vertical;
+      }
 
-      <!-- Validation Stats (social proof) -->
-      <div class="stats-bar" aria-live="polite">
-        <span class="badge">🔢 Your 10DLC checks: <span id="localCount">0</span></span>
-        <span class="badge">🌍 Site-wide checks: <span id="globalCount">—</span></span>
-        <span class="badge">⚡ Avg. analysis: <span id="avgTime">—</span></span>
-      </div>
-    </div>
+      textarea:focus {
+        outline: none;
+        border-color: #374151;
+        box-shadow: 0 0 0 3px rgba(55, 65, 81, .1);
+      }
 
-    <div class="content">
-      <p class="intro">
-        Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending.</p>
-		<p class="intro" style="margin-top: 1.5rem;">
-        Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and
-        other 10DLC compliance issues that may trigger carrier filtering.
-        Quickly validate your text messages, avoid penalties and ensure your campaigns reach customers without being blocked.
-      </p>
-       <br><br>
-      <div class="input-section">
-        <label for="message">Enter your SMS message to check for 10DLC compliance:</label><p></p>
-        <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
-        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+      .helper {
+        margin-top: 6px;
+        font-size: .86rem;
+        color: #6b7280;
+      }
 
-        <!-- Tiny UX: compact inline verification -->
-        <div class="verify-bar" title="Quick human verification">
-          <span class="verify-label">Verification:</span>
-          <div class="math-inline">
-            <span id="mathQuestion">5 + 3 =</span>
-            <input type="text" id="mathAnswer" inputmode="numeric" placeholder="?" aria-label="Answer" />
-          </div>
-          <span class="verify-note">Solve to verify you're human</span>
+      .verify-bar {
+        margin-top: 10px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 2px solid #1C2D40;
+        background: #f0f6fa;
+        /* light blue tint background */
+        border-radius: 10px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 6px rgba(28, 45, 64, 0.1);
+      }
+
+      .verify-label {
+        font-size: .95rem;
+        color: #1C2D40;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .math-inline {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        font-size: 1rem;
+        color: #1C2D40;
+      }
+
+      .math-inline input {
+        width: 72px;
+        padding: 6px 8px;
+        text-align: center;
+        border: 2px solid #1C2D40;
+        border-radius: 8px;
+        font-size: .95rem;
+        background: #ffffff;
+        color: #1C2D40;
+        font-weight: 600;
+      }
+
+      .math-inline input:focus {
+        outline: none;
+        border-color: #FDB813;
+        /* highlight with your brand gold */
+        box-shadow: 0 0 4px #FDB813;
+      }
+
+      .verify-note {
+        margin-left: auto;
+        font-size: .85rem;
+        color: #1C2D40;
+        font-style: italic;
+        white-space: nowrap;
+      }
+
+      .button-container {
+        text-align: center;
+        margin: 14px 0 16px;
+      }
+
+      .check-btn {
+        background: #1f2937;
+        color: #fff;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+        box-shadow: 0 4px 15px rgba(31, 41, 55, .3);
+      }
+
+      .check-btn:hover {
+        background: #374151;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(31, 41, 55, .4);
+      }
+
+      .check-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading {
+        text-align: left;
+        padding: 10px;
+        display: none;
+      }
+
+      .spinner {
+        border: 3px solid #f3f4f6;
+        border-top: 3px solid #1f2937;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        animation: spin 1s linear infinite;
+        margin: 0 0 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .results {
+        margin-top: 10px;
+        padding: 18px;
+        border-radius: 12px;
+        border-left: 5px solid;
+        display: none;
+      }
+
+      .results.compliant {
+        background: #ecfdf5;
+        border-color: #10b981;
+        color: #065f46;
+      }
+
+      .results.non-compliant {
+        background: #f8fafc;
+        border-color: #ef4444;
+        color: #1e293b;
+      }
+
+      .results h3 {
+        font-size: 1.15rem;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon {
+        width: 22px;
+        height: 22px;
+      }
+
+      .issue-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .issue-summary {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .issue-count {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: .8rem;
+        font-weight: 600;
+      }
+
+      .issue-count.high {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .issue-count.medium {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .issue-count.low {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .toggle-issues,
+      .toggle-details {
+        background: none;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: .85rem;
+        cursor: pointer;
+        transition: .15s;
+      }
+
+      .toggle-issues:hover,
+      .toggle-details:hover {
+        background: #f3f4f6;
+        color: #374151;
+      }
+
+      .issue-list {
+        list-style: none;
+        margin-top: 8px;
+        display: none;
+      }
+
+      .issue-list.show {
+        display: block;
+      }
+
+      .issue-list li {
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, .7);
+        border-left: 3px solid;
+      }
+
+      .issue-list li.high {
+        border-color: #ef4444;
+        background: #fef2f2;
+      }
+
+      .issue-list li.medium {
+        border-color: #f59e0b;
+        background: #fff7e6;
+      }
+
+      .issue-list li.low {
+        border-color: #3b82f6;
+        background: #eff6ff;
+      }
+
+      .issue-message {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #374151;
+      }
+
+      .issue-suggestion {
+        font-size: .9rem;
+        color: #6b7280;
+        font-style: italic;
+      }
+
+      .category-warning {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        border-left: 4px solid #dc2626;
+        background: #fef2f2;
+      }
+
+      .category-warning h4 {
+        color: #991b1b;
+        margin-bottom: 8px;
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .category-summary {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+
+      .category-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: .85rem;
+        font-weight: 600;
+        border: 2px solid transparent;
+      }
+
+      .category-badge.prohibited {
+        background: #fee2e2;
+        color: #991b1b;
+        border-color: #f87171;
+      }
+
+      .category-badge.restricted {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fbbf24;
+      }
+
+      .category-badge.warning {
+        background: #dbeafe;
+        color: #1e40af;
+        border-color: #60a5fa;
+      }
+
+      .category-badge.branding {
+        background: #e0e7ff;
+        color: #4338ca;
+        border-color: #818cf8;
+      }
+
+      .category-details {
+        display: none;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(0, 0, 0, .08);
+      }
+
+      .category-details.show {
+        display: block;
+      }
+
+      .category-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, .8);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, .05);
+      }
+
+      .category-title {
+        font-weight: 600;
+        font-size: .98rem;
+        margin-bottom: 4px;
+      }
+
+      .guidelines {
+        margin-top: 18px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .guidelines h4 {
+        color: #1e293b;
+        margin-bottom: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        transition: .2s;
+      }
+
+      .guidelines h4:hover {
+        background: #e2e8f0;
+      }
+
+      .guidelines h4::before {
+        content: "▶";
+        font-size: .8rem;
+        transition: transform .2s;
+      }
+
+      .guidelines h4.expanded::before {
+        content: "▼";
+      }
+
+      .guidelines ul {
+        transition: all .2s ease;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        margin: 0;
+        padding: 0 0 0 18px;
+        list-style: disc;
+      }
+
+      .guidelines ul.expanded {
+        max-height: 1000px;
+        opacity: 1;
+        margin: 8px 0;
+      }
+
+      .guidelines li {
+        margin-bottom: 6px;
+        color: #475569;
+      }
+
+      /* Enhancements: Quick Reference + Templates */
+      .panel {
+        margin-top: 18px;
+        padding: 16px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+      }
+
+      .panel h4 {
+        font-size: 1rem;
+        color: #111827;
+        margin-bottom: 10px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #f9fafb;
+        padding: 12px;
+      }
+
+      .card h5 {
+        margin-bottom: 6px;
+        font-size: .98rem;
+        color: #111827;
+      }
+
+      .sample {
+        white-space: pre-wrap;
+        font-size: .93rem;
+        color: #374151;
+        background: #fff;
+        border: 1px dashed #d1d5db;
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      .note {
+        font-size: .85rem;
+        color: #6b7280;
+        margin-top: 6px;
+      }
+
+      footer {
+        padding: 14px 16px;
+        background: #f8fafc;
+        border-top: 1px solid #e5e7eb;
+        text-align: center;
+        color: #475569;
+      }
+
+      .foot-line {
+        margin: 4px auto;
+        max-width: 1000px;
+      }
+
+      .foot-small {
+        font-size: .9rem;
+      }
+
+      .foot-small a {
+        color: #374151;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header" role="banner">
+        <div class="head-row">
+          <img class="logo-icon" alt="Chat icon" src="https://cdn-icons-png.flaticon.com/512/9390/9390994.png" loading="lazy" width="34" height="34" />
+          <h1>10DLC Compliance Checker</h1>
+        </div>
+        <p>Analyze your SMS messages for US 10DLC compliance before you send.</p>
+        <!-- Validation Stats (social proof) -->
+        <div class="stats-bar" aria-live="polite">
+          <span class="badge">🔢 Your 10DLC checks: <span id="localCount">0</span>
+          </span>
+          <span class="badge">🌍 Site-wide checks: <span id="globalCount">—</span>
+          </span>
+          <span class="badge">⚡ Avg. analysis: <span id="avgTime">—</span>
+          </span>
         </div>
       </div>
-
-      <div class="button-container">
-        <button class="check-btn" id="checkBtn">Check Compliance</button>
-      </div>
-
-      <div id="loading" class="loading" aria-live="polite">
-        <div class="spinner"></div>
-        <p>Analyzing message...</p>
-      </div>
-
-      <div id="results" role="status" aria-live="polite" style="display:none;"></div>
-
-      <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
-      <section class="panel" aria-labelledby="quickRef">
-        <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
-        <div class="grid">
-          <div class="card">
-            <h5>✅ Compliant Promo (Cautious)</h5>
-            <div class="sample">ExampleCo: Weekend offer — save 15% with SAVE15 through Sunday. Details: exampleco.example/sale. Reply STOP to opt out.</div>
-            <p class="note">Clear brand + soft CTA + opt-out.</p>
-          </div>
-          <div class="card">
-            <h5>✅ Appointment Reminder</h5>
-            <div class="sample">ExampleCo Dental: Reminder for 10/04 at 2:30 PM with Dr. Lin. Reply C to confirm or R to reschedule. STOP to opt out.</div>
-            <p class="note">Utility content with concise actions.</p>
-          </div>
-          <div class="card">
-            <h5>✅ Order Update</h5>
-            <div class="sample">ExampleCo: Order #48217 shipped! Track: https://exampleco.example/track/48217. Questions? Reply HELP. STOP to opt out.</div>
-            <p class="note">Transactional message with help/opt-out.</p>
-          </div>
-          <div class="card">
-            <h5>✅ 2FA / OTP</h5>
-            <div class="sample">ExampleCo: Your code is 593814. Don’t share this code. If you didn’t request it, reply STOP.</div>
-            <p class="note">Security-focused and minimal.</p>
-          </div>
-          <div class="card">
-            <h5>❌ Risky Copy (Avoid)</h5>
-            <div class="sample">ACT NOW!!! Get RICH quick 💰 click here for FREE MONEY → bit.ly/xyz</div>
-            <p class="note">Aggressive claims &amp; link shorteners will be filtered.</p>
-          </div>
-          <div class="card">
-            <h5>❌ Risky Copy (Sensitive Info)</h5>
-            <div class="sample">ExampleCo: Please send your SSN and bank account details to verify your prize claim.</div>
-            <p class="note">Never request personal identifiers (SSN, bank details, passwords) by SMS — violates 10DLC &amp; privacy rules.</p>
+      <div class="content">
+        <p class="intro"> Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending. </p>
+        <p class="intro" style="margin-top: 1.5rem;"> Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and other 10DLC compliance issues that may trigger carrier filtering. Quickly validate your text messages, avoid penalties and ensure your campaigns reach customers without being blocked. </p>
+        <br>
+        <br>
+        <div class="input-section">
+          <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
+          <p></p>
+          <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
+          <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+          <!-- Tiny UX: compact inline verification -->
+          <div class="verify-bar" title="Quick human verification">
+            <span class="verify-label">Verification:</span>
+            <div class="math-inline">
+              <span id="mathQuestion">5 + 3 =</span>
+              <input type="text" id="mathAnswer" inputmode="numeric" placeholder="?" aria-label="Answer" />
+            </div>
+            <span class="verify-note">Solve to verify you're human</span>
           </div>
         </div>
-      </section>
-
-      <!-- Real-Time Examples / Templates -->
-      <section class="panel" aria-labelledby="templates">
-        <h4 id="templates">Real-Time Examples &amp; Templates</h4>
-        <div class="grid">
-          <div class="card">
-            <h5>New Subscriber Welcome</h5>
-            <div class="sample">ExampleCo: Thanks for subscribing! Expect 1–2 msgs/week about product tips &amp; offers. STOP to end, HELP for help.</div>
-          </div>
-          <div class="card">
-            <h5>Event Reminder</h5>
-            <div class="sample">ExampleCo: Your webinar “SMS Deliverability 101” starts in 1 hour. Join: exampleco.example/join. Reply STOP to opt out.</div>
-          </div>
-          <div class="card">
-            <h5>Service Notice</h5>
-            <div class="sample">ExampleCo Support: We’ve updated your ticket #7342. View: exampleco.example/t/7342. Reply HELP for assistance. STOP to opt out.</div>
-          </div>
+        <div class="button-container">
+          <button class="check-btn" id="checkBtn">Check Compliance</button>
         </div>
-        <p class="note">Copy any block above and paste it into the checker to test and tailor for your use case.</p>
-      </section>
-
-      <!-- Existing collapsible guideline sections -->
-      <div class="guidelines">
-        <h4 id="g1">🔍 10DLC Compliance Guidelines</h4>
-        <ul id="compliance-list">
-          <li><strong>Consent basis:</strong> Message only opted-in recipients; keep records (CTIA).</li>
-          <li><strong>Branding:</strong> Identify your business early in the message.</li>
-          <li><strong>Opt-out:</strong> Provide a clear opt-out path when requested (e.g., “Reply STOP”).</li>
-          <li><strong>Content matching:</strong> Align content with what users consented to receive.</li>
-          <li><strong>Professional tone:</strong> Avoid profanity or pushy sales copy.</li>
-          <li><strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing, and number rotation.</li>
-        </ul>
-
-        <h4 id="g2">🚫 Restricted Content Categories</h4>
-        <ul id="restricted-list">
-          <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection.</li>
-          <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes.</li>
-          <li><strong>Third-party Services:</strong> Services not directly provided by your brand.</li>
-          <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.</li>
-          <li><strong>SHAFT Content:</strong> Sex, Hate, Alcohol, Firearms, Tobacco, Profanity.</li>
-          <li><strong>Scams &amp; Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”</li>
-        </ul>
+        <div id="loading" class="loading" aria-live="polite">
+          <div class="spinner"></div>
+          <p>Analyzing message...</p>
+        </div>
+        <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+        <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
+        <section class="panel" aria-labelledby="quickRef">
+          <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
+          <div class="grid">
+            <div class="card">
+              <h5>✅ Compliant Promo (Cautious)</h5>
+              <div class="sample">ExampleCo: Weekend offer — save 15% with SAVE15 through Sunday. Details: exampleco.example/sale. Reply STOP to opt out.</div>
+              <p class="note">Clear brand + soft CTA + opt-out.</p>
+            </div>
+            <div class="card">
+              <h5>✅ Appointment Reminder</h5>
+              <div class="sample">ExampleCo Dental: Reminder for 10/04 at 2:30 PM with Dr. Lin. Reply C to confirm or R to reschedule. STOP to opt out.</div>
+              <p class="note">Utility content with concise actions.</p>
+            </div>
+            <div class="card">
+              <h5>✅ Order Update</h5>
+              <div class="sample">ExampleCo: Order #48217 shipped! Track: https://exampleco.example/track/48217. Questions? Reply HELP. STOP to opt out.</div>
+              <p class="note">Transactional message with help/opt-out.</p>
+            </div>
+            <div class="card">
+              <h5>✅ 2FA / OTP</h5>
+              <div class="sample">ExampleCo: Your code is 593814. Don’t share this code. If you didn’t request it, reply STOP.</div>
+              <p class="note">Security-focused and minimal.</p>
+            </div>
+            <div class="card">
+              <h5>❌ Risky Copy (Avoid)</h5>
+              <div class="sample">ACT NOW!!! Get RICH quick 💰 click here for FREE MONEY → bit.ly/xyz</div>
+              <p class="note">Aggressive claims &amp; link shorteners will be filtered.</p>
+            </div>
+            <div class="card">
+              <h5>❌ Risky Copy (Sensitive Info)</h5>
+              <div class="sample">ExampleCo: Please send your SSN and bank account details to verify your prize claim.</div>
+              <p class="note">Never request personal identifiers (SSN, bank details, passwords) by SMS — violates 10DLC &amp; privacy rules.</p>
+            </div>
+          </div>
+        </section>
+        <!-- Real-Time Examples / Templates -->
+        <section class="panel" aria-labelledby="templates">
+          <h4 id="templates">Real-Time Examples &amp; Templates</h4>
+          <div class="grid">
+            <div class="card">
+              <h5>New Subscriber Welcome</h5>
+              <div class="sample">ExampleCo: Thanks for subscribing! Expect 1–2 msgs/week about product tips &amp; offers. STOP to end, HELP for help.</div>
+            </div>
+            <div class="card">
+              <h5>Event Reminder</h5>
+              <div class="sample">ExampleCo: Your webinar “SMS Deliverability 101” starts in 1 hour. Join: exampleco.example/join. Reply STOP to opt out.</div>
+            </div>
+            <div class="card">
+              <h5>Service Notice</h5>
+              <div class="sample">ExampleCo Support: We’ve updated your ticket #7342. View: exampleco.example/t/7342. Reply HELP for assistance. STOP to opt out.</div>
+            </div>
+          </div>
+          <p class="note">Copy any block above and paste it into the checker to test and tailor for your use case.</p>
+        </section>
+        <!-- Existing collapsible guideline sections -->
+        <div class="guidelines">
+          <h4 id="g1">🔍 10DLC Compliance Guidelines</h4>
+          <ul id="compliance-list">
+            <li>
+              <strong>Consent basis:</strong> Message only opted-in recipients; keep records (CTIA).
+            </li>
+            <li>
+              <strong>Branding:</strong> Identify your business early in the message.
+            </li>
+            <li>
+              <strong>Opt-out:</strong> Provide a clear opt-out path when requested (e.g., “Reply STOP”).
+            </li>
+            <li>
+              <strong>Content matching:</strong> Align content with what users consented to receive.
+            </li>
+            <li>
+              <strong>Professional tone:</strong> Avoid profanity or pushy sales copy.
+            </li>
+            <li>
+              <strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing, and number rotation.
+            </li>
+          </ul>
+          <h4 id="g2">🚫 Restricted Content Categories</h4>
+          <ul id="restricted-list">
+            <li>
+              <strong>High-risk Financial:</strong> Payday loans, crypto, debt collection.
+            </li>
+            <li>
+              <strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes.
+            </li>
+            <li>
+              <strong>Third-party Services:</strong> Services not directly provided by your brand.
+            </li>
+            <li>
+              <strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.
+            </li>
+            <li>
+              <strong>SHAFT Content:</strong> Sex, Hate, Alcohol, Firearms, Tobacco, Profanity.
+            </li>
+            <li>
+              <strong>Scams &amp; Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+    <footer>
+      <div class="foot-line">
+        <div class="foot-small">Powered by <strong>A Problem Solver</strong>
+        </div>
+      </div>
+    </footer>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
 
-   <footer>
-    <div class="foot-line">
-      <div class="foot-small">Powered by <strong>A Problem Solver</strong></div>
-    </div>
-  </footer>
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-C64QWDBMQZ');
-  </script>
-</body>
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-C64QWDBMQZ');
+    </script>
+  </body>
 </html>
-
