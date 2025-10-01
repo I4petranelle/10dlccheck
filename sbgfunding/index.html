@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBG Funding 10DLC Checker</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #f8fafc;
+      color: #1C2D40; /* SBG Navy */
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      margin: 0;
+      color: #1C2D40;
+    }
+    header span {
+      color: #FDB813; /* SBG Gold */
+      font-weight: bold;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #1C2D40; /* Navy */
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #16314f;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(28, 45, 64, 0.08);
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    .ok { border-left: 6px solid #1ea97c; }
+    .warn { border-left: 6px solid #e2a400; }
+    .fail { border-left: 6px solid #d33b3b; }
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      text-align: center;
+      color: #555;
+    }
+    footer a {
+      color: #1C2D40;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Placeholder for SBG logo -->
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="#FDB813" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="#1C2D40" stroke-width="2"/>
+      <text x="50%" y="55%" text-anchor="middle" fill="#1C2D40" font-size="10" font-weight="bold" dy=".1em">SBG</text>
+    </svg>
+    <h1><span>SBG Funding</span> 10DLC Checker</h1>
+  </header>
+
+  <p>Paste an SMS message below to check for compliance with carrier rules and SBG Funding’s internal policies.</p>
+
+  <textarea id="msg" placeholder="Paste SMS text here..."></textarea>
+  <br>
+  <button onclick="checkMessage()">Check Compliance</button>
+
+  <div id="result"></div>
+
+  <footer>
+    <p>© 2025 SBG Funding – Internal Use Only · <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+  <script>
+    async function checkMessage() {
+      const msg = document.getElementById('msg').value.trim();
+      const resultEl = document.getElementById('result');
+      resultEl.textContent = 'Checking…';
+      resultEl.className = '';
+
+      if (!msg) {
+        resultEl.textContent = 'Please enter a message first.';
+        return;
+      }
+
+      try {
+        const res = await fetch('https://10dlccheck.com/api/sbg-rules');
+        const rules = await res.json();
+
+        const issues = [];
+        const tips = [];
+        const lower = msg.toLowerCase();
+
+        // Risky terms
+        if (rules.defaults.forbid_risky_terms &&
+            new RegExp(rules.patterns.risky_terms_regex, "i").test(lower)) {
+          issues.push("⚠️ Contains risky financial terms.");
+        }
+        // PII
+        if (rules.defaults.forbid_pii_requests &&
+            new RegExp(rules.patterns.pii_regex, "i").test(lower)) {
+          issues.push("🔒 Do not request personal information (SSN, DOB, account numbers).");
+        }
+        // Competitors
+        if (rules.defaults.forbid_other_lenders &&
+            new RegExp(rules.patterns.other_lenders_regex, "i").test(lower)) {
+          issues.push("🧽 Remove mentions of competitor lenders.");
+        }
+        // Length
+        if (msg.length > rules.defaults.sms_two_segment_chars) {
+          issues.push("📝 Message too long (over 320 characters).");
+        } else if (msg.length > rules.defaults.sms_single_segment_chars) {
+          tips.push(`Over ${rules.defaults.sms_single_segment_chars} chars. May split into multiple segments.`);
+        }
+
+        let status = "PASS";
+        if (issues.length) {
+          status = issues.some(i => /⚠️|🔒|🧽|📝/.test(i)) ? "FAIL" : "WARN";
+        }
+
+        resultEl.className = status.toLowerCase();
+        resultEl.textContent =
+          `Status: ${status}\n\n` +
+          (issues.length ? "Issues:\n- " + issues.join("\n- ") : "No issues found.") +
+          (tips.length ? "\n\nTips:\n- " + tips.join("\n- ") : "");
+      } catch (err) {
+        resultEl.textContent = "Error checking compliance: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
