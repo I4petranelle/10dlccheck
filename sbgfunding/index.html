@@ -66,7 +66,6 @@
       <h1>SBG Funding 10DLC Checker</h1>
       <div class="sub">
         <span id="rulesVer">Rules: loading…</span> ·
-        <span id="charInfoTop">0 / 160 (0 segments)</span>
       </div>
     </header>
 
@@ -82,6 +81,11 @@
       <div id="globalChecks" class="label">Global Checks</div>
       <div id="globalTotal" class="value">0</div>
     </div>
+	<div class="stat">
+    <div class="label">Pass Rate</div>
+    <div class="value" id="passRate">0%</div>
+    </div>
+
 
     <div class="card">
       <div class="row">
@@ -104,6 +108,9 @@
   <!-- Scripts -->
   <script>
   document.addEventListener("DOMContentLoaded", () => {
+    let pass = 0;
+    let fail = 0;
+
     // Endpoints
     const RULES_URL  = "https://10dlccheck.com/api/sbg-rules";     // priority
     const CHECK_URL  = "/api/check";                               // fallback/secondary
@@ -113,7 +120,6 @@
     const msgEl   = document.getElementById("msg");
     const resEl   = document.getElementById("result");
     const rulesEl = document.getElementById("rulesVer");
-    const ciTop   = document.getElementById("charInfoTop");
     const ci      = document.getElementById("charInfo");
     const userEl  = document.getElementById("userTotal");
     const globalEl= document.getElementById("globalTotal");
@@ -241,6 +247,21 @@
         const result = rules ? evalWithRules(text, rules) : await serverCheck(text);
 
         renderResult(result);
+		
+		// User total + persist
+		userTotal += 1; 
+		localStorage.setItem("sbg_user_total", String(userTotal));
+		userEl.textContent = userTotal;
+
+		// Track pass/fail for pass rate
+		if (result.status === "pass") {
+		  pass++;
+		} else {
+		  fail++;
+}
+const rate = ((pass / (pass + fail)) * 100).toFixed(0) + "%";
+document.getElementById("passRate").textContent = rate;
+
 
         // User total + persist
         userTotal += 1; localStorage.setItem("sbg_user_total", String(userTotal));
