@@ -7,26 +7,20 @@
   <style>
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #f8fafc;
-      color: #1C2D40; /* SBG Navy */
+      background: #FFFFFF;
+      color: #0B0B0B; /* dark text */
       padding: 20px;
       max-width: 800px;
       margin: auto;
     }
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+    h1 {
+      font-size: 1.8rem;
+      color: #0066FF; /* primary blue */
+      margin-bottom: 8px;
     }
-    header h1 {
-      font-size: 1.6rem;
-      margin: 0;
-      color: #1C2D40;
-    }
-    header span {
-      color: #FDB813; /* SBG Gold */
-      font-weight: bold;
+    p {
+      color: #6B6B6B; /* gray secondary */
+      margin-bottom: 16px;
     }
     textarea {
       width: 100%;
@@ -36,20 +30,20 @@
       border: 1px solid #ccc;
       font-size: 14px;
       resize: vertical;
+      margin-bottom: 12px;
     }
     button {
-      margin-top: 12px;
       padding: 10px 16px;
       border: none;
       border-radius: 8px;
-      background: #1C2D40; /* Navy */
+      background: #0066FF; /* blue button */
       color: #fff;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
     button:hover {
-      background: #16314f;
+      background: #004ecc;
     }
     #result {
       margin-top: 20px;
@@ -57,7 +51,7 @@
       border-radius: 10px;
       background: #fff;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 12px rgba(28, 45, 64, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       white-space: pre-wrap;
       font-size: 14px;
     }
@@ -68,10 +62,10 @@
       margin-top: 40px;
       font-size: 12px;
       text-align: center;
-      color: #555;
+      color: #6B6B6B;
     }
     footer a {
-      color: #1C2D40;
+      color: #0066FF;
       text-decoration: none;
     }
     footer a:hover {
@@ -80,15 +74,7 @@
   </style>
 </head>
 <body>
-  <header>
-    <!-- Placeholder for SBG logo -->
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="#FDB813" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" stroke="#1C2D40" stroke-width="2"/>
-      <text x="50%" y="55%" text-anchor="middle" fill="#1C2D40" font-size="10" font-weight="bold" dy=".1em">SBG</text>
-    </svg>
-    <h1><span>SBG Funding</span> 10DLC Checker</h1>
-  </header>
-
+  <h1>SBG Funding 10DLC Checker</h1>
   <p>Paste an SMS message below to check for compliance with carrier rules and SBG Funding’s internal policies.</p>
 
   <textarea id="msg" placeholder="Paste SMS text here..."></textarea>
@@ -121,22 +107,18 @@
         const tips = [];
         const lower = msg.toLowerCase();
 
-        // Risky terms
         if (rules.defaults.forbid_risky_terms &&
             new RegExp(rules.patterns.risky_terms_regex, "i").test(lower)) {
           issues.push("⚠️ Contains risky financial terms.");
         }
-        // PII
         if (rules.defaults.forbid_pii_requests &&
             new RegExp(rules.patterns.pii_regex, "i").test(lower)) {
           issues.push("🔒 Do not request personal information (SSN, DOB, account numbers).");
         }
-        // Competitors
         if (rules.defaults.forbid_other_lenders &&
             new RegExp(rules.patterns.other_lenders_regex, "i").test(lower)) {
           issues.push("🧽 Remove mentions of competitor lenders.");
         }
-        // Length
         if (msg.length > rules.defaults.sms_two_segment_chars) {
           issues.push("📝 Message too long (over 320 characters).");
         } else if (msg.length > rules.defaults.sms_single_segment_chars) {
