@@ -42,30 +42,31 @@ let STORE = {
   ],
 
   patterns: {
-    brand_hint: "(?:^|\\b)(sbg(?:\\s|-)?funding|sbg)\\b",
-    url: "(https?://\\S+)",
-    other_lenders_regex:
-      "\\b(headway|mulligan|credibly|on\\s?deck|libertas|alliance(\\s?funding(\\s?group)?)?|cfg|peac(e)?\\s?solutions?|kcg|byz(funder|funding)?|good\\s?fund(ing)?|channel\\s?partners?|elevate|expansion|forward\\s?financing|fox|fundation|pearl|kapitus|rapid(\\s?finance)?|samson|revenu(e|ed)|bitty\\s?advance|smart\\s?biz|backd|idea\\s?financial|everest|vader|blue\\s?vine|can(capital)?|flexibilit(y)?|legend\\s?fund(ing)?|fund\\s?through|granite|lcf|fund\\s?canna|vox|loan\\s?bud|wing\\s?lake|lynks?\\s?capital|brite(cap)?|velocity\\s?capital|cash\\s?fund|figure)\\b",
-    risky_terms_regex:
-      "\\b(payday loan|cash advance|loan|merchant cash advance|mca|short[-\\s]?term loan|bridge loan|instant loan|same[-\\s]?day funding|no[-\\s]?doc loan|guaranteed approval|100% approval|no credit check|bad credit ok|free money|unlimited funding|debt (forgiveness|consolidation|reduction|relief)|credit repair|tax (relief|forgiveness)|earn commissions|paid referrals|lead generation|stock alert|investment loan|crypto funding)\\b",
-    pii_regex:
-      "\\b(ssn|social security|dob|date of birth|driver'?s? license|routing number|account number|bank login|credit card|card number|cvv|cvc|pin|password)\\b",
-    money_request_regex:
-      "\\b(send (payment|money)|wire|ach|zelle|cash ?app|venmo|paypal|pay a fee|processing fee|upfront fee|deposit|retainer|application fee)\\b",
-    shaft_sex_regex: "\\b(adult|porn|xxx|escort|nude|sexual|nsfw|onlyfans)\\b",
-    shaft_hate_regex: "\\b(?:racist|white\\s*supremacy|neo[- ]?nazi|kkk)\\b",
-    shaft_alcohol_regex:
-      "\\b(beer|wine|vodka|whiskey|tequila|rum|cocktail|drink special|happy hour)\\b",
-    shaft_firearms_regex:
-      "\\b(gun|firearm|rifle|pistol|ammo|silencer|concealed carry)\\b",
-    shaft_tobacco_regex:
-      "\\b(cigarette|tobacco|vape|e[- ]?cig|nicotine)\\b",
-    url_shortener_regex:
-      "\\b(bit\\.ly|tinyurl\\.com|t\\.co|goo\\.gl|ow\\.ly|is\\.gd|buff\\.ly|rebrand\\.ly|bitly\\.com|shorturl\\.at|rb\\.gy|lnkd\\.in|cutt\\.ly)\\b",
-    emoji_regex: "[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}]",
-    urgency_regex:
-      "\\b(act now|urgent|last chance|limited time|don'?t miss|final hours|today only|offer ends)\\b"
-  }, // ← important comma (keeps the object valid)
+  brand_hint: "(?:^|\\b)(sbg(?:\\s|-)?funding|sbg)\\b",
+  url: "(https?://\\S+)",
+  other_lenders_regex:
+    "\\b(headway|mulligan|credibly|on\\s?deck|libertas|alliance(\\s?funding(\\s?group)?)?|cfg|peac(e)?\\s?solutions?|kcg|byz(funder|funding)?|good\\s?fund(ing)?|channel\\s?partners?|elevate|expansion|forward\\s?financing|fox|fundation|pearl|kapitus|rapid(\\s?finance)?|samson|revenu(e|ed)|bitty\\s?advance|smart\\s?biz|backd|idea\\s?financial|everest|vader|blue\\s?vine|can(capital)?|flexibilit(y)?|legend\\s?fund(ing)?|fund\\s?through|granite|lcf|fund\\s?canna|vox|loan\\s?bud|wing\\s?lake|lynks?\\s?capital|brite(cap)?|velocity\\s?capital|cash\\s?fund|figure)\\b",
+  risky_terms_regex:
+    "\\b(payday loan|cash advance|loan|merchant cash advance|mca|short[-\\s]?term loan|bridge loan|instant loan|same[-\\s]?day funding|no[-\\s]?doc loan|guaranteed approval|100% approval|no credit check|bad credit ok|free money|unlimited funding|debt (forgiveness|consolidation|reduction|relief)|credit repair|tax (relief|forgiveness)|earn commissions|paid referrals|lead generation|stock alert|investment loan|crypto funding)\\b",
+  pii_regex:
+    "\\b(ssn|social security|dob|date of birth|driver'?s? license|routing number|account number|bank login|credit card|card number|cvv|cvc|pin|password)\\b",
+  money_request_regex:
+    "\\b(send (payment|money)|wire|ach|zelle|cash ?app|venmo|paypal|pay a fee|processing fee|upfront fee|deposit|retainer|application fee)\\b",
+  shaft_sex_regex: "\\b(adult|porn|xxx|escort|nude|sexual|nsfw|onlyfans)\\b",
+  shaft_hate_regex: "\\b(?:racist|white\\s*supremacy|neo[- ]?nazi|kkk)\\b",
+  shaft_alcohol_regex:
+    "\\b(beer|wine|vodka|whiskey|tequila|rum|cocktail|drink special|happy hour)\\b",
+  shaft_firearms_regex:
+    "\\b(gun|firearm|rifle|pistol|ammo|silencer|concealed carry)\\b",
+  shaft_tobacco_regex:
+    "\\b(cigarette|tobacco|vape|e[- ]?cig|nicotine)\\b",
+  url_shortener_regex:
+    "\\b(bit\\.ly|tinyurl\\.com|t\\.co|goo\\.gl|ow\\.ly|is\\.gd|buff\\.ly|rebrand\\.ly|bitly\\.com|shorturl\\.at|rb\\.gy|lnkd\\.in|cutt\\.ly)\\b",
+  emoji_regex: "[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}]",
+  urgency_regex:
+    "\\b(act now|urgent|last chance|limited time|don'?t miss|final hours|today only|offer ends)\\b"
+}, // ← keep this comma after the patterns object
+
 
   // Editable parts:
   rules: [],
