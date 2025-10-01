@@ -18,10 +18,7 @@
     min-height:100vh; padding:32px 16px;
   }
   
-.#globalChecks,
-#globalTotal {
-  display: none !important;
-}
+  #globalChecks, #globalTotal { display: none !important; }
 
   .container{ width:100%; max-width:820px; display:grid; gap:20px; }
   header{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap }
@@ -72,10 +69,18 @@
     </header>
 
     <section class="stats">
-      <div class="stat"><div class="label">Your Checks</div><div class="value" id="userTotal">0</div></div>
-	  <div id="globalChecks" class="label">Global Checks</div><div id="globalTotal" class="value">0</div>
+  <div class="stat">
+    <div class="label">Your Checks</div>
+    <div class="value" id="userTotal">0</div>
+  </div>
+</section>
+
+<!-- Keep global counters for API logic but keep them out of the grid and hidden -->
+<div id="globalCounters" style="display:none">
+  <div id="globalChecks" class="label">Global Checks</div>
+  <div id="globalTotal" class="value">0</div>
 </div>
-    </section>
+
 
     <div class="card">
       <div class="row">
