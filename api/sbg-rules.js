@@ -49,7 +49,7 @@ let STORE = {
   risky_terms_regex:
     "\\b(payday loan|cash advance|loan|merchant cash advance|mca|short[-\\s]?term loan|bridge loan|instant loan|same[-\\s]?day funding|no[-\\s]?doc loan|guaranteed approval|100% approval|no credit check|bad credit ok|free money|unlimited funding|debt (forgiveness|consolidation|reduction|relief)|credit repair|tax (relief|forgiveness)|earn commissions|paid referrals|lead generation|stock alert|investment loan|crypto funding)\\b",
   pii_regex:
-    "\\b(ssn|social security|dob|date of birth|driver'?s? license|routing number|account number|bank login|credit card|card number|cvv|cvc|pin|password)\\b",
+    "\\b(ssn|social security|dob|date of birth|routing number|account number|credit card|card number|cvv|cvc|pin|password)\\b",
   money_request_regex:
     "\\b(send (payment|money)|wire|ach|zelle|cash ?app|venmo|paypal|pay a fee|processing fee|upfront fee|deposit|retainer|application fee)\\b",
   shaft_sex_regex: "\\b(adult|porn|xxx|escort|nude|sexual|nsfw|onlyfans)\\b",
