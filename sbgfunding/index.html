@@ -1,144 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SBG Funding 10DLC Checker</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #FFFFFF;
-      color: #0B0B0B; /* dark text */
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 1.8rem;
-      color: #0066FF; /* primary blue */
-      margin-bottom: 8px;
-    }
-    p {
-      color: #6B6B6B; /* gray secondary */
-      margin-bottom: 16px;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      resize: vertical;
-      margin-bottom: 12px;
-    }
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #0066FF; /* blue button */
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #004ecc;
-    }
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      white-space: pre-wrap;
-      font-size: 14px;
-    }
-    .ok { border-left: 6px solid #1ea97c; }
-    .warn { border-left: 6px solid #e2a400; }
-    .fail { border-left: 6px solid #d33b3b; }
-    footer {
-      margin-top: 40px;
-      font-size: 12px;
-      text-align: center;
-      color: #6B6B6B;
-    }
-    footer a {
-      color: #0066FF;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SBG Funding 10DLC Checker</title>
+<style>
+  :root{
+    --blue:#0066FF; --blue-600:#0052cc;
+    --text:#0B0B0B; --muted:#6B6B6B;
+    --bg:#f7f9fc; --card:#fff; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    display:flex; justify-content:center; align-items:flex-start;
+    min-height:100vh; padding:32px 16px;
+  }
+  .container{ width:100%; max-width:820px; display:grid; gap:20px; }
+  header{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap }
+  header h1{ margin:0; font-size:22px; color:var(--blue) }
+  .sub{ font-size:12px; color:var(--muted) }
+
+  .stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .stat{
+    background:var(--card); border:1px solid #e6eaf0; border-radius:12px;
+    padding:14px 16px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,.05);
+  }
+  .stat .label{ font-size:12px; color:var(--muted) }
+  .stat .value{ font-size:24px; font-weight:800 }
+
+  .card{
+    background:var(--card); border:1px solid #e6eaf0; border-radius:var(--radius);
+    box-shadow:0 8px 30px rgba(0,0,0,.06); padding:18px; display:grid; gap:14px;
+  }
+  .row{ display:flex; align-items:center; justify-content:space-between; gap:10px }
+  textarea{
+    width:100%; min-height:140px; resize:vertical; padding:12px;
+    border:1px solid #d7dbe3; border-radius:12px; font-size:14px;
+  }
+  .charinfo{ font-size:12px; color:var(--muted) }
+  .actions{ display:flex; gap:10px; flex-wrap:wrap }
+  button{
+    appearance:none; border:none; border-radius:12px; padding:10px 14px;
+    background:var(--blue); color:#fff; font-weight:700; cursor:pointer
+  }
+  button.secondary{ background:#fff; color:var(--blue); border:1px solid #d7dbe3 }
+  button:hover{ background:var(--blue-600) }
+  button.secondary:hover{ background:#f3f6ff }
+  .result{
+    white-space:pre-wrap; border:1px solid #e6eaf0; border-radius:12px;
+    padding:12px; background:#f9fbff; min-height:100px; font-size:14px; line-height:1.5
+  }
+  @media (max-width:640px){ .stats{grid-template-columns:1fr} }
+</style>
 </head>
 <body>
-  <h1>SBG Funding 10DLC Checker</h1>
-  <p>Paste an SMS message below to check for compliance with carrier rules and SBG Funding’s internal policies.</p>
+  <div class="container">
+    <header>
+      <h1>SBG Funding 10DLC Checker</h1>
+      <div class="sub">
+        <span id="rulesVer">Rules: loading…</span> ·
+        <span id="charInfoTop">0 / 160 (0 segments)</span>
+      </div>
+    </header>
 
-  <textarea id="msg" placeholder="Paste SMS text here..."></textarea>
-  <br>
-  <button onclick="checkMessage()">Check Compliance</button>
+    <section class="stats">
+      <div class="stat"><div class="label">Your Checks</div><div class="value" id="userTotal">0</div></div>
+      <div class="stat"><div class="label">Global Checks</div><div class="value" id="globalTotal">0</div></div>
+    </section>
 
-  <div id="result"></div>
+    <div class="card">
+      <div class="row">
+        <strong>Message</strong>
+        <div class="charinfo" id="charInfo">0 / 160 (0 segments)</div>
+      </div>
 
-  <footer>
-    <p>© 2025 SBG Funding – Internal Use Only · <a href="/privacy">Privacy Policy</a></p>
-  </footer>
+      <textarea id="msg" placeholder="Paste your SMS message here…"></textarea>
 
-  <script>
-    async function checkMessage() {
-      const msg = document.getElementById('msg').value.trim();
-      const resultEl = document.getElementById('result');
-      resultEl.textContent = 'Checking…';
-      resultEl.className = '';
+      <div class="actions">
+        <button type="button" id="checkBtn">Check Compliance</button>
+        <button type="button" id="copyBtn" class="secondary">Copy Result</button>
+        <button type="button" id="clearBtn" class="secondary">Clear</button>
+      </div>
 
-      if (!msg) {
-        resultEl.textContent = 'Please enter a message first.';
-        return;
-      }
+      <div class="result" id="result">Result will appear here.</div>
+    </div>
+  </div>
 
-      try {
-        const res = await fetch('https://10dlccheck.com/api/sbg-rules');
-        const rules = await res.json();
+<!-- put script at end, wrap in DOMContentLoaded, guard all awaits -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Endpoints
+  const RULES_URL  = "https://10dlccheck.com/api/sbg-rules";     // priority
+  const CHECK_URL  = "/api/check";                               // fallback/secondary
+  const GLOBAL_URL = "https://10dlcchecker.com/api/global-count";// global total
 
-        const issues = [];
-        const tips = [];
-        const lower = msg.toLowerCase();
+  // Elements
+  const msgEl   = document.getElementById("msg");
+  const resEl   = document.getElementById("result");
+  const rulesEl = document.getElementById("rulesVer");
+  const ciTop   = document.getElementById("charInfoTop");
+  const ci      = document.getElementById("charInfo");
+  const userEl  = document.getElementById("userTotal");
+  const globalEl= document.getElementById("globalTotal");
 
-        if (rules.defaults.forbid_risky_terms &&
-            new RegExp(rules.patterns.risky_terms_regex, "i").test(lower)) {
-          issues.push("⚠️ Contains risky financial terms.");
-        }
-        if (rules.defaults.forbid_pii_requests &&
-            new RegExp(rules.patterns.pii_regex, "i").test(lower)) {
-          issues.push("🔒 Do not request personal information (SSN, DOB, account numbers).");
-        }
-        if (rules.defaults.forbid_other_lenders &&
-            new RegExp(rules.patterns.other_lenders_regex, "i").test(lower)) {
-          issues.push("🧽 Remove mentions of competitor lenders.");
-        }
-        if (msg.length > rules.defaults.sms_two_segment_chars) {
-          issues.push("📝 Message too long (over 320 characters).");
-        } else if (msg.length > rules.defaults.sms_single_segment_chars) {
-          tips.push(`Over ${rules.defaults.sms_single_segment_chars} chars. May split into multiple segments.`);
-        }
+  // User total (persist)
+  let userTotal = Number(localStorage.getItem("sbg_user_total") || 0);
+  userEl.textContent = userTotal;
 
-        let status = "PASS";
-        if (issues.length) {
-          status = issues.some(i => /⚠️|🔒|🧽|📝/.test(i)) ? "FAIL" : "WARN";
-        }
+  // Live char/segment counter
+  function updateChars(){
+    const L = msgEl.value.length;
+    const segs = L <= 160 ? 1 : L <= 320 ? 2 : Math.ceil(L/160);
+    const t = `${L} / 160 (${segs} segments)`;
+    ci.textContent = t; ciTop.textContent = t;
+  }
+  msgEl.addEventListener("input", updateChars);
+  updateChars();
 
-        resultEl.className = status.toLowerCase();
-        resultEl.textContent =
-          `Status: ${status}\n\n` +
-          (issues.length ? "Issues:\n- " + issues.join("\n- ") : "No issues found.") +
-          (tips.length ? "\n\nTips:\n- " + tips.join("\n- ") : "");
-      } catch (err) {
-        resultEl.textContent = "Error checking compliance: " + err;
-      }
+  // Safe fetch JSON
+  async function getJSON(url, init){
+    const r = await fetch(url, init);
+    const ct = r.headers.get("content-type") || "";
+    if (!ct.includes("application/json")) throw new Error("Bad content-type");
+    return r.json();
+  }
+
+  // Load SBG rules (priority)
+  async function loadRules(){
+    try{
+      const j = await getJSON(RULES_URL, { cache:"no-store" });
+      if (!j || !j.defaults || !j.patterns) throw new Error("invalid rules");
+      rulesEl.textContent = `Rules: ${j.version || "unknown"}`;
+      return j;
+    }catch(e){
+      rulesEl.textContent = "Rules: unavailable (using server)";
+      return null;
     }
-  </script>
+  }
+
+  // Local evaluation using SBG rules
+  function evalWithRules(message, rules){
+    const issues = [];
+    const tips = [];
+    const text  = String(message || "");
+    const lower = text.toLowerCase();
+
+    const d = rules.defaults, p = rules.patterns;
+
+    if (d.forbid_risky_terms && new RegExp(p.risky_terms_regex,"i").test(lower)){
+      issues.push("⚠️ Contains risky financial terms. Try safer language (e.g., “working capital”).");
+      const alts = (rules.allowed_terms_suggestions || []).slice(0,3);
+      if (alts.length) tips.push("Try: " + alts.map(s=>`“${s}”`).join(", "));
+    }
+    if (d.forbid_other_lenders && new RegExp(p.other_lenders_regex,"i").test(lower)){
+      issues.push("🧽 Remove competitor lender names.");
+    }
+    if (d.forbid_pii_requests && new RegExp(p.pii_regex,"i").test(lower)){
+      issues.push("🔒 Don’t request PII in SMS (SSN, DOB, bank, cards, passwords).");
+    }
+    if (d.forbid_money_requests && new RegExp(p.money_request_regex,"i").test(lower)){
+      issues.push("💸 Don’t ask for payments/fees in SMS.");
+    }
+    if (d.enable_behavior_checks && d.forbid_url_shorteners &&
+        new RegExp(p.url_shortener_regex,"i").test(lower)){
+      issues.push("✂️ Avoid URL shorteners—use a branded link.");
+    }
+    if (d.limit_message_length){
+      const L = text.length, max160 = d.sms_single_segment_chars ?? 160, max320 = d.sms_two_segment_chars ?? 320;
+      if (L > max320) issues.push(`📝 Message too long (${L}). Keep under ${max320}.`);
+    }
+
+    const status = issues.length ? "fail" : "pass";
+    return { status, issues, tips };
+  }
+
+  // Server fallback
+  async function serverCheck(message){
+    return getJSON(CHECK_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message })
+    });
+  }
+
+  // Global totals
+  async function refreshGlobal(){
+    try{
+      const m = await getJSON(GLOBAL_URL);
+      globalEl.textContent = m.total || 0;
+    }catch{}
+  }
+  async function bumpGlobal(status="unknown"){
+    try{
+      const body = JSON.stringify({ status:String(status||"unknown").toLowerCase() });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(GLOBAL_URL, new Blob([body], { type:"application/json" }));
+      } else {
+        await fetch(GLOBAL_URL, { method:"POST", headers:{ "Content-Type":"application/json" }, body, keepalive:true });
+      }
+    }catch{}
+  }
+
+  // Render helper
+  function renderResult(result){
+    let out = `Status: ${(result.status||"UNKNOWN").toUpperCase()}`;
+    if (Array.isArray(result.issues) && result.issues.length){
+      out += `\n\nIssues:\n- ${result.issues.join("\n- ")}`;
+    } else {
+      out += `\n\nNo issues found.`;
+    }
+    if (Array.isArray(result.tips) && result.tips.length){
+      out += `\n\nTips:\n- ${result.tips.join("\n- ")}`;
+    }
+    resEl.textContent = out;
+  }
+
+  // Button handlers (explicit type="button" set above to prevent form submit)
+  document.getElementById("checkBtn").addEventListener("click", async () => {
+    try{
+      const text = (msgEl.value || "").trim();
+      if (!text){ resEl.textContent = "Please enter a message."; return; }
+      resEl.textContent = "Checking…";
+
+      const rules = await loadRules();
+      const result = rules ? evalWithRules(text, rules) : await serverCheck(text);
+
+      renderResult(result);
+
+      // User total + persist
+      userTotal += 1; localStorage.setItem("sbg_user_total", String(userTotal));
+      userEl.textContent = userTotal;
+
+      // Global total
+      await bumpGlobal(result.status);
+      await refreshGlobal();
+    }catch(e){
+      console.error(e);
+      resEl.textContent = "Error: " + (e?.message || String(e));
+    }
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(resEl.textContent || "");
+      alert("Result copied!");
+    }catch(e){}
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    msgEl.value = ""; updateChars(); resEl.textContent = "Result will appear here.";
+  });
+
+  // initial global
+  refreshGlobal();
+});
+</script>
 </body>
 </html>
