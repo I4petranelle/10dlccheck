@@ -1,0 +1,346 @@
+<!-- admin-rules.html -->
+<!-- Super-simple admin page for editing rules & lenders for 10dlccheck.com
+     - No framework, just HTML + vanilla JS
+     - Brand colors: Navy #1C2D40, Gold #FDB813, Light #F8FAFC
+     - Talks to /api/sbg-rules (GET, PUT)
+     - Requires an admin key: sends X-Admin-Key on save
+
+  Files included in this canvas:
+  1) admin-rules.html  (this file)
+  2) api/sbg-rules.js  (Vercel Serverless function storing JSON in Vercel Blob)
+
+  Minimal workflow to go live on Vercel:
+  - npm i @vercel/blob
+  - In Vercel project settings, add env var: BLOB_READ_WRITE_TOKEN (from Vercel > Storage > Blob)
+  - Add env var: RULES_ADMIN_KEY (choose a strong value and share with SBG employees)
+  - Place admin-rules.html at the project root (or /admin/admin-rules.html) and deploy
+  - Visit /admin-rules.html, paste the admin key, click Load, make edits, Save
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SBG Rules Admin • 10DLC Checker</title>
+  <style>
+    :root{
+      --navy:#1C2D40; --gold:#FDB813; --bg:#F8FAFC; --border:#E2E8F0; --text:#1F2937;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; background:var(--bg); color:var(--text)}
+    .wrap{max-width:960px; margin:0 auto; padding:16px}
+    .card{background:#fff; border:1px solid var(--border); border-radius:16px; padding:16px}
+    .title{display:flex; align-items:center; gap:8px; font-weight:700; font-size:20px; color:var(--navy)}
+    .subtitle{color:#475569; margin-top:4px}
+    .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    input, textarea, select, button{font:inherit}
+    input, textarea{width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:12px}
+    textarea{min-height:88px}
+    label{font-size:12px; color:#475569; display:block; margin-bottom:6px}
+    .pill{display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:#fff; font-size:12px; color:#334155}
+    .btn{border:none; border-radius:12px; padding:10px 14px; cursor:pointer}
+    .btn-primary{background:var(--navy); color:#fff}
+    .btn-primary:hover{opacity:.95}
+    .btn-ghost{background:#fff; border:1px solid var(--border)}
+    .btn-gold{background:var(--gold); color:#1C2D40; font-weight:700}
+    .grid{display:grid; gap:12px}
+    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+    table{width:100%; border-collapse:separate; border-spacing:0 8px}
+    th,td{text-align:left; font-size:14px; padding:8px 10px}
+    thead th{color:#475569}
+    tbody tr{background:#fff; border:1px solid var(--border)}
+    tbody tr td:first-child{border-top-left-radius:12px; border-bottom-left-radius:12px}
+    tbody tr td:last-child{border-top-right-radius:12px; border-bottom-right-radius:12px}
+    .err{outline:2px solid #fca5a5}
+    .foot{font-size:12px; color:#64748B; margin-top:24px}
+    .header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
+    .brand{display:flex; align-items:center; gap:8px}
+    .logo{width:28px; height:28px; background:var(--navy); border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="title">SBG Rules Admin</div>
+          <div class="subtitle">Edit filtering rules & lender list for 10dlccheck.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="row">
+        <div style="flex:1; min-width:220px">
+          <label>Admin key</label>
+          <input id="adminKey" placeholder="Paste admin key" />
+        </div>
+        <button class="btn btn-ghost" onclick="saveKey()">Save key to browser</button>
+        <button class="btn btn-primary" onclick="loadAll()">Load current data</button>
+        <button class="btn btn-gold" onclick="saveAll()">Save all changes</button>
+      </div>
+      <div id="status" style="margin-top:8px; font-size:12px; color:#334155"></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="title" style="font-size:16px">Rules <span class="pill" id="rulesCount">0</span></div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-ghost" onclick="addRule()">+ Add rule</button>
+        </div>
+        <div style="overflow:auto; margin-top:8px">
+          <table>
+            <thead>
+              <tr>
+                <th>On</th>
+                <th>Pattern</th>
+                <th>Category</th>
+                <th>Severity</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rulesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="title" style="font-size:16px">Lenders <span class="pill" id="lendersCount">0</span></div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-ghost" onclick="addLender()">+ Add lender</button>
+        </div>
+        <div style="overflow:auto; margin-top:8px">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Aliases (comma‑sep)</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="lendersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="title" style="font-size:16px">Bulk JSON</div>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div>
+          <label>Paste Rules (array)</label>
+          <textarea id="bulkRules" placeholder='[{"id":"...","pattern":"...","category":"...","severity":"low","enabled":true}]'></textarea>
+          <div class="row" style="margin-top:8px">
+            <button class="btn btn-ghost" onclick="tryImport('rules')">Import Rules</button>
+            <button class="btn btn-ghost" onclick="downloadJSON('rules.json', state.rules)">Export Rules</button>
+          </div>
+        </div>
+        <div>
+          <label>Paste Lenders (array)</label>
+          <textarea id="bulkLenders" placeholder='[{"id":"...","name":"Acme Lend","aliases":["Acme"],"status":"watch"}]'></textarea>
+          <div class="row" style="margin-top:8px">
+            <button class="btn btn-ghost" onclick="tryImport('lenders')">Import Lenders</button>
+            <button class="btn btn-ghost" onclick="downloadJSON('lenders.json', state.lenders)">Export Lenders</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">SBG Internal • v1.0 • Navy/Gold theme to match 10dlccheck.com</div>
+  </div>
+
+<script>
+  const $ = (id)=>document.getElementById(id);
+  const uid = ()=> Math.random().toString(36).slice(2) + Date.now().toString(36);
+  const ADMIN_KEY_LS = 'sbg_admin_key';
+  const API = '/api/sbg-rules';
+
+  const state = { rules: [], lenders: [] };
+
+  function saveKey(){ localStorage.setItem(ADMIN_KEY_LS, $('adminKey').value.trim()); setStatus('Admin key saved.'); }
+  function loadSavedKey(){ const k = localStorage.getItem(ADMIN_KEY_LS)||''; $('adminKey').value = k; }
+  function setStatus(msg, ok=true){ const el=$('status'); el.textContent = msg; el.style.color = ok ? '#334155' : '#b91c1c'; }
+
+  function validateRule(r){
+    const errs=[];
+    if(!r.id) errs.push('id');
+    if(!r.pattern) errs.push('pattern');
+    if(!r.category) errs.push('category');
+    if(!['low','med','high'].includes(r.severity)) errs.push('severity');
+    if(typeof r.enabled!=='boolean') errs.push('enabled');
+    return errs;
+  }
+  function validateLender(l){
+    const errs=[];
+    if(!l.id) errs.push('id');
+    if(!l.name) errs.push('name');
+    if(!Array.isArray(l.aliases)) errs.push('aliases');
+    if(!['allowed','blocked','watch'].includes(l.status)) errs.push('status');
+    return errs;
+  }
+
+  function render(){
+    const rb = $('rulesBody'); rb.innerHTML='';
+    state.rules.forEach(r=>{
+      const tr = document.createElement('tr');
+      const bad = validateRule(r).length>0; if(bad) tr.classList.add('err');
+      tr.innerHTML = `
+        <td><input type="checkbox" ${r.enabled?'checked':''} data-k="enabled"></td>
+        <td><input value="${(r.pattern||'').replaceAll('"','&quot;')}" data-k="pattern"></td>
+        <td><input value="${(r.category||'').replaceAll('"','&quot;')}" data-k="category"></td>
+        <td>
+          <select data-k="severity">
+            <option ${r.severity==='low'?'selected':''}>low</option>
+            <option ${r.severity==='med'?'selected':''}>med</option>
+            <option ${r.severity==='high'?'selected':''}>high</option>
+          </select>
+        </td>
+        <td><input value="${(r.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
+      tr.querySelectorAll('input,select').forEach(inp=>{
+        inp.addEventListener('change', (e)=>{
+          const k = inp.getAttribute('data-k');
+          if(k==='enabled') r.enabled = inp.checked; else r[k] = (k==='aliases') ? inp.value.split(',').map(s=>s.trim()).filter(Boolean) : inp.value;
+          render();
+        });
+      });
+      tr.querySelector('[data-del]').addEventListener('click',()=>{ state.rules = state.rules.filter(x=>x!==r); render(); });
+      rb.appendChild(tr);
+    });
+    $('rulesCount').textContent = state.rules.length;
+
+    const lb = $('lendersBody'); lb.innerHTML='';
+    state.lenders.forEach(l=>{
+      const tr = document.createElement('tr');
+      const bad = validateLender(l).length>0; if(bad) tr.classList.add('err');
+      tr.innerHTML = `
+        <td><input value="${(l.name||'').replaceAll('"','&quot;')}" data-k="name"></td>
+        <td><input value="${(l.aliases||[]).join(', ').replaceAll('"','&quot;')}" data-k="aliases"></td>
+        <td>
+          <select data-k="status">
+            <option ${l.status==='allowed'?'selected':''}>allowed</option>
+            <option ${l.status==='blocked'?'selected':''}>blocked</option>
+            <option ${l.status==='watch'?'selected':''}>watch</option>
+          </select>
+        </td>
+        <td><input value="${(l.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
+      tr.querySelectorAll('input,select').forEach(inp=>{
+        inp.addEventListener('change',()=>{
+          const k = inp.getAttribute('data-k');
+          if(k==='aliases') l.aliases = inp.value.split(',').map(s=>s.trim()).filter(Boolean); else l[k] = (k==='enabled')? inp.checked : inp.value;
+          render();
+        });
+      });
+      tr.querySelector('[data-del]').addEventListener('click',()=>{ state.lenders = state.lenders.filter(x=>x!==l); render(); });
+      lb.appendChild(tr);
+    });
+    $('lendersCount').textContent = state.lenders.length;
+  }
+
+  function addRule(){ state.rules.unshift({id:uid(), pattern:'', category:'', severity:'low', enabled:true, notes:''}); render(); }
+  function addLender(){ state.lenders.unshift({id:uid(), name:'', aliases:[], status:'watch', notes:''}); render(); }
+
+  async function loadAll(){
+    setStatus('Loading…');
+    try{
+      const res = await fetch(API, { method:'GET', cache:'no-store' });
+      if(!res.ok) throw new Error('GET failed ' + res.status);
+      const json = await res.json();
+      state.rules = Array.isArray(json.rules)? json.rules : [];
+      state.lenders = Array.isArray(json.lenders)? json.lenders : [];
+      render();
+      setStatus('Loaded.');
+    }catch(e){ setStatus('Error: '+ (e.message||e), false); }
+  }
+
+  async function saveAll(){
+    setStatus('Saving…');
+    // Basic validation: block on any bad rows
+    const badR = state.rules.filter(r=>validateRule(r).length>0).length;
+    const badL = state.lenders.filter(l=>validateLender(l).length>0).length;
+    if(badR||badL){ setStatus('Fix highlighted rows before saving.', false); return; }
+    try{
+      const res = await fetch(API, {
+        method:'PUT',
+        headers:{ 'Content-Type':'application/json', 'X-Admin-Key': ($('adminKey').value||'').trim() },
+        body: JSON.stringify({ rules: state.rules, lenders: state.lenders })
+      });
+      if(!res.ok){
+        const t = await res.text(); throw new Error('PUT failed '+res.status+' '+t);
+      }
+      setStatus('Saved.');
+    }catch(e){ setStatus('Error: '+(e.message||e), false); }
+  }
+
+  function tryImport(kind){
+    try{
+      const raw = kind==='rules'? $('bulkRules').value : $('bulkLenders').value;
+      const arr = JSON.parse(raw);
+      if(!Array.isArray(arr)) throw new Error('Expected an array');
+      if(kind==='rules') state.rules = arr; else state.lenders = arr;
+      render(); setStatus('Imported '+arr.length+' '+kind+'.');
+    }catch(e){ setStatus('Import failed: '+(e.message||e), false); }
+  }
+
+  function downloadJSON(name, data){
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=name; a.click(); URL.revokeObjectURL(url);
+  }
+
+  loadSavedKey();
+  render();
+</script>
+</body>
+</html>
+
+
+// api/sbg-rules.js (Vercel Serverless Function)
+// -----------------------------------------------------------
+// Stores + serves rules/lenders JSON via Vercel Blob storage.
+// Env needed:
+//   BLOB_READ_WRITE_TOKEN  (from Vercel > Storage > Blob)
+//   RULES_ADMIN_KEY        (string you share with admins)
+// -----------------------------------------------------------
+
+import { put, list, del, head, get } from '@vercel/blob';
+
+const KEY = process.env.RULES_ADMIN_KEY;
+const BUCKET_FILE = 'sbg-rules.json'; // single blob name
+
+export default async function handler(req, res){
+  if (req.method === 'GET'){
+    try{
+      const file = await get(`public/${BUCKET_FILE}`);
+      if(!file) return res.status(200).json({ rules: [], lenders: [] });
+      const text = await file.text();
+      const json = JSON.parse(text);
+      return res.status(200).json({ rules: json.rules||[], lenders: json.lenders||[] });
+    }catch(e){
+      return res.status(200).json({ rules: [], lenders: [] });
+    }
+  }
+
+  if (req.method === 'PUT'){
+    try{
+      if(!KEY || req.headers['x-admin-key'] !== KEY) return res.status(401).json({ error: 'Unauthorized' });
+      const body = req.body || {};
+      const rules = Array.isArray(body.rules)? body.rules : [];
+      const lenders = Array.isArray(body.lenders)? body.lenders : [];
+      // lightweight shape checks
+      if(!Array.isArray(rules) || !Array.isArray(lenders)) return res.status(400).json({ error:'Invalid payload' });
+      const payload = JSON.stringify({ rules, lenders }, null, 2);
+      await put(`public/${BUCKET_FILE}`, payload, { access: 'public' });
+      return res.status(200).json({ ok:true });
+    }catch(e){
+      return res.status(500).send(String(e?.message||e));
+    }
+  }
+
+  res.status(405).send('Method not allowed');
+}
