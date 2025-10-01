@@ -26,8 +26,8 @@
   header h1{ margin:0; font-size:22px; color:var(--blue) }
   .sub{ font-size:12px; color:var(--muted) }
 
-  /* Single column so the stat sits above the card */
-  .stats{ display:grid; grid-template-columns:1fr; gap:12px; }
+  /* Single column so the stat row sits above the card */
+  .stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
   .stat{
     background:var(--card); border:1px solid #e6eaf0; border-radius:12px;
     padding:14px 16px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,.05);
@@ -65,7 +65,7 @@
     <header>
       <h1>SBG Funding 10DLC Checker</h1>
       <div class="sub">
-        <span id="rulesVer">Rules: loading…</span> ·
+        <span id="rulesVer">Rules: loading…</span>
       </div>
     </header>
 
@@ -74,6 +74,10 @@
         <div class="label">Your Checks</div>
         <div class="value" id="userTotal">0</div>
       </div>
+      <div class="stat">
+        <div class="label">Pass Rate</div>
+        <div class="value" id="passRate">0%</div>
+      </div>
     </section>
 
     <!-- Keep global counters for API logic but hidden -->
@@ -81,11 +85,6 @@
       <div id="globalChecks" class="label">Global Checks</div>
       <div id="globalTotal" class="value">0</div>
     </div>
-	<div class="stat">
-    <div class="label">Pass Rate</div>
-    <div class="value" id="passRate">0%</div>
-    </div>
-
 
     <div class="card">
       <div class="row">
@@ -108,6 +107,7 @@
   <!-- Scripts -->
   <script>
   document.addEventListener("DOMContentLoaded", () => {
+    // Track pass/fail
     let pass = 0;
     let fail = 0;
 
@@ -133,7 +133,7 @@
       const L = msgEl.value.length;
       const segs = L <= 160 ? 1 : L <= 320 ? 2 : Math.ceil(L/160);
       const t = `${L} / 160 (${segs} segments)`;
-      ci.textContent = t; ciTop.textContent = t;
+      ci.textContent = t;
     }
     msgEl.addEventListener("input", updateChars);
     updateChars();
@@ -247,25 +247,16 @@
         const result = rules ? evalWithRules(text, rules) : await serverCheck(text);
 
         renderResult(result);
-		
-		// User total + persist
-		userTotal += 1; 
-		localStorage.setItem("sbg_user_total", String(userTotal));
-		userEl.textContent = userTotal;
 
-		// Track pass/fail for pass rate
-		if (result.status === "pass") {
-		  pass++;
-		} else {
-		  fail++;
-}
-const rate = ((pass / (pass + fail)) * 100).toFixed(0) + "%";
-document.getElementById("passRate").textContent = rate;
-
-
-        // User total + persist
-        userTotal += 1; localStorage.setItem("sbg_user_total", String(userTotal));
+        // User total + persist (single increment)
+        userTotal += 1;
+        localStorage.setItem("sbg_user_total", String(userTotal));
         userEl.textContent = userTotal;
+
+        // Track pass/fail for pass rate
+        if (result.status === "pass") pass++; else fail++;
+        const rate = ((pass / (pass + fail)) * 100).toFixed(0) + "%";
+        document.getElementById("passRate").textContent = rate;
 
         // Global total
         await bumpGlobal(result.status);
