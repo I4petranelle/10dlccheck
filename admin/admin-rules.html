@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SBG Rules Admin • 10DLC Checker</title>
   <style>
-    :root{ --brand:#1C2D40; --accent:#FDB813; --bg:#F8FAFC; --border:#E2E8F0; --text:#1F2937; }
+    :root{ --brand:#1C2D40; --accent:#FDB813; --bg:#F8FAFC; --border:#E2E8F0; --text:#111827; }
     *{box-sizing:border-box}
     body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text)}
     .wrap{width:min(1200px, 96vw); margin:0 auto; padding:20px}
@@ -50,7 +50,7 @@
     <!-- Controls / Key -->
     <div class="card">
       <div class="row">
-        <div style="flex:1; min-width:320px">
+        <div style="flex:1; min-width:360px">
           <label>Admin key</label>
           <input id="adminKey" placeholder="Paste the RULES_ADMIN_KEY your admin gave you" />
           <div class="help">Used only when saving changes. Store it locally with “Save key to browser”.</div>
@@ -64,22 +64,22 @@
       <div id="status" style="margin-top:8px; font-size:12px; color:#334155"></div>
     </div>
 
-    <!-- Rules -->
+    <!-- Rules (stacked) -->
     <div class="card">
       <div class="row" style="justify-content:space-between; align-items:flex-end">
         <div class="h2">Rules <span class="pill" id="rulesCount">0</span></div>
         <button class="btn btn-ghost" onclick="addRule()">+ Add rule</button>
       </div>
       <div class="help" style="margin-top:6px">
-        <b>How to fill:</b> Pattern (regex like <code>loan|cash advance</code>), pick Category from list, Severity (<code>low/med/high</code>), Notes = reason.
+        <b>How to fill:</b> Pattern (regex like <code>loan|cash advance</code>), Category (e.g. <code>Restricted</code>, <code>Phishing</code>, <code>SHAFT</code>), Severity (<code>low/med/high</code>), Notes = reason.
       </div>
       <div style="overflow:auto; margin-top:10px">
         <table>
           <thead>
             <tr>
               <th style="width:70px">On</th>
-              <th style="width:40%">Pattern</th>
-              <th style="width:22%">Category</th>
+              <th style="width:42%">Pattern</th>
+              <th style="width:24%">Category</th>
               <th style="width:120px">Severity</th>
               <th>Notes</th>
               <th style="width:90px"></th>
@@ -90,7 +90,7 @@
       </div>
     </div>
 
-    <!-- Lenders -->
+    <!-- Lenders (stacked) -->
     <div class="card">
       <div class="row" style="justify-content:space-between; align-items:flex-end">
         <div class="h2">Lenders <span class="pill" id="lendersCount">0</span></div>
@@ -103,7 +103,7 @@
         <table>
           <thead>
             <tr>
-              <th style="width:32%">Name</th>
+              <th style="width:34%">Name</th>
               <th>Aliases (comma‑sep)</th>
               <th style="width:170px">Status</th>
               <th>Notes</th>
@@ -120,7 +120,7 @@
       <div class="h2">Bulk JSON</div>
       <div class="help">Paste arrays. Import will <b>replace</b> current values in memory. You can export to download a backup.</div>
       <div class="row" style="gap:16px; margin-top:10px; flex-wrap:wrap">
-        <div style="flex:1; min-width:420px">
+        <div style="flex:1; min-width:460px">
           <label>Paste Rules (array)</label>
           <textarea id="bulkRules" placeholder='[{"id":"r-1","pattern":"loan|cash advance","category":"Restricted","severity":"med","enabled":true,"notes":"block risky loan phrasing"}]'></textarea>
           <div class="row" style="margin-top:8px">
@@ -128,7 +128,7 @@
             <button class="btn btn-ghost" onclick="downloadJSON('rules.json', state.rules)">Export Rules</button>
           </div>
         </div>
-        <div style="flex:1; min-width:420px">
+        <div style="flex:1; min-width:460px">
           <label>Paste Lenders (array)</label>
           <textarea id="bulkLenders" placeholder='[{"id":"l-1","name":"Headway","aliases":["Headway","Headway Capital"],"status":"watch","notes":"monitor complaints"}]'></textarea>
           <div class="row" style="margin-top:8px">
@@ -149,7 +149,6 @@
   const API = '/api/sbg-rules';
 
   const state = { rules: [], lenders: [] };
-  const categories = ["Restricted","Phishing","SHAFT","PII","Money","Behavior","Other"];
 
   function saveKey(){ localStorage.setItem(ADMIN_KEY_LS, $('adminKey').value.trim()); setStatus('Admin key saved.'); }
   function loadSavedKey(){ const k = localStorage.getItem(ADMIN_KEY_LS)||''; $('adminKey').value = k; }
@@ -179,21 +178,17 @@
       const tr = document.createElement('tr');
       const bad = validateRule(r).length>0; if(bad) tr.classList.add('err');
       tr.innerHTML = `
-        <td><input type="checkbox" ${r.enabled?'checked':''} data-k="enabled"></td>
+        <td><input type="checkbox" ${r.enabled?'checked':''} data-k="enabled" title="Enable/disable this rule"></td>
         <td><input placeholder="e.g. loan|cash advance" value="${(r.pattern||'').replaceAll('"','&quot;')}" data-k="pattern"></td>
+        <td><input placeholder="e.g. Restricted, Phishing, SHAFT" value="${(r.category||'').replaceAll('"','&quot;')}" data-k="category"></td>
         <td>
-          <select data-k="category">
-            ${categories.map(c=>`<option ${r.category===c?"selected":""}>${c}</option>`).join("")}
-          </select>
-        </td>
-        <td>
-          <select data-k="severity">
+          <select data-k="severity" title="low / med / high">
             <option ${r.severity==='low'?'selected':''}>low</option>
             <option ${r.severity==='med'?'selected':''}>med</option>
             <option ${r.severity==='high'?'selected':''}>high</option>
           </select>
         </td>
-        <td><input placeholder="Reason" value="${(r.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><input placeholder="e.g. block risky lender phrasing" value="${(r.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
         <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
       tr.querySelectorAll('input,select').forEach(inp=>{
         inp.addEventListener('change',()=>{
@@ -215,13 +210,13 @@
         <td><input placeholder="e.g. Headway" value="${(l.name||'').replaceAll('"','&quot;')}" data-k="name"></td>
         <td><input placeholder="e.g. Headway Capital, Headway" value="${(l.aliases||[]).join(', ').replaceAll('"','&quot;')}" data-k="aliases"></td>
         <td>
-          <select data-k="status">
+          <select data-k="status" title="allowed / blocked / watch">
             <option ${l.status==='allowed'?'selected':''}>allowed</option>
             <option ${l.status==='blocked'?'selected':''}>blocked</option>
             <option ${l.status==='watch'?'selected':''}>watch</option>
           </select>
         </td>
-        <td><input placeholder="Short context" value="${(l.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><input placeholder="e.g. monitor complaints" value="${(l.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
         <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
       tr.querySelectorAll('input,select').forEach(inp=>{
         inp.addEventListener('change',()=>{
@@ -236,7 +231,7 @@
     $('lendersCount').textContent = state.lenders.length;
   }
 
-  function addRule(){ state.rules.unshift({id:uid(), pattern:'', category:'Restricted', severity:'low', enabled:true, notes:''}); render(); }
+  function addRule(){ state.rules.unshift({id:uid(), pattern:'', category:'', severity:'low', enabled:true, notes:''}); render(); }
   function addLender(){ state.lenders.unshift({id:uid(), name:'', aliases:[], status:'watch', notes:''}); render(); }
 
   async function loadAll(){
@@ -276,3 +271,9 @@
       render(); setStatus('Imported '+arr.length+' '+kind+'.');
     }catch(e){ setStatus('Import failed: '+(e.message||e), false); }
   }
+
+  loadSavedKey();
+  render();
+</script>
+</body>
+</html>
