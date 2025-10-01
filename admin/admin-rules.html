@@ -12,118 +12,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SBG Rules Admin • 10DLC Checker</title>
   <style>
-    :root{ --navy:#1C2D40; --gold:#FDB813; --bg:#F8FAFC; --border:#E2E8F0; --text:#1F2937; }
+    :root{ --brand:#1C2D40; --accent:#FDB813; --bg:#F8FAFC; --border:#E2E8F0; --text:#1F2937; }
     *{box-sizing:border-box}
-    body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; background:var(--bg); color:var(--text)}
-    .wrap{width:min(1400px, 96vw); margin:0 auto; padding:16px}
-    .card{background:#fff; border:1px solid var(--border); border-radius:16px; padding:16px}
-    .title{display:flex; align-items:center; gap:8px; font-weight:700; font-size:20px; color:var(--navy)}
-    .subtitle{color:#475569; margin-top:4px}
+    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text)}
+    .wrap{width:min(1200px, 96vw); margin:0 auto; padding:20px}
+    .card{background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px}
+    .h1{display:flex; align-items:center; gap:10px; font-weight:750; font-size:22px; color:var(--brand)}
+    .h2{font-weight:650; font-size:16px; color:var(--brand)}
+    .muted{color:#475569}
     .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
     input, textarea, select, button{font:inherit}
-    input, textarea{width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:12px}
-    textarea{min-height:96px}
+    input, textarea{width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px}
+    textarea{min-height:110px}
     label{font-size:12px; color:#475569; display:block; margin-bottom:6px}
     .help{font-size:12px; color:#64748B; margin-top:6px}
     .pill{display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; border:1px solid var(--border); background:#fff; font-size:12px; color:#334155}
     .btn{border:none; border-radius:12px; padding:10px 14px; cursor:pointer}
-    .btn-primary{background:var(--navy); color:#fff}
+    .btn-primary{background:var(--brand); color:#fff}
     .btn-primary:hover{opacity:.95}
     .btn-ghost{background:#fff; border:1px solid var(--border)}
-    .btn-gold{background:var(--gold); color:#1C2D40; font-weight:700}
-    .grid{display:grid; gap:16px}
-    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
-    table{width:100%; border-collapse:separate; border-spacing:0 8px}
-    th,td{text-align:left; font-size:14px; padding:8px 10px}
+    .btn-accent{background:var(--accent); color:#1C2D40; font-weight:700}
+    table{width:100%; border-collapse:separate; border-spacing:0 10px}
+    th,td{text-align:left; font-size:14px; padding:8px 10px; vertical-align:top}
     thead th{color:#475569}
     tbody tr{background:#fff; border:1px solid var(--border)}
     tbody tr td:first-child{border-top-left-radius:12px; border-bottom-left-radius:12px}
     tbody tr td:last-child{border-top-right-radius:12px; border-bottom-right-radius:12px}
     .err{outline:2px solid #fca5a5}
     .foot{font-size:12px; color:#64748B; margin-top:24px}
-    .header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
-    .brand{display:flex; align-items:center; gap:8px}
-    .logo{width:28px; height:28px; background:var(--navy); border-radius:8px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:28px; height:28px; background:var(--brand); border-radius:8px}
+    .section{margin-top:16px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="header">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <div class="title">SBG Rules Admin</div>
-          <div class="subtitle">Edit filtering rules & lender list for 10dlccheck.com</div>
-        </div>
+    <div class="brand" style="margin-bottom:12px">
+      <div class="logo"></div>
+      <div>
+        <div class="h1">SBG Rules Admin</div>
+        <div class="muted">Edit filtering rules & lender list for 10dlccheck.com</div>
       </div>
     </div>
 
-    <div class="card" style="margin-bottom:12px">
+    <!-- Controls / Key -->
+    <div class="card">
       <div class="row">
-        <div style="flex:1; min-width:260px">
+        <div style="flex:1; min-width:320px">
           <label>Admin key</label>
           <input id="adminKey" placeholder="Paste the RULES_ADMIN_KEY your admin gave you" />
-          <div class="help">This key is only used to authorize <em>saving</em> changes.</div>
+          <div class="help">Used only when saving changes. Store it locally with “Save key to browser”.</div>
         </div>
+      </div>
+      <div class="row" style="margin-top:10px">
         <button class="btn btn-ghost" onclick="saveKey()">Save key to browser</button>
         <button class="btn btn-primary" onclick="loadAll()">Load current data</button>
-        <button class="btn btn-gold" onclick="saveAll()">Save all changes</button>
+        <button class="btn btn-accent" onclick="saveAll()">Save all changes</button>
       </div>
       <div id="status" style="margin-top:8px; font-size:12px; color:#334155"></div>
     </div>
 
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="title" style="font-size:16px">Rules <span class="pill" id="rulesCount">0</span></div>
-        <div class="help">Examples: <code>loan|cash advance</code> (Pattern), <code>Restricted</code> (Category), <code>low/med/high</code> (Severity). Notes: <em>why this rule exists</em>.</div>
-        <div class="row" style="margin-top:8px">
-          <button class="btn btn-ghost" onclick="addRule()">+ Add rule</button>
-        </div>
-        <div style="overflow:auto; margin-top:8px">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:60px">On</th>
-                <th style="width:36%">Pattern</th>
-                <th style="width:18%">Category</th>
-                <th style="width:110px">Severity</th>
-                <th>Notes</th>
-                <th style="width:80px"></th>
-              </tr>
-            </thead>
-            <tbody id="rulesBody"></tbody>
-          </table>
-        </div>
+    <!-- Rules (stacked section) -->
+    <div class="card section">
+      <div class="row" style="justify-content:space-between; align-items:flex-end">
+        <div class="h2">Rules <span class="pill" id="rulesCount">0</span></div>
+        <button class="btn btn-ghost" onclick="addRule()">+ Add rule</button>
       </div>
-
-      <div class="card">
-        <div class="title" style="font-size:16px">Lenders <span class="pill" id="lendersCount">0</span></div>
-        <div class="help">Examples: Name: <code>Acme Lending</code>. Aliases: <code>Acme, Acme Lending</code>. Status: <code>allowed/blocked/watch</code>. Notes: <em>context for reviewers</em>.</div>
-        <div class="row" style="margin-top:8px">
-          <button class="btn btn-ghost" onclick="addLender()">+ Add lender</button>
-        </div>
-        <div style="overflow:auto; margin-top:8px">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:28%">Name</th>
-                <th>Aliases (comma‑sep)</th>
-                <th style="width:160px">Status</th>
-                <th>Notes</th>
-                <th style="width:80px"></th>
-              </tr>
-            </thead>
-            <tbody id="lendersBody"></tbody>
-          </table>
-        </div>
+      <div class="help" style="margin-top:6px">
+        <b>How to fill:</b> <br/>
+        • <b>Pattern</b> — text or regex. Example: <code>loan|cash advance</code> (matches either).<br/>
+        • <b>Category</b> — e.g. <code>Restricted</code>, <code>Phishing</code>, <code>SHAFT</code>.<br/>
+        • <b>Severity</b> — <code>low</code>, <code>med</code>, or <code>high</code>.<br/>
+        • <b>Notes</b> — explain <em>why</em> this rule exists.
+      </div>
+      <div style="overflow:auto; margin-top:10px">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:70px">On</th>
+              <th style="width:40%">Pattern</th>
+              <th style="width:22%">Category</th>
+              <th style="width:120px">Severity</th>
+              <th>Notes</th>
+              <th style="width:90px"></th>
+            </tr>
+          </thead>
+          <tbody id="rulesBody"></tbody>
+        </table>
       </div>
     </div>
 
-    <div class="card" style="margin-top:12px">
-      <div class="title" style="font-size:16px">Bulk JSON</div>
-      <div class="help">Paste arrays. Import will replace the current list in memory.</div>
-      <div class="grid grid-2" style="margin-top:8px">
-        <div>
+    <!-- Lenders (stacked section) -->
+    <div class="card section">
+      <div class="row" style="justify-content:space-between; align-items:flex-end">
+        <div class="h2">Lenders <span class="pill" id="lendersCount">0</span></div>
+        <button class="btn btn-ghost" onclick="addLender()">+ Add lender</button>
+      </div>
+      <div class="help" style="margin-top:6px">
+        <b>How to fill:</b> <br/>
+        • <b>Name</b> — canonical lender name. Example: <code>Headway</code>.<br/>
+        • <b>Aliases</b> — comma-separated alternates. Example: <code>Headway Capital, Headway</code>.<br/>
+        • <b>Status</b> — <code>allowed</code>, <code>blocked</code>, or <code>watch</code>.<br/>
+        • <b>Notes</b> — short context for reviewers.
+      </div>
+      <div style="overflow:auto; margin-top:10px">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:32%">Name</th>
+              <th>Aliases (comma‑sep)</th>
+              <th style="width:170px">Status</th>
+              <th>Notes</th>
+              <th style="width:90px"></th>
+            </tr>
+          </thead>
+          <tbody id="lendersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bulk JSON -->
+    <div class="card section">
+      <div class="h2">Bulk JSON</div>
+      <div class="help">Paste arrays. Import will <b>replace</b> current values in memory. You can export to download a backup.</div>
+      <div class="row" style="gap:16px; margin-top:10px; flex-wrap:wrap">
+        <div style="flex:1; min-width:420px">
           <label>Paste Rules (array)</label>
           <textarea id="bulkRules" placeholder='[{"id":"r-1","pattern":"loan|cash advance","category":"Restricted","severity":"med","enabled":true,"notes":"block risky loan phrasing"}]'></textarea>
           <div class="row" style="margin-top:8px">
@@ -131,9 +144,9 @@
             <button class="btn btn-ghost" onclick="downloadJSON('rules.json', state.rules)">Export Rules</button>
           </div>
         </div>
-        <div>
+        <div style="flex:1; min-width:420px">
           <label>Paste Lenders (array)</label>
-          <textarea id="bulkLenders" placeholder='[{"id":"l-1","name":"Acme Lending","aliases":["Acme","Acme Lending"],"status":"watch","notes":"monitor complaints"}]'></textarea>
+          <textarea id="bulkLenders" placeholder='[{"id":"l-1","name":"Headway","aliases":["Headway","Headway Capital"],"status":"watch","notes":"monitor complaints"}]'></textarea>
           <div class="row" style="margin-top:8px">
             <button class="btn btn-ghost" onclick="tryImport('lenders')">Import Lenders</button>
             <button class="btn btn-ghost" onclick="downloadJSON('lenders.json', state.lenders)">Export Lenders</button>
@@ -142,7 +155,7 @@
       </div>
     </div>
 
-    <div class="foot">SBG Internal • v1.0 • Navy/Gold theme to match 10dlccheck.com</div>
+    <div class="foot">SBG Internal • v1.0</div>
   </div>
 
 <script>
@@ -181,7 +194,7 @@
       const tr = document.createElement('tr');
       const bad = validateRule(r).length>0; if(bad) tr.classList.add('err');
       tr.innerHTML = `
-        <td><input type="checkbox" ${r.enabled?'checked':''} data-k="enabled" title="Enable/disable this rule"></td>
+        <td><input type="checkbox" ${r.enabled?'checked':''} data-k="enabled" title="Enable/disable"></td>
         <td><input placeholder="e.g. loan|cash advance" value="${(r.pattern||'').replaceAll('"','&quot;')}" data-k="pattern"></td>
         <td><input placeholder="e.g. Restricted, Phishing, SHAFT" value="${(r.category||'').replaceAll('"','&quot;')}" data-k="category"></td>
         <td>
@@ -191,7 +204,7 @@
             <option ${r.severity==='high'?'selected':''}>high</option>
           </select>
         </td>
-        <td><input placeholder="e.g. block risky lender phrasing" value="${(r.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><input placeholder="Why this rule exists" value="${(r.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
         <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
       tr.querySelectorAll('input,select').forEach(inp=>{
         inp.addEventListener('change',()=>{
@@ -210,8 +223,8 @@
       const tr = document.createElement('tr');
       const bad = validateLender(l).length>0; if(bad) tr.classList.add('err');
       tr.innerHTML = `
-        <td><input placeholder="e.g. Acme Lending" value="${(l.name||'').replaceAll('"','&quot;')}" data-k="name"></td>
-        <td><input placeholder="e.g. Acme, Acme Lending" value="${(l.aliases||[]).join(', ').replaceAll('"','&quot;')}" data-k="aliases"></td>
+        <td><input placeholder="e.g. Headway" value="${(l.name||'').replaceAll('"','&quot;')}" data-k="name"></td>
+        <td><input placeholder="e.g. Headway Capital, Headway" value="${(l.aliases||[]).join(', ').replaceAll('"','&quot;')}" data-k="aliases"></td>
         <td>
           <select data-k="status" title="allowed / blocked / watch">
             <option ${l.status==='allowed'?'selected':''}>allowed</option>
@@ -219,7 +232,7 @@
             <option ${l.status==='watch'?'selected':''}>watch</option>
           </select>
         </td>
-        <td><input placeholder="e.g. monitor complaints" value="${(l.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
+        <td><input placeholder="Short context" value="${(l.notes||'').replaceAll('"','&quot;')}" data-k="notes"></td>
         <td><button class="btn btn-ghost" data-del>Delete</button></td>`;
       tr.querySelectorAll('input,select').forEach(inp=>{
         inp.addEventListener('change',()=>{
