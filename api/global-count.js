@@ -9,53 +9,61 @@
  *
  * Optionally change KEY name below.
  */
+
 const KEY = '10dlc_global_total';
 
 export default async function handler(req, res) {
   const url = process.env.KV_REST_API_URL;
   const token = process.env.KV_REST_API_TOKEN;
 
-  // If KV isn’t configured, return null (frontend will fallback to its estimate)
+  const noStore = () => {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  };
+
   if (!url || !token) {
-    if (req.method === 'POST') {
-      // “Pretend” success so UI isn’t blocked; still return null total
-      return res.status(200).json({ ok: true, total: null });
-    }
-    return res.status(200).json({ total: null });
+    noStore();
+    // Still respond 200 so UI doesn’t break; return null so frontend can fall back.
+    return res.status(200).json({ total: null, note: "KV not configured" });
   }
 
   try {
     if (req.method === 'POST') {
-      // Increment global count
-      const incrRes = await fetch(`${url}/INCR/${encodeURIComponent(KEY)}`, {
+      // Atomic increment
+      const r = await fetch(`${url}/INCR/${encodeURIComponent(KEY)}`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
       });
-      const data = await incrRes.json();
-      // Upstash returns { result: <number> }
-      return res.status(200).json({ ok: true, total: data.result ?? null });
+      const j = await r.json();
+      noStore();
+      return res.status(200).json({ ok: true, total: j?.result != null ? Number(j.result) : null });
     }
 
-    // GET current value
-    const getRes = await fetch(`${url}/GET/${encodeURIComponent(KEY)}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await getRes.json();
-    // If key doesn’t exist yet, initialize to 0
-    let total = data.result != null ? Number(data.result) : 0;
-
-    // Lazy init if missing
-    if (data.result == null) {
-      const setRes = await fetch(`${url}/SET/${encodeURIComponent(KEY)}/${0}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` }
+    if (req.method === 'GET') {
+      const r = await fetch(`${url}/GET/${encodeURIComponent(KEY)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
       });
-      await setRes.json().catch(() => {});
+      const j = await r.json();
+      let total = j?.result != null ? Number(j.result) : 0;
+
+      // Lazily initialize if missing
+      if (j?.result == null) {
+        await fetch(`${url}/SET/${encodeURIComponent(KEY)}/0`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          cache: 'no-store'
+        }).catch(() => {});
+      }
+
+      noStore();
+      return res.status(200).json({ total });
     }
 
-    return res.status(200).json({ total });
+    noStore();
+    return res.status(405).end();
   } catch (e) {
-    // On any error, don’t break the UI — return null so frontend keeps estimate
-    return res.status(200).json({ total: null, error: true });
+    noStore();
+    return res.status(200).json({ total: null, error: true, message: e?.message || String(e) });
   }
 }
