@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>10DLC Message Compliance Checker | Free SMS Validator</title>
-    <meta name="description" content="Free 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content, and best practices to avoid filtering." />
+    <meta name="description" content="Free 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content and best practices to avoid filtering." />
     <link rel="canonical" href="https://10dlccheck.com/" />
     <meta name="robots" content="index,follow" />
     <!-- Twitter Card -->
@@ -617,18 +617,42 @@
         gap: 12px;
       }
 
-      .card {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        background: #f9fafb;
-        padding: 12px;
-      }
+     .card {
+		  border: 1px solid #e5e7eb;
+		  border-radius: 12px;
+		  background: #f9fafb;
+		  padding: 12px;
+		}
 
-      .card h5 {
-        margin-bottom: 6px;
-        font-size: .98rem;
-        color: #111827;
-      }
+		.card h5 {
+		  margin-bottom: 6px;
+		  font-size: .98rem;
+		  color: #111827;
+		}
+
+		/* Mobile adjustments */
+		@media (max-width: 480px) {
+		  .card {
+			padding: 10px;        /* slightly tighter on small screens */
+		  }
+
+		  .card h5 {
+			font-size: .9rem;     /* scale heading down a touch */
+		  }
+		}
+
+
+	/* Ensure cards look good on small screens */
+	@media (max-width: 480px) {
+	  .card {
+		padding: 12px;                  /* slightly tighter */
+		font-size: .9rem;
+	  }
+	  .card h5 {
+		font-size: .95rem;
+	  }
+	}
+
 
       .sample {
         white-space: pre-wrap;
@@ -790,7 +814,7 @@
               <strong>Professional tone:</strong> Avoid profanity or pushy sales copy.
             </li>
             <li>
-              <strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing, and number rotation.
+              <strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing and number rotation.
             </li>
           </ul>
           <h4 id="g2">🚫 Restricted Content Categories</h4>
