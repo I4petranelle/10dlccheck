@@ -206,18 +206,29 @@
       }
 
       .verify-bar {
-        margin-top: 10px;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 2px solid #1C2D40;
-        background: #f0f6fa;
-        /* light blue tint background */
-        border-radius: 10px;
-        padding: 8px 12px;
-        box-shadow: 0 2px 6px rgba(28, 45, 64, 0.1);
-      }
+	  margin-top: 10px;
+	  margin-bottom: 16px;
+	  display: flex;
+	  flex-wrap: wrap;              
+	  align-items: center;
+	  gap: 10px;
+	  width: 100%;                  
+	  max-width: 100%;              
+	  box-sizing: border-box;       
+	  border: 2px solid #1c2D40;
+	  background: #f0f6fa;
+	  border-radius: 10px;
+	  padding: 8px 12px;
+	  box-shadow: 0 2px 6px rgba(28, 45, 64, 0.1);
+	}
+
+		.verify-label {
+		  font-size: .95rem;
+		  color: #1C2D40;
+		  font-weight: 700;
+		  white-space: normal;          
+		}
+
 
       .verify-label {
         font-size: .95rem;
