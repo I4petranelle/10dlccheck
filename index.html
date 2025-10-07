@@ -67,7 +67,7 @@
           "name": "What do I need to register for 10DLC?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "You must provide your business name, EIN/Tax ID, website, campaign details, sample messages, and opt-in/opt-out policies. The Campaign Registry vets all submissions."
+            "text": "You must provide your business name, EIN/Tax ID, website, campaign details, sample messages and opt-in/opt-out policies. The Campaign Registry vets all submissions."
           }
         }, {
           "@type": "Question",
@@ -696,6 +696,15 @@
         color: #374151;
         text-decoration: underline;
       }
+	  
+	 
+/* Keep mobile friendly */
+@media (max-width: 480px) {
+  .results { padding: 18px; }
+  .issue-list li { margin-bottom: 12px; padding: 14px; }
+}
+
+
     </style>
   </head>
   <body>
@@ -847,10 +856,12 @@
       </div>
     </div>
     <footer>
-      <div class="foot-line">
-        <div class="foot-small">Powered by <strong>A Problem Solver</strong>
-        </div>
-      </div>
+       <div class="foot-line">
+	  <div class="foot-small">Powered by <strong>A Problem Solver</strong> •  10dlccheck.com</div>
+	  <div class="foot-small">
+    <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a>
+	</div>
+</div>
     </footer>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
