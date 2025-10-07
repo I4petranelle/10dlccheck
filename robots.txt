@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /sbgfunding
 Allow: /
 Sitemap: https://10dlccheck.com/sitemap.xml
 
