@@ -1,5 +1,5 @@
 // ===============================
-// apps.js — 10DLC Check (Website)
+// app.js — 10DLC Check (Website)
 // ===============================
 
 // -------------------------------
@@ -97,6 +97,64 @@ function postIncrementGlobal() {
       animateCount(gEl, current, data.total, 500);
     })
     .catch(function(){ /* ignore if API not configured */ });
+}
+
+// -------------------------------
+// Suggestions endpoint (Cloudflare Worker)
+// -------------------------------
+const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/"; // <-- your worker URL
+
+function ensureSuggestionsContainer() {
+  let box = document.getElementById("suggestions");
+  if (!box) {
+    const resultsDiv = document.getElementById("results");
+    if (resultsDiv && resultsDiv.parentNode) {
+      const h = document.createElement("h3");
+      h.textContent = "Suggested Texts";
+      h.className = "mt-3";
+      box = document.createElement("div");
+      box.id = "suggestions";
+      box.className = "suggestions";
+      resultsDiv.parentNode.insertBefore(h, resultsDiv.nextSibling);
+      resultsDiv.parentNode.insertBefore(box, h.nextSibling);
+    }
+  }
+  return box;
+}
+
+async function getSuggestions(userMessage) {
+  try {
+    console.log("[suggest] calling", SUGGEST_URL, userMessage);
+    const res = await fetch(SUGGEST_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        message: userMessage,
+        brand: "10DLC Check",
+        links: { tnc: "https://10dlccheck.com/terms.html" }
+      })
+    });
+    const data = await res.json();
+    console.log("[suggest] response", data);
+    showSuggestions(data);
+  } catch (err) {
+    console.error("[suggest] error", err);
+  }
+}
+
+function showSuggestions(data) {
+  const box = ensureSuggestionsContainer();
+  if (!box) return;
+  const list = (data && data.suggestions) ? data.suggestions : [];
+  box.innerHTML = list.map(function(s){
+    return (
+      '<div class="suggestion">' +
+        '<p><strong>' + s.label + '</strong></p>' +
+        '<textarea readonly>' + s.text + '</textarea>' +
+        '<button onclick="navigator.clipboard.writeText(\'' + s.text.replace(/'/g,"\\'") + '\')">Copy</button>' +
+      '</div>'
+    );
+  }).join("");
 }
 
 // -------------------------------
@@ -255,7 +313,8 @@ function generateMathQuestion() {
 }
 
 // -------------------------------
-/* Utilities */
+// Utilities
+// -------------------------------
 function safeWordCount(text) {
   var t = text.trim();
   return t ? t.split(/\s+/).length : 0;
@@ -264,7 +323,6 @@ function hasHttpUrl(text) { return /https?:\/\//i.test(text); }
 
 // -------------------------------
 // Category metadata (name + impact labels shown in UI)
-// Only labels; detection comes from RULES keys present
 // -------------------------------
 var CATEGORY_META = {
   highRiskFinancial: { name: 'High-Risk Financial Services', impact: 'RESTRICTED - May require carrier pre-approval and enhanced monitoring' },
@@ -308,7 +366,7 @@ function performComplianceCheck(message) {
       suggestion: rules.characterLimit.suggestion || 'Shorten your message to avoid splitting'
     });
   }
-  if (rules.veryLongSms && message.length > (rules.length?.concatLimit || rules.veryLongSms.limit || 918)) {
+  if (rules.veryLongSms && message.length > (rules.length && rules.length.concatLimit ? rules.length.concatLimit : (rules.veryLongSms.limit || 918))) {
     issues.push({
       severity: rules.veryLongSms.severity || 'medium',
       message: rules.veryLongSms.message || 'Message is very long for SMS concatenation.',
@@ -370,7 +428,7 @@ function performComplianceCheck(message) {
 }
 
 // -------------------------------
-// Results rendering (unchanged-ish, now also shows tips)
+// Results rendering (also shows tips)
 // -------------------------------
 function displayResults(analysis) {
   var resultsDiv = document.getElementById('results');
@@ -430,37 +488,6 @@ function displayResults(analysis) {
   } else if (!analysis.detectedCategories.length) {
     html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
   }
-  async function getSuggestions(userMessage) {
-  try {
-    const res = await fetch("https://<your-worker>.workers.dev/suggest", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        message: userMessage,
-        brand: "10DLC Check",
-        links: { tnc: "https://10dlccheck.com/terms.html" }
-      }),
-    });
-
-    const data = await res.json();
-    showSuggestions(data);
-  } catch (err) {
-    console.error("Suggestion fetch failed:", err);
-  }
-}
-
-function showSuggestions(data) {
-  const box = document.querySelector("#suggestions");
-  if (!box) return;
-  box.innerHTML = (data.suggestions || []).map(s => `
-    <div class="suggestion">
-      <p><strong>${s.label}</strong></p>
-      <textarea readonly>${s.text}</textarea>
-      <button onclick="navigator.clipboard.writeText('${s.text.replace(/'/g, "\\'")}')">Copy</button>
-    </div>
-  `).join("");
-}
-
 
   // Tips (advice)
   if (analysis.tips && analysis.tips.length) {
@@ -533,6 +560,9 @@ document.addEventListener('DOMContentLoaded', async function(){
   });
 });
 
+// -------------------------------
+// Analyze -> render -> suggestions -> metrics
+// -------------------------------
 function analyzeMessage(){
   var messageText = (document.getElementById('message').value || '').trim();
   if (!messageText) { alert('Please enter a message to analyze.'); return; }
@@ -558,13 +588,16 @@ function analyzeMessage(){
 
   setTimeout(function(){
     try {
+      // compliance
       var analysis = performComplianceCheck(messageText);
       displayResults(analysis);
+
+      // suggestions
+      getSuggestions(messageText);
 
       // local counter
       var next = getLocalCount() + 1;
       setLocalCount(next);
-      // animate local display
       var lEl = document.getElementById('localCount');
       if (lEl) animateCount(lEl, Number(lEl.textContent)||0, next, 400);
 

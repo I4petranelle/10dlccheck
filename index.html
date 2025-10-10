@@ -697,31 +697,44 @@
         text-decoration: underline;
       }
 	  .suggestions {
-		  margin-top: 16px;
-		  padding: 12px;
-		  border-radius: 10px;
-		  background: #f9fafb;
-		  border: 1px solid #e5e7eb;
-		}
-		.suggestion {
-		  margin-bottom: 10px;
-		}
-		.suggestion textarea {
-		  width: 100%;
-		  height: 60px;
-		  border: 1px solid #cbd5e1;
-		  border-radius: 6px;
-		  padding: 6px;
-		  margin-bottom: 6px;
-		}
-		.suggestion button {
-		  background: #58AEDD;
-		  color: #fff;
-		  border: none;
-		  padding: 6px 10px;
-		  border-radius: 6px;
-		  cursor: pointer;
-		}
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.suggestion {
+  margin-bottom: 14px;
+}
+
+.suggestion textarea {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px;
+  resize: none;
+  background: #fff;
+  font-family: system-ui, sans-serif;
+}
+
+.suggestion button {
+  background: #58AEDD; /* your Sky Blue accent */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.suggestion button:hover {
+  background: #3795c5;
+}
+
 
 	  
 	 
