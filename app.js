@@ -104,59 +104,34 @@ function postIncrementGlobal() {
 // -------------------------------
 const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/suggest"; // <-- your worker URL
 
-function ensureSuggestionsContainer() {
-  let box = document.getElementById("suggestions");
-  if (!box) {
-    const resultsDiv = document.getElementById("results");
-    if (resultsDiv && resultsDiv.parentNode) {
-      const h = document.createElement("h3");
-      h.textContent = "Suggested Texts";
-      h.className = "mt-3";
-      box = document.createElement("div");
-      box.id = "suggestions";
-      box.className = "suggestions";
-      resultsDiv.parentNode.insertBefore(h, resultsDiv.nextSibling);
-      resultsDiv.parentNode.insertBefore(box, h.nextSibling);
-    }
-  }
-  return box;
-}
 
 async function getSuggestions(userMessage) {
   try {
-    console.log("[suggest] calling", SUGGEST_URL, userMessage);
     const res = await fetch(SUGGEST_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: userMessage,
-        brand: "10DLC Check",
-        links: { tnc: "https://10dlccheck.com/terms.html" }
-      })
+      body: JSON.stringify({ brand: "10DLC Check", message: userMessage })
     });
-    if (!res.ok) throw new Error("Worker error " + res.status);
     const data = await res.json();
-    console.log("[suggest] response", data);
     showSuggestions(data);
-  } catch (err) {
-    console.error("[suggest] error", err);
+  } catch (e) {
+    console.error("[suggest] error", e);
   }
 }
 
 
 function showSuggestions(data) {
-  const box = ensureSuggestionsContainer();
+  const box = document.querySelector("#suggestions");
   if (!box) return;
-  const list = (data && data.suggestions) ? data.suggestions : [];
-  box.innerHTML = list.map(function(s){
-    return (
-      '<div class="suggestion">' +
-        '<p><strong>' + s.label + '</strong></p>' +
-        '<textarea readonly>' + s.text + '</textarea>' +
-        '<button onclick="navigator.clipboard.writeText(\'' + s.text.replace(/'/g,"\\'") + '\')">Copy</button>' +
-      '</div>'
-    );
-  }).join("");
+  const s = data?.suggestions?.[0];
+  if (!s) { box.innerHTML = ""; return; }
+  box.innerHTML = `
+    <div class="suggestion">
+      <p><strong>${s.label || "Suggested message"}</strong></p>
+      <textarea readonly>${s.text || ""}</textarea>
+      <button onclick="navigator.clipboard.writeText(\`${(s.text||"").replace(/`/g,"\\`")}\`)">Copy</button>
+    </div>
+  `;
 }
 
 // -------------------------------
