@@ -696,6 +696,33 @@
         color: #374151;
         text-decoration: underline;
       }
+	  .suggestions {
+		  margin-top: 16px;
+		  padding: 12px;
+		  border-radius: 10px;
+		  background: #f9fafb;
+		  border: 1px solid #e5e7eb;
+		}
+		.suggestion {
+		  margin-bottom: 10px;
+		}
+		.suggestion textarea {
+		  width: 100%;
+		  height: 60px;
+		  border: 1px solid #cbd5e1;
+		  border-radius: 6px;
+		  padding: 6px;
+		  margin-bottom: 6px;
+		}
+		.suggestion button {
+		  background: #58AEDD;
+		  color: #fff;
+		  border: none;
+		  padding: 6px 10px;
+		  border-radius: 6px;
+		  cursor: pointer;
+		}
+
 	  
 	 
 /* Keep mobile friendly */
@@ -752,6 +779,7 @@
           <p>Analyzing message...</p>
         </div>
         <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+		<div id="suggestions" class="suggestions"></div>
         <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
         <section class="panel" aria-labelledby="quickRef">
           <h4 id="quickRef">Quick Reference Cheat Sheet</h4>

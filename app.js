@@ -430,6 +430,37 @@ function displayResults(analysis) {
   } else if (!analysis.detectedCategories.length) {
     html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
   }
+  async function getSuggestions(userMessage) {
+  try {
+    const res = await fetch("https://<your-worker>.workers.dev/suggest", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        message: userMessage,
+        brand: "10DLC Check",
+        links: { tnc: "https://10dlccheck.com/terms.html" }
+      }),
+    });
+
+    const data = await res.json();
+    showSuggestions(data);
+  } catch (err) {
+    console.error("Suggestion fetch failed:", err);
+  }
+}
+
+function showSuggestions(data) {
+  const box = document.querySelector("#suggestions");
+  if (!box) return;
+  box.innerHTML = (data.suggestions || []).map(s => `
+    <div class="suggestion">
+      <p><strong>${s.label}</strong></p>
+      <textarea readonly>${s.text}</textarea>
+      <button onclick="navigator.clipboard.writeText('${s.text.replace(/'/g, "\\'")}')">Copy</button>
+    </div>
+  `).join("");
+}
+
 
   // Tips (advice)
   if (analysis.tips && analysis.tips.length) {
