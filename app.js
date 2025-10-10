@@ -102,7 +102,7 @@ function postIncrementGlobal() {
 // -------------------------------
 // Suggestions endpoint (Cloudflare Worker)
 // -------------------------------
-const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/"; // <-- your worker URL
+const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/suggest"; // <-- your worker URL
 
 function ensureSuggestionsContainer() {
   let box = document.getElementById("suggestions");
@@ -127,13 +127,14 @@ async function getSuggestions(userMessage) {
     console.log("[suggest] calling", SUGGEST_URL, userMessage);
     const res = await fetch(SUGGEST_URL, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: userMessage,
         brand: "10DLC Check",
         links: { tnc: "https://10dlccheck.com/terms.html" }
       })
     });
+    if (!res.ok) throw new Error("Worker error " + res.status);
     const data = await res.json();
     console.log("[suggest] response", data);
     showSuggestions(data);
@@ -141,6 +142,7 @@ async function getSuggestions(userMessage) {
     console.error("[suggest] error", err);
   }
 }
+
 
 function showSuggestions(data) {
   const box = ensureSuggestionsContainer();
