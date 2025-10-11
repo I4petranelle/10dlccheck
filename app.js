@@ -131,19 +131,25 @@ function loadRules(){
 // -------------------------------
 function performComplianceCheck(message){
   var rules = RULES || complianceRulesFallback;
-  var lower = String(message||'').toLowerCase();
+  // normalize to improve matches (curly quotes, excess spaces)
+  var lower = String(message||'')
+    .toLowerCase()
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+
   var issues = [];
   var detectedCategories = [];
 
   // Length checks
-  if (rules.characterLimit && message.length > (rules.characterLimit.limit || 160)){
+  if (rules.characterLimit && lower.length > (rules.characterLimit.limit || 160)){
     issues.push({
       severity: rules.characterLimit.severity || 'low',
-      message: (rules.characterLimit.message || 'Message exceeds 160 characters') + ' (' + message.length + ' characters)',
+      message: (rules.characterLimit.message || 'Message exceeds 160 characters') + ' (' + lower.length + ' characters)',
       suggestion: rules.characterLimit.suggestion || 'Shorten your message to avoid splitting'
     });
   }
-  if (rules.veryLongSms && message.length > (rules.length && rules.length.concatLimit ? rules.length.concatLimit : (rules.veryLongSms.limit || 918))){
+  if (rules.veryLongSms && lower.length > (rules.length && rules.length.concatLimit ? rules.length.concatLimit : (rules.veryLongSms.limit || 918))){
     issues.push({
       severity: rules.veryLongSms.severity || 'medium',
       message: rules.veryLongSms.message || 'Message is very long for SMS concatenation.',
@@ -160,7 +166,7 @@ function performComplianceCheck(message){
     // keyword matches
     if (Array.isArray(rule.keywords)){
       found = rule.keywords.filter(function(k){
-        var esc = k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+        var esc = String(k||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
         return new RegExp('\\b'+esc+'\\b','i').test(lower);
       });
     }
@@ -182,7 +188,7 @@ function performComplianceCheck(message){
   var tips = [];
   var mode = 'web';
   if (rules.advice){
-    if (!hasHttpUrl(message) && rules.advice.linkTip) tips.push('🔗 ' + rules.advice.linkTip);
+    if (!hasHttpUrl(lower) && rules.advice.linkTip) tips.push('🔗 ' + rules.advice.linkTip);
     var exclude = Array.isArray(rules.advice.optOutTipExcludeModes) ? rules.advice.optOutTipExcludeModes : [];
     if (rules.advice.optOutTip && exclude.indexOf(mode) === -1){
       tips.push('📩 ' + rules.advice.optOutTip);
@@ -195,15 +201,15 @@ function performComplianceCheck(message){
     isCompliant: highCount === 0,
     issues: issues,
     tips: tips,
-    messageLength: message.length,
-    wordCount: safeWordCount(message),
+    messageLength: lower.length,
+    wordCount: safeWordCount(lower),
     restrictedContent: highCount,
     detectedCategories: detectedCategories
   };
 }
 
 // -------------------------------
-/* Results renderer (clean, no duplication) */
+// Results renderer (clean, no duplication)
 // -------------------------------
 function displayResults(analysis){
   const root = document.getElementById('results');
@@ -464,8 +470,8 @@ function analyzeMessage(){
       // Render consolidated results
       displayResults(analysis);
 
-      // suggestions (optional legacy slot—safe to keep as-is or remove)
-      getSuggestions(messageText); // (not required)
+      // suggestions (Cloudflare Worker)
+      getSuggestions(messageText);
 
       // local counter
       var next = getLocalCount() + 1;
@@ -521,18 +527,15 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
 });
+
 // === Cloudflare Worker connection ===
 const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/suggest";
 
 async function getSuggestions(userMessage) {
   try {
-    // Show the suggestion box with a loading state first
-    const box = document.getElementById("suggestionBox");
     const ta = document.getElementById("bestSuggestion");
-    if (box) box.style.display = "block";
-    if (ta) ta.value = "⏳ Generating optimized message…";
+    if (ta && !ta.value.trim()) ta.value = "Waiting for suggestion…";
 
-    // Send request to your Cloudflare Worker
     const res = await fetch(SUGGEST_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -549,35 +552,13 @@ async function getSuggestions(userMessage) {
 }
 
 function showSuggestions(data) {
-  const s = data?.suggestions?.[0];
+  const s = data && data.suggestions && data.suggestions[0];
   const ta = document.getElementById("bestSuggestion");
-  const box = document.getElementById("suggestionBox");
-
-  if (!s || !ta) return;
-
-  ta.value = s.text?.trim() || "⚠️ No suggestion returned.";
-  if (box) box.style.display = "block";
-
-  // Copy and Replace button handlers
-  const copyBtn = document.getElementById("copySuggestion");
-  const replaceBtn = document.getElementById("replaceMessage");
-
-  if (copyBtn) {
-    copyBtn.onclick = () => {
-      navigator.clipboard.writeText(ta.value);
-      copyBtn.textContent = "✅ Copied!";
-      setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
-    };
+  if (!ta) return;
+  if (s && s.text) {
+    ta.value = s.text.trim();
+  } else if (!ta.value.trim()) {
+    ta.value = "⚠️ No suggestion returned.";
   }
-
-  if (replaceBtn) {
-    replaceBtn.onclick = () => {
-      const msg = document.getElementById("message");
-      if (msg) {
-        msg.value = ta.value;
-        replaceBtn.textContent = "✅ Replaced!";
-        setTimeout(() => (replaceBtn.textContent = "Replace message with this"), 1500);
-      }
-    };
-  }
+  // Buttons are already wired in displayResults(); no duplicate handlers here.
 }
