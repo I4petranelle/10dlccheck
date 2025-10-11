@@ -1,4 +1,4 @@
-// /partials/rules.js
+// /compliance/rules.js
 window.COMPLIANCE_RULES = {
   "version": "2025.09.29-2",
   "lastUpdated": "2025-09-29",

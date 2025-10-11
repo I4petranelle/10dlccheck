@@ -68,7 +68,8 @@ function tryFetchRealGlobal(){
 }
 
 function postIncrementGlobal(){
-  fetch('/api/increment', { method:'POST' }).catch(function(){});
+  // Use the existing global-count endpoint to increment the global counter.
+  fetch('/api/global-count', { method:'POST' }).catch(function(){});
 }
 
 // -------------------------------
@@ -105,25 +106,33 @@ function buildCategoryList(rules){
 // -------------------------------
 // Load server-side rules with fallback
 // -------------------------------
-var RULES = null;
 
-function loadRules(){
-  // cache-buster to avoid stale copies while you iterate
-  return fetch('/partials/rules.js?ts=' + Date.now(), { cache:'no-store' })
-    .then(function(r){
-      if(!r.ok) throw new Error('rules.js not found');
-      return r.text();                // <-- get JS source, not JSON
-    })
-    .then(function(code){
-      (0, eval)(code);                // rules.js must set window.COMPLIANCE_RULES = { ... }
-      if (window && window.COMPLIANCE_RULES) return window.COMPLIANCE_RULES;
-      throw new Error('rules.js did not set window.COMPLIANCE_RULES');
-    })
-    .catch(function(err){
-      console.warn('[rules] Using fallback due to:', err);
-      return complianceRulesFallback; // your built-in fallback
-    });
+const RULES = window?.COMPLIANCE_RULES || null;
+
+function performComplianceCheck(message) {
+  if (!RULES) {
+    return { status: "warn", issues: ["⚠️ Rules not loaded"], tips: [] };
+  }
+
+  const lower = message.toLowerCase();
+  const issues = [];
+  const tips = [];
+
+  // Example check
+  const softLimit = RULES.length?.softLimit ?? 160;
+  const concatLimit = RULES.length?.concatLimit ?? 918;
+
+  if (message.length > concatLimit) {
+    issues.push(RULES.veryLongSms.message);
+  } else if (message.length > softLimit) {
+    issues.push(RULES.characterLimit.message);
+  }
+
+  // Add keyword scans here...
+
+  return { status: issues.length ? "warn" : "pass", issues, tips };
 }
+
 
 
 // -------------------------------
@@ -360,7 +369,7 @@ function displayResults(analysis){
 }
 
 // -------------------------------
-// Fallback rules (used if /partials/rules.js fails)
+// Fallback rules (used if /compliance/rules.js fails)
 // -------------------------------
 var complianceRulesFallback = {
   version: "fallback",

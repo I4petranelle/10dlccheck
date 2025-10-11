@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="640" viewBox="0 0 1100 640" style="font-family:Segoe UI, Roboto, Arial, sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+    </marker>
+    <style>
+      .box { fill:#ffffff; stroke:#2b3742; stroke-width:1.5; rx:10; ry:10; }
+      .cluster { fill:#f6f8fb; stroke:#dbe6f2; stroke-width:1.2; rx:14; ry:14; }
+      .title { font-size:14px; font-weight:700; fill:#0f1724; }
+      .label { font-size:13px; fill:#0f1724; }
+      .small { font-size:12px; fill:#334155; }
+      .note { font-size:11px; fill:#475569; }
+      .arrow { stroke:#2b3742; stroke-width:1.4; fill:none; marker-end:url(#arrow); }
+    </style>
+  </defs>
+
+  <!-- Frontend cluster -->
+  <rect x="28" y="30" width="440" height="260" class="cluster" />
+  <text x="46" y="56" class="title">Frontend</text>
+  <!-- boxes inside frontend -->
+  <rect x="46" y="80" width="200" height="46" class="box" />
+  <text x="62" y="108" class="label">index.html</text>
+  <text x="62" y="122" class="small">loads UI & DOM</text>
+
+  <rect x="46" y="140" width="200" height="46" class="box" />
+  <text x="62" y="168" class="label">app.js</text>
+  <text x="62" y="182" class="small">client logic, checks, UI</text>
+
+  <rect x="262" y="140" width="200" height="46" class="box" />
+  <text x="278" y="168" class="label">compliance/rules.js</text>
+  <text x="278" y="182" class="small">client-side rules (eval)</text>
+
+  <!-- Admin cluster -->
+  <rect x="620" y="22" width="440" height="180" class="cluster" />
+  <text x="638" y="48" class="title">Admin</text>
+  <rect x="644" y="76" width="200" height="46" class="box" />
+  <text x="662" y="104" class="label">admin/admin-rules.html</text>
+  <text x="662" y="118" class="small">editor UI</text>
+  <rect x="864" y="76" width="180" height="46" class="box" />
+  <text x="880" y="104" class="label">api/sbg-rules.js</text>
+  <text x="880" y="118" class="small">GET / PUT (in-memory)</text>
+
+  <!-- API cluster -->
+  <rect x="620" y="240" width="440" height="320" class="cluster" />
+  <text x="638" y="270" class="title">API & Integrations</text>
+
+  <rect x="644" y="300" width="200" height="46" class="box" />
+  <text x="662" y="328" class="label">api/check.js</text>
+  <text x="662" y="342" class="small">POST analyzer</text>
+
+  <rect x="864" y="300" width="200" height="46" class="box" />
+  <text x="880" y="328" class="label">api/global-count.js</text>
+  <text x="880" y="342" class="small">GET/POST counter (KV)</text>
+
+  <rect x="644" y="362" width="200" height="46" class="box" />
+  <text x="662" y="390" class="label">api/log.js</text>
+  <text x="662" y="404" class="small">POST logs → Slack/console</text>
+
+  <rect x="864" y="362" width="200" height="46" class="box" />
+  <text x="880" y="390" class="label">api/sbg-rules.js</text>
+  <text x="880" y="404" class="small">admin store</text>
+
+  <!-- External services -->
+  <rect x="46" y="340" width="240" height="38" class="box" />
+  <text x="62" y="365" class="label">Cloudflare worker (suggest)</text>
+
+  <rect x="46" y="390" width="240" height="38" class="box" />
+  <text x="62" y="415" class="label">Upstash (Redis / KV)</text>
+  <text x="62" y="429" class="small">optional; used by api/check & global-count</text>
+
+  <rect x="46" y="450" width="240" height="38" class="box" />
+  <text x="62" y="475" class="label">Slack webhook</text>
+  <text x="62" y="489" class="small">optional; used by api/log.js</text>
+
+  <!-- Arrows: frontend to rules.js -->
+  <path class="arrow" d="M 246 163 L 262 163" />
+  <path class="arrow" d="M 246 163 L 262 163" />
+
+  <!-- app.js to global-count (GET/POST) -->
+  <path class="arrow" d="M 246 195 L 644 328" />
+  <!-- app.js to Cloudflare worker -->
+  <path class="arrow" d="M 246 195 L 286 340" />
+
+  <!-- admin UI to api/sbg-rules -->
+  <path class="arrow" d="M 844 98 L 864 98" />
+
+  <!-- api connections -->
+  <path class="arrow" d="M 744 322 L 744 322" />
+
+  <!-- api/check to Upstash -->
+  <path class="arrow" d="M 744 324 L 286 416" />
+
+  <!-- global-count to Upstash -->
+  <path class="arrow" d="M 964 328 L 286 416" />
+
+  <!-- log to Slack -->
+  <path class="arrow" d="M 744 392 L 286 468" />
+
+  <!-- labels for clusters -->
+  <text x="46" y="34" class="note">(client-side)</text>
+  <text x="638" y="26" class="note">(admin console)</text>
+  <text x="638" y="244" class="note">(serverless API)</text>
+
+  <!-- Legend -->
+  <rect x="620" y="580" width="440" height="44" rx="8" ry="8" fill="#fff" stroke="#e6eef8" />
+  <text x="640" y="603" class="small">Legend: solid boxes = files / endpoints · clusters = logical groups · arrows = request/flow</text>
+</svg>
