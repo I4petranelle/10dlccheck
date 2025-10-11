@@ -793,7 +793,73 @@ footer {
           <div class="spinner"></div>
           <p>Analyzing message...</p>
         </div>
-        <div id="results" role="status" aria-live="polite" style="display:none;"></div>
+        <div id="results" class="results" role="status" aria-live="polite" style="display:none;">
+  <!-- header -->
+  <div class="res-head">
+    <span id="resStatus" class="res-status pass" aria-live="polite">✅ Compliant</span>
+    <div class="score-wrap" title="Overall compliance score">
+      <div id="scoreRing" class="score-ring" style="--score:90; --scoreColor:#10b981;">
+        <span id="scoreNum" class="score-num">90</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- quick stats -->
+  <div class="quick-stats" id="quickStats">
+    <span class="qpill"><span class="dot"></span> <strong id="qsChars">0</strong> chars</span>
+    <span class="qpill"><span class="dot"></span> ~<strong id="qsSegments">1</strong> SMS segment</span>
+    <span class="qpill" id="qsBrand"><span class="dot"></span> Brand detected</span>
+    <span class="qpill" id="qsOptOut"><span class="dot"></span> Opt-out present</span>
+    <span class="qpill" id="qsLinks"><span class="dot"></span> Link OK</span>
+  </div>
+
+  <!-- tabs -->
+  <nav class="res-tabs" role="tablist" aria-label="Result sections">
+    <button class="tab-btn" role="tab" aria-selected="true" data-tab="summary">Summary</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="issues">Issues</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="categories">Categories</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="suggestions">Suggestions</button>
+  </nav>
+
+  <div class="res-body">
+    <!-- Summary -->
+    <section id="pane-summary" class="res-pane active" role="tabpanel" aria-labelledby="summary">
+      <div class="sum-card">
+        <p id="sumLine">Your message appears compliant with best practices. Minor improvements suggested below.</p>
+        <div class="sum-grid" style="margin-top:12px;">
+          <div class="kv"><h6>Branding</h6><p id="kvBrand">Detected (ExampleCo)</p></div>
+          <div class="kv"><h6>Opt-out</h6><p id="kvOptout">Present (STOP)</p></div>
+          <div class="kv"><h6>Consent Fit</h6><p id="kvConsent">Aligned</p></div>
+          <div class="kv"><h6>High-Risk Terms</h6><p id="kvRisk">None</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Issues -->
+    <section id="pane-issues" class="res-pane" role="tabpanel" aria-labelledby="issues">
+      <ul id="issueList" class="issue-list">
+        <!-- JS will inject .issue items -->
+      </ul>
+    </section>
+
+    <!-- Categories -->
+    <section id="pane-categories" class="res-pane" role="tabpanel" aria-labelledby="categories">
+      <div class="cat-row" id="catBadges"></div>
+      <div id="catList" class="cat-list" style="display:none; margin-top:12px;"></div>
+    </section>
+
+    <!-- Suggestions -->
+    <section id="pane-suggestions" class="res-pane" role="tabpanel" aria-labelledby="suggestions">
+      <div class="sug-box">
+        <textarea id="bestSuggestion" class="sug-text" placeholder="A cleaned, compliant rewrite will appear here."></textarea>
+        <div class="sug-actions">
+          <button id="copySuggestion" class="btn sky">Copy</button>
+          <button id="useSuggestion" class="btn primary">Replace message with this</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
 		<div id="suggestions" class="suggestions"></div>
         <!-- Quick Reference Cheat Sheet (battle-tested patterns) -->
         <section class="panel" aria-labelledby="quickRef">

@@ -581,9 +581,64 @@ function analyzeMessage(){
     try {
       // compliance
       var analysis = performComplianceCheck(messageText);
-      displayResults(analysis);
 
-      // suggestions
+      // --- Enhanced Results UI ---
+      // Compute values for ResultsUI
+      let state = analysis.isCompliant ? 'pass' : (analysis.restrictedContent ? 'fail' : 'warn');
+      let label = analysis.isCompliant ? '✅ Compliant' : (analysis.restrictedContent ? '❌ Non-compliant' : '⚠️ Needs review');
+      let score = Math.max(0, 100 - (analysis.issues.length * 10)); // Example scoring
+
+      // Quick stats
+      let chars = analysis.messageLength;
+      let segments = Math.ceil(chars / 160);
+      let brandOk = /exampleco|yourbrand/i.test(messageText); // Example brand detection
+      let optOutOk = /stop/i.test(messageText);
+      let linkOk = !/bit\.ly|tinyurl|goo\.gl|t\.co|is\.gd|ow\.ly|rebrand\.ly/i.test(messageText);
+      let brandName = (messageText.match(/([A-Za-z]+Co)/) || [])[1] || '';
+
+      // Summary
+      let summary = analysis.isCompliant
+        ? "Your message appears compliant with best practices. Minor improvements suggested below."
+        : "Compliance issues found. Please review the issues and suggestions below.";
+      let consent = "Aligned";
+      let risk = analysis.restrictedContent ? "High" : "None";
+      let optout = optOutOk ? "Present (STOP)" : "Missing";
+      let brand = brandOk ? `Detected (${brandName||'Brand'})` : "Missing";
+
+      // Issues
+      let issuesArray = analysis.issues.map(i => ({
+        severity: i.severity === 'high' ? 'high' : (i.severity === 'medium' ? 'med' : 'low'),
+        msg: i.message,
+        hint: i.suggestion,
+        why: ''
+      }));
+
+      // Categories
+      let badges = analysis.detectedCategories.map(cat => {
+        let type = cat.impact.includes('PROHIBITED') ? 'prohibited'
+          : cat.impact.includes('RESTRICTED') ? 'restricted'
+          : cat.impact.includes('HIGH RISK') ? 'warning' : 'restricted';
+        return { type, label: cat.name };
+      });
+      let details = analysis.detectedCategories.map(cat => ({
+        title: cat.name,
+        text: cat.impact,
+        keys: cat.keywords && cat.keywords.length ? `Keywords: ${cat.keywords.join(', ')}` : ''
+      }));
+
+      // Suggestion (use first tip or empty)
+      let bestRewrite = analysis.tips && analysis.tips.length ? analysis.tips.join('\n') : '';
+
+      // Update Results UI
+      ResultsUI.show();
+      ResultsUI.setStatus(state, label, score);
+      ResultsUI.setQuickStats({ chars, segments, brandOk, optOutOk, linkOk, brandName });
+      ResultsUI.setSummary({ line: summary, consent, risk, optout, brand });
+      ResultsUI.setIssues(issuesArray);
+      ResultsUI.setCategories({ badges, details });
+      ResultsUI.setSuggestion(bestRewrite);
+
+      // suggestions (legacy, can be removed if not needed)
       getSuggestions(messageText);
 
       // local counter
