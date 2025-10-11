@@ -55,6 +55,7 @@ export default async function handler(req, res) {
       { icon: "🔒", msg: "Requests sensitive personal information in SMS", words: ["ssn","social security","credit card","password","pin number","bank account","routing number"] }
     ];
 
+
     let highFlag = false;
     for (const { words, msg, icon } of checks) {
       const found = words.filter((w) => {
@@ -66,7 +67,6 @@ export default async function handler(req, res) {
         issues.push(`${icon} ${msg}: "${found.join('", "')}"`);
       }
     }
-
     // Practical tips
     if (!/https?:\/\//i.test(text)) tips.push("🔗 Consider adding a helpful link (if relevant).");
     if (mode !== "pill") tips.push("📩 Include STOP to opt out and HELP for assistance when opt-in is unknown.");

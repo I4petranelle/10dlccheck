@@ -72,7 +72,7 @@ let STORE = {
     emoji_regex: "[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}]",
     urgency_regex:
       "\\b(act now|urgent|last chance|limited time|don'?t miss|final hours|today only|offer ends)\\b"
-  }, // ← keep this comma after the patterns object
+  }, 
 
   // Editable parts:
   rules: [],
