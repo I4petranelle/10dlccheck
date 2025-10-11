@@ -54,6 +54,25 @@ export default async function handler(req, res) {
       { icon: "🔊", msg: "Uses aggressive/over-promissory marketing language", words: ["act now","limited time","free money","guaranteed","risk-free","no obligation","call now","urgent","expires today"] },
       { icon: "🔒", msg: "Requests sensitive personal information in SMS", words: ["ssn","social security","credit card","password","pin number","bank account","routing number"] }
     ];
+	
+	// --- SERVER-ONLY test rules (not in compliance/rules.js) ---
+{
+  // Unique keyword trigger to prove server path is used
+  if (/\bzebra-corn\b/i.test(lower)) {
+    issues.push("🧪 SERVER-ONLY RULE: 'zebra-corn' detected (verifies /api/check path).");
+    highFlag = true;
+  }
+
+  // Excessive ALL CAPS (server-only) — 70%+ uppercase over >=12 letters
+  const letters = text.replace(/[^A-Za-z]/g, "");
+  const uppers  = letters.replace(/[^A-Z]/g, "");
+  const ratio   = letters ? (uppers.length / letters.length) : 0;
+  if (letters.length >= 12 && ratio >= 0.70) {
+    issues.push(`🧪 SERVER-ONLY RULE: Excessive ALL CAPS (${Math.round(ratio*100)}%).`);
+    // not necessarily high severity — leave highFlag as-is if you prefer
+  }
+}
+
 
     let highFlag = false;
     for (const { words, msg, icon } of checks) {
