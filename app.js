@@ -104,36 +104,18 @@ function buildCategoryList(rules){
 }
 
 // -------------------------------
-// Load server-side rules with fallback
+// Load general rules (no fetch/eval) with fallback
 // -------------------------------
+var RULES = (window && window.COMPLIANCE_RULES) ? window.COMPLIANCE_RULES : null;
 
-const RULES = window?.COMPLIANCE_RULES || null;
-
-function performComplianceCheck(message) {
-  if (!RULES) {
-    return { status: "warn", issues: ["⚠️ Rules not loaded"], tips: [] };
+function loadRules(){
+  // If rules.js was loaded via <script src="/compliance/rules.js">, use it.
+  if (window && window.COMPLIANCE_RULES) {
+    return Promise.resolve(window.COMPLIANCE_RULES);
   }
-
-  const lower = message.toLowerCase();
-  const issues = [];
-  const tips = [];
-
-  // Example check
-  const softLimit = RULES.length?.softLimit ?? 160;
-  const concatLimit = RULES.length?.concatLimit ?? 918;
-
-  if (message.length > concatLimit) {
-    issues.push(RULES.veryLongSms.message);
-  } else if (message.length > softLimit) {
-    issues.push(RULES.characterLimit.message);
-  }
-
-  // Add keyword scans here...
-
-  return { status: issues.length ? "warn" : "pass", issues, tips };
+  // Fallback so the site never breaks.
+  return Promise.resolve(complianceRulesFallback);
 }
-
-
 
 // -------------------------------
 // Compliance check (rules-driven)
