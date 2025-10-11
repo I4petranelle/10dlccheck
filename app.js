@@ -420,6 +420,8 @@ function displayResults(analysis) {
     + '<h3>' + iconSvg + ' ' + (isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found') + '</h3>'
     + '<p><strong>Message Length:</strong> ' + analysis.messageLength + ' characters (' + analysis.wordCount + ' words)</p>';
 
+  // --- Detected Categories Section ---
+  let shownCategoryNames = new Set();
   if (analysis.detectedCategories.length) {
     html += '<div class="category-warning">';
     html += '<h4>⚠️ Detected Issues — Campaign Impact Analysis</h4>';
@@ -429,6 +431,7 @@ function displayResults(analysis) {
         : c.impact.indexOf('RESTRICTED')>-1 ? 'restricted'
         : c.impact.indexOf('HIGH RISK')>-1 ? 'warning' : 'branding';
       html += '<span class="category-badge ' + impactClass + '">' + c.name + '</span>';
+      shownCategoryNames.add(c.name);
     });
     html += '</div>';
     html += '<button class="toggle-details" id="toggleImpactBtn">Show Details</button>';
@@ -443,7 +446,7 @@ function displayResults(analysis) {
     html += '</div></div>';
   }
 
-  // Deduplicate issues by message
+  // --- Deduplicate Issues ---
   let uniqueIssues = [];
   let seenMessages = new Set();
   analysis.issues.forEach(function(issue){
@@ -453,6 +456,18 @@ function displayResults(analysis) {
     }
   });
 
+  // Filter out issues that match a detected category name
+  uniqueIssues = uniqueIssues.filter(function(issue){
+    // If the issue message starts with a category name, filter it out
+    for (let catName of shownCategoryNames) {
+      if (issue.message.toLowerCase().indexOf(catName.toLowerCase()) !== -1) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // --- Render Issues ---
   if (uniqueIssues.length) {
     var high = uniqueIssues.filter(function(i){return i.severity==='high';}).length;
     var med  = uniqueIssues.filter(function(i){return i.severity==='medium';}).length;
