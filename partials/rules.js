@@ -1,11 +1,9 @@
-{
+// /partials/rules.js
+window.COMPLIANCE_RULES = {
   "version": "2025.09.29-2",
   "lastUpdated": "2025-09-29",
 
-  "length": {
-    "softLimit": 160,
-    "concatLimit": 918
-  },
+  "length": { "softLimit": 160, "concatLimit": 918 },
 
   "characterLimit": {
     "limit": 160,
@@ -35,11 +33,12 @@
   "getRichQuick": {
     "keywords": [
       "work from home","make money fast","secret shopper","easy money",
-      "multi-level marketing","mlm","gambling","sweepstakes","get rich","passive income"
+      "multi-level marketing","mlm","gambling","sweepstakes","get rich","passive income",
+       "gift card","prize","winner","congratulations","you’ve won","youve won","you won"
     ],
     "severity": "high",
-    "message": "Contains get-rich-quick scheme language — restricted on 10DLC",
-    "suggestion": "Focus on legitimate business services and professional growth"
+    "message": "Contains get-rich-quick / prize language — restricted on 10DLC",
+    "suggestion": "Use clear, honest value; avoid sweepstakes or unrealistic earnings claims"
   },
 
   "thirdPartyServices": {
@@ -92,10 +91,10 @@
     "suggestion": "Use professional, consultative language instead of high-pressure tactics"
   },
 
-  "personalInfo": {
+   "personalInfo": {
     "keywords": [
       "ssn","social security","credit card","password",
-      "pin number","bank account","routing number"
+      "pin number","bank account","routing number","account number","cvv"
     ],
     "severity": "high",
     "message": "Requesting sensitive personal information via SMS violates 10DLC guidelines",
@@ -107,4 +106,4 @@
     "optOutTip": "Include STOP to opt out and HELP for assistance when opt-in is unknown.",
     "optOutTipExcludeModes": ["pill"]
   }
-}
+};
