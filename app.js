@@ -104,18 +104,27 @@ function buildCategoryList(rules){
 }
 
 // -------------------------------
-// Load general rules (no fetch/eval) with fallback
+// Load general rules from API (secure) with fallback
 // -------------------------------
-var RULES = (window && window.COMPLIANCE_RULES) ? window.COMPLIANCE_RULES : null;
+var RULES = null;
 
-function loadRules(){
-  // If rules.js was loaded via <script src="/compliance/rules.js">, use it.
-  if (window && window.COMPLIANCE_RULES) {
-    return Promise.resolve(window.COMPLIANCE_RULES);
+async function loadRules() {
+  try {
+    // Fetch rules securely from server endpoint
+    const res = await fetch("/api/public-rules", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load /api/public-rules");
+
+    const data = await res.json();
+    console.log("[rules] Loaded version:", data.version || "unknown");
+    RULES = data;
+    return RULES;
+  } catch (err) {
+    console.warn("[rules] Using fallback rules due to:", err);
+    RULES = complianceRulesFallback;
+    return RULES;
   }
-  // Fallback so the site never breaks.
-  return Promise.resolve(complianceRulesFallback);
 }
+
 
 // -------------------------------
 // Compliance check (rules-driven)
