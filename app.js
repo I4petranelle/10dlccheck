@@ -405,152 +405,119 @@ function performComplianceCheck(message) {
 }
 
 // -------------------------------
-// Results rendering function
+// Results rendering function (deduplicates issues)
 // -------------------------------
 function displayResults(analysis) {
-  const resultsDiv = document.getElementById('results');
-  const title = document.getElementById('title');
-  const meta = document.getElementById('meta');
-  const issues = document.getElementById('issues');
-  
-  const isCompliant = analysis.isCompliant;
-  
-  // Set result box styling
-  resultsDiv.className = isCompliant ? 'results compliant show' : 'results non-compliant show';
+  var resultsDiv = document.getElementById('results');
+  resultsDiv.className = 'results ' + (analysis.isCompliant ? 'compliant' : 'non-compliant');
 
-  // Header icon based on compliance status
-  const iconSvg = isCompliant
+  var iconSvg = analysis.isCompliant
     ? '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
     : '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
 
-  // Set title
-  title.innerHTML = iconSvg + ' ' + (isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found');
-  
-  // Set meta information
-  meta.innerHTML = '<strong>Message Length:</strong> ' + analysis.messageLength + ' characters (' + analysis.wordCount + ' words)';
+  var html = ''
+    + '<h3>' + iconSvg + ' ' + (analysis.isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found') + '</h3>'
+    + '<p><strong>Message Length:</strong> ' + analysis.messageLength + ' characters (' + analysis.wordCount + ' words)</p>';
 
-  // Clear previous issues
-  issues.innerHTML = '';
-
-  // --- Display Categories Section ---
-  if (analysis.categories && analysis.categories.length > 0) {
-    const categorySection = document.createElement('div');
-    categorySection.className = 'category-warning';
-    
-    const categoryHeader = document.createElement('h4');
-    categoryHeader.textContent = '⚠️ Detected Issues — Campaign Impact Analysis';
-    categorySection.appendChild(categoryHeader);
-    
-    // Category badges
-    const badgeContainer = document.createElement('div');
-    badgeContainer.className = 'category-summary';
-    
-    analysis.categories.forEach(cat => {
-      const badge = document.createElement('span');
-      badge.className = 'category-badge ' + cat.type;
-      badge.textContent = cat.name;
-      badgeContainer.appendChild(badge);
+  // --- Detected Categories Section ---
+  let shownCategoryNames = new Set();
+  if (analysis.detectedCategories.length) {
+    html += '<div class="category-warning">';
+    html += '<h4>⚠️ Detected Issues — Campaign Impact Analysis</h4>';
+    html += '<div class="category-summary">';
+    analysis.detectedCategories.forEach(function(c){
+      var impactClass = c.impact.indexOf('PROHIBITED')>-1 ? 'prohibited'
+        : c.impact.indexOf('RESTRICTED')>-1 ? 'restricted'
+        : c.impact.indexOf('HIGH RISK')>-1 ? 'warning' : 'branding';
+      html += '<span class="category-badge ' + impactClass + '">' + c.name + '</span>';
+      shownCategoryNames.add(c.name);
     });
-    
-    categorySection.appendChild(badgeContainer);
-    
-    // Category details (always visible)
-    analysis.categories.forEach(cat => {
-      const detail = document.createElement('div');
-      detail.className = 'category-item';
-      detail.innerHTML = `
-        <div class="category-title">${cat.name}</div>
-        <p><strong>Impact:</strong> ${cat.impact}</p>
-        <div class="category-keywords">Keywords found: "${cat.keywords.join('", "')}"</div>
-      `;
-      categorySection.appendChild(detail);
+    html += '</div>';
+    html += '<button class="toggle-details" id="toggleImpactBtn">Show Details</button>';
+    html += '<div class="category-details" id="impactDetails">';
+    analysis.detectedCategories.forEach(function(c){
+      html += '<div class="category-item">'
+        + '<div class="category-title">' + c.name + '</div>'
+        + '<p><strong>Impact:</strong> ' + (c.impact.split(' - ')[1] || c.impact) + '</p>'
+        + '<div class="category-keywords">Keywords found: "' + c.keywords.join('", "') + '"</div>'
+        + '</div>';
     });
-    
-    issues.appendChild(categorySection);
+    html += '</div></div>';
   }
 
-  // --- Display Individual Issues ---
-  if (analysis.issues && analysis.issues.length > 0) {
-    // Count by severity
-    const counts = {
-      high: analysis.issues.filter(i => i.severity === 'high').length,
-      medium: analysis.issues.filter(i => i.severity === 'medium').length,
-      low: analysis.issues.filter(i => i.severity === 'low').length
-    };
-
-    // Issue summary (always visible)
-    if (counts.high || counts.medium || counts.low) {
-      const summaryDiv = document.createElement('div');
-      summaryDiv.className = 'issue-summary';
-      
-      let summaryHTML = '';
-      if (counts.high) summaryHTML += `<span class="issue-count high">${counts.high} Critical</span>`;
-      if (counts.medium) summaryHTML += `<span class="issue-count medium">${counts.medium} Medium</span>`;
-      if (counts.low) summaryHTML += `<span class="issue-count low">${counts.low} Minor</span>`;
-      
-      summaryDiv.innerHTML = summaryHTML;
-      issues.appendChild(summaryDiv);
+  // --- Deduplicate Issues ---
+  let uniqueIssues = [];
+  let seenMessages = new Set();
+  analysis.issues.forEach(function(issue){
+    if (!seenMessages.has(issue.message)) {
+      uniqueIssues.push(issue);
+      seenMessages.add(issue.message);
     }
+  });
 
-    // Individual issues list (always visible)
-    analysis.issues.forEach(issue => {
-      const li = document.createElement('li');
-      li.className = issue.severity || '';
-      
-      const severityLabel = issue.severity === 'high' ? '🔴 Critical' : 
-                           issue.severity === 'medium' ? '🟡 Medium' : '🔵 Minor';
-      
-      li.innerHTML = `
-        <div class="issue-message">${severityLabel}: ${issue.message}</div>
-        ${issue.suggestion ? `<div class="issue-suggestion">${issue.suggestion}</div>` : ''}
-      `;
-      issues.appendChild(li);
+  // Filter out issues that match a detected category name
+  uniqueIssues = uniqueIssues.filter(function(issue){
+    for (let catName of shownCategoryNames) {
+      if (issue.message.toLowerCase().indexOf(catName.toLowerCase()) !== -1) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // --- Render Issues ---
+  if (uniqueIssues.length) {
+    var high = uniqueIssues.filter(function(i){return i.severity==='high';}).length;
+    var med  = uniqueIssues.filter(function(i){return i.severity==='medium';}).length;
+    var low  = uniqueIssues.filter(function(i){return i.severity==='low';}).length;
+
+    html += '<div class="issue-header"><div class="issue-summary">';
+    if (high) html += '<span class="issue-count high">' + high + ' Critical</span>';
+    if (med)  html += '<span class="issue-count medium">' + med + ' Medium</span>';
+    if (low)  html += '<span class="issue-count low">' + low + ' Minor</span>';
+    html += '</div><button class="toggle-issues" id="toggleIssuesBtn">Show Issues</button></div>';
+
+    html += '<ul class="issue-list" id="issuesList">';
+    uniqueIssues.forEach(function(issue){
+      html += '<li class="' + issue.severity + '">'
+        + '<div class="issue-message">' + issue.message + '</div>'
+        + (issue.suggestion ? '<div class="issue-suggestion">' + issue.suggestion + '</div>' : '')
+        + '</li>';
     });
-  } else if (!analysis.categories || analysis.categories.length === 0) {
-    // No issues found
-    const noIssues = document.createElement('p');
-    noIssues.className = 'no-issues';
-    noIssues.textContent = '✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.';
-    issues.appendChild(noIssues);
+    html += '</ul>';
+  } else if (!analysis.detectedCategories.length) {
+    html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
   }
 
-  // Show results and scroll to view
+  // Tips (advice)
+  if (analysis.tips && analysis.tips.length) {
+    html += '<div class="advice"><h4>💡 Suggestions</h4><ul>';
+    analysis.tips.forEach(function(t){ html += '<li>' + t + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  resultsDiv.innerHTML = html;
   resultsDiv.style.display = 'block';
-  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
 
-// -------------------------------
-// Example usage with your analyzer
-// -------------------------------
-document.getElementById('check').addEventListener('click', () => {
-  const text = document.getElementById('msg').value.trim();
-  
-  if (!text) {
-    alert('Please enter a message to check');
-    return;
+  // attach toggles after render
+  var tIssues = document.getElementById('toggleIssuesBtn');
+  var issuesList = document.getElementById('issuesList');
+  if (tIssues && issuesList) {
+    tIssues.addEventListener('click', function(){
+      var open = issuesList.classList.contains('show');
+      issuesList.classList.toggle('show', !open);
+      tIssues.textContent = open ? 'Show Issues' : 'Hide Issues';
+    });
   }
-  
-  // Your analyze function returns: { issues: [], categories: [], isCompliant: bool, messageLength: num, wordCount: num }
-  const analysis = analyze(text);
-  
-  // Add message stats if not included
-  if (!analysis.messageLength) {
-    analysis.messageLength = text.length;
+  var tImpact = document.getElementById('toggleImpactBtn');
+  var impactDetails = document.getElementById('impactDetails');
+  if (tImpact && impactDetails) {
+    tImpact.addEventListener('click', function(){
+      var open = impactDetails.classList.contains('show');
+      impactDetails.classList.toggle('show', !open);
+      tImpact.textContent = open ? 'Show Details' : 'Hide Details';
+    });
   }
-  if (!analysis.wordCount) {
-    analysis.wordCount = text.split(/\s+/).filter(w => w).length;
-  }
-  
-  displayResults(analysis);
-});
-
-// -------------------------------
-// Collapses helper
-// -------------------------------
-function toggleCollapse(headerEl, listEl) {
-  var expanded = listEl.classList.contains('expanded');
-  listEl.classList.toggle('expanded', !expanded);
-  headerEl.classList.toggle('expanded', !expanded);
 }
 
 // -------------------------------
@@ -645,4 +612,13 @@ function analyzeMessage(){
       btn.disabled = false;
     }
   }, 900);
+}
+
+// -------------------------------
+// Collapses helper
+// -------------------------------
+function toggleCollapse(headerEl, listEl) {
+  var expanded = listEl.classList.contains('expanded');
+  listEl.classList.toggle('expanded', !expanded);
+  headerEl.classList.toggle('expanded', !expanded);
 }
