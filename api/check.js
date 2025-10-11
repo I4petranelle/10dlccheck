@@ -67,23 +67,6 @@ export default async function handler(req, res) {
         issues.push(`${icon} ${msg}: "${found.join('", "')}"`);
       }
     }
-// --- SERVER-ONLY test rules (not in compliance/rules.js) ---
-{
-  // Unique keyword trigger to prove server path is used
-  if (/\bzebra-corn\b/i.test(lower)) {
-    issues.push("🧪 SERVER-ONLY RULE: 'zebra-corn' detected (verifies /api/check path).");
-    highFlag = true;
-  }
-
-  // Excessive ALL CAPS (server-only) — 70%+ uppercase over >=12 letters
-  const letters = text.replace(/[^A-Za-z]/g, "");
-  const uppers  = letters.replace(/[^A-Z]/g, "");
-  const ratio   = letters ? (uppers.length / letters.length) : 0;
-  if (letters.length >= 12 && ratio >= 0.70) {
-    issues.push(`🧪 SERVER-ONLY RULE: Excessive ALL CAPS (${Math.round(ratio*100)}%).`);
-    // not necessarily high severity — leave highFlag as-is if you prefer
-  }
-}
     // Practical tips
     if (!/https?:\/\//i.test(text)) tips.push("🔗 Consider adding a helpful link (if relevant).");
     if (mode !== "pill") tips.push("📩 Include STOP to opt out and HELP for assistance when opt-in is unknown.");
