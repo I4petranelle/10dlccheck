@@ -54,8 +54,20 @@ export default async function handler(req, res) {
       { icon: "🔊", msg: "Uses aggressive/over-promissory marketing language", words: ["act now","limited time","free money","guaranteed","risk-free","no obligation","call now","urgent","expires today"] },
       { icon: "🔒", msg: "Requests sensitive personal information in SMS", words: ["ssn","social security","credit card","password","pin number","bank account","routing number"] }
     ];
-	
-	// --- SERVER-ONLY test rules (not in compliance/rules.js) ---
+
+
+    let highFlag = false;
+    for (const { words, msg, icon } of checks) {
+      const found = words.filter((w) => {
+        const esc = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`\\b${esc}\\b`, "i").test(lower);
+      });
+      if (found.length) {
+        highFlag = true;
+        issues.push(`${icon} ${msg}: "${found.join('", "')}"`);
+      }
+    }
+// --- SERVER-ONLY test rules (not in compliance/rules.js) ---
 {
   // Unique keyword trigger to prove server path is used
   if (/\bzebra-corn\b/i.test(lower)) {
@@ -72,20 +84,6 @@ export default async function handler(req, res) {
     // not necessarily high severity — leave highFlag as-is if you prefer
   }
 }
-
-
-    let highFlag = false;
-    for (const { words, msg, icon } of checks) {
-      const found = words.filter((w) => {
-        const esc = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        return new RegExp(`\\b${esc}\\b`, "i").test(lower);
-      });
-      if (found.length) {
-        highFlag = true;
-        issues.push(`${icon} ${msg}: "${found.join('", "')}"`);
-      }
-    }
-
     // Practical tips
     if (!/https?:\/\//i.test(text)) tips.push("🔗 Consider adding a helpful link (if relevant).");
     if (mode !== "pill") tips.push("📩 Include STOP to opt out and HELP for assistance when opt-in is unknown.");
