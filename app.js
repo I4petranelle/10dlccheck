@@ -443,10 +443,20 @@ function displayResults(analysis) {
     html += '</div></div>';
   }
 
-  if (analysis.issues.length) {
-    var high = analysis.issues.filter(function(i){return i.severity==='high';}).length;
-    var med  = analysis.issues.filter(function(i){return i.severity==='medium';}).length;
-    var low  = analysis.issues.filter(function(i){return i.severity==='low';}).length;
+  // Deduplicate issues by message
+  let uniqueIssues = [];
+  let seenMessages = new Set();
+  analysis.issues.forEach(function(issue){
+    if (!seenMessages.has(issue.message)) {
+      uniqueIssues.push(issue);
+      seenMessages.add(issue.message);
+    }
+  });
+
+  if (uniqueIssues.length) {
+    var high = uniqueIssues.filter(function(i){return i.severity==='high';}).length;
+    var med  = uniqueIssues.filter(function(i){return i.severity==='medium';}).length;
+    var low  = uniqueIssues.filter(function(i){return i.severity==='low';}).length;
 
     html += '<div class="issue-header"><div class="issue-summary">';
     if (high) html += '<span class="issue-count high">' + high + ' Critical</span>';
@@ -455,7 +465,7 @@ function displayResults(analysis) {
     html += '</div><button class="toggle-issues" id="toggleIssuesBtn">Show Issues</button></div>';
 
     html += '<ul class="issue-list" id="issuesList">';
-    analysis.issues.forEach(function(issue){
+    uniqueIssues.forEach(function(issue){
       html += '<li class="' + issue.severity + '">'
         + '<div class="issue-message">' + issue.message + '</div>'
         + (issue.suggestion ? '<div class="issue-suggestion">' + issue.suggestion + '</div>' : '')
