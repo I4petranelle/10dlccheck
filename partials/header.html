@@ -1,0 +1,117 @@
+<header class="dlc-header">
+  <style>
+    :root {
+      --ink:#1C2D40;      /* Deep Horizon */
+      --sky:#58AEDD;      /* Sky Blue */
+      --bg:#ffffff;
+      --line:#e5e7eb;
+    }
+
+    .dlc-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+    }
+
+    .dlc-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Group logo + nav */
+    .dlc-left {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    /* Logo */
+    .dlc-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 1.1rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .dlc-logo img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    /* Nav */
+    .dlc-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .dlc-nav a {
+      text-decoration: none;
+      color: #334155;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .dlc-nav a:hover {
+      color: var(--sky);
+    }
+
+    /* CTA */
+    .dlc-cta {
+      background: var(--ink);
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 3px 8px rgba(28,45,64,0.15);
+    }
+
+    .dlc-cta:hover {
+      background: var(--sky);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(88,174,221,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .dlc-nav {
+        display: none;
+      }
+    }
+  </style>
+
+  <div class="dlc-container">
+    <!-- Left section: Logo + Nav -->
+    <div class="dlc-left">
+      <a href="/" class="dlc-logo">
+        <img src="/assets/icons/10dlc-logo.svg" alt="10DLC Check logo">
+        <span>10DLC Check</span>
+      </a>
+
+      <nav class="dlc-nav">
+        <a href="/learn/index.html">Learn</a>
+        <a href="/index.html">Checker</a>
+      </nav>
+    </div>
+
+    <!-- Right section: CTA -->
+    <a href="/index.html" class="dlc-cta">Open Checker</a>
+  </div>
+</header>
