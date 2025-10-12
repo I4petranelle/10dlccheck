@@ -1,117 +1,117 @@
-<header class="dlc-header">
+<header class="dlc-header dlc-elevated">
   <style>
-    :root {
-      --ink:#1C2D40;      /* Deep Horizon */
-      --sky:#58AEDD;      /* Sky Blue */
-      --bg:#ffffff;
-      --line:#e5e7eb;
-    }
-
+    /* ---------- Scoped header variables ---------- */
     .dlc-header {
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-      box-shadow: 0 2px 8px rgba(0,0,0,.04);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      --ink:#1C2D40;         /* wordmark + primary text */
+      --sky:#58AEDD;         /* brand accent */
+      --bg:#fff;             /* bar background */
+      --line:#e8edf2;        /* divider line */
+      --shadow:0 6px 18px rgba(17,24,39,.06);
+      --maxw:1200px;
+      --xpad:clamp(16px,4vw,36px);
+      --ypad:14px;           /* vertical padding inside the bar */
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
     }
 
-    .dlc-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* ---------- Bar wrapper ---------- */
+    .dlc-header.dlc-elevated{
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      box-shadow: var(--shadow);
     }
 
-    /* Group logo + nav */
-    .dlc-left {
-      display: flex;
+    /* ---------- Inner container ---------- */
+    .dlc-header .dlc-container{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: var(--ypad) var(--xpad);
+      display: grid;
+      grid-template-columns: 1fr auto;     /* left group | CTA */
       align-items: center;
-      gap: 36px;
+      gap: 24px;
+    }
+
+    /* Left group = logo + nav */
+    .dlc-header .dlc-left{
+      display: flex; align-items: center;
+      gap: clamp(18px, 3.2vw, 40px);       /* breathing room between logo and nav */
+      min-width: 0;                        /* prevent overflow */
     }
 
     /* Logo */
-    .dlc-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      color: var(--ink);
-      font-size: 1.1rem;
-      text-decoration: none;
-      white-space: nowrap;
+    .dlc-header .dlc-logo{
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--ink); text-decoration: none; white-space: nowrap;
+      font-weight: 700; font-size: 1.05rem; letter-spacing:.2px;
     }
-
-    .dlc-logo img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
+    .dlc-header .dlc-logo img{
+      width: 34px; height: 34px; object-fit: contain;
     }
 
     /* Nav */
-    .dlc-nav {
-      display: flex;
-      align-items: center;
-      gap: 28px;
+    .dlc-header .dlc-nav{
+      display: inline-flex; align-items: center;
+      gap: clamp(20px, 3vw, 36px);
     }
-
-    .dlc-nav a {
-      text-decoration: none;
-      color: #334155;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.2s ease;
+    .dlc-header .dlc-nav a{
+      color: #334155; text-decoration: none;
+      font-weight: 600; font-size: .98rem;
+      padding: 6px 2px; border-radius: 8px;
+      transition: color .18s ease, background .18s ease;
     }
-
-    .dlc-nav a:hover {
-      color: var(--sky);
+    .dlc-header .dlc-nav a:hover{
+      color: var(--sky); background: rgba(88,174,221,.08);
     }
 
     /* CTA */
-    .dlc-cta {
-      background: var(--ink);
-      color: #fff;
-      font-weight: 600;
-      padding: 8px 20px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: all 0.2s ease-in-out;
-      box-shadow: 0 3px 8px rgba(28,45,64,0.15);
+    .dlc-header .dlc-cta{
+      justify-self: end;
+      background: var(--ink); color:#fff; text-decoration:none;
+      font-weight: 700; font-size: .95rem;
+      padding: 10px 22px; border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(28,45,64,.18);
+      transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
     }
-
-    .dlc-cta:hover {
-      background: var(--sky);
+    .dlc-header .dlc-cta:hover{
+      filter: brightness(1.05);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(88,174,221,0.3);
+      box-shadow: 0 8px 20px rgba(88,174,221,.28);
+      background: var(--sky);
     }
 
-    /* Responsive */
-    @media (max-width: 800px) {
-      .dlc-nav {
-        display: none;
+    /* ---------- Compact layout (tablets/phones) ---------- */
+    @media (max-width: 880px){
+      .dlc-header .dlc-nav{ gap: 20px; }
+      .dlc-header .dlc-cta{ padding: 9px 18px; }
+    }
+    @media (max-width: 720px){
+      .dlc-header .dlc-container{
+        grid-template-columns: 1fr; gap: 10px;
       }
+      .dlc-header .dlc-left{
+        justify-content: space-between; gap: 16px;
+      }
+      .dlc-header .dlc-nav{ display: none; }   /* keep top bar minimal on small screens */
+      .dlc-header .dlc-cta{ justify-self: start; }
     }
   </style>
 
   <div class="dlc-container">
-    <!-- Left section: Logo + Nav -->
+    <!-- Left: Logo + Nav -->
     <div class="dlc-left">
       <a href="/" class="dlc-logo">
         <img src="/assets/icons/10dlc-logo.svg" alt="10DLC Check logo">
         <span>10DLC Check</span>
       </a>
 
-      <nav class="dlc-nav">
+      <nav class="dlc-nav" aria-label="Primary">
         <a href="/learn/index.html">Learn</a>
         <a href="/index.html">Checker</a>
       </nav>
     </div>
 
-    <!-- Right section: CTA -->
+    <!-- Right: CTA -->
     <a href="/index.html" class="dlc-cta">Open Checker</a>
   </div>
 </header>
