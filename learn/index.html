@@ -1,229 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Learn 10DLC Compliance | 10DLC Compliance Checker</title>
-  <meta name="description" content="Master 10DLC SMS compliance. Clear guides on CTIA rules, opt-out requirements, registration steps, restricted content, and a pre-send checklist to avoid carrier filtering." />
-  <!-- canonical points to the file at the root -->
-  <link rel="canonical" href="https://10dlccheck.com/learn.html" />
-  <meta name="robots" content="index,follow" />
 
-  <!-- Social -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Learn 10DLC Compliance" />
-  <meta name="twitter:description" content="Clear, practical guides to write compliant SMS and improve deliverability." />
-  <meta name="twitter:image" content="/favicon.png" />
-  <meta property="og:title" content="Learn 10DLC Compliance" />
-  <meta property="og:description" content="Clear, practical guides to write compliant SMS and improve deliverability." />
+  <!-- SEO + Social -->
+  <meta name="description" content="Everything you need to master 10DLC SMS compliance: clear guides, checklists, and advanced tips to improve deliverability." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/" />
+  <meta property="og:title" content="10DLC Knowledge Base" />
+  <meta property="og:description" content="Guides, checklists, and advanced topics for SMS compliance." />
+  <meta property="og:url" content="https://10dlccheck.com/learn/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://10dlccheck.com/learn.html" />
-  <meta property="og:image" content="/favicon.png" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
 
-  <!-- Scoped styles: only affect elements inside #learn-root -->
   <style>
-    :root { --ink:#1C2D40; --sky:#58AEDD; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; }
-    #learn-root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color:var(--ink); background:var(--bg); min-height:100vh; }
-    #learn-root .wrap { max-width:1000px; margin:0 auto; padding:16px; }
-
-    /* top nav */
-    #learn-root .top-links { display:flex; gap:16px; flex-wrap:wrap; padding:8px 0; }
-    #learn-root .top-links a { text-decoration:none; padding:6px 8px; border-radius:8px; color:var(--ink); }
-    #learn-root .top-links a[aria-current="page"] { outline:1px solid var(--sky); background:rgba(88,174,221,.08); }
-
-    /* hero */
-    #learn-root .hero { padding:18px 0 8px; }
-    #learn-root .hero h1 { margin:0 0 6px; font-weight:800; letter-spacing:.2px; }
-    #learn-root .hero .subtitle { margin:0; color:var(--muted); }
-
-    /* subnav */
-    #learn-root .subnav { margin:12px 0 18px; padding:10px 12px; display:flex; gap:16px; align-items:center; border:1px solid var(--line); border-radius:12px; background:#fff; }
-    #learn-root .subnav a { text-decoration:none; padding:6px 8px; border-radius:8px; color:var(--ink); }
-    #learn-root .subnav a[aria-current="page"] { outline:1px solid var(--sky); background:rgba(88,174,221,.08); }
-
-    /* content cards */
-    #learn-root .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
-    #learn-root .intro { margin-bottom:18px; }
-    #learn-root .intro h2 { margin:0 0 8px; }
-    #learn-root .intro p { color:var(--muted); }
-
-    #learn-root .tips { margin-bottom:18px; }
-    #learn-root .tips h3 { margin:0 0 8px; }
-    #learn-root .tips ul { margin:0; padding-left:1.1rem; }
-    #learn-root .tips li { color:var(--muted); padding:4px 0; }
-    #learn-root .tips li::marker { color:var(--sky); }
-
-    /* guides grid */
-    #learn-root .section-title { margin:8px 0 10px; font-weight:800; }
-    #learn-root .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
-    @media (max-width: 900px){ #learn-root .grid { grid-template-columns:repeat(2,1fr); } }
-    @media (max-width: 640px){ #learn-root .grid { grid-template-columns:1fr; } }
-
-    #learn-root .guide { display:block; text-decoration:none; color:inherit; border:1px solid var(--line); border-radius:14px; padding:16px; background:#fff; transition:transform .15s, box-shadow .15s, border-color .15s; }
-    #learn-root .guide:hover { transform:translateY(-2px); border-color:var(--sky); box-shadow:0 8px 20px rgba(28,45,64,.08); }
-    #learn-root .icon { font-size:1.4rem; }
-    #learn-root .badge { display:inline-block; font-size:.8rem; padding:2px 8px; border-radius:999px; border:1px solid var(--line); margin:6px 0; }
-    #learn-root .badge.beginner{ background:rgba(88,174,221,.08); border-color:rgba(88,174,221,.35); }
-    #learn-root .badge.intermediate{ background:#fff7ed; border-color:#fed7aa; }
-    #learn-root .badge.advanced{ background:#fef2f2; border-color:#fecaca; }
-    #learn-root .read { color:var(--muted); font-size:.9rem; }
-
-    /* CTA */
-    #learn-root .cta { text-align:center; padding:18px; border:1px dashed var(--line); border-radius:12px; background:#f8fafc; }
-    #learn-root .btn { display:inline-block; text-decoration:none; background:var(--sky); color:#fff; padding:10px 16px; border-radius:10px; font-weight:700; }
-    #learn-root .btn.secondary { background:var(--ink); }
-
-    /* Footer (site-global style preserved) */
-    footer { margin-top:24px; }
-    .foot-line { display:flex; justify-content:space-between; align-items:center; gap:10px; max-width:1000px; margin:0 auto; padding:12px 16px; border-top:1px solid var(--line); color:var(--muted); }
-    .foot-small a { color:var(--sky); text-decoration:none; }
-    .foot-small a:hover { text-decoration:underline; }
-    @media (max-width:600px){ .foot-line { flex-direction:column; align-items:flex-start; } }
+    :root{--ink:#1C2D40;--sky:#58AEDD;--muted:#1f2937;--line:#e2e8f0;--bg:#f8fafc;--card-bg:#fff;--hover-bg:#f1f5f9}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+    .site-header{background:var(--card-bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+    .header-content{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+    .logo{font-weight:600;font-size:1.1rem;color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+    .nav-links{display:flex;gap:24px;align-items:center}
+    .nav-links a{text-decoration:none;color:var(--muted);font-weight:500;transition:color .2s}
+    .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--ink)}
+    .hero{background:#1f2937;color:#fff;padding:64px 24px 48px;text-align:center}
+    .hero-content{max-width:800px;margin:0 auto}
+    .hero h1{font-size:2.5rem;font-weight:600;margin-bottom:16px;letter-spacing:-.5px}
+    .hero p{font-size:1.2rem;opacity:.95;margin-bottom:32px}
+    .hero-search{max-width:600px;margin:0 auto;position:relative}
+    .hero-search input{width:100%;padding:16px 48px 16px 20px;border:none;border-radius:12px;font-size:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+    .hero-search input::placeholder{color:var(--muted)}
+    .search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.2rem}
+    .container{max-width:1200px;margin:0 auto;padding:48px 24px}
+    .quick-tips{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:48px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .quick-tips h2{font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .tip-item{display:flex;gap:12px;align-items:start}
+    .tip-icon{color:var(--sky);font-size:1.2rem;flex-shrink:0}
+    .tip-text{color:var(--muted);font-size:.95rem}
+    .category-section{margin-bottom:56px}
+    .category-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+    .category-icon{font-size:1.8rem}
+    .category-header h2{font-size:1.8rem;font-weight:600}
+    .category-header .count{color:var(--muted);font-size:.9rem;font-weight:500}
+    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+    .article-card{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:12px}
+    .article-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.08);border-color:var(--sky)}
+    .article-header{display:flex;align-items:start;gap:12px}
+    .article-icon{font-size:2rem;flex-shrink:0}
+    .article-meta{flex:1}
+    .article-card h3{font-size:1.2rem;font-weight:700;margin-bottom:4px;color:var(--ink)}
+    .article-card p{color:var(--muted);font-size:.95rem;line-height:1.5}
+    .article-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+    .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px}
+    .badge.beginner{background:#e0f2fe;color:#0369a1}
+    .badge.intermediate{background:#fef3c7;color:#b45309}
+    .badge.advanced{background:#fee2e2;color:#b91c1c}
+    .read-time{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:4px}
+    .cta-section{background:var(--card-bg);border:2px solid var(--line);border-radius:16px;padding:48px 32px;text-align:center;margin-top:64px}
+    .cta-section h2{font-size:2rem;margin-bottom:12px}
+    .cta-section p{color:var(--muted);font-size:1.1rem;margin-bottom:32px}
+    .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-block;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:600;transition:all .2s;border:2px solid transparent}
+    .btn-primary{background:var(--sky);color:#fff}
+    .btn-primary:hover{background:#4a9acc;transform:translateY(-2px);box-shadow:0 4px 12px rgba(88,174,221,.4)}
+    .btn-secondary{background:var(--ink);color:#fff}
+    .btn-secondary:hover{background:#152335;transform:translateY(-2px);box-shadow:0 4px 12px rgba(28,45,64,.3)}
+    footer{background:var(--card-bg);border-top:1px solid var(--line);margin-top:64px;padding:24px}
+    .footer-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.9rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{color:var(--sky);text-decoration:none}
+    .footer-links a:hover{text-decoration:underline}
+    @media (max-width:768px){
+      .hero h1{font-size:2rem}
+      .hero p{font-size:1rem}
+      .articles-grid{grid-template-columns:1fr}
+      .tips-grid{grid-template-columns:1fr}
+      .nav-links{gap:16px}
+      .footer-content{flex-direction:column;gap:16px;text-align:center}
+      .cta-buttons{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
   </style>
-
-  <!-- Structured data (ItemList) to help SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "10DLC Compliance Guides",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "url": "https://10dlccheck.com/learn/what-is-10dlc.html" },
-      { "@type": "ListItem", "position": 2, "url": "https://10dlccheck.com/learn/ctia-guidelines-explained.html" },
-      { "@type": "ListItem", "position": 3, "url": "https://10dlccheck.com/learn/sms-compliance-checklist.html" },
-      { "@type": "ListItem", "position": 4, "url": "https://10dlccheck.com/learn/register-10dlc-campaign.html" },
-      { "@type": "ListItem", "position": 5, "url": "https://10dlccheck.com/learn/opt-out-and-help-keywords.html" },
-      { "@type": "ListItem", "position": 6, "url": "https://10dlccheck.com/learn/carrier-filtering-reasons.html" }
-    ]
-  }
-  </script>
 </head>
 <body>
-  <div id="learn-root">
-    <div class="wrap">
-      <!-- Top links -->
-      <nav class="top-links">
-        <a href="https://10dlccheck.com/">Home</a>
-        <a href="/learn.html" aria-current="page">Learn</a>
-        <a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=site&utm_campaign=chrome-extension&utm_content=learn-nav" target="_blank" rel="noopener">Chrome Extension</a>
+  <!-- Sticky Header -->
+  <header class="site-header" role="banner">
+    <div class="header-content">
+      <a href="/" class="logo" aria-label="10DLC Check home">📱 <span>10DLC Check</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/learn/" aria-current="page">Learn</a>
+        <a href="/#checker">Checker</a>
+        <a href="https://chromewebstore.google.com/" target="_blank" rel="noopener">Extension</a>
       </nav>
-
-      <!-- Hero -->
-      <header class="hero">
-        <h1>Learn 10DLC Compliance</h1>
-        <p class="subtitle">Master SMS compliance and improve your message deliverability.</p>
-      </header>
-
-      <!-- Subnav -->
-      <nav class="subnav">
-        <a href="https://10dlccheck.com/">Home</a>
-        <a href="/learn.html" aria-current="page">Learn</a>
-        <a href="https://10dlccheck.com/#checker">Compliance Checker</a>
-        <a href="/learn/ctia-guidelines-explained.html">Resources</a>
-      </nav>
-
-      <!-- Intro -->
-      <section class="card intro">
-        <h2>Why 10DLC Compliance Matters</h2>
-        <p><strong>10DLC (10-Digit Long Code)</strong> is the U.S. standard for A2P messaging. Carriers require registration and compliant messaging to reduce spam and protect consumers.</p>
-        <p>Non-compliant messages get filtered, delayed, or blocked—costing you money and trust. These guides explain rules, pitfalls, and practical steps to keep your messages deliverable.</p>
-      </section>
-
-      <!-- Tips -->
-      <aside class="card tips">
-        <h3>Quick Compliance Tips</h3>
-        <ul>
-          <li>Identify your brand in the first message.</li>
-          <li>Include opt-out instructions (STOP) in promotional messages.</li>
-          <li>Avoid public link shorteners; use branded or full URLs.</li>
-          <li>Avoid SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</li>
-          <li>Collect and document consent before sending messages.</li>
-          <li>Honor opt-out requests promptly.</li>
-        </ul>
-      </aside>
-
-      <h2 class="section-title">Compliance Guides</h2>
-      <section class="grid">
-        <a class="guide" href="/learn/what-is-10dlc.html">
-          <div class="icon" aria-hidden="true">🎓</div>
-          <span class="badge beginner">Beginner</span>
-          <h3>What is 10DLC?</h3>
-          <p>Basics of 10DLC, why it exists, and how it differs from short codes and toll-free numbers.</p>
-          <div class="read">⏱️ ~5 min read</div>
-        </a>
-
-        <a class="guide" href="/learn/ctia-guidelines-explained.html">
-          <div class="icon" aria-hidden="true">📋</div>
-          <span class="badge beginner">Beginner</span>
-          <h3>CTIA Messaging Guidelines</h3>
-          <p>Consent, brand ID, STOP/HELP behavior, and content restrictions—explained simply.</p>
-          <div class="read">⏱️ ~8 min read</div>
-        </a>
-
-        <a class="guide" href="/learn/register-10dlc-campaign.html">
-          <div class="icon" aria-hidden="true">📝</div>
-          <span class="badge intermediate">Intermediate</span>
-          <h3>Register Your 10DLC Campaign</h3>
-          <p>Step-by-step brand and campaign registration: use cases, fees, timelines, approval tips.</p>
-          <div class="read">⏱️ ~12 min read</div>
-        </a>
-
-        <a class="guide" href="/learn/opt-out-and-help-keywords.html">
-          <div class="icon" aria-hidden="true">🛑</div>
-          <span class="badge beginner">Beginner</span>
-          <h3>STOP, HELP & Opt-Out Rules</h3>
-          <p>Required keywords, formatting, response behavior, and common mistakes to avoid.</p>
-          <div class="read">⏱️ ~6 min read</div>
-        </a>
-
-        <a class="guide" href="/learn/carrier-filtering-reasons.html">
-          <div class="icon" aria-hidden="true">🔍</div>
-          <span class="badge advanced">Advanced</span>
-          <h3>Understanding Carrier Filtering</h3>
-          <p>How filtering works, reputation scoring, and practical ways to improve delivery rates.</p>
-          <div class="read">⏱️ ~15 min read</div>
-        </a>
-
-        <a class="guide" href="/learn/sms-compliance-checklist.html">
-          <div class="icon" aria-hidden="true">✅</div>
-          <span class="badge beginner">Beginner</span>
-          <h3>Pre-Send Compliance Checklist</h3>
-          <p>Run this quick check before sending to reduce blocks, complaints, and fees.</p>
-          <div class="read">⏱️ ~4 min read</div>
-        </a>
-      </section>
-
-      <!-- CTA -->
-      <section class="card cta">
-        <h2>Ready to Check Your Messages?</h2>
-        <p>Use our free 10DLC compliance checker to validate your SMS campaigns before sending.</p>
-        <p>
-          <a class="btn" href="https://10dlccheck.com/#checker">Try Compliance Checker →</a>
-          &nbsp;
-          <a class="btn secondary" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=site&utm_campaign=chrome-extension&utm_content=learn-cta" target="_blank" rel="noopener">Get the Chrome Extension</a>
-        </p>
-      </section>
     </div>
-  </div>
+  </header>
 
-  <!-- Footer (same as your site) -->
-  <footer>
-    <div class="foot-line">
-      <div class="foot-small">Powered by <strong>A Problem Solver</strong> •  10dlccheck.com </div>
-      <div class="foot-small"><a href="/privacy">Privacy</a> • <a href="/terms">Terms</a></div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>10DLC Knowledge Base</h1>
+      <p>Everything you need to master SMS compliance and improve message deliverability</p>
+      <div class="hero-search">
+        <label for="kb-search" class="sr-only" style="position:absolute;left:-9999px">Search knowledge base</label>
+        <input id="kb-search" type="search" placeholder="Search guides and articles…" aria-label="Search knowledge base" />
+        <span class="search-icon" aria-hidden="true">🔍</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container" id="main">
+    <!-- Quick Tips -->
+    <section class="quick-tips" aria-labelledby="quick-tips-title">
+      <h2 id="quick-tips-title">⚡ Quick Compliance Tips</h2>
+      <div class="tips-grid">
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Always identify your brand in the first message.</span></div>
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Include STOP instructions in promotional messages.</span></div>
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Avoid public link shorteners—use branded URLs.</span></div>
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Never send SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</span></div>
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Document consent before sending any messages.</span></div>
+        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Honor opt-out requests within 24 hours.</span></div>
+      </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="category-section" data-category="Getting Started">
+      <div class="category-header">
+        <span class="category-icon" aria-hidden="true">🎓</span>
+        <div style="flex:1">
+          <h2>Getting Started</h2>
+          <span class="count" data-count>—</span>
+        </div>
+      </div>
+      <div class="articles-grid">
+        <a class="article-card" href="/learn/what-is-10dlc.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">📚</span><div class="article-meta"><h3>What is 10DLC?</h3></div></div>
+          <p>Learn the basics of 10DLC, why it exists, and how it differs from short codes and toll-free numbers.</p>
+          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 5 min</span></div>
+        </a>
+        <a class="article-card" href="/learn/ctia-guidelines-explained.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">📋</span><div class="article-meta"><h3>CTIA Messaging Guidelines</h3></div></div>
+          <p>Understand consent requirements, brand identification, STOP behavior, and content restrictions.</p>
+          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 8 min</span></div>
+        </a>
+        <a class="article-card" href="/learn/sms-compliance-checklist.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">✅</span><div class="article-meta"><h3>Pre-Send Compliance Checklist</h3></div></div>
+          <p>Run this quick checklist before sending to reduce blocks, complaints, and carrier fees.</p>
+          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 4 min</span></div>
+        </a>
+      </div>
+    </section>
+	
+	<!-- Inline article content will appear here -->
+    <div id="article-container" style="display:none;max-width:900px;margin:0 auto 64px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,.05)"></div>
+
+
+    <!-- ============================
+     Registration & Setup (hidden)
+=============================
+    <section class="category-section" data-category="Registration &amp; Setup">
+      <div class="category-header">
+        <span class="category-icon" aria-hidden="true">🔧</span>
+        <div style="flex:1">
+          <h2>Registration &amp; Setup</h2>
+          <span class="count" data-count>—</span>
+        </div>
+      </div>
+      <div class="articles-grid">
+        <a class="article-card" href="/learn/register-10dlc-campaign.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">📝</span><div class="article-meta"><h3>Register Your 10DLC Campaign</h3></div></div>
+          <p>Complete guide to brand/campaign registration: use cases, fees, timelines, and approval tips.</p>
+          <div class="article-footer"><span class="badge intermediate">Intermediate</span><span class="read-time">⏱️ 12 min</span></div>
+        </a>
+        <a class="article-card" href="/learn/opt-out-and-help-keywords.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">🛑</span><div class="article-meta"><h3>STOP, HELP &amp; Opt-Out Rules</h3></div></div>
+          <p>Required keywords, proper formatting, response behavior, and common mistakes to avoid.</p>
+          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 6 min</span></div>
+        </a>
+      </div>
+    </section>
+
+    =============================
+     Advanced Topics (hidden)
+=============================
+    <section class="category-section" data-category="Advanced Topics">
+      <div class="category-header">
+        <span class="category-icon" aria-hidden="true">🚀</span>
+        <div style="flex:1">
+          <h2>Advanced Topics</h2>
+          <span class="count" data-count>—</span>
+        </div>
+      </div>
+      <div class="articles-grid">
+        <a class="article-card" href="/learn/carrier-filtering-reasons.html">
+          <div class="article-header"><span class="article-icon" aria-hidden="true">🔍</span><div class="article-meta"><h3>Understanding Carrier Filtering</h3></div></div>
+          <p>How filtering works, reputation signals, and practical strategies to improve delivery rates.</p>
+          <div class="article-footer"><span class="badge advanced">Advanced</span><span class="read-time">⏱️ 15 min</span></div>
+        </a>
+      </div>
+    </section>
+	================================= -->
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="cta-title">
+      <h2 id="cta-title">Ready to Check Your Messages?</h2>
+      <p>Use our free compliance checker to validate your SMS campaigns before sending and avoid costly mistakes.</p>
+      <div class="cta-buttons">
+        <a href="/#checker" class="btn btn-primary">Try Compliance Checker →</a>
+        <a href="https://chromewebstore.google.com/" class="btn btn-secondary" target="_blank" rel="noopener">Get Chrome Extension</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="footer-content">
+      <div>Powered by <strong>A Problem Solver</strong> • 10dlccheck.com</div>
+      <div class="footer-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
     </div>
   </footer>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-C64QWDBMQZ');
+    // Simple live search + dynamic counts
+    const q = document.getElementById('kb-search');
+    const cards = [...document.querySelectorAll('.article-card')];
+    const sections = [...document.querySelectorAll('.category-section')];
+
+    function updateCounts(){
+      sections.forEach(sec=>{
+        const visible = sec.querySelectorAll('.article-card:not([hidden])').length;
+        const countEl = sec.querySelector('[data-count]');
+        if(countEl){ countEl.textContent = visible + (visible===1?' article':' articles'); }
+        // Hide empty sections after filtering
+        sec.style.display = visible ? '' : 'none';
+      });
+    }
+    function filterArticles(term){
+      const t = term.trim().toLowerCase();
+      cards.forEach(card=>{
+        const text = card.innerText.toLowerCase();
+        card.hidden = t && !text.includes(t);
+      });
+      updateCounts();
+    }
+    q?.addEventListener('input', e=>filterArticles(e.target.value));
+    // initial counts
+    updateCounts();
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+<script>
+(() => {
+  const container = document.getElementById('article-container');
+  const cards = [...document.querySelectorAll('.article-card')];
+
+  function show(msg, color='#64748b'){
+    container.style.display='block';
+    container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
+  }
+
+  async function loadInline(urlStr){
+    try{
+      // ensure same-origin & resolve relative paths
+      const url = new URL(urlStr, location.origin);
+      if(url.origin !== location.origin){
+        show('Cannot load external article (cross-origin).', '#b91c1c'); return;
+      }
+
+      container.style.display='block';
+      container.innerHTML =
+        '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
+
+      const res = await fetch(url.pathname + url.search);
+      if(!res.ok){
+        show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return;
+      }
+
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      // pick the main content from the article page
+      const node =
+        doc.querySelector('main') ||
+        doc.querySelector('article') ||
+        doc.querySelector('.article') ||
+        doc.querySelector('.container');
+
+      if(!node || !node.innerHTML.trim()){
+        show('Article loaded, but no content section found (expect <main> or <article>).', '#b91c1c');
+        return;
+      }
+
+      container.innerHTML = `
+        <div style="max-width:900px;margin:0 auto">
+          ${node.innerHTML}
+          <div style="text-align:center;margin-top:28px">
+            <button id="close-article"
+              style="background:#1f2937;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer">
+              Close
+            </button>
+          </div>
+        </div>`;
+
+      // close & scroll behaviors
+      document.getElementById('close-article').onclick = () => {
+        container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname);
+      };
+      container.scrollIntoView({behavior:'smooth', block:'start'});
+    }catch(err){
+      show(`Failed: ${err?.message || err}`, '#b91c1c');
+    }
+  }
+
+  // click → inline render + URL hash for back/refresh
+  cards.forEach(card => {
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      const href = card.getAttribute('href');
+      if(!href) return;
+      history.pushState('', '', `#article=${encodeURIComponent(href)}`);
+      loadInline(href);
+    });
+  });
+
+  // load if the page opened with a hash
+  const m = location.hash.match(/#article=([^&]+)/);
+  if(m){ loadInline(decodeURIComponent(m[1])); }
+})();
+</script>
+
 </body>
 </html>

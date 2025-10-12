@@ -109,5 +109,42 @@
     gtag('config', 'G-C64QWDBMQZ');
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+  <script>
+document.querySelectorAll('.article-card').forEach(card=>{
+  card.addEventListener('click', async e=>{
+    e.preventDefault();
+    const url = card.getAttribute('href');
+    const container = document.getElementById('article-container');
+    if(!url || !container) return;
+
+    container.style.display='block';
+    container.innerHTML = '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article...</p>';
+
+    try {
+      const res = await fetch(url);
+      const text = await res.text();
+      const articleContent = (new DOMParser()).parseFromString(text, 'text/html')
+                          .querySelector('main, article, .article, .container')?.innerHTML 
+                          || '<p>Unable to load article content.</p>';
+      container.innerHTML = articleContent + 
+        '<div style="text-align:center;margin-top:32px;">' +
+        '<button id="close-article" style="background:#1f2937;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer">Close Article</button></div>';
+      
+      // scroll to article
+      container.scrollIntoView({behavior:'smooth',block:'start'});
+      
+      // close button
+      document.getElementById('close-article').addEventListener('click',()=>{
+        container.style.display='none';
+        container.innerHTML='';
+        window.scrollTo({top:document.querySelector(".category-section").offsetTop,behavior:'smooth'});
+      });
+    } catch {
+      container.innerHTML = '<p style="color:#b91c1c;">Failed to load article. Please try again later.</p>';
+    }
+  });
+});
+</script>
+
 </body>
 </html>
