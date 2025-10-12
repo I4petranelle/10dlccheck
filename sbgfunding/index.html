@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-
 <title>SBG Funding 10DLC Checker</title>
 <style>
   :root{
@@ -28,7 +27,6 @@
   header h1{ margin:0; font-size:22px; color:var(--blue) }
   .sub{ font-size:12px; color:var(--muted) }
 
-  /* Single column so the stat row sits above the card */
   .stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
   .stat{
     background:var(--card); border:1px solid #e6eaf0; border-radius:12px;
@@ -59,6 +57,13 @@
     white-space:pre-wrap; border:1px solid #e6eaf0; border-radius:12px;
     padding:12px; background:#f9fbff; min-height:100px; font-size:14px; line-height:1.5
   }
+  .aiTitle{
+    margin:6px 2px 0; font-size:13px; color:#1C2D40; font-weight:700;
+  }
+  .privacyLabel{
+    font-size:13px;display:flex;align-items:center;gap:8px;
+    margin:-6px 0 4px 2px;color:#6B6B6B;
+  }
   @media (max-width:640px){ .stats{grid-template-columns:1fr} }
 </style>
 </head>
@@ -66,9 +71,7 @@
   <div class="container">
     <header>
       <h1>SBG Funding 10DLC Checker</h1>
-      <div class="sub">
-        <span id="rulesVer">Rules: loading…</span>
-      </div>
+      <div class="sub"><span id="rulesVer">Rules: loading…</span></div>
     </header>
 
     <section class="stats">
@@ -96,21 +99,26 @@
 
       <textarea id="msg" placeholder="Paste your SMS message here…"></textarea>
 
+      <!-- Privacy toggle (AI on/off) will be injected here -->
+
       <div class="actions">
         <button type="button" id="checkBtn">Check Compliance</button>
         <button type="button" id="copyBtn" class="secondary">Copy Result</button>
         <button type="button" id="clearBtn" class="secondary">Clear</button>
       </div>
 
+      <!-- SBG rules result -->
       <div class="result" id="result">Result will appear here.</div>
+
+      <!-- AI header + AI suggestion box are injected AFTER the rules result -->
 	  
-	  <p style="text-align:center; font-size:16px; font-weight:700; margin-top:10px;">
-		<a href="https://chromewebstore.google.com/detail/jncjkdalngjloeacigpeoikcbfffpfon?utm_source=landing-page-sbg"
-		target="_blank" rel="noopener"
-		style="color:#1C2D40; text-decoration:none;">
-		🧩 Install the 10DLC Chrome Extension
-		</a>
-	</p>
+      <p style="text-align:center; font-size:16px; font-weight:700; margin-top:10px;">
+        <a href="https://chromewebstore.google.com/detail/jncjkdalngjloeacigpeoikcbfffpfon?utm_source=landing-page-sbg"
+           target="_blank" rel="noopener"
+           style="color:#1C2D40; text-decoration:none;">
+           🧩 Install the 10DLC Chrome Extension
+        </a>
+      </p>
     </div>
   </div>
 
@@ -118,13 +126,13 @@
   <script>
   document.addEventListener("DOMContentLoaded", () => {
     // Track pass/fail
-    let pass = 0;
-    let fail = 0;
+    let pass = 0, fail = 0;
 
     // Endpoints
-    const RULES_URL  = "https://10dlccheck.com/api/sbg-rules";     // priority
-    const CHECK_URL  = "/api/check";                               // fallback/secondary
+    const RULES_URL  = "https://10dlccheck.com/api/sbg-rules";  // priority
+    const CHECK_URL  = "/api/check";                            // fallback/secondary
     const GLOBAL_URL = "https://10dlccheck.com/api/global-count";// global total
+    const SBG_API    = "https://sbgfunding-mountain-1842.ipetranelle.workers.dev/suggest";
 
     // Elements
     const msgEl   = document.getElementById("msg");
@@ -133,6 +141,24 @@
     const ci      = document.getElementById("charInfo");
     const userEl  = document.getElementById("userTotal");
     const globalEl= document.getElementById("globalTotal");
+    const actionsEl = document.querySelector(".card .actions");
+
+    // Inject privacy toggle (above buttons)
+    const privacyLabel = document.createElement("label");
+    privacyLabel.className = "privacyLabel";
+    privacyLabel.innerHTML = `<input id="privacyToggle" type="checkbox" checked> <span>Allow grammar & clarity suggestions (AI)</span>`;
+    actionsEl.insertAdjacentElement("beforebegin", privacyLabel);
+
+    // Inject AI header + suggestion box AFTER the rules result
+    const aiTitle = document.createElement("div");
+    aiTitle.className = "aiTitle";
+    aiTitle.textContent = "AI Suggestion (optional):";
+    const aiBox = document.createElement("div");
+    aiBox.className = "result";
+    aiBox.id = "sbgResponse";
+    aiBox.textContent = "Suggestion will appear here.";
+    resEl.insertAdjacentElement("afterend", aiTitle);
+    aiTitle.insertAdjacentElement("afterend", aiBox);
 
     // User total (persist)
     let userTotal = Number(localStorage.getItem("sbg_user_total") || 0);
@@ -142,8 +168,7 @@
     function updateChars(){
       const L = msgEl.value.length;
       const segs = L <= 160 ? 1 : L <= 320 ? 2 : Math.ceil(L/160);
-      const t = `${L} / 160 (${segs} segments)`;
-      ci.textContent = t;
+      ci.textContent = `${L} / 160 (${segs} ${segs===1?"segment":"segments"})`;
     }
     msgEl.addEventListener("input", updateChars);
     updateChars();
@@ -197,7 +222,7 @@
         issues.push("✂️ Avoid URL shorteners—use a branded link.");
       }
       if (d.limit_message_length){
-        const L = text.length, max160 = d.sms_single_segment_chars ?? 160, max320 = d.sms_two_segment_chars ?? 320;
+        const L = text.length, max320 = d.sms_two_segment_chars ?? 320;
         if (L > max320) issues.push(`📝 Message too long (${L}). Keep under ${max320}.`);
       }
 
@@ -250,12 +275,12 @@
     document.getElementById("checkBtn").addEventListener("click", async () => {
       try{
         const text = (msgEl.value || "").trim();
-        if (!text){ resEl.textContent = "Please enter a message."; return; }
+        if (!text){ resEl.textContent = "Please enter a message."; aiBox.textContent = "Suggestion will appear here."; return; }
         resEl.textContent = "Checking…";
+        aiBox.textContent  = "—";
 
         const rules = await loadRules();
         const result = rules ? evalWithRules(text, rules) : await serverCheck(text);
-
         renderResult(result);
 
         // User total + persist (single increment)
@@ -271,9 +296,26 @@
         // Global total
         await bumpGlobal(result.status);
         await refreshGlobal();
+
+        // --- AI suggestion (respects privacy toggle) ---
+        const allowAI = document.getElementById("privacyToggle")?.checked !== false;
+        if (!allowAI) {
+          aiBox.textContent = "Privacy mode ON — message not sent to AI.";
+          return;
+        }
+
+        aiBox.textContent = "Getting suggestion…";
+        const resp = await fetch(SBG_API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ brand: "SBG Funding", message: text })
+        });
+        const data = await resp.json();
+        aiBox.textContent = data?.suggestion || "No suggestion returned.";
       }catch(e){
         console.error(e);
         resEl.textContent = "Error: " + (e?.message || String(e));
+        aiBox.textContent = "Suggestion unavailable.";
       }
     });
 
@@ -285,7 +327,9 @@
     });
 
     document.getElementById("clearBtn").addEventListener("click", () => {
-      msgEl.value = ""; updateChars(); resEl.textContent = "Result will appear here.";
+      msgEl.value = ""; updateChars();
+      resEl.textContent = "Result will appear here.";
+      aiBox.textContent = "Suggestion will appear here.";
     });
 
     // initial global
