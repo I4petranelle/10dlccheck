@@ -129,6 +129,17 @@
     <script src="/app.js"></script>                <!-- uses COMPLIANCE_RULES -->
   </head>
   <body>
+  
+  <!-- 🔹 NEW SITE-WIDE NAV HEADER (pulled from /partials/header.html) -->
+  <div id="site-header"></div>
+  <script>
+    fetch("/partials/header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("site-header").innerHTML = html;
+      });
+  </script>
+  
     <div class="container">
       <div class="header" role="banner">
         <h1>10DLC Compliance Checker</h1>
