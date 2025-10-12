@@ -1,140 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>What Is 10DLC and Why It Matters</title>
+<!-- /learn/what-is-10dlc.html  (modal partial) -->
+<style>
+  :root { --ink:#1C2D40; --muted:#64748b; --line:#e2e8f0; --sky:#58AEDD; --bg:#f8fafc; }
+  .learn-popup{
+    background:#fff;border-radius:16px;padding:28px 32px;width:min(780px,90%);
+    max-height:80vh;overflow-y:auto;box-shadow:0 16px 40px rgba(0,0,0,.15);
+    animation:fadeIn .25s ease-in-out;color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .learn-popup h1,.learn-popup h2{color:#0b253a}
+  .learn-popup h1{font-size:1.6rem;margin:0 0 .5em;border-bottom:2px solid var(--sky);padding-bottom:6px}
+  .learn-popup h2{font-size:1.25rem;margin:1.2em 0 .5em;border-left:4px solid var(--sky);padding-left:8px}
+  .learn-popup ul{padding-left:1.15rem;margin:.5rem 0}
+  .learn-popup li{margin:.25rem 0}
+  .learn-popup a{color:var(--sky);text-decoration:none}
+  .learn-popup a:hover{text-decoration:underline}
+  .cta{margin-top:18px;text-align:center;padding:16px;border:1px dashed var(--line);border-radius:12px;background:var(--bg)}
+  .btn{display:inline-block;background:var(--sky);color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none}
+  .note{color:var(--muted);font-size:.9rem;margin-top:6px}
+</style>
 
-  <style>
-    /* Popup Container */
-    .learn-popup {
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px 32px;
-      max-width: 780px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 16px 40px rgba(0,0,0,.15);
-      animation: fadeIn .25s ease-in-out;
-      color: #1C2D40;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.7;
-    }
+<div class="learn-popup" data-article="what-is-10dlc">
+  <button class="popup-close" aria-label="Close" onclick="if(window.closePopup) closePopup()">×</button>
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Headings */
-    .learn-popup h1, 
-    .learn-popup h2, 
-    .learn-popup h3 {
-      color: #0b253a;
-      margin-top: 1.4em;
-      margin-bottom: 0.5em;
-      font-weight: 700;
-    }
-
-    .learn-popup h1 {
-      font-size: 1.6rem;
-      border-bottom: 2px solid #58AEDD;
-      padding-bottom: 6px;
-      margin-top: 0;
-    }
-
-    .learn-popup h2 {
-      font-size: 1.25rem;
-      border-left: 4px solid #58AEDD;
-      padding-left: 8px;
-    }
-
-    /* Lists */
-    .learn-popup ul {
-      margin-left: 1.2em;
-      padding-left: 0;
-    }
-
-    .learn-popup li {
-      margin-bottom: 6px;
-    }
-
-    /* Links */
-    .learn-popup a {
-      color: #58AEDD;
-      text-decoration: none;
-    }
-
-    .learn-popup a:hover {
-      text-decoration: underline;
-    }
-
-    /* Close button (top-right corner of popup) */
-    .popup-close {
-      position: absolute;
-      top: 14px;
-      right: 18px;
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      color: #64748b;
-      cursor: pointer;
-      transition: color .2s;
-    }
-
-    .popup-close:hover {
-      color: #1C2D40;
-    }
-
-    /* Inline CTA section */
-    .cta {
-      margin-top: 18px;
-      text-align: center;
-      padding: 16px;
-      border: 1px dashed #e2e8f0;
-      border-radius: 12px;
-      background: #f8fafc;
-    }
-
-    .btn {
-      display: inline-block;
-      text-decoration: none;
-      background: #58AEDD;
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 10px;
-    }
-
-    .note {
-      color: #64748b;
-      font-size: 0.9rem;
-      margin-top: 6px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="learn-popup">
-    <button class="popup-close" onclick="closeLearnPopup()">×</button>
-
-    <h1>What Is 10DLC and Why It Matters</h1>
+  <h1>What Is 10DLC and Why It Matters</h1>
+  <article class="content">
     <p><strong>10DLC</strong> stands for <em>10-Digit Long Code</em>—a U.S. carrier program that allows businesses to send Application-to-Person (A2P) text messages from standard 10-digit numbers with verified brand and campaign registration. The goal is to reduce spam, improve trust, and increase deliverability for legitimate business messaging.</p>
 
-    <h2>What Does 10DLC Do?</h2>
+    <h2 id="what-it-does">What Does 10DLC Do?</h2>
     <p>Under 10DLC, each company registers its <strong>brand</strong> (the business entity) and one or more <strong>campaigns</strong> (the purpose of messaging). Registration data flows through <a href="https://www.campaignregistry.com/" target="_blank" rel="noopener">The Campaign Registry (TCR)</a>, which carriers use to determine throughput and trust levels.</p>
 
-    <h2>10DLC vs Short Codes vs Toll-Free SMS</h2>
+    <h2 id="compare">10DLC vs Short Codes vs Toll-Free SMS</h2>
     <ul>
       <li><strong>Short Codes:</strong> 5–6 digit numbers for very high volume; expensive but fast throughput.</li>
-      <li><strong>Toll-Free SMS:</strong> 800/888 style numbers; moderate throughput and good for support or notifications.</li>
+      <li><strong>Toll-Free SMS:</strong> 800/888 numbers; moderate throughput and good for support or notifications.</li>
       <li><strong>10DLC:</strong> Standard local numbers; affordable, brand-linked, and great for ongoing business texting.</li>
     </ul>
 
-    <h2>Who Must Register?</h2>
+    <h2 id="who-registers">Who Must Register?</h2>
     <p>Any organization sending A2P messages in the U.S.—marketing, alerts, appointment reminders, or OTP—should complete 10DLC brand and campaign registration to avoid filtering and potential fees.</p>
 
-    <h2>Staying Compliant (Quick Checklist)</h2>
+    <h2 id="compliance">Staying Compliant (Quick Checklist)</h2>
     <ul>
       <li>Identify your brand or sender in each message.</li>
       <li>Include required keywords: <strong>STOP</strong> (opt-out) and <strong>HELP</strong> behavior.</li>
@@ -147,17 +53,5 @@
       <a class="btn" href="/#checker">Check Your SMS for 10DLC Compliance →</a>
       <div class="note">Opens the main checker on this site.</div>
     </div>
-  </div>
-
-  <script>
-    // Optional close handler (the main Learn page script should already handle popup)
-    function closeLearnPopup() {
-      if (window.parent && window.parent.closePopup) {
-        window.parent.closePopup();
-      } else {
-        document.body.remove();
-      }
-    }
-  </script>
-</body>
-</html>
+  </article>
+</div>
