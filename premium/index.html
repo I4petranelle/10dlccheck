@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Check — Premium Dashboard</title>
+  <meta name="description" content="Premium risk and carrier intelligence dashboard for 10DLC message compliance." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    /* Base */
+    :root { --brand:#1C2D40; --brandAlt:#58AEDD; --text:#111827; --muted:#475569; --card:#FFFFFF; --bg:#F1F5F9; --border:#E5E7EB; }
+    *{box-sizing:border-box}
+    body { margin:0; font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    .container { max-width:1000px; margin:0 auto; padding:20px; }
+
+    /* Header (matches main checker) */
+    header { background:var(--brand); color:#fff; border-radius:20px 20px 0 0; box-shadow:0 20px 40px rgba(2,6,23,.08); }
+    header .inner { padding:24px; }
+    header h1 { margin:0; font-size:24px; font-weight:800; }
+    header p { margin:4px 0 0; font-size:13px; opacity:.95; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; justify-content:center; }
+    .pill { background:#f9fafb; color:#1e293b; border:1px solid #cbd5e1; border-radius:999px; padding:6px 12px; font-weight:600; font-size:13px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 1px 2px rgba(2,6,23,.05); }
+
+    /* Cards */
+    .card { background:#fff; border:1px solid var(--border); border-radius:18px; box-shadow:0 1px 2px rgba(2,6,23,.04); padding:20px; margin:20px 0; }
+    .card h2 { margin:0 0 10px; font-size:18px; font-weight:700; }
+    .muted { color:var(--muted); }
+
+    /* Gate */
+    #gate { background:#fff; border:1px solid var(--border); border-radius:20px; padding:24px; text-align:center; margin-top:30px; box-shadow:0 2px 8px rgba(2,6,23,.06); }
+    #gate input { padding:10px 14px; border:1px solid #cbd5e1; border-radius:10px; font-size:14px; width:200px; margin-right:10px; }
+    #gate button { background:var(--brand); color:#fff; border:none; border-radius:10px; padding:10px 16px; font-weight:600; cursor:pointer; }
+    #gate button:hover { background:#172536; }
+    #dashboard { display:none; }
+
+    /* Carriers list */
+    .carrier { border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:12px; transition:background .2s; }
+    .carrier:hover { background:#f9fafb; cursor:pointer; }
+    .carrier-head { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .carrier-main { display:flex; align-items:center; gap:12px; }
+    .logo-box { display:grid; place-items:center; width:44px; height:44px; border-radius:12px; border:1px solid rgba(0,0,0,.08); background:#fff; }
+    .carrier .name { font-weight:700; }
+    .risk-low { color:#16a34a; font-weight:700; }
+    .risk-med { color:#b45309; font-weight:700; }
+    .risk-high { color:#dc2626; font-weight:700; }
+
+    .bar { height:10px; border-radius:5px; background:#e5e7eb; margin-top:6px; overflow:hidden; }
+    .bar-inner { height:100%; border-radius:5px; }
+
+    /* Expandable details */
+    .carrier-details { display:none; padding-top:12px; margin-top:12px; border-top:1px dashed var(--border); }
+    .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .detail { background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+    .detail h4 { margin:0 0 6px; font-size:14px; font-weight:700; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+    .chip { border:1px solid #cbd5e1; background:#fff; border-radius:999px; padding:4px 8px; font-size:12px; font-weight:600; color:#1e293b; }
+
+    .toggle { font-size:12px; color:#334155; user-select:none; }
+    .rotate { transform:rotate(90deg); }
+
+    footer { text-align:center; padding:30px 0 10px; color:#64748b; font-size:13px; }
+    @media (max-width:720px){ .detail-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="inner container">
+      <h1>10DLC Check — Premium Dashboard</h1>
+      <p>Analyze carrier risks and industry compliance levels for your A2P messages.</p>
+      <div class="pill-row">
+        <span class="pill">⭐ Premium Active</span>
+        <span class="pill">Risk Score: <strong id="riskScorePill">72</strong></span>
+        <span class="pill">Safe Volume: <strong id="safeVolPill">2,600/day</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Access Gate -->
+    <div id="gate">
+      <h2>Access Verification</h2>
+      <p class="muted">Please type <strong>"text me"</strong> to continue.</p>
+      <div style="margin-top:12px;">
+        <input id="accessInput" type="text" placeholder="Enter phrase..." />
+        <button id="accessBtn">Submit</button>
+      </div>
+      <p id="accessError" style="color:#dc2626; margin-top:10px; display:none;">Incorrect phrase. Try again.</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard">
+      <!-- Message Summary -->
+      <div class="card">
+        <h2>Message Summary</h2>
+        <p><strong>Detected:</strong> Financial language ("money in your account in 24hrs")</p>
+        <p class="muted">This message may require review under the <strong>Financial Services</strong> category.</p>
+      </div>
+
+      <!-- Carrier Analysis (click to expand) -->
+      <div class="card">
+        <h2>Carrier Analysis</h2>
+
+        <!-- AT&T -->
+        <div class="carrier" data-carrier="att">
+          <div class="carrier-head">
+            <div class="carrier-main">
+              <div class="logo-box" style="border-color:#00A8E040; background:#00A8E01A;">
+                <!-- AT&T logo -->
+                <svg viewBox="0 0 64 64" width="28" height="28" aria-label="AT&T">
+                  <circle cx="32" cy="32" r="28" fill="#00A8E0"></circle>
+                  <path d="M10 26c10 0 34 0 44 6M12 34c12 0 28 0 40 6M14 20c14 0 24 0 36 6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"></path>
+                </svg>
+              </div>
+              <div>
+                <div class="name">AT&amp;T</div>
+                <div class="bar"><div class="bar-inner" style="width:45%; background:linear-gradient(90deg,#00A8E0,#0093C8);"></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="risk-low">Low Risk</div>
+              <div class="toggle"><span class="arrow">›</span> Details</div>
+            </div>
+          </div>
+          <div class="carrier-details">
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Safe Volume (est.)</h4>
+                <div>4,500 msgs/day</div>
+                <div class="chips"><span class="chip">Low complaints</span><span class="chip">Brand present</span></div>
+              </div>
+              <div class="detail">
+                <h4>Guidance</h4>
+                <ul class="muted" style="margin:0 0 0 16px; padding:0;">
+                  <li>Keep brand visible early in the message.</li>
+                  <li>Avoid link shorteners; prefer branded domains.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verizon -->
+        <div class="carrier" data-carrier="verizon">
+          <div class="carrier-head">
+            <div class="carrier-main">
+              <div class="logo-box" style="border-color:#E6000040; background:#E600001A;">
+                <!-- Verizon logo -->
+                <svg viewBox="0 0 64 64" width="28" height="28" aria-label="Verizon">
+                  <rect x="6" y="12" width="52" height="40" rx="8" fill="#111111"></rect>
+                  <polyline points="38,26 44,32 58,18" fill="none" stroke="#E60000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <rect x="12" y="26" width="16" height="12" rx="2" fill="#ffffff"></rect>
+                </svg>
+              </div>
+              <div>
+                <div class="name">Verizon</div>
+                <div class="bar"><div class="bar-inner" style="width:35%; background:linear-gradient(90deg,#E60000,#111111);"></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="risk-med">Medium Risk</div>
+              <div class="toggle"><span class="arrow">›</span> Details</div>
+            </div>
+          </div>
+          <div class="carrier-details">
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Safe Volume (est.)</h4>
+                <div>3,200 msgs/day</div>
+                <div class="chips"><span class="chip">Moderate filtering</span><span class="chip">Clear opt-out</span></div>
+              </div>
+              <div class="detail">
+                <h4>Guidance</h4>
+                <ul class="muted" style="margin:0 0 0 16px; padding:0;">
+                  <li>Avoid aggressive claims (e.g., “instant deposits”).</li>
+                  <li>Keep transactional notices separate from promos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- T-Mobile -->
+        <div class="carrier" data-carrier="tmobile">
+          <div class="carrier-head">
+            <div class="carrier-main">
+              <div class="logo-box" style="border-color:#E2007440; background:#E200741A;">
+                <!-- T-Mobile logo -->
+                <svg viewBox="0 0 64 64" width="28" height="28" aria-label="T-Mobile">
+                  <rect x="6" y="12" width="52" height="40" rx="10" fill="#E20074"></rect>
+                  <path d="M18 44V22h28v22M26 28h4M34 28h4M26 36h4M34 36h4" stroke="#ffffff" stroke-width="3"></path>
+                </svg>
+              </div>
+              <div>
+                <div class="name">T-Mobile</div>
+                <div class="bar"><div class="bar-inner" style="width:20%; background:linear-gradient(90deg,#E20074,#C6005A);"></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="risk-high">High Risk</div>
+              <div class="toggle"><span class="arrow">›</span> Details</div>
+            </div>
+          </div>
+          <div class="carrier-details">
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Safe Volume (est.)</h4>
+                <div>1,800 msgs/day</div>
+                <div class="chips"><span class="chip">Tight filtering</span><span class="chip">Explicit consent</span></div>
+              </div>
+              <div class="detail">
+                <h4>Guidance</h4>
+                <ul class="muted" style="margin:0 0 0 16px; padding:0;">
+                  <li>Use conservative promotional frequency.</li>
+                  <li>Ensure STOP appears cleanly on last line for promos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Industry Guidance -->
+      <div class="card">
+        <h2>Industry Guidance</h2>
+        <p><strong>Selected Industry:</strong> Financial Services</p>
+        <ul class="muted" style="margin:0 0 0 16px;">
+          <li>Avoid implying guaranteed funding or instant deposits.</li>
+          <li>Keep transactional notices separate from marketing blasts.</li>
+          <li>Strong consent recommended before sending.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 10DLC Check — Premium Intelligence Dashboard</p>
+  </footer>
+
+  <script>
+    // Access gate
+    const input = document.getElementById("accessInput");
+    const btn = document.getElementById("accessBtn");
+    const err = document.getElementById("accessError");
+    const gate = document.getElementById("gate");
+    const dash = document.getElementById("dashboard");
+
+    btn.addEventListener("click", () => {
+      const val = (input.value || "").trim().toLowerCase();
+      if (val === "text me") {
+        gate.style.display = "none";
+        dash.style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        err.style.display = "block";
+      }
+    });
+    input.addEventListener("keypress", (e) => { if (e.key === "Enter") btn.click(); });
+
+    // Expandable carriers
+    document.querySelectorAll(".carrier").forEach((row) => {
+      row.addEventListener("click", (e) => {
+        // Ignore clicks on links inside details (if you add any later)
+        if ((e.target as HTMLElement).closest("a")) return;
+
+        const details = row.querySelector(".carrier-details");
+        const arrow = row.querySelector(".arrow");
+        const open = details && details.style.display === "block";
+        // Close all others
+        document.querySelectorAll(".carrier-details").forEach(d => (d as HTMLElement).style.display = "none");
+        document.querySelectorAll(".arrow").forEach(a => a.classList.remove("rotate"));
+        // Toggle current
+        if (details) {
+          details.style.display = open ? "none" : "block";
+          if (!open && arrow) arrow.classList.add("rotate");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
