@@ -238,45 +238,63 @@
     <p>© 2025 10DLC Check — Premium Intelligence Dashboard</p>
   </footer>
 
-  <script>
-    // Access gate
-    const input = document.getElementById("accessInput");
-    const btn = document.getElementById("accessBtn");
-    const err = document.getElementById("accessError");
-    const gate = document.getElementById("gate");
-    const dash = document.getElementById("dashboard");
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const input = $("#accessInput");
+  const btn = $("#accessBtn");
+  const err = $("#accessError");
+  const gate = $("#gate");
+  const dash = $("#dashboard");
 
-    btn.addEventListener("click", () => {
-      const val = (input.value || "").trim().toLowerCase();
-      if (val === "text me") {
-        gate.style.display = "none";
-        dash.style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        err.style.display = "block";
+  // Normalize user input (accept with/without quotes, spaces)
+  const normalize = (s) =>
+    String(s || "")
+      .toLowerCase()
+      .replace(/["'’]/g, "")    // strip quotes
+      .replace(/\s+/g, " ")     // collapse spaces
+      .trim();
+
+  function unlock() {
+    const val = normalize(input.value);
+    if (val === "text me" || val === "textme") {
+      gate.style.display = "none";
+      err.style.display = "none";
+      dash.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      err.style.display = "block";
+    }
+  }
+
+  btn && btn.addEventListener("click", unlock);
+  input && input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") unlock();
+  });
+
+  // Expandable carriers (pure JS; no TS 'as' casts)
+  document.querySelectorAll(".carrier").forEach((row) => {
+    row.addEventListener("click", (e) => {
+      // Ignore clicks on links inside details (future-proof)
+      if (e.target && e.target.closest && e.target.closest("a")) return;
+
+      const details = row.querySelector(".carrier-details");
+      const arrow = row.querySelector(".arrow");
+      const isOpen = details && details.style.display === "block";
+
+      // Close all
+      document.querySelectorAll(".carrier-details").forEach((d) => (d.style.display = "none"));
+      document.querySelectorAll(".arrow").forEach((a) => a.classList.remove("rotate"));
+
+      // Toggle current
+      if (details) {
+        details.style.display = isOpen ? "none" : "block";
+        if (!isOpen && arrow) arrow.classList.add("rotate");
       }
     });
-    input.addEventListener("keypress", (e) => { if (e.key === "Enter") btn.click(); });
+  });
+})();
+</script>
 
-    // Expandable carriers
-    document.querySelectorAll(".carrier").forEach((row) => {
-      row.addEventListener("click", (e) => {
-        // Ignore clicks on links inside details (if you add any later)
-        if ((e.target as HTMLElement).closest("a")) return;
-
-        const details = row.querySelector(".carrier-details");
-        const arrow = row.querySelector(".arrow");
-        const open = details && details.style.display === "block";
-        // Close all others
-        document.querySelectorAll(".carrier-details").forEach(d => (d as HTMLElement).style.display = "none");
-        document.querySelectorAll(".arrow").forEach(a => a.classList.remove("rotate"));
-        // Toggle current
-        if (details) {
-          details.style.display = open ? "none" : "block";
-          if (!open && arrow) arrow.classList.add("rotate");
-        }
-      });
-    });
-  </script>
 </body>
 </html>
