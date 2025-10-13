@@ -78,18 +78,31 @@
     .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
     @media (max-width: 860px){ .grid-3{grid-template-columns:1fr} .detail-grid{grid-template-columns:1fr} }
 
-    /* Floating action bar */
+    /* Floating action bar + spacer */
     .fab{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(2,6,23,.06)}
     .fab .inner{max-width:1000px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+    .fab-spacer{height:88px;} /* keeps content scrollable above fixed bar */
+
     .btn{padding:10px 14px;border-radius:10px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer}
     .btn:hover{background:var(--bg)}
-    .btn-primary{background:linear-gradient(90deg,var(--brand),var(--brandAlt));color:#fff;border:none}
-    .btn-primary:hover{filter:brightness(.95)}
+    .btn-accent{
+      background:linear-gradient(90deg,var(--brand),var(--brandAlt));
+      color:#fff;border:none
+    }
+    .btn-accent:hover{filter:brightness(.95)}
 
-    /* Pills */
     .soft-pill{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-block}
     .pill-warn{background:#FEF3C7;color:#B45309;border:1px solid #F59E0B}
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+    /* Print: clean PDF */
+    @media print{
+      .fab, #gate { display:none !important; }
+      body { background:#fff; }
+      header { box-shadow:none; border-radius:0; }
+      .fab-spacer { display:none; }
+      a[href]:after { content:""; } /* avoid printing raw URLs */
+    }
   </style>
 </head>
 <body>
@@ -408,6 +421,9 @@ Reply STOP to opt out
           </div>
         </div>
       </section>
+
+      <!-- Spacer so bottom bar never overlaps content -->
+      <div class="fab-spacer"></div>
     </div>
   </main>
 
@@ -415,18 +431,16 @@ Reply STOP to opt out
   <div class="fab">
     <div class="inner">
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn" id="btnExport">Export Report</button>
-        <button class="btn" id="btnSave">Save Analysis</button>
+        <button class="btn" id="btnExport">Export PDF</button>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="/index.html">Check Another Message</a>
-        <button class="btn btn-primary">Start Campaign Setup</button>
+        <a class="btn btn-accent" href="/index.html">Check Another Message</a>
       </div>
     </div>
   </div>
 
   <script>
-    // ---------- Data (mirrors your React snippet) ----------
+    // ---------- Data ----------
     const data = {
       message: "Hi John! 🎉 Get 50% OFF your next purchase. Click here: bit.ly/deal123\\nReply STOP to opt out",
       riskScore: 68,
@@ -498,7 +512,7 @@ Reply STOP to opt out
       safePill.textContent = data.safeVolume.toLocaleString() + "/day";
     })();
 
-    // ---------- Carrier Cards dynamic numbers ----------
+    // ---------- Carrier Numbers ----------
     (function carrierNumbers(){
       document.getElementById("tmobileRisk").textContent = data.carriers.tmobile.risk;
       document.getElementById("tmobileVol").textContent = data.carriers.tmobile.maxVolume.toLocaleString();
@@ -510,7 +524,7 @@ Reply STOP to opt out
       document.getElementById("attVol").textContent = data.carriers.att.maxVolume.toLocaleString();
     })();
 
-    // ---------- Calculator numbers ----------
+    // ---------- Calculator ----------
     (function calculatorInit(){
       const costPerMsg = data.perMessageCost;
       const monthlyVol = data.monthlyVolume;
@@ -521,29 +535,9 @@ Reply STOP to opt out
       document.getElementById("monthlyCost").textContent = "$" + est.toLocaleString(undefined,{maximumFractionDigits:0});
     })();
 
-    // ---------- Export / Save ----------
-    document.getElementById("btnExport").addEventListener("click", ()=>{
-      const payload = {
-        message: data.message,
-        riskScore: data.riskScore,
-        safeVolume: data.safeVolume,
-        carriers: data.carriers,
-        costs: {
-          perMessageCost: data.perMessageCost,
-          monthlyVolume: data.monthlyVolume,
-          estimatedMonthlyCost: data.perMessageCost * data.monthlyVolume
-        },
-        generatedAt: new Date().toISOString()
-      };
-      const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "premium-dashboard-report.json"; a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    document.getElementById("btnSave").addEventListener("click", ()=>{
-      alert("Saved locally (stub). Wire this to your API when ready.");
+    // ---------- Export PDF ----------
+    document.getElementById("btnExport").addEventListener("click", () => {
+      window.print(); // user selects "Save as PDF"
     });
   </script>
 </body>
