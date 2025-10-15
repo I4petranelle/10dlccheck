@@ -1,57 +1,341 @@
-<!-- /learn/what-is-10dlc.html  (modal partial) -->
-<style>
-  :root { --ink:#1C2D40; --muted:#64748b; --line:#e2e8f0; --sky:#58AEDD; --bg:#f8fafc; }
-  .learn-popup{
-    background:#fff;border-radius:16px;padding:28px 32px;width:min(780px,90%);
-    max-height:80vh;overflow-y:auto;box-shadow:0 16px 40px rgba(0,0,0,.15);
-    animation:fadeIn .25s ease-in-out;color:var(--ink);
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =============================================
+    What Is 10DLC | 10DLC Check
+    Based on Learn Article Template (v1.1)
+  ============================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>What Is 10DLC & Why It Matters | 10DLC Check</title>
+  <meta name="description" content="Learn what 10DLC (10-Digit Long Code) is, how it compares to short codes and toll-free, why carriers require registration, and how to stay compliant with examples." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/what-is-10dlc.html" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="What Is 10DLC & Why It Matters | 10DLC Check" />
+  <meta property="og:description" content="Understand 10DLC, how it compares to short codes and toll-free, and why registration is required by U.S. carriers." />
+  <meta property="og:image" content="/favicon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="What Is 10DLC & Why It Matters" />
+  <meta name="twitter:description" content="Learn what 10DLC (10-Digit Long Code) is and how to keep your business SMS compliant." />
+  <meta name="twitter:image" content="/favicon.png" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+
+  <style>
+  :root {
+    --ink:#1C2D40;
+    --muted:#334155;
+    --sky:#58AEDD;
+    --line:#e2e8f0;
+    --bg:#f8fafc;
   }
-  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .learn-popup h1,.learn-popup h2{color:#0b253a}
-  .learn-popup h1{font-size:1.6rem;margin:0 0 .5em;border-bottom:2px solid var(--sky);padding-bottom:6px}
-  .learn-popup h2{font-size:1.25rem;margin:1.2em 0 .5em;border-left:4px solid var(--sky);padding-left:8px}
-  .learn-popup ul{padding-left:1.15rem;margin:.5rem 0}
-  .learn-popup li{margin:.25rem 0}
-  .learn-popup a{color:var(--sky);text-decoration:none}
-  .learn-popup a:hover{text-decoration:underline}
-  .cta{margin-top:18px;text-align:center;padding:16px;border:1px dashed var(--line);border-radius:12px;background:var(--bg)}
-  .btn{display:inline-block;background:var(--sky);color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none}
-  .note{color:var(--muted);font-size:.9rem;margin-top:6px}
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+  }
+
+  /* Container */
+  .wrap {
+    max-width: 1150px; /* wider container */
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  .topbar-slot, .footer-slot { min-height:48px; }
+
+  /* Hero */
+  .hero {
+    background:#fff;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap { padding:32px 20px; }
+  .eyebrow {
+    font-size:.85rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  h1 {
+    margin:.2em 0 .25em;
+    font-size:2.1rem;
+    font-weight:800;
+    letter-spacing:.2px;
+  }
+  .sub { margin:0; color:var(--muted); }
+
+  /* Layout grid */
+  .grid {
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:32px;
+  }
+  @media(max-width: 960px){ .grid{ grid-template-columns:1fr; } }
+
+  /* Sidebar (TOC) */
+  .toc { position:sticky; top:20px; align-self:start; }
+  .toc .box {
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px;
+  }
+  .toc h3 { margin:0 0 10px; font-size:1rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { padding:6px 0; color:var(--muted); }
+  .toc a { color:var(--ink); text-decoration:none; font-size:.95rem; }
+  .toc a:hover { color:var(--sky); }
+  .toc a.active { color:var(--sky); font-weight:600; }
+
+  /* Article */
+  article.content {
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:40px 48px; /* wider text area */
+    margin-top:8px;
+    box-shadow:0 8px 32px rgba(0,0,0,.06);
+  }
+  @media(max-width:700px){ article.content{ padding:24px; } }
+
+  article.content h2 { margin-top:1.6em; font-size:1.45rem; }
+  article.content h3 { margin-top:1.2em; font-size:1.15rem; }
+  article.content p { font-size:1.08rem; color:var(--muted); max-width:85ch; }
+  article.content ul { margin-left:1.5em; font-size:1.04rem; color:var(--muted); }
+
+  .note {
+  display: block;
+  margin: 24px 0;
+  padding: 16px 20px;
+  background: #f1f5f9;
+  border-left: 4px solid var(--sky);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 1.03rem;
+  line-height: 1.6;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+  /* Tables */
+  table.compare {
+    width:100%;
+    border-collapse:collapse;
+    border:1px solid var(--line);
+    margin:16px 0;
+    font-size:1rem;
+  }
+  .compare th, .compare td {
+    border:1px solid var(--line);
+    padding:12px 14px;
+    vertical-align:top;
+  }
+  .compare th {
+    background:#f8fafc;
+    text-align:left;
+    font-weight:600;
+  }
+
+  /* Callout / CTA */
+  .cta {
+    margin-top:40px;
+    text-align:center;
+    padding:24px;
+    border:1px dashed var(--line);
+    border-radius:14px;
+    background:var(--bg);
+  }
+  .btn {
+    display:inline-block;
+    background:var(--sky);
+    color:#fff;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:600;
+    text-decoration:none;
+    transition:all .2s;
+  }
+  .btn.secondary { background:var(--ink); }
+  .btn:hover { transform:translateY(-2px); }
+
+  footer { border-top:1px solid var(--line); background:#fff; margin-top:48px; }
 </style>
 
-<div class="learn-popup" data-article="what-is-10dlc">
-  <button class="popup-close" aria-label="Close" onclick="if(window.closePopup) closePopup()">×</button>
+</head>
+<body data-prev="/learn/index.html" data-next="/learn/ctia-guidelines-explained.html">
 
-  <h1>What Is 10DLC and Why It Matters</h1>
-  <article class="content">
-    <p><strong>10DLC</strong> stands for <em>10-Digit Long Code</em>—a U.S. carrier program that allows businesses to send Application-to-Person (A2P) text messages from standard 10-digit numbers with verified brand and campaign registration. The goal is to reduce spam, improve trust, and increase deliverability for legitimate business messaging.</p>
+  <!-- Include topbar -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
-    <h2 id="what-it-does">What Does 10DLC Do?</h2>
-    <p>Under 10DLC, each company registers its <strong>brand</strong> (the business entity) and one or more <strong>campaigns</strong> (the purpose of messaging). Registration data flows through <a href="https://www.campaignregistry.com/" target="_blank" rel="noopener">The Campaign Registry (TCR)</a>, which carriers use to determine throughput and trust levels.</p>
-
-    <h2 id="compare">10DLC vs Short Codes vs Toll-Free SMS</h2>
-    <ul>
-      <li><strong>Short Codes:</strong> 5–6 digit numbers for very high volume; expensive but fast throughput.</li>
-      <li><strong>Toll-Free SMS:</strong> 800/888 numbers; moderate throughput and good for support or notifications.</li>
-      <li><strong>10DLC:</strong> Standard local numbers; affordable, brand-linked, and great for ongoing business texting.</li>
-    </ul>
-
-    <h2 id="who-registers">Who Must Register?</h2>
-    <p>Any organization sending A2P messages in the U.S.—marketing, alerts, appointment reminders, or OTP—should complete 10DLC brand and campaign registration to avoid filtering and potential fees.</p>
-
-    <h2 id="compliance">Staying Compliant (Quick Checklist)</h2>
-    <ul>
-      <li>Identify your brand or sender in each message.</li>
-      <li>Include required keywords: <strong>STOP</strong> (opt-out) and <strong>HELP</strong> behavior.</li>
-      <li>Avoid public link shorteners (e.g., bit.ly); prefer branded domains.</li>
-      <li>Do not request or transmit sensitive personal data.</li>
-      <li>Keep under ~918 characters to avoid excessive concatenation.</li>
-    </ul>
-
-    <div class="cta">
-      <a class="btn" href="/#checker">Check Your SMS for 10DLC Compliance →</a>
-      <div class="note">Opens the main checker on this site.</div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">10DLC Learn</div>
+      <h1>What Is 10DLC?</h1>
+      <p class="sub">An official guide to what 10DLC means for business message delivery and compliance.</p>
     </div>
-  </article>
-</div>
+  </section>
+
+  <!-- Main -->
+  <div class="wrap">
+    <div class="grid">
+      <!-- Sidebar -->
+      <aside class="toc">
+        <div class="box">
+          <h3>On this page</h3>
+          <ol id="toc-list"></ol>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <article class="content" id="article">
+        <h2 id="definition">Definition & Purpose</h2>
+        <p><strong>10DLC (10-Digit Long Code)</strong> is a U.S. messaging classification for Application-to-Person (A2P) SMS. It allows businesses to send text messages from standard 10-digit phone numbers while maintaining higher throughput, accountability, and trust.</p>
+        <p>Major carriers such as AT&T, Verizon, and T-Mobile require 10DLC registration to reduce spam, protect users, and ensure quality delivery. <span class="note">Since December 1, 2024, U.S. carriers have disabled unregistered 10DLC traffic. Compliance is now mandatory.</span></p>
+
+        <h2 id="compare">Compare Channels: 10DLC, Short Code, Toll-Free</h2>
+        <table class="compare">
+          <thead>
+            <tr><th>Channel</th><th>Best for</th><th>Pros</th><th>Considerations</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>10DLC</strong></td>
+              <td>Local presence, promotional & transactional SMS</td>
+              <td>Lower cost, recognizable number, two-way messaging</td>
+              <td>Requires registration, content rules enforced</td>
+            </tr>
+            <tr>
+              <td><strong>Short Code</strong></td>
+              <td>High-volume national campaigns</td>
+              <td>Very high throughput, optimized infrastructure</td>
+              <td>Expensive, long approval time, limited availability</td>
+            </tr>
+            <tr>
+              <td><strong>Toll-Free SMS</strong></td>
+              <td>Support lines or service messaging</td>
+              <td>Nationwide reach, trusted voice numbers</td>
+              <td>Verification required, restricted use cases in some networks</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="registration">Registration Process</h2>
+        <p>To use 10DLC, you must complete <strong>Brand Registration</strong> and <strong>Campaign Registration</strong> with The Campaign Registry (TCR). <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/sms/ten-digit-long-code-guidelines" target="_blank" rel="noopener">Microsoft Docs</a> explains how brand verification is required first, followed by campaign approval.</p>
+        <ul>
+          <li><strong>Brand registration:</strong> your company credentials (legal name, EIN, address)</li>
+          <li><strong>Campaign registration:</strong> your use case, message samples, opt-in and throughput expectations</li>
+        </ul>
+        <p>Approval times vary — brand registration can take several business days, and campaigns may take longer if manual review is required.</p>
+
+        <h2 id="compliance">Compliance Essentials</h2>
+        <ul>
+          <li><strong>Consent required:</strong> send messages only to those who explicitly opted in</li>
+          <li><strong>Brand & voice identity:</strong> identify who is sending the message within the content</li>
+          <li><strong>STOP / HELP keywords:</strong> support opt-out and help queries (STOP, UNSUBSCRIBE, HELP)</li>
+          <li><strong>Link policy:</strong> avoid public link shorteners (like bit.ly) in first messages; carriers often penalize them</li>
+          <li><strong>Content restrictions:</strong> prohibited categories include gambling, debt relief, adult content, and firearms.</li>
+          <li><strong>List hygiene:</strong> remove inactive or deactivated numbers, and respect opt-outs promptly</li>
+        </ul>
+        <div class="note">Carriers may apply surcharges or block non-compliant traffic. Failure to comply can lead to filtering or fines.</a></div>
+
+        <h2 id="examples">Examples</h2>
+        <h3>✅ Compliant Welcome Message</h3>
+        <p>“Welcome to ShopCo deals! Msg & data rates may apply. Max 3 msgs/week. Reply STOP to unsubscribe.”</p>
+
+        <h3>❌ Risky First Message</h3>
+        <p>“50% off today only! Click bit.ly/offer” — lacks sender identity, no STOP, uses a public short link.</p>
+
+        <h2 id="faq">FAQs</h2>
+        <h3>Do I need 10DLC if I already use short code or toll-free?</h3>
+        <p>No. 10DLC is ideal for local long-code messaging. Short codes and toll-free numbers remain valid with their own registration and compliance rules.</p>
+
+        <h3>How strict are volume limits?</h3>
+        <p>Carriers assign throughput based on your campaign’s trust score. Exceeding limits may trigger filtering or penalties.</p>
+
+        <h3>Which carriers enforce this?</h3>
+        <p>All major U.S. carriers — AT&T, Verizon, T-Mobile (including Sprint), and others — require 10DLC registration. <a href="https://www.10dlc.org/en/verizon-tmobile-att-sprint-carrier-code-of-conduct" target="_blank" rel="noopener">Carrier Code of Conduct</a></p>
+
+        <section class="cta">
+          <h3>Want to test a message?</h3>
+          <p>Run your SMS through our free compliance checker before sending it live.</p>
+          <p>
+            <a class="btn" href="/#checker">Check Now →</a>
+            &nbsp;
+            <a class="btn secondary" target="_blank" rel="noopener"
+               href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=site&utm_campaign=learn_article">
+               Get Chrome Extension
+            </a>
+          </p>
+        </section>
+      </article>
+    </div>
+  </div>
+
+  <!-- Include footer -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
+
+  <!-- Scripts -->
+  <script>
+    // include partials
+    (async function includePartials(){
+      const slots=document.querySelectorAll('[data-include]');
+      await Promise.all(Array.from(slots).map(async el=>{
+        try{
+          const url=el.getAttribute('data-include');
+          const r=await fetch(url,{cache:'no-store'});
+          if(r.ok) el.innerHTML=await r.text();
+        }catch(e){}
+      }));
+    })();
+
+    // Generate TOC dynamically
+    (function buildTOC(){
+      const toc=document.getElementById('toc-list');
+      if(!toc) return;
+      const sections=document.querySelectorAll('#article h2');
+      sections.forEach(h=>{
+        const id=h.id||h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id=id;
+        const li=document.createElement('li');
+        const a=document.createElement('a');
+        a.href='#'+id;
+        a.textContent=h.textContent;
+        li.appendChild(a);
+        toc.appendChild(li);
+      });
+    })();
+
+    // Highlight active section
+    (function observeHeadings(){
+      const links=[...document.querySelectorAll('.toc a')];
+      const targets=links.map(a=>document.querySelector(a.getAttribute('href')));
+      if(!targets.length) return;
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            links.forEach(l=>l.classList.remove('active'));
+            const active=links.find(l=>l.getAttribute('href')==='#'+e.target.id);
+            if(active) active.classList.add('active');
+          }
+        });
+      },{rootMargin:"-40% 0px -55% 0px",threshold:0.01});
+      targets.forEach(t=>t&&io.observe(t));
+    })();
+  </script>
+
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -17,12 +17,10 @@
     :root{--ink:#1C2D40;--sky:#58AEDD;--muted:#1f2937;--line:#e2e8f0;--bg:#f8fafc;--card-bg:#fff;--hover-bg:#f1f5f9}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-    .site-header{background:var(--card-bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
-    .header-content{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:800;font-size:1.1rem;color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
-    .nav-links{display:flex;gap:24px;align-items:center}
-    .nav-links a{text-decoration:none;color:var(--muted);font-weight:500;transition:color .2s}
-    .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--ink)}
+
+    /* Topbar/footer loaded from partials */
+    .topbar-slot,.footer-slot{min-height:48px}
+
     .hero{background:#1f2937;color:#fff;padding:64px 24px 48px;text-align:center}
     .hero-content{max-width:800px;margin:0 auto}
     .hero h1{font-size:2.5rem;font-weight:800;margin-bottom:16px;letter-spacing:-.5px}
@@ -30,7 +28,9 @@
     .hero-search{max-width:600px;margin:0 auto;position:relative}
     .hero-search input{width:100%;padding:16px 48px 16px 20px;border:none;border-radius:12px;font-size:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1)}
     .hero-search input::placeholder{color:var(--muted)}
+	.hero-search{display:none}
     .search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.2rem}
+
     .container{max-width:1200px;margin:0 auto;padding:48px 24px}
     .quick-tips{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:48px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
     .quick-tips h2{font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
@@ -38,11 +38,13 @@
     .tip-item{display:flex;gap:12px;align-items:start}
     .tip-icon{color:var(--sky);font-size:1.2rem;flex-shrink:0}
     .tip-text{color:var(--muted);font-size:.95rem}
+
     .category-section{margin-bottom:56px}
     .category-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--line)}
     .category-icon{font-size:1.8rem}
     .category-header h2{font-size:1.8rem;font-weight:600}
     .category-header .count{color:var(--muted);font-size:.9rem;font-weight:500}
+
     .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
     .article-card{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:12px}
     .article-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.08);border-color:var(--sky)}
@@ -57,6 +59,7 @@
     .badge.intermediate{background:#fef3c7;color:#b45309}
     .badge.advanced{background:#fee2e2;color:#b91c1c}
     .read-time{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:4px}
+
     .cta-section{background:var(--card-bg);border:2px solid var(--line);border-radius:16px;padding:48px 32px;text-align:center;margin-top:64px}
     .cta-section h2{font-size:2rem;margin-bottom:12px}
     .cta-section p{color:var(--muted);font-size:1.1rem;margin-bottom:32px}
@@ -66,40 +69,103 @@
     .btn-primary:hover{background:#4a9acc;transform:translateY(-2px);box-shadow:0 4px 12px rgba(88,174,221,.4)}
     .btn-secondary{background:var(--ink);color:#fff}
     .btn-secondary:hover{background:#152335;transform:translateY(-2px);box-shadow:0 4px 12px rgba(28,45,64,.3)}
-    footer{background:var(--card-bg);border-top:1px solid var(--line);margin-top:64px;padding:24px}
-    .footer-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.9rem}
-    .footer-links{display:flex;gap:24px}
-    .footer-links a{color:var(--sky);text-decoration:none}
-    .footer-links a:hover{text-decoration:underline}
+
     @media (max-width:768px){
       .hero h1{font-size:2rem}
       .hero p{font-size:1rem}
       .articles-grid{grid-template-columns:1fr}
       .tips-grid{grid-template-columns:1fr}
-      .nav-links{gap:16px}
-      .footer-content{flex-direction:column;gap:16px;text-align:center}
       .cta-buttons{flex-direction:column}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     }
   </style>
+  <style>
+/* === Inline Article Modal Preview === */
+#article-container {
+  display: none;
+  max-width: 900px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 40px rgba(0,0,0,.1);
+  padding: 40px 50px;
+  line-height: 1.75;
+  color: #1C2D40;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+#article-container h1,
+#article-container h2 {
+  color: #1C2D40;
+  font-weight: 800;
+  margin-top: 1.4em;
+  margin-bottom: 0.4em;
+  font-size: 1.6rem;
+}
+
+#article-container h3 {
+  color: #1C2D40;
+  font-weight: 700;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+  font-size: 1.2rem;
+}
+
+#article-container p,
+#article-container li {
+  font-size: 1.05rem;
+  color: #334155;
+}
+
+#article-container a {
+  color: #58AEDD;
+  text-decoration: none;
+  font-weight: 500;
+}
+#article-container a:hover { text-decoration: underline; }
+
+#article-container table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  font-size: 0.95rem;
+}
+#article-container th,
+#article-container td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  text-align: left;
+}
+#article-container th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #1C2D40;
+}
+
+#close-article {
+  background: #1C2D40;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 32px;
+  cursor: pointer;
+  transition: all .2s;
+}
+#close-article:hover {
+  background: #152335;
+  transform: translateY(-2px);
+}
+</style>
+
 </head>
 <body>
-  <!-- Sticky Header -->
-  <header class="site-header" role="banner">
-    <div class="header-content">
-      <a href="/" class="logo" aria-label="10DLC Check home">📱 <span>10DLC Check</span></a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="/learn/" aria-current="page">Learn</a>
-        <a href="/#checker">Checker</a>
-        <a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=header&utm_campaign=chrome-extension-link" class="nav-link" target="_blank" rel="noopener">
-  Get Chrome Extension
-</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Topbar include -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -156,56 +222,9 @@
         </a>
       </div>
     </section>
-	
-	<!-- Inline article content will appear here -->
+
+    <!-- Inline article container (appears when a card is clicked) -->
     <div id="article-container" style="display:none;max-width:900px;margin:0 auto 64px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,.05)"></div>
-
-
-    <!-- ============================
-     Registration & Setup (hidden)
-=============================
-    <section class="category-section" data-category="Registration &amp; Setup">
-      <div class="category-header">
-        <span class="category-icon" aria-hidden="true">🔧</span>
-        <div style="flex:1">
-          <h2>Registration &amp; Setup</h2>
-          <span class="count" data-count>—</span>
-        </div>
-      </div>
-      <div class="articles-grid">
-        <a class="article-card" href="/learn/register-10dlc-campaign.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">📝</span><div class="article-meta"><h3>Register Your 10DLC Campaign</h3></div></div>
-          <p>Complete guide to brand/campaign registration: use cases, fees, timelines, and approval tips.</p>
-          <div class="article-footer"><span class="badge intermediate">Intermediate</span><span class="read-time">⏱️ 12 min</span></div>
-        </a>
-        <a class="article-card" href="/learn/opt-out-and-help-keywords.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">🛑</span><div class="article-meta"><h3>STOP, HELP &amp; Opt-Out Rules</h3></div></div>
-          <p>Required keywords, proper formatting, response behavior, and common mistakes to avoid.</p>
-          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 6 min</span></div>
-        </a>
-      </div>
-    </section>
-
-    =============================
-     Advanced Topics (hidden)
-=============================
-    <section class="category-section" data-category="Advanced Topics">
-      <div class="category-header">
-        <span class="category-icon" aria-hidden="true">🚀</span>
-        <div style="flex:1">
-          <h2>Advanced Topics</h2>
-          <span class="count" data-count>—</span>
-        </div>
-      </div>
-      <div class="articles-grid">
-        <a class="article-card" href="/learn/carrier-filtering-reasons.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">🔍</span><div class="article-meta"><h3>Understanding Carrier Filtering</h3></div></div>
-          <p>How filtering works, reputation signals, and practical strategies to improve delivery rates.</p>
-          <div class="article-footer"><span class="badge advanced">Advanced</span><span class="read-time">⏱️ 15 min</span></div>
-        </a>
-      </div>
-    </section>
-	================================= -->
 
     <!-- CTA -->
     <section class="cta-section" aria-labelledby="cta-title">
@@ -214,24 +233,31 @@
       <div class="cta-buttons">
         <a href="/#checker" class="btn btn-primary">Try Compliance Checker →</a>
         <a class="btn btn-secondary" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=learn-page&utm_campaign=chrome-extension-launch" target="_blank" rel="noopener">
-  Get Chrome Extension
-</a>
+          Get Chrome Extension
+        </a>
+      </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <div class="footer-content">
-      <div>Powered by <strong>A Problem Solver</strong> • 10dlccheck.com</div>
-      <div class="footer-links">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Footer include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
 
+  <!-- Partials include loader -->
+ <script>
+(async()=>{
+  const inc=document.querySelectorAll('[data-include]');
+  await Promise.all([...inc].map(async el=>{
+    try{
+      const r=await fetch(el.dataset.include,{cache:'no-store'});
+      if(r.ok) el.innerHTML=await r.text();
+    }catch(e){console.error(e);}
+  }));
+})();
+</script>
+
+
+  <!-- Live search + dynamic counts -->
   <script>
-    // Simple live search + dynamic counts
     const q = document.getElementById('kb-search');
     const cards = [...document.querySelectorAll('.article-card')];
     const sections = [...document.querySelectorAll('.category-section')];
@@ -241,7 +267,6 @@
         const visible = sec.querySelectorAll('.article-card:not([hidden])').length;
         const countEl = sec.querySelector('[data-count]');
         if(countEl){ countEl.textContent = visible + (visible===1?' article':' articles'); }
-        // Hide empty sections after filtering
         sec.style.display = visible ? '' : 'none';
       });
     }
@@ -254,87 +279,86 @@
       updateCounts();
     }
     q?.addEventListener('input', e=>filterArticles(e.target.value));
-    // initial counts
     updateCounts();
   </script>
-<script>
-(() => {
-  const container = document.getElementById('article-container');
-  const cards = [...document.querySelectorAll('.article-card')];
 
-  function show(msg, color='#64748b'){
-    container.style.display='block';
-    container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
-  }
+  <!-- Inline article preview (same-origin only) -->
+  <script>
+  (() => {
+    const container = document.getElementById('article-container');
+    const cards = [...document.querySelectorAll('.article-card')];
 
-  async function loadInline(urlStr){
-    try{
-      // ensure same-origin & resolve relative paths
-      const url = new URL(urlStr, location.origin);
-      if(url.origin !== location.origin){
-        show('Cannot load external article (cross-origin).', '#b91c1c'); return;
-      }
-
+    function show(msg, color='#64748b'){
       container.style.display='block';
-      container.innerHTML =
-        '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
-
-      const res = await fetch(url.pathname + url.search);
-      if(!res.ok){
-        show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return;
-      }
-
-      const html = await res.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      // pick the main content from the article page
-      const node =
-        doc.querySelector('main') ||
-        doc.querySelector('article') ||
-        doc.querySelector('.article') ||
-        doc.querySelector('.container');
-
-      if(!node || !node.innerHTML.trim()){
-        show('Article loaded, but no content section found (expect <main> or <article>).', '#b91c1c');
-        return;
-      }
-
-      container.innerHTML = `
-        <div style="max-width:900px;margin:0 auto">
-          ${node.innerHTML}
-          <div style="text-align:center;margin-top:28px">
-            <button id="close-article"
-              style="background:#1f2937;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer">
-              Close
-            </button>
-          </div>
-        </div>`;
-
-      // close & scroll behaviors
-      document.getElementById('close-article').onclick = () => {
-        container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname);
-      };
-      container.scrollIntoView({behavior:'smooth', block:'start'});
-    }catch(err){
-      show(`Failed: ${err?.message || err}`, '#b91c1c');
+      container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
     }
-  }
 
-  // click → inline render + URL hash for back/refresh
-  cards.forEach(card => {
-    card.addEventListener('click', e => {
-      e.preventDefault();
-      const href = card.getAttribute('href');
-      if(!href) return;
-      history.pushState('', '', `#article=${encodeURIComponent(href)}`);
-      loadInline(href);
+    async function loadInline(urlStr){
+      try{
+        const url = new URL(urlStr, location.origin);
+        if(url.origin !== location.origin){
+          show('Cannot load external article (cross-origin).', '#b91c1c'); return;
+        }
+
+        container.style.display='block';
+        container.innerHTML = '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
+
+        const res = await fetch(url.pathname + url.search);
+        if(!res.ok){
+          show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return;
+        }
+
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const node = doc.querySelector('main') || doc.querySelector('article') || doc.querySelector('.article') || doc.querySelector('.container');
+
+        if(!node || !node.innerHTML.trim()){
+          show('Article loaded, but no content section found (expect <main> or <article>).', '#b91c1c');
+          return;
+        }
+
+        container.innerHTML = `
+  <article>
+    ${node.innerHTML}
+    <div style="text-align:center">
+      <button id="close-article">Close Article</button>
+    </div>
+  </article>`;
+
+
+        document.getElementById('close-article').onclick = () => {
+          container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname);
+        };
+        container.scrollIntoView({behavior:'smooth', block:'start'});
+      }catch(err){
+        show(`Failed: ${err?.message || err}`, '#b91c1c');
+      }
+    }
+
+    // click → inline render, but preserve Ctrl/Cmd/middle-click behavior
+    cards.forEach(card => {
+      card.addEventListener('click', e => {
+        const isModified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+        if (isModified) return; // let the browser open in new tab/window
+        e.preventDefault();
+        const href = card.getAttribute('href');
+        if(!href) return;
+        history.pushState('', '', `#article=${encodeURIComponent(href)}`);
+        loadInline(href);
+      });
     });
-  });
 
-  // load if the page opened with a hash
-  const m = location.hash.match(/#article=([^&]+)/);
-  if(m){ loadInline(decodeURIComponent(m[1])); }
-})();
-</script>
+    // load if the page opened with a hash
+    const m = location.hash.match(/#article=([^&]+)/);
+    if(m){ loadInline(decodeURIComponent(m[1])); }
 
+    // back/forward support
+    window.addEventListener('popstate', () => {
+      const m2 = location.hash.match(/#article=([^&]+)/);
+      if(m2){ loadInline(decodeURIComponent(m2[1])); }
+      else { container.style.display='none'; container.innerHTML=''; }
+    });
+  })();
+  </script>
 </body>
 </html>
