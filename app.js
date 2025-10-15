@@ -526,7 +526,7 @@ async function getSuggestions(userMessage) {
     const res = await fetch(SUGGEST_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand: "10DLC Check", message: userMessage })
+      body: JSON.stringify({ brand: "[Brand]", message: userMessage })
     });
 
     const data = await res.json();
@@ -544,8 +544,8 @@ function showSuggestions(data) {
   if (!ta) return;
   if (s && s.text) {
     ta.value = s.text.trim();
+    document.getElementById("aiSuggestionBox").style.borderColor = "#58AEDD"; // highlight border in brand blue
   } else if (!ta.value.trim()) {
     ta.value = "⚠️ No suggestion returned.";
   }
-  // Buttons are already wired in displayResults(); no duplicate handlers here.
 }
