@@ -322,6 +322,7 @@ function displayResults(analysis){
   }
   body.appendChild(secIssues);
 
+/*
   // suggestion
   const secSug = document.createElement('section');
   secSug.className = 'sug';
@@ -333,7 +334,7 @@ function displayResults(analysis){
       <button id="copySuggestion" class="btn sky">Copy</button>
       <button id="useSuggestion" class="btn primary">Replace message with this</button>
     </div>
-  `;
+  `;*/
 
   // assemble
   root.appendChild(top);
