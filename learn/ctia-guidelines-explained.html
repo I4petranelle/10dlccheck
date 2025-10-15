@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CTIA Guidelines Explained | 10DLC Compliance Checker</title>
+  <meta name="description" content="Understand the CTIA Messaging Principles & Best Practices (May 2023). Learn how to meet carrier expectations for consent, opt-outs, content, and compliance in A2P messaging." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/ctia-guidelines-explained.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CTIA Messaging Guidelines Explained" />
+  <meta name="twitter:description" content="A practical guide to the CTIA’s May 2023 Messaging Principles & Best Practices for compliant SMS." />
+  <meta name="twitter:image" content="/favicon.png" />
+  <meta property="og:title" content="CTIA Messaging Guidelines Explained" />
+  <meta property="og:description" content="Learn how to comply with CTIA Messaging Principles & Best Practices (May 2023) for safe and effective SMS campaigns." />
+  <meta property="og:url" content="https://10dlccheck.com/learn/ctia-guidelines-explained.html" />
+  <meta property="og:image" content="/favicon.png" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+
+  <style>
+  :root {
+    --ink: #1C2D40;       /* main text color (deep navy) */
+    --sky: #58AEDD;       /* accent blue */
+    --muted: #334155;     /* darker gray for readable body text */
+    --line: #e2e8f0;
+    --bg: #f8fafc;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.75;
+  }
+
+  header {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    padding: 20px;
+  }
+
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 1.8rem;
+    color: var(--ink);
+  }
+
+  header p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  nav.top {
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  nav.top a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  nav.top a:hover {
+    color: var(--sky);
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px 24px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .04);
+  }
+
+  h2, h3 {
+    color: var(--ink);
+    margin-top: 1.5em;
+  }
+
+  p {
+    color: var(--muted);
+    margin-bottom: 1em;
+    font-size: 1.02rem;
+  }
+
+  ul {
+    color: var(--muted);
+    margin-left: 1.4em;
+    font-size: 1rem;
+  }
+
+  blockquote {
+    border-left: 4px solid var(--sky);
+    padding-left: 12px;
+    color: var(--muted);
+    margin: 1em 0;
+    background: #f1f5f9;
+    border-radius: 6px;
+  }
+
+  .cta {
+    background: var(--bg);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .cta a {
+    display: inline-block;
+    background: var(--sky);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .cta a:hover {
+    background: #3793cc;
+  }
+
+  footer {
+    margin-top: 40px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    color: var(--muted);
+    padding: 20px;
+    background: #f9fafb;
+  }
+
+  footer a {
+    color: var(--sky);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+</head>
+<body>
+  <nav class="top">
+    <a href="/">Home</a>
+    <a href="/learn/">Learn</a>
+    <a href="/learn/ctia-guidelines-explained.html" aria-current="page">CTIA Guidelines</a>
+  </nav>
+
+  <header>
+    <h1>CTIA Guidelines Explained</h1>
+    <p>A Guide to CTIA Messaging Principles & Best Practices (May 2023)</p>
+  </header>
+
+  <main>
+    <h2>1. Introduction & Purpose</h2>
+    <p>The <strong>CTIA Messaging Principles and Best Practices</strong> provide a voluntary framework to encourage trusted wireless messaging, protect consumers, and clarify expectations for all participants in the messaging ecosystem.</p>
+
+    <ul>
+      <li>Encourage trusted and effective wireless messaging (SMS, MMS, RCS)</li>
+      <li>Protect consumers from unwanted or fraudulent content</li>
+      <li>Provide clarity to senders, providers, and carriers</li>
+      <li>Complement (but not replace) legal obligations under TCPA, CAN-SPAM, FCC rules</li>
+    </ul>
+
+    <p>These guidelines primarily cover messaging using 10-digit long codes (10DLC) and short codes. They apply to message senders, aggregators, carriers, and service providers operating within the U.S. wireless ecosystem.</p>
+
+    <h2>2. Key Concepts & Roles</h2>
+    <p>The CTIA distinguishes between <strong>Consumer</strong> (P2P) and <strong>Non-Consumer</strong> (A2P) messaging. Business and organizational messaging is considered Non-Consumer and held to stricter consent, content, and privacy standards.</p>
+
+    <h3>Consumer Messaging</h3>
+    <p>Messaging between individuals — conversational, lower volume, and balanced send/receive ratios.</p>
+
+    <h3>Non-Consumer Messaging</h3>
+    <p>Business or organizational messaging to consumers — such as marketing, alerts, or notifications. These require clear consent, opt-outs, and transparency.</p>
+
+    <h2>3. Non-Consumer Best Practices</h2>
+    <h3>3.1 Consumer Consent</h3>
+    <p>Consent is the foundation of compliance. Senders must obtain, document, and honor consumer opt-ins.</p>
+
+    <blockquote>Example CTA: “Text JOIN123 to 55555 to receive weekly offers from YourCompany. Msg & data rates may apply. Up to 4 msgs/week. Reply STOP to cancel.”</blockquote>
+
+    <ul>
+      <li>Opt-ins must be explicit and campaign-specific.</li>
+      <li>Confirmation messages must include sender name, opt-out info, frequency, and cost.</li>
+      <li>Opt-outs must be simple and immediate (via STOP, UNSUBSCRIBE, CANCEL, etc.).</li>
+      <li>Do not rent, buy, or share consent lists.</li>
+    </ul>
+
+    <h3>3.2 Privacy & Security</h3>
+    <p>Maintain a clear privacy policy and implement strong security controls (access, encryption, audits). Remove deactivated numbers promptly.</p>
+
+    <h3>3.3 Content Requirements</h3>
+    <ul>
+      <li>No deceptive, fraudulent, or illegal content.</li>
+      <li>Links must identify the sender; public link shorteners are discouraged.</li>
+      <li>Phone numbers within messages must identify the associated entity.</li>
+    </ul>
+
+    <h3>3.4 Text-Enabling a Telephone Number</h3>
+    <p>Senders must validate authority to use a 10-digit number for messaging. It should be properly assigned through a telecom provider.</p>
+
+    <h3>3.5 Other Practices</h3>
+    <ul>
+      <li>Avoid “snowshoe” tactics (distributing traffic over many numbers to evade filters).</li>
+      <li>Do not use unauthorized routes (“grey routes”).</li>
+      <li>Monitor proxy or shared numbers closely for abuse.</li>
+    </ul>
+
+    <h2>4. Special Use Cases</h2>
+    <p>The CTIA also provides guidance for group messaging, number spoofing, and registries — requiring fairness, transparency, and opt-out support in all implementations.</p>
+
+    <h2>5. Mitigating Unwanted Messaging</h2>
+    <ul>
+      <li>Providers should proactively block or filter unwanted messages.</li>
+      <li>Consumers can report spam via 7726 (“SPAM”).</li>
+      <li>Bad actors may be suspended or blacklisted.</li>
+    </ul>
+
+    <h2>6. Carrier & Industry Implications</h2>
+    <ul>
+      <li>Carriers may filter traffic based on opt-in status, reputation, or complaint rates.</li>
+      <li>Non-compliant senders risk message blocking or throttling.</li>
+      <li>Maintain detailed opt-in/out logs for audits.</li>
+    </ul>
+
+    <h2>7. Example Scenarios</h2>
+    <h3>Promotional Campaign</h3>
+    <p>“Text OFFERS to 12345 to receive deals from ShopCo. Up to 3 msgs/week. Reply STOP to unsubscribe.”</p>
+    <p>→ Send confirmation, log consent, and include STOP in all subsequent messages.</p>
+
+    <h3>Informational Alerts</h3>
+    <p>“Alert: Unusual login attempt detected. Reply YES if you recognize it.”</p>
+    <p>Ensure branding, domain transparency, and opt-out for non-essential messaging.</p>
+
+    <h2>8. Legal Context</h2>
+    <p>CTIA guidelines are voluntary, not law. Compliance with TCPA, CAN-SPAM, FCC, and state laws remains mandatory. Carriers may impose stricter internal rules.</p>
+
+    <h2>9. Implementation Tips</h2>
+    <ul>
+      <li>Integrate compliance early in your workflow.</li>
+      <li>Use dedicated numbers to isolate risk.</li>
+      <li>Monitor opt-outs, bounces, and complaint rates.</li>
+      <li>Review your messaging strategy quarterly to align with CTIA updates.</li>
+    </ul>
+
+    <section class="cta">
+      <h3>Ready to Test Your Message?</h3>
+      <p>Use our free 10DLC compliance checker to analyze your SMS content before sending.</p>
+      <a href="https://10dlccheck.com/#checker">Try Compliance Checker →</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Powered by <strong>A Problem Solver</strong> • 10dlccheck.com</p>
+    <p><a href="/privacy">Privacy</a> • <a href="/terms">Terms</a></p>
+  </footer>
+</body>
+</html>

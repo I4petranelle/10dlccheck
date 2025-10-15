@@ -322,23 +322,10 @@ function displayResults(analysis){
   }
   body.appendChild(secIssues);
 
-  // suggestion
-  const secSug = document.createElement('section');
-  secSug.className = 'sug';
-  const bestSuggestion = (analysis.tips && analysis.tips.length) ? analysis.tips.join('\n') : '';
-  secSug.innerHTML = `
-    <h4>Suggested Clean Rewrite</h4>
-    <textarea id="bestSuggestion" placeholder="A cleaned, compliant rewrite will appear here.">${bestSuggestion}</textarea>
-    <div class="row">
-      <button id="copySuggestion" class="btn sky">Copy</button>
-      <button id="useSuggestion" class="btn primary">Replace message with this</button>
-    </div>
-  `;
 
   // assemble
   root.appendChild(top);
   root.appendChild(body);
-  root.appendChild(secSug);
   root.classList.add('show');
 
   // buttons
@@ -539,7 +526,7 @@ async function getSuggestions(userMessage) {
     const res = await fetch(SUGGEST_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand: "10DLC Check", message: userMessage })
+      body: JSON.stringify({ brand: "[Brand]", message: userMessage })
     });
 
     const data = await res.json();
@@ -557,8 +544,8 @@ function showSuggestions(data) {
   if (!ta) return;
   if (s && s.text) {
     ta.value = s.text.trim();
+    document.getElementById("aiSuggestionBox").style.borderColor = "#58AEDD"; // highlight border in brand blue
   } else if (!ta.value.trim()) {
     ta.value = "⚠️ No suggestion returned.";
   }
-  // Buttons are already wired in displayResults(); no duplicate handlers here.
 }

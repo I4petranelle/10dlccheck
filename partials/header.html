@@ -1,0 +1,140 @@
+<header class="dlc-header dlc-wide">
+  <style>
+    /* ---------- Wide Clean Header Style ---------- */
+    .dlc-header {
+      --ink: #1C2D40;
+      --sky: #58AEDD;
+      --bg: #ffffff;
+      --line: #e6eaf0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .dlc-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* Left side: logo + nav */
+    .dlc-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-shrink: 0;
+    }
+
+    .dlc-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .dlc-logo img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    /* Nav links */
+    .dlc-nav {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .dlc-nav a {
+      color: #334155;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.98rem;
+      padding: 6px 4px;
+      border-radius: 6px;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .dlc-nav a:hover {
+      color: var(--sky);
+      background: rgba(88, 174, 221, 0.08);
+    }
+
+    /* Right CTA button */
+    .dlc-cta {
+      background: var(--ink);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 10px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 3px 8px rgba(28, 45, 64, 0.15);
+      transition: background 0.2s ease, transform 0.1s ease;
+      flex-shrink: 0;
+    }
+
+    .dlc-cta:hover {
+      background: var(--sky);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(88, 174, 221, 0.25);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      .dlc-container {
+        padding: 14px 20px;
+      }
+
+      .dlc-left {
+        gap: 24px;
+      }
+
+      .dlc-nav {
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .dlc-nav {
+        display: none;
+      }
+
+      .dlc-container {
+        justify-content: space-between;
+      }
+    }
+  </style>
+
+  <div class="dlc-container">
+    <!-- Left section -->
+    <div class="dlc-left">
+      <a href="/" class="dlc-logo">
+        <img src="/assets/icons/10dlc-logo.svg" alt="10DLC Check logo" />
+        <span>10DLC Check</span>
+      </a>
+
+      <nav class="dlc-nav" aria-label="Primary navigation">
+        <a href="/learn/index.html">Learn</a>
+        <a href="/index.html">Checker</a>
+      </nav>
+    </div>
+
+    <!-- Right section -->
+    <a href="/index.html" class="dlc-cta">Open Checker</a>
+  </div>
+</header>

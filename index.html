@@ -20,7 +20,7 @@
     <meta property="og:image" content="/favicon.png" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <!-- Styles (original base + cards/guidelines + Results Lite) -->
+    <!-- Styles (base + cards/guidelines + Results Lite) -->
     <style>
       *{margin:0;padding:0;box-sizing:border-box}
       body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f1f5f9;min-height:100vh;padding:20px;color:#111827}
@@ -37,27 +37,35 @@
       .input-section{margin-top:18px;margin-bottom:18px}
       label{display:block;margin-bottom:10px;font-weight:700;color:#374151;font-size:1.05rem}
       textarea{width:100%;min-height:120px;padding:15px;border:2px solid #e5e7eb;border-radius:12px;font-size:16px;font-family:inherit;transition:.3s;resize:vertical}
-      textarea:focus{outline:none;border-color:#374151;box-shadow:0 0 0 3px rgba(55,65,81,.1)}
+      textarea:focus{outline:none;border-color:#58AEDD;box-shadow:0 0 0 3px rgba(88,174,221,.15)}
       .helper{margin-top:6px;font-size:.86rem;color:#6b7280}
 
       .verify-bar{margin-top:10px;margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;width:100%;max-width:100%;box-sizing:border-box;border:2px solid #1c2D40;background:#f0f6fa;border-radius:10px;padding:8px 12px;box-shadow:0 2px 6px rgba(28,45,64,.1)}
       .verify-label{font-size:.95rem;color:#1C2D40;font-weight:700}
       .math-inline{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:1rem;color:#1C2D40}
       .math-inline input{width:72px;padding:6px 8px;text-align:center;border:2px solid #1C2D40;border-radius:8px;font-size:.95rem;background:#ffffff;color:#1C2D40;font-weight:600}
-      .math-inline input:focus{outline:none;border-color:#FDB813;box-shadow:0 0 4px #FDB813}
+      .math-inline input:focus{outline:none;border-color:#58AEDD;box-shadow:0 0 4px #58AEDD}
       .verify-note{margin-left:auto;font-size:.85rem;color:#1C2D40;font-style:italic;white-space:nowrap}
+
+      /* Unified focus ring for inputs/selects/buttons */
+      input[type="text"]:focus, button:focus, select:focus{
+        outline:none;border-color:#58AEDD;box-shadow:0 0 0 3px rgba(88,174,221,.15)
+      }
 
       .button-container{text-align:center;margin:14px 0 16px}
       .check-btn{background:#1f2937;color:#fff;padding:12px 28px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 15px rgba(31,41,55,.3)}
-      .check-btn:hover{background:#374151;transform:translateY(-1px);box-shadow:0 6px 20px rgba(31,41,55,.4)}
-      .check-btn:disabled{background:#9ca3af;cursor:not-allowed;transform:none}
+      .check-btn:hover{background:#58AEDD;transform:translateY(-1px);box-shadow:none}
+      .check-btn:disabled{background:#9ca3af;cursor:not-allowed;transform:none;opacity:.7}
+
+      .guide-btn{display:inline-block;margin-top:28px;background:#58AEDD;color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.3px;padding:14px 34px;border-radius:999px;text-decoration:none;transition:all .25s ease-in-out;box-shadow:0 6px 18px rgba(88,174,221,.3);}
+      .guide-btn:hover{background:#1C2D40;box-shadow:0 6px 18px rgba(28,45,64,.25);transform:translateY(-1px);}
 
       .loading{text-align:left;padding:10px;display:none}
       .spinner{border:3px solid #f3f4f6;border-top:3px solid #1f2937;border-radius:50%;width:28px;height:28px;animation:spin 1s linear infinite;margin:0 0 8px}
       @keyframes spin{to{transform:rotate(360deg)}}
 
-      /* ------- Results Lite (new, compact) ------- */
-      .results-card{display:none;margin-top:14px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.06);overflow:hidden}
+      /* ------- Results Lite ------- */
+      .results-card{display:none;margin-top:14px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.06);overflow:hidden;min-height:120px}
       .res-top{display:flex;gap:12px;align-items:center;padding:14px 16px;background:linear-gradient(180deg,#f8fafc,#ffffff);border-bottom:1px solid #e5e7eb}
       .res-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-weight:700;font-size:.92rem;border:1px solid transparent}
       .res-pill.pass{background:#ecfdf5;color:#065f46;border-color:#10b981}
@@ -90,7 +98,7 @@
       .btn.sky:hover{filter:brightness(.92)}
       .results-card.show{display:block}
 
-      /* ------- Cards/panels/guidelines (original) ------- */
+      /* ------- Cards/panels/guidelines ------- */
       .panel{margin-top:40px;padding:16px;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px}
       .panel h4{font-size:1rem;color:#111827;margin-bottom:10px}
       .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
@@ -99,9 +107,8 @@
       .card p{word-break:break-word;overflow-wrap:anywhere}
       .sample{white-space:pre-wrap;font-size:.93rem;color:#374151;background:#fff;border:1px dashed #d1d5db;border-radius:8px;padding:10px}
       .note{font-size:.85rem;color:#6b7280;margin-top:6px}
-      /* Hide the second panel: Real-Time Examples / Templates */
       .panel[aria-labelledby="templates"] {display: none !important;}
-	  
+
       .guidelines{margin-top:18px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0}
       .guidelines h4{color:#1e293b;margin-bottom:8px;font-size:1rem;cursor:pointer;display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;transition:.2s}
       .guidelines h4:hover{background:#e2e8f0}
@@ -126,9 +133,10 @@
     </style>
 
     <!-- App JS -->
-    <script src="/app.js"></script>                <!-- uses COMPLIANCE_RULES -->
+    <script src="/app.js"></script> <!-- uses COMPLIANCE_RULES -->
   </head>
   <body>
+
     <div class="container">
       <div class="header" role="banner">
         <h1>10DLC Compliance Checker</h1>
@@ -147,7 +155,18 @@
         <div class="input-section">
           <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
           <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
-          <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+
+          <!-- live counter -->
+          <div id="charCounter" style="text-align:right;font-size:.85rem;color:#6b7280;margin-top:4px"></div>
+
+          <!-- AI opt-in -->
+          <label class="ai-optin" style="display:flex;gap:8px;align-items:center;margin:8px 0 4px 0;">
+            <input id="aiOptIn" type="checkbox" checked />
+            <span>Allow grammar &amp; clarity suggestions (AI)</span>
+          </label>
+          <div style="margin:-2px 0 10px 26px;color:#6b7280;font-size:.85rem">
+            We don’t sell your data. See our <a href="/privacy">Privacy Policy</a>.
+          </div>
 
           <div class="verify-bar" title="Quick human verification">
             <span class="verify-label">Verification:</span>
@@ -168,9 +187,21 @@
           <p>Analyzing message...</p>
         </div>
 
-        <!-- Results container (JS will render into this) -->
+        <!-- Results container -->
         <div id="results" class="results-card" role="status" aria-live="polite"></div>
-        
+
+        <!-- AI Suggestion -->
+        <section class="panel" aria-labelledby="aiSuggestionHdr" style="margin-top:1.5rem;">
+          <h4 id="aiSuggestionHdr" style="font-weight:600;margin-bottom:0.5rem;">AI Suggestion (optional):</h4>
+          <div id="aiSuggestionBox"
+               style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.04);min-height:72px">
+            <div id="aiSuggestionText" style="color:#1f2937;">Suggestion will appear here.</div>
+            <div id="aiSuggestionFlags" class="note" style="margin-top:8px;color:#6b7280;"></div>
+          </div>
+        </section>
+
+        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+
         <!-- Quick Reference Cheat Sheet -->
         <section class="panel" aria-labelledby="quickRef">
           <h4 id="quickRef">Quick Reference Cheat Sheet</h4>
@@ -208,7 +239,7 @@
           </div>
         </section>
 
-        <!-- Real-Time Examples / Templates -->
+        <!-- Real-Time Examples / Templates (hidden via CSS) -->
         <section class="panel" aria-labelledby="templates">
           <h4 id="templates">Real-Time Examples &amp; Templates</h4>
           <div class="grid">
@@ -270,6 +301,86 @@
       });
     </script>
 
+    <script>
+      // Hide learn button on production domain
+      if (location.hostname === "10dlccheck.com") {
+        const btn = document.querySelector('.guide-btn[href="/learn/index.html"]');
+        if (btn) btn.style.display = "none";
+      }
+    </script>
+
+    <script>
+      // Cloudflare Worker endpoint
+      const AI_API = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
+      // If routed later: const AI_API = "/api/suggest";
+
+      // Live character counter (segments aware)
+      (function () {
+        const msg = document.getElementById('message');
+        const counter = document.getElementById('charCounter');
+        if (!msg || !counter) return;
+        function updateCount(){
+          const len = (msg.value||'').length;
+          const seg = len<=160?1:(len<=320?2:'2+');
+          counter.textContent = `${len} / 320 (${seg} segment${seg===1?'':'s'})`;
+          counter.style.color = len>320 ? '#b91c1c' : (len>160 ? '#b45309' : '#6b7280');
+        }
+        msg.addEventListener('input', updateCount);
+        updateCount();
+      })();
+
+      // Hook the existing "Check Compliance" flow (no changes to app.js)
+      (function wireAISuggestion() {
+        const checkBtn = document.getElementById("checkBtn");
+        const msgEl    = document.getElementById("message");
+        const aiOptIn  = document.getElementById("aiOptIn");
+        const aiText   = document.getElementById("aiSuggestionText");
+        const aiFlags  = document.getElementById("aiSuggestionFlags");
+
+        if (!checkBtn || !msgEl || !aiOptIn || !aiText) return;
+
+        checkBtn.addEventListener("click", async () => {
+          const message = (msgEl.value || "").trim();
+
+          // disable during analysis (prevents double clicks)
+          checkBtn.disabled = true;
+          const originalLabel = checkBtn.textContent;
+          checkBtn.textContent = "Analyzing…";
+
+          try {
+            if (!aiOptIn.checked || !message) {
+              aiText.textContent = "Suggestion will appear here.";
+              aiFlags.textContent = "";
+              return;
+            }
+
+            aiText.textContent = "Generating AI suggestion…";
+            aiFlags.textContent = "";
+
+            const r = await fetch(AI_API, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ brand: "10DLC Check", message })
+            });
+
+            const data = await r.json().catch(() => ({}));
+            aiText.textContent = (data?.suggestion || "").trim() || "No suggestion returned.";
+            if (Array.isArray(data?.risks) && data.risks.length) {
+              aiFlags.innerHTML = "<strong>Flags:</strong> " + data.risks.map(x => x.message).join(" • ");
+            } else {
+              aiFlags.textContent = "";
+            }
+          } catch {
+            aiText.textContent = "Couldn’t reach AI service.";
+            aiFlags.textContent = "";
+          } finally {
+            checkBtn.disabled = false;
+            checkBtn.textContent = originalLabel;
+          }
+        });
+      })();
+    </script>
+
     <footer>
       <div class="foot-line">
         <div class="foot-small">Powered by <strong>A Problem Solver</strong> •  10dlccheck.com </div>
@@ -287,5 +398,5 @@
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 
-     </body>
+  </body>
 </html>

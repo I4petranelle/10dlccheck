@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Check — Premium Dashboard</title>
+  <meta name="description" content="Premium risk analysis and carrier intelligence for 10DLC compliance." />
+
+  <style>
+    :root {
+      --brand:#1C2D40;      /* deep slate */
+      --brandAlt:#58AEDD;   /* sky blue accent */
+      --text:#111827;       /* body text */
+      --muted:#475569;      /* slate-600 */
+      --card:#FFFFFF;       /* white surfaces */
+      --bg:#F1F5F9;         /* page background */
+      --border:#E5E7EB;     /* borders */
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    .container{max-width:1000px;margin:0 auto;padding:20px}
+
+    /* Header (site-like) */
+    header{background:#1f2937;color:#fff;border-radius:20px 20px 0 0;box-shadow:0 20px 40px rgba(2,6,23,.08)}
+    header .inner{padding:24px}
+    header h1{margin:0;font-size:24px;font-weight:800}
+    header p{margin:4px 0 0;font-size:13px;opacity:.95}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}
+    .pill{background:#f9fafb;color:#1e293b;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(2,6,23,.05)}
+
+    /* Cards */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 1px 2px rgba(2,6,23,.04);padding:20px;margin:20px 0}
+    .card h2{margin:0 0 10px;font-size:18px;font-weight:700}
+    .muted{color:var(--muted)}
+
+    /* Gate */
+    #gate{background:#fff;border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center;margin-top:30px;box-shadow:0 2px 8px rgba(2,6,23,.06)}
+    #gate input{padding:10px 14px;border:1px solid #cbd5e1;border-radius:10px;font-size:14px;width:200px;margin-right:10px}
+    #gate button{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer}
+    #gate button:hover{background:#172536}
+    #dashboard{display:none}
+
+    /* Tabs */
+    .tabs{display:flex;gap:8px;padding:8px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+    .tab{flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--muted);font-weight:600;cursor:pointer}
+    .tab.active{background:var(--brand);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(2,6,23,.06)}
+    .panel{display:none}
+    .panel.active{display:block}
+
+    /* Risk score gauge */
+    .gauge{position:relative;width:112px;height:112px}
+    .gauge svg{transform:rotate(-90deg)}
+    .gauge .center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center}
+
+    /* Carrier list */
+    .carrier{border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:12px;transition:background .2s}
+    .carrier:hover{background:#f9fafb;cursor:pointer}
+    .carrier-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .carrier-main{display:flex;align-items:center;gap:12px}
+    .logo-box{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(0,0,0,.08);background:#fff}
+    .name{font-weight:700}
+    .bar{height:10px;border-radius:5px;background:#e5e7eb;margin-top:6px;overflow:hidden}
+    .bar-inner{height:100%;border-radius:5px}
+    .risk-low{color:#16a34a;font-weight:700}
+    .risk-med{color:#b45309;font-weight:700}
+    .risk-high{color:#dc2626;font-weight:700}
+    .carrier-details{display:none;padding-top:12px;margin-top:12px;border-top:1px dashed var(--border)}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .detail{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:12px}
+    .detail h4{margin:0 0 6px;font-size:14px;font-weight:700}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .chip{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:600;color:#1e293b}
+    .toggle{font-size:12px;color:#334155;user-select:none}
+    .arrow.rotate{transform:rotate(90deg)}
+
+    /* Calculator cards */
+    .grid{display:grid;gap:12px}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width: 860px){ .grid-3{grid-template-columns:1fr} .detail-grid{grid-template-columns:1fr} }
+
+    /* Floating action bar + spacer */
+    .fab{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(2,6,23,.06)}
+    .fab .inner{max-width:1000px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+    .fab-spacer{height:88px;} /* keeps content scrollable above fixed bar */
+
+    .btn{padding:10px 14px;border-radius:10px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer}
+    .btn:hover{background:var(--bg)}
+    .btn-accent{
+      background:linear-gradient(90deg,var(--brand),var(--brandAlt));
+      color:#fff;border:none
+    }
+    .btn-accent:hover{filter:brightness(.95)}
+
+    .soft-pill{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;display:inline-block}
+    .pill-warn{background:#FEF3C7;color:#B45309;border:1px solid #F59E0B}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+    /* Print: clean PDF */
+    @media print{
+      .fab, #gate { display:none !important; }
+      body { background:#fff; }
+      header { box-shadow:none; border-radius:0; }
+      .fab-spacer { display:none; }
+      a[href]:after { content:""; } /* avoid printing raw URLs */
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="inner container">
+      <h1>10DLC Check — Premium</h1>
+      <p>Advanced Analytics &amp; Carrier Intelligence</p>
+      <div class="pill-row">
+        <span class="pill">⭐ Premium Active</span>
+        <span class="pill">Risk Score: <strong id="riskScorePill">68</strong></span>
+        <span class="pill">Safe Volume: <strong id="safeVolPill">3,500/day</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Access Gate -->
+    <div id="gate">
+      <h2>Access Verification</h2>
+      <p class="muted">Please type <strong>"text me"</strong> to continue.</p>
+      <div style="margin-top:12px;">
+        <input id="accessInput" type="text" placeholder="Enter phrase..." />
+        <button id="accessBtn">Submit</button>
+      </div>
+      <p id="accessError" style="color:#dc2626;margin-top:10px;display:none;">Incorrect phrase. Try again.</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard">
+      <!-- Compliance Banner -->
+      <div class="card">
+        <div style="display:flex;gap:16px;align-items:flex-start">
+          <div style="width:56px;height:56px;border-radius:999px;background:#FEF9C3;display:flex;align-items:center;justify-content:center;font-size:22px">⚠️</div>
+          <div style="flex:1">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+              <h2 style="margin:0;color:var(--text);font-size:20px;font-weight:800">Compliance Status: Warning</h2>
+              <span class="soft-pill pill-warn">Medium Risk</span>
+            </div>
+            <p class="muted">Your message passes basic compliance but has carrier-specific risk factors that could impact deliverability.</p>
+            <div class="mono" style="margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);white-space:pre-wrap">
+Hi John! 🎉 Get 50% OFF your next purchase. Click here: bit.ly/deal123
+Reply STOP to opt out
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" aria-label="Premium Tabs">
+        <button class="tab active" data-tab="analysis" role="tab" aria-selected="true">Risk Analysis</button>
+        <button class="tab" data-tab="carriers" role="tab" aria-selected="false">Carrier Analysis</button>
+        <button class="tab" data-tab="calculator" role="tab" aria-selected="false">Volume Calculator</button>
+      </div>
+
+      <!-- Panels -->
+      <section id="panel-analysis" class="panel active" role="tabpanel" aria-labelledby="analysis">
+        <!-- Gauge + stats -->
+        <div class="card">
+          <h2>Overall Blocking Risk Score</h2>
+          <div style="display:flex;gap:24px;align-items:center">
+            <div class="gauge" aria-hidden="true">
+              <svg width="112" height="112">
+                <circle cx="56" cy="56" r="48" stroke="var(--border)" stroke-width="10" fill="none"></circle>
+                <circle id="gaugeArc" cx="56" cy="56" r="48" stroke="#F59E0B" stroke-width="10" fill="none"
+                        stroke-dasharray="0 302" stroke-linecap="round"></circle>
+              </svg>
+              <div class="center">
+                <div>
+                  <div id="riskScore" style="font-size:24px;font-weight:800;color:#B45309">68</div>
+                  <div style="font-size:10px;color:var(--muted)">/ 100</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;font-size:14px">
+                <span class="muted">Risk Level</span>
+                <span style="font-weight:700;color:#B45309">Medium-High</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:6px">
+                <span class="muted">Estimated Safe Volume</span>
+                <span id="safeVol" style="font-weight:700">3,500 msgs/day</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:6px">
+                <span class="muted">Time to Potential Block</span>
+                <span style="font-weight:700">5–7 days at high volume</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detected Risk Factors -->
+        <div class="card">
+          <h2>Detected Risk Factors</h2>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:12px;padding:14px;border:1px solid #FECACA;background:#FEF2F2;border-radius:12px">
+              <div style="font-size:18px">❌</div>
+              <div>
+                <div style="font-weight:700;color:#7F1D1D">URL Shortener Detected</div>
+                <div class="muted" style="color:#991B1B">bit.ly links are flagged by T-Mobile and Verizon filters. Use full URLs or branded short domains.</div>
+                <div style="margin-top:4px;font-size:12px;color:#B91C1C">Impact: −15 risk points</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;padding:14px;border:1px solid #FDE68A;background:#FFFBEB;border-radius:12px">
+              <div style="font-size:18px">⚠️</div>
+              <div>
+                <div style="font-weight:700;color:#78350F">High-Urgency Language</div>
+                <div class="muted" style="color:#92400E">“50% OFF” triggers promotional filters. Consider softer language or segmented sending.</div>
+                <div style="margin-top:4px;font-size:12px;color:#B45309">Impact: −8 risk points</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;padding:14px;border:1px solid #BBF7D0;background:#ECFDF5;border-radius:12px">
+              <div style="font-size:18px">✅</div>
+              <div>
+                <div style="font-weight:700;color:#065F46">Opt-Out Present</div>
+                <div class="muted" style="color:#065F46">STOP keyword is properly included as the last line.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warming Schedule -->
+        <div class="card">
+          <h2>Recommended Warming Schedule</h2>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <!-- rows -->
+            <div style="display:flex;gap:16px;align-items:center">
+              <div style="width:96px;font-size:14px;font-weight:700">Week 1</div>
+              <div style="flex:1;height:32px;border:1px solid var(--border);border-radius:999px;position:relative;overflow:hidden;background:var(--bg)">
+                <div style="width:15%;height:100%;background:var(--brandAlt)"></div>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px">500 msgs/day</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center">
+              <div style="width:96px;font-size:14px;font-weight:700">Week 2</div>
+              <div style="flex:1;height:32px;border:1px solid var(--border);border-radius:999px;position:relative;overflow:hidden;background:var(--bg)">
+                <div style="width:30%;height:100%;background:var(--brandAlt)"></div>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px">1,000 msgs/day</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center">
+              <div style="width:96px;font-size:14px;font-weight:700">Week 3–4</div>
+              <div style="flex:1;height:32px;border:1px solid var(--border);border-radius:999px;position:relative;overflow:hidden;background:var(--bg)">
+                <div style="width:60%;height:100%;background:var(--brandAlt)"></div>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px">2,000 msgs/day</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center">
+              <div style="width:96px;font-size:14px;font-weight:700">Month 2+</div>
+              <div style="flex:1;height:32px;border:1px solid var(--border);border-radius:999px;position:relative;overflow:hidden;background:#16A34A;color:#fff">
+                <div style="width:100%;height:100%"></div>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px">3,500 msgs/day (Full Volume)</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;padding:12px;color:#1D4ED8">
+            <strong>Pro Tip:</strong> Monitor delivery rates during weeks 2–3. If they drop below 95%, pause scaling and hold volume for an extra week.
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-carriers" class="panel" role="tabpanel" aria-labelledby="carriers">
+        <!-- T-Mobile -->
+        <div class="card">
+          <div style="padding:14px 18px;background:linear-gradient(90deg,#EC4899,#DB2777);border-radius:12px;color:#fff;margin:-20px -20px 16px -20px">
+            <h3 style="margin:0;font-size:20px;font-weight:800">T-Mobile Analysis</h3>
+          </div>
+          <div>
+            <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px">
+              <div style="text-align:center">
+                <div id="tmobileRisk" style="font-size:32px;font-weight:800;color:#DB2777">75</div>
+                <div class="muted">Risk Score</div>
+              </div>
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <span style="font-size:14px">Filter Sensitivity</span>
+                  <span class="soft-pill" style="background:#FEE2E2;color:#B91C1C">HIGH</span>
+                </div>
+                <div class="bar"><div class="bar-inner" style="width:75%;background:#EF4444"></div></div>
+              </div>
+            </div>
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Max Safe Volume</h4>
+                <div id="tmobileVol" style="font-size:22px;font-weight:800;color:#DB2777">2,800</div>
+                <div class="muted">messages per day</div>
+              </div>
+              <div class="detail">
+                <h4>Specific Issues</h4>
+                <ul class="muted" style="margin:0 0 0 16px;padding:0">
+                  <li>URL shorteners heavily filtered</li>
+                  <li>Promotional language may trigger SHAFT review</li>
+                  <li>High complaint rates → immediate suspension</li>
+                </ul>
+              </div>
+            </div>
+            <div style="margin-top:14px;border:1px solid #BBF7D0;background:#ECFDF5;border-radius:10px;padding:12px;color:#065F46">
+              <div style="font-weight:700;margin-bottom:4px">Recommendations</div>
+              <ul style="margin:0 0 0 16px;padding:0">
+                <li>Replace bit.ly with branded domain</li>
+                <li>Soften urgency (“Special offer” vs “50% OFF”)</li>
+                <li>Start at 1,000 msgs/day and scale slowly</li>
+                <li>Ensure Brand vetting (reduces risk ~20%)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verizon -->
+        <div class="card">
+          <div style="padding:14px 18px;background:linear-gradient(90deg,#EF4444,#DC2626);border-radius:12px;color:#fff;margin:-20px -20px 16px -20px">
+            <h3 style="margin:0;font-size:20px;font-weight:800">Verizon Analysis</h3>
+          </div>
+          <div>
+            <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px">
+              <div style="text-align:center">
+                <div id="verizonRisk" style="font-size:32px;font-weight:800;color:#DC2626">62</div>
+                <div class="muted">Risk Score</div>
+              </div>
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <span style="font-size:14px">Filter Sensitivity</span>
+                  <span class="soft-pill" style="background:#FEF3C7;color:#B45309">MEDIUM</span>
+                </div>
+                <div class="bar"><div class="bar-inner" style="width:62%;background:#F59E0B"></div></div>
+              </div>
+            </div>
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Max Safe Volume</h4>
+                <div id="verizonVol" style="font-size:22px;font-weight:800;color:#DC2626">4,000</div>
+                <div class="muted">messages per day</div>
+              </div>
+              <div class="detail">
+                <h4>Specific Issues</h4>
+                <ul class="muted" style="margin:0 0 0 16px;padding:0">
+                  <li>External vetting status unknown (affects throughput)</li>
+                  <li>Opt-out compliance is good</li>
+                </ul>
+              </div>
+            </div>
+            <div style="margin-top:14px;border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;padding:12px;color:#1D4ED8">
+              <div style="font-weight:700;margin-bottom:6px">External Vetting</div>
+              <p class="muted" style="color:#1D4ED8;margin:0 0 8px">Get vetted via WMC/Aegis to increase throughput by ~40%.</p>
+              <button class="btn">Learn About External Vetting</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AT&T -->
+        <div class="card">
+          <div style="padding:14px 18px;background:linear-gradient(90deg,#3B82F6,#2563EB);border-radius:12px;color:#fff;margin:-20px -20px 16px -20px">
+            <h3 style="margin:0;font-size:20px;font-weight:800">AT&amp;T Analysis</h3>
+          </div>
+          <div>
+            <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px">
+              <div style="text-align:center">
+                <div id="attRisk" style="font-size:32px;font-weight:800;color:#2563EB">55</div>
+                <div class="muted">Risk Score</div>
+              </div>
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <span style="font-size:14px">Filter Sensitivity</span>
+                  <span class="soft-pill" style="background:#DBEAFE;color:#1E40AF">MEDIUM</span>
+                </div>
+                <div class="bar"><div class="bar-inner" style="width:55%;background:#3B82F6"></div></div>
+              </div>
+            </div>
+            <div class="detail-grid">
+              <div class="detail">
+                <h4>Max Safe Volume</h4>
+                <div id="attVol" style="font-size:22px;font-weight:800;color:#2563EB">5,200</div>
+                <div class="muted">messages per day</div>
+              </div>
+              <div class="detail">
+                <h4>Notes</h4>
+                <ul class="muted" style="margin:0 0 0 16px;padding:0">
+                  <li>Stable on informational/transactional messaging</li>
+                  <li>Promotional spikes still monitored</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-calculator" class="panel" role="tabpanel" aria-labelledby="calculator">
+        <div class="card">
+          <h2>Volume &amp; Cost Calculator</h2>
+          <div class="grid grid-3" style="margin-bottom:12px">
+            <div style="border:1px solid var(--border);border-radius:12px;background:var(--bg);padding:12px">
+              <div class="muted" style="font-size:12px">Per Message Cost</div>
+              <div id="costPerMsg" style="font-size:20px;font-weight:800">$0.0075</div>
+              <div class="muted" style="font-size:12px;margin-top:4px">Industry average</div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;background:var(--bg);padding:12px">
+              <div class="muted" style="font-size:12px">Monthly Volume</div>
+              <div id="monthlyVol" style="font-size:20px;font-weight:800">300,000</div>
+              <div class="muted" style="font-size:12px;margin-top:4px">At 10k/day target</div>
+            </div>
+            <div style="border:1px solid #C7D2FE;border-radius:12px;background:#EEF2FF;padding:12px">
+              <div class="muted" style="font-size:12px">Estimated Monthly Cost</div>
+              <div id="monthlyCost" style="font-size:20px;font-weight:800;color:#4338CA">$2,250</div>
+              <div class="muted" style="font-size:12px;margin-top:4px">+ registration fees</div>
+            </div>
+          </div>
+          <div style="border:1px solid #FDE68A;background:#FFFBEB;border-radius:10px;padding:12px;color:#92400E">
+            <div style="font-weight:700;margin-bottom:6px">⚠️ Potential Block Cost Impact</div>
+            <ul style="margin:0 0 0 16px;padding:0">
+              <li>Brand re-vetting: $500–$1,000</li>
+              <li>Number replacement: $200–$500</li>
+              <li>Lost revenue during downtime: Variable</li>
+              <li>Total potential cost: <strong>$700–$1,500+</strong></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Spacer so bottom bar never overlaps content -->
+      <div class="fab-spacer"></div>
+    </div>
+  </main>
+
+  <!-- Floating Action Bar -->
+  <div class="fab">
+    <div class="inner">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="btnExport">Export PDF</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn-accent" href="/index.html">Check Another Message</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Data ----------
+    const data = {
+      message: "Hi John! 🎉 Get 50% OFF your next purchase. Click here: bit.ly/deal123\\nReply STOP to opt out",
+      riskScore: 68,
+      safeVolume: 3500,
+      perMessageCost: 0.0075,
+      monthlyVolume: 300000,
+      carriers: {
+        tmobile: { risk: 75, maxVolume: 2800 },
+        verizon: { risk: 62, maxVolume: 4000 },
+        att: { risk: 55, maxVolume: 5200 },
+      },
+    };
+
+    // ---------- Gate ----------
+    (function gateInit(){
+      const input = document.getElementById("accessInput");
+      const btn = document.getElementById("accessBtn");
+      const err = document.getElementById("accessError");
+      const gate = document.getElementById("gate");
+      const dash = document.getElementById("dashboard");
+
+      function normalize(s){ return String(s||"").toLowerCase().replace(/["'’]/g,"").replace(/\s+/g," ").trim(); }
+      function unlock(){
+        const val = normalize(input.value);
+        if (val === "text me" || val === "textme") {
+          gate.style.display = "none";
+          dash.style.display = "block";
+          window.scrollTo({top:0,behavior:"smooth"});
+        } else {
+          err.style.display = "block";
+        }
+      }
+      btn.addEventListener("click", unlock);
+      input.addEventListener("keypress", e => { if (e.key === "Enter") unlock(); });
+    })();
+
+    // ---------- Tabs ----------
+    (function tabsInit(){
+      const tabs = document.querySelectorAll(".tab");
+      const panels = {
+        analysis: document.getElementById("panel-analysis"),
+        carriers: document.getElementById("panel-carriers"),
+        calculator: document.getElementById("panel-calculator"),
+      };
+      tabs.forEach(t=>{
+        t.addEventListener("click", ()=>{
+          tabs.forEach(x=>x.classList.remove("active")); t.classList.add("active");
+          const id = t.dataset.tab;
+          Object.values(panels).forEach(p => p.classList.remove("active"));
+          (panels[id]||panels.analysis).classList.add("active");
+        });
+      });
+    })();
+
+    // ---------- Risk Gauge + Stats ----------
+    (function gaugeInit(){
+      const risk = data.riskScore;
+      const arc = document.getElementById("gaugeArc");
+      const score = document.getElementById("riskScore");
+      const safeVol = document.getElementById("safeVol");
+      const riskPill = document.getElementById("riskScorePill");
+      const safePill = document.getElementById("safeVolPill");
+
+      score.textContent = String(risk);
+      const circumference = 2 * Math.PI * 48; // r=48
+      arc.setAttribute("stroke-dasharray", `${risk * 3.02} ${circumference}`);
+      safeVol.textContent = data.safeVolume.toLocaleString() + " msgs/day";
+      riskPill.textContent = String(risk);
+      safePill.textContent = data.safeVolume.toLocaleString() + "/day";
+    })();
+
+    // ---------- Carrier Numbers ----------
+    (function carrierNumbers(){
+      document.getElementById("tmobileRisk").textContent = data.carriers.tmobile.risk;
+      document.getElementById("tmobileVol").textContent = data.carriers.tmobile.maxVolume.toLocaleString();
+
+      document.getElementById("verizonRisk").textContent = data.carriers.verizon.risk;
+      document.getElementById("verizonVol").textContent = data.carriers.verizon.maxVolume.toLocaleString();
+
+      document.getElementById("attRisk").textContent = data.carriers.att.risk;
+      document.getElementById("attVol").textContent = data.carriers.att.maxVolume.toLocaleString();
+    })();
+
+    // ---------- Calculator ----------
+    (function calculatorInit(){
+      const costPerMsg = data.perMessageCost;
+      const monthlyVol = data.monthlyVolume;
+      const est = costPerMsg * monthlyVol;
+
+      document.getElementById("costPerMsg").textContent = "$" + costPerMsg.toFixed(4);
+      document.getElementById("monthlyVol").textContent = monthlyVol.toLocaleString();
+      document.getElementById("monthlyCost").textContent = "$" + est.toLocaleString(undefined,{maximumFractionDigits:0});
+    })();
+
+    // ---------- Export PDF ----------
+    document.getElementById("btnExport").addEventListener("click", () => {
+      window.print(); // user selects "Save as PDF"
+    });
+  </script>
+</body>
+</html>
