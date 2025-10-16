@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Admin — Live Pages</title>
+  <style>
+    :root {
+      --ink: #0B1220;
+      --sky: #58AEDD;
+      --bg: #F8FAFC;
+    }
+    body {
+      background: var(--bg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      margin: 0;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #E2E8F0;
+      text-align: left;
+    }
+    th {
+      background: #F1F5F9;
+      font-weight: 600;
+    }
+    tr:hover td { background: #F9FAFB; }
+    button {
+      background: var(--sky);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all .15s ease;
+    }
+    button:hover { filter: brightness(.95); }
+    .status {
+      font-size: 0.9rem;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      font-weight: 500;
+    }
+    .ok { background: #DCFCE7; color: #15803D; }
+    .fail { background: #FEE2E2; color: #B91C1C; }
+  </style>
+</head>
+<body>
+<script>
+const ACCESS_CODE = "6242660"; // set your own 7-digit phrase
+if (sessionStorage.getItem("adminAccess") !== "granted") {
+  const input = prompt("Enter 7-digit access code to continue:");
+  if (input === ACCESS_CODE) {
+    sessionStorage.setItem("adminAccess", "granted");
+    alert("Access granted ✅");
+  } else {
+    alert("Access denied 🚫");
+    window.location.href = "/";
+  }
+}
+</script>
+
+  <h1>10DLC Admin — Live Page Tracker</h1>
+  <p>This dashboard pulls your sitemap and checks which pages are currently live. Click <strong>Check Status</strong> to verify availability.</p>
+
+  <table id="pages">
+    <thead>
+      <tr>
+        <th>Page</th>
+        <th>Path</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="pageRows">
+      <tr><td colspan="4">Loading pages...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const sitemapURL = '/sitemap.xml';
+
+    async function loadSitemap() {
+      const res = await fetch(sitemapURL);
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'application/xml');
+      const locs = xml.querySelectorAll('url loc');
+      const rows = document.getElementById('pageRows');
+      rows.innerHTML = '';
+
+      locs.forEach(loc => {
+        const url = loc.textContent;
+        const path = new URL(url).pathname;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${path.split('/').pop() || 'Home'}</td>
+          <td>${path}</td>
+          <td class="status">Pending</td>
+          <td>
+            <button onclick="openLink('${url}')">Open</button>
+            <button onclick="checkLink(this,'${url}')">Check</button>
+            <button onclick="copyLink('${url}')">Copy</button>
+          </td>
+        `;
+        rows.appendChild(tr);
+      });
+    }
+
+    function openLink(url) { window.open(url, '_blank'); }
+
+    async function checkLink(btn, url) {
+      const td = btn.parentElement.previousElementSibling;
+      td.textContent = 'Checking...';
+      try {
+        const res = await fetch(url, { method: 'HEAD' });
+        td.innerHTML = `<span class="status ${res.ok ? 'ok' : 'fail'}">${res.ok ? 'Live' : 'Broken'}</span>`;
+      } catch {
+        td.innerHTML = `<span class="status fail">Error</span>`;
+      }
+    }
+
+    function copyLink(url) {
+      navigator.clipboard.writeText(url);
+      alert('Copied: ' + url);
+    }
+
+    loadSitemap();
+  </script>
+</body>
+</html>
