@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Shared <header> partial: tokens, fonts, favicon, analytics -->
-  <script>
-    (async () => {
-      try {
-        const res = await fetch("/partials/header.html", { cache: "no-store" });
-        document.write(res.ok ? await res.text() : "");
-      } catch (e) { console.warn("Header partial failed to load", e); }
-    })();
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Page-specific meta -->
   <title>10DLC Chrome Extension — Install & Guide | 10dlccheck</title>
   <meta name="description" content="Install the 10DLC Chrome Extension to check SMS content for A2P 10DLC compliance in Salesforce or anywhere on the web. Learn what it does, see examples, and review privacy." />
-  <link rel="canonical" href="https://10dlccheck.com/extension.html" />
+  <link rel="canonical" href="https://10dlccheck.com/extension" />
   <meta name="robots" content="index,follow" />
 
   <style>
@@ -119,7 +112,7 @@
     /* FAQ */
     .faq-item{border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:#fff}
     .faq-q{width:100%;text-align:left;background:#fff;padding:14px 16px;border:none;cursor:pointer;font-weight:700;color:#10233b}
-    .faq-a{display:none;padding:0 16px 14px;color:var(--muted)}
+    .faq-a{display:none;padding:0 16px 14px;color:#muted}
     .faq-item.active .faq-a{display:block}
     .faq-item + .faq-item{margin-top:10px}
   </style>
@@ -132,7 +125,7 @@
     (async function(){
       try {
         const h = await fetch('/partials/topbar.html', { cache:'no-store' });
-        document.getElementById('site-topbar').innerHTML = h.ok ? await h.text() : '';
+        if (h.ok) document.getElementById('site-topbar').innerHTML = await h.text();
       } catch (e) { console.warn('Topbar failed to load', e); }
     })();
   </script>
@@ -158,234 +151,243 @@
       </div>
     </div>
   </header>
-<div style="height:100px"></div>
-    <!-- Content -->
-    <main>
-      <div class="container grid">
 
-        <!-- Main column -->
-        <div class="stack">
-          <!-- Overview -->
-          <section class="card" id="overview">
-            <div class="inner">
-              <span class="kicker">Overview</span>
-              <h2 class="section-title">What the extension does</h2>
-              <p>
-                The 10DLC Extension helps you quickly review outbound text for alignment with 10DLC expectations. It summarizes results without storing message content.
-              </p>
-              <ul class="list">
-                <li><strong>Status</strong>: Pass · Warning · Fail</li>
-                <li><strong>Issues</strong>: Clear reasons, no internal rules exposed</li>
-                <li><strong>Tips</strong>: Practical edits to improve deliverability</li>
-              </ul>
+  <div style="height:100px"></div>
+
+  <!-- Content -->
+  <main>
+    <div class="container grid">
+
+      <!-- Main column -->
+      <div class="stack">
+        <!-- Overview -->
+        <section class="card" id="overview">
+          <div class="inner">
+            <span class="kicker">Overview</span>
+            <h2 class="section-title">What the extension does</h2>
+            <p>
+              The 10DLC Extension helps you quickly review outbound text for alignment with 10DLC expectations. It summarizes results without storing message content.
+            </p>
+            <ul class="list">
+              <li><strong>Status</strong>: Pass · Warning · Fail</li>
+              <li><strong>Issues</strong>: Clear reasons, no internal rules exposed</li>
+              <li><strong>Tips</strong>: Practical edits to improve deliverability</li>
+            </ul>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <!-- How it works -->
+        <section class="card" id="how">
+          <div class="inner">
+            <span class="kicker">How it works</span>
+            <h2 class="section-title">Three ways to run a check</h2>
+
+            <div class="feature-row">
+              <!-- 1) Salesforce Floating Pill -->
+              <article class="feature">
+                <span class="chip good">Opt-in assumed</span>
+                <h3>Floating Pill in Salesforce</h3>
+                <p class="muted">
+                  A bottom-right <strong>Check 10DLC</strong> pill appears in Salesforce. Click to review the message in view.
+                  In this trusted context, Stop/Help lines are hidden.
+                </p>
+                <ul class="list">
+                  <li>Works in <strong>Lightning</strong> and <strong>Classic</strong></li>
+                  <li>One-click review of the current message</li>
+                </ul>
+              </article>
+
+              <!-- 2) Right-click anywhere (incl. Salesforce) -->
+              <article class="feature">
+                <span class="chip warn">Opt-in unknown</span>
+                <h3>Highlight text → Right-click</h3>
+                <p class="muted">
+                  Highlight any text, right-click, choose <strong>Check 10DLC Compliance</strong>. Works inside or outside Salesforce.
+                </p>
+                <ul class="list">
+                  <li>Supported in <strong>Lightning</strong> and <strong>Classic</strong></li>
+                  <li>Great for ad-hoc checks on any web page</li>
+                </ul>
+              </article>
             </div>
-          </section>
-<div style="height:10px"></div>
-          <!-- How it works -->
-<section class="card" id="how">
-  <div class="inner">
-    <span class="kicker">How it works</span>
-    <h2 class="section-title">Three ways to run a check</h2>
 
-    <div class="feature-row">
-      <!-- 1) Salesforce Floating Pill -->
-      <article class="feature">
-        <span class="chip good">Opt-in assumed</span>
-        <h3>Floating Pill in Salesforce</h3>
-        <p class="muted">
-          A bottom-right <strong>Check 10DLC</strong> pill appears in Salesforce. Click to review the message in view.
-          In this trusted context, Stop/Help lines are hidden.
-        </p>
-        <ul class="list">
-          <li>Works in <strong>Lightning</strong> and <strong>Classic</strong></li>
-          <li>One-click review of the current message</li>
-        </ul>
-      </article>
+            <div class="feature-row" style="margin-top:12px">
+              <!-- 3) Open panel from the extension icon -->
+              <article class="feature">
+                <span class="chip neutral">Universal</span>
+                <h3>Open the panel from the extension icon</h3>
+                <p class="muted">
+                  Click the <strong>10DLC Checker</strong> extension icon in Chrome to open the panel on any page. Paste or type your message to analyze it directly.
+                </p>
+                <ul class="list">
+                  <li>Works on any site, no selection required</li>
+                  <li>Use when you want to draft and refine copy</li>
+                </ul>
+              </article>
 
-      <!-- 2) Right-click anywhere (incl. Salesforce) -->
-      <article class="feature">
-        <span class="chip warn">Opt-in unknown</span>
-        <h3>Highlight text → Right-click</h3>
-        <p class="muted">
-          Highlight any text, right-click, choose <strong>Check 10DLC Compliance</strong>. Works inside or outside Salesforce.
-        </p>
-        <ul class="list">
-          <li>Supported in <strong>Lightning</strong> and <strong>Classic</strong></li>
-          <li>Great for ad-hoc checks on any web page</li>
-        </ul>
-      </article>
-    </div>
-
-    <div class="feature-row" style="margin-top:12px">
-      <!-- 3) Open panel from the extension icon -->
-      <article class="feature">
-        <span class="chip neutral">Universal</span>
-        <h3>Open the panel from the extension icon</h3>
-        <p class="muted">
-          Click the <strong>10DLC Checker</strong> extension icon in Chrome to open the panel on any page. Paste or type your message to analyze it directly.
-        </p>
-        <ul class="list">
-          <li>Works on any site, no selection required</li>
-          <li>Use when you want to draft and refine copy</li>
-        </ul>
-      </article>
-
-      <!-- Optional: what you’ll see -->
-      <article class="feature">
-        <span class="chip neutral">What you’ll see</span>
-        <h3>Results panel</h3>
-        <ul class="list">
-          <li><strong>Status</strong>: Pass · Warning · Fail</li>
-          <li><strong>Issues</strong>: Clear reasons in plain language</li>
-          <li><strong>Tips</strong>: Actionable edits for safer phrasing</li>
-        </ul>
-      </article>
-    </div>
-
-    <p class="muted" style="margin-top:10px">
-      <span class="chip good">Opt-in assumed</span> = Salesforce pill hides Stop/Help <br></br>
-      <span class="chip warn">Opt-in unknown</span> = Right-click shows Stop/Help <br></br>
-      <span class="chip neutral">Universal</span> = Extension icon panel works anywhere
-    </p>
-  </div>
-</section>
-
-<div style="height:10px"></div>
-
-          <!-- Examples -->
-          <section class="card" id="examples">
-            <div class="inner">
-              <span class="kicker">Examples</span>
-              <h2 class="section-title">Good vs risky phrasing</h2>
-              <p class="muted">Explore more examples in the Learn hub to understand what passes, what needs edits and what fails.</p>
-              <ul class="list">
-                <li><strong>Good:</strong> “Reply YES to confirm your appointment on Tuesday at 3 pm.”</li>
-                <li><strong>Needs work:</strong> “Click now for a special offer. Reply STOP to opt out.”</li>
-                <li><strong>Risky:</strong> “Limited time crypto investment opportunity. Act fast.”</li>
-              </ul>
-              <p style="margin-top:10px">
-                Learn more: <a href="/learn/what-is-10dlc">What is 10DLC</a> ·
-                <a href="/learn/sms-compliance-checklist">SMS Compliance Checklist</a>
-              </p>
+              <!-- Optional: what you’ll see -->
+              <article class="feature">
+                <span class="chip neutral">What you’ll see</span>
+                <h3>Results panel</h3>
+                <ul class="list">
+                  <li><strong>Status</strong>: Pass · Warning · Fail</li>
+                  <li><strong>Issues</strong>: Clear reasons in plain language</li>
+                  <li><strong>Tips</strong>: Actionable edits for safer phrasing</li>
+                </ul>
+              </article>
             </div>
-          </section>
-<div style="height:10px"></div>
 
-          <!-- Troubleshooting -->
-          <section class="card" id="troubleshooting">
-            <div class="inner">
-              <span class="kicker">Troubleshooting</span>
-              <h2 class="section-title">Quick fixes</h2>
-              <ul class="list">
-                <li><strong>Do not see the pill in Salesforce?</strong> Refresh the tab and confirm the extension is enabled.</li>
-                <li><strong>Right-click item missing?</strong> Select text first, then right-click. Restart Chrome if needed.</li>
-              </ul>
+            <p class="muted" style="margin-top:10px">
+              <span class="chip good">Opt-in assumed</span> = Salesforce pill hides Stop/Help <br>
+              <span class="chip warn">Opt-in unknown</span> = Right-click shows Stop/Help <br>
+              <span class="chip neutral">Universal</span> = Extension icon panel works anywhere
+            </p>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <!-- Examples -->
+        <section class="card" id="examples">
+          <div class="inner">
+            <span class="kicker">Examples</span>
+            <h2 class="section-title">Good vs risky phrasing</h2>
+            <p class="muted">Explore more examples in the Learn hub to understand what passes, what needs edits and what fails.</p>
+            <ul class="list">
+              <li><strong>Good:</strong> “Reply YES to confirm your appointment on Tuesday at 3 pm.”</li>
+              <li><strong>Needs work:</strong> “Click now for a special offer. Reply STOP to opt out.”</li>
+              <li><strong>Risky:</strong> “Limited time crypto investment opportunity. Act fast.”</li>
+            </ul>
+            <p style="margin-top:10px">
+              Learn more: <a href="/learn/what-is-10dlc">What is 10DLC</a> ·
+              <a href="/learn/sms-compliance-checklist">SMS Compliance Checklist</a>
+            </p>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <!-- Troubleshooting -->
+        <section class="card" id="troubleshooting">
+          <div class="inner">
+            <span class="kicker">Troubleshooting</span>
+            <h2 class="section-title">Quick fixes</h2>
+            <ul class="list">
+              <li><strong>Do not see the pill in Salesforce?</strong> Refresh the tab and confirm the extension is enabled.</li>
+              <li><strong>Right-click item missing?</strong> Select text first, then right-click. Restart Chrome if needed.</li>
+            </ul>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <!-- FAQ -->
+        <section class="card" id="faq">
+          <div class="inner">
+            <span class="kicker">FAQ</span>
+            <h2 class="section-title">Frequently asked questions</h2>
+
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Does it reveal internal rules?</button>
+              <div class="faq-a">No. It summarizes results (Status, Issues, Tips) without exposing internal rules or storing personal data.</div>
             </div>
-          </section>
-<div style="height:10px"></div>
 
-          <!-- FAQ -->
-          <section class="card" id="faq">
-            <div class="inner">
-              <span class="kicker">FAQ</span>
-              <h2 class="section-title">Frequently asked questions</h2>
-
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">Does it reveal internal rules?</button>
-                <div class="faq-a">No. It summarizes results (Status, Issues, Tips) without exposing internal rules or storing personal data.</div>
-              </div>
-
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
-                <div class="faq-a"> Yes. You can open the panel by clicking the <strong>10DLCCheck</strong> extension icon in Chrome on any page.</div>
-              </div>
-
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
-                <div class="faq-a">Open the extension Options page and use the Help contact listed there.</div>
-              </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
+              <div class="faq-a"> Yes. You can open the panel by clicking the <strong>10DLCCheck</strong> extension icon in Chrome on any page.</div>
             </div>
-          </section>
-        </div>
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
-          <section class="card" id="install">
-            <div class="inner install">
-              <span class="kicker">Install</span>
-              <div class="title">Add the 10DLC extension</div>
-              <p class="meta">Install from the Chrome Web Store or by an unlisted url by your admin.</p>
-              <div class="actions">
-			  
-                <!-- Update the store link when available -->
-                <a class="btn btn-primary" id="btn-install-store" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Open in Chrome Web Store</a>
-              </div>
-              <ul class="list" style="margin-top:8px">
-                <li>Works with Salesforce and any web page</li>
-                <li>Right-click → Check 10DLC Compliance</li>
-                <li>No storage of analyzed text</li>
-              </ul>
-              <div class="mini-badges">
-                <span class="badge">Privacy-first</span>
-                <span class="badge">Fast</span>
-                <span class="badge">Lightweight</span>
-              </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
+              <div class="faq-a">Open the extension Options page and use the Help contact listed there.</div>
             </div>
-          </section>
-<div style="height:10px"></div>
-          <section class="card">
-            <div class="inner">
-              <span class="kicker">What’s new</span>
-              <h2 class="section-title">Release highlights</h2>
-              <ul class="list">
-                <li>Improved detection for risky categories</li>
-                <li>Smarter tips for opt-in clarity</li>
-                <li>Refined Salesforce pill behavior</li>
-              </ul>
-             </div>
-          </section>
-        </aside>
+          </div>
+        </section>
       </div>
-    </main>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <section class="card" id="install">
+          <div class="inner install">
+            <span class="kicker">Install</span>
+            <div class="title">Add the 10DLC extension</div>
+            <p class="meta">Install from the Chrome Web Store or by an unlisted url by your admin.</p>
+            <div class="actions">
+              <!-- Update the store link when available -->
+              <a class="btn btn-primary" id="btn-install-store" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Open in Chrome Web Store</a>
+            </div>
+            <ul class="list" style="margin-top:8px">
+              <li>Works with Salesforce and any web page</li>
+              <li>Right-click → Check 10DLC Compliance</li>
+              <li>No storage of analyzed text</li>
+            </ul>
+            <div class="mini-badges">
+              <span class="badge">Privacy-first</span>
+              <span class="badge">Fast</span>
+              <span class="badge">Lightweight</span>
+            </div>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <section class="card">
+          <div class="inner">
+            <span class="kicker">What’s new</span>
+            <h2 class="section-title">Release highlights</h2>
+            <ul class="list">
+              <li>Improved detection for risky categories</li>
+              <li>Smarter tips for opt-in clarity</li>
+              <li>Refined Salesforce pill behavior</li>
+            </ul>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
 
   <!-- Shared Footer -->
   <div id="site-footer"></div>
   <script>
-    (async function(){
+    (async () => {
       try {
-        const f = await fetch('/partials/footer.html', { cache: 'no-store' });
-        document.getElementById('site-footer').innerHTML = f.ok ? await f.text() : '';
-      } catch (e) { console.warn('Footer failed to load', e); }
-    })();
+        const res = await fetch("/partials/footer.html", { cache: "no-store" });
+        if (res.ok) {
+          document.getElementById("site-footer").innerHTML = await res.text();
+        }
+      } catch (e) { console.warn("Footer partial failed to load", e); }
 
-    // FAQ single-open behavior
-    document.addEventListener("click", (e) => {
-      const q = e.target.closest(".faq-q");
-      if(!q) return;
-      const item = q.closest(".faq-item");
-      const expanded = item.classList.contains("active");
-      document.querySelectorAll(".faq-item").forEach(i=>{
-        i.classList.remove("active");
-        const b = i.querySelector(".faq-q"); if(b) b.setAttribute("aria-expanded","false");
+      // FAQ single-open behavior
+      document.addEventListener("click", (e) => {
+        const q = e.target.closest(".faq-q");
+        if(!q) return;
+        const item = q.closest(".faq-item");
+        const expanded = item.classList.contains("active");
+        document.querySelectorAll(".faq-item").forEach(i=>{
+          i.classList.remove("active");
+          const b = i.querySelector(".faq-q"); if(b) b.setAttribute("aria-expanded","false");
+        });
+        if(!expanded){ item.classList.add("active"); q.setAttribute("aria-expanded","true"); }
       });
-      if(!expanded){ item.classList.add("active"); q.setAttribute("aria-expanded","true"); }
-    });
 
-    // Smooth-scroll CTA
-    document.getElementById("btn-install-hero")?.addEventListener("click", (e)=>{
-      const target = document.querySelector("#install");
-      if(target){ e.preventDefault(); target.scrollIntoView({ behavior:"smooth", block:"start" }); }
-    });
+      // Smooth-scroll CTA
+      document.getElementById("btn-install-hero")?.addEventListener("click", (e)=>{
+        const target = document.querySelector("#install");
+        if(target){ e.preventDefault(); target.scrollIntoView({ behavior:"smooth", block:"start" }); }
+      });
+    })();
   </script>
-  
+
   <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-C64QWDBMQZ');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 </body>
 </html>
