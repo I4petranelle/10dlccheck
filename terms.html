@@ -1,59 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Use - 10DLC Checker</title>
+  <!-- =====================================================
+       Terms of Use | 10DLC Check
+       Matches site layout and design system (v1.3)
+  ====================================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms of Use | 10DLC Check</title>
+  <meta name="description" content="Read the Terms of Use for 10DLC Check and its Chrome Extension. Learn how we handle your data, usage guidelines, and limitations." />
+  <link rel="canonical" href="https://10dlccheck.com/terms" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Terms of Use | 10DLC Check" />
+  <meta property="og:description" content="Understand the terms governing your use of the 10DLC Check website and Chrome Extension." />
+  <meta property="og:image" content="/favicon.png" />
+  <meta property="og:url" content="https://10dlccheck.com/terms" />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      line-height: 1.6;
-      color: #1a1a1a;
+    :root {
+      --ink: #1C2D40;
+      --sky: #58AEDD;
+      --muted: #475569;
+      --line: #E2E8F0;
+      --bg: #F8FAFC;
     }
-    h1 { color: #1C2D40; }
-    h2 { margin-top: 1.5rem; }
-    footer { text-align: center; font-size: 0.9rem; color: #555; margin-top: 3rem; }
-    a { color: #1C2D40; text-decoration: none; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .topbar-slot, .footer-slot { min-height: 48px; }
+
+    header {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      padding: 64px 24px 48px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 12px;
+    }
+    header p {
+ font-size: 1.05rem;
+  color: #E2E8F0;
+  max-width: 800px; /* previously 80px — increased so it fits in one line */
+  margin: 0 auto;
+  white-space: nowrap; /* optional: forces text to stay on one line */
+    }
+
+    main {
+      max-width: 900px;
+      margin: 64px auto;
+      padding: 0 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--line);
+    }
+
+    section { padding: 48px 24px; }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      color: var(--ink);
+    }
+    p {
+      margin: 1rem 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    ul {
+      margin: 1rem 0 1rem 1.5rem;
+      color: var(--muted);
+    }
+    li { margin-bottom: 0.6rem; }
+    a { color: var(--sky); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      header { padding: 48px 20px; }
+      main { margin: 48px auto; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Terms of Use</h1>
-  <p><strong>Effective Date:</strong> September 28th, 2025</p>
+  <!-- Topbar Include -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
-  <p>
-    By using the 10DLC Checker Chrome Extension (“the Extension”), you agree to
-    these simple terms:
-  </p>
+  <!-- Hero -->
+  <header>
+    <h1>Terms of Use</h1>
+    <p>Understand the terms governing your use of the 10DLC Check website and Chrome Extension.</p>
+  </header>
 
-  <ul>
-    <li>The Extension is provided to help you quickly check text snippets for compliance.</li>
-    <li>Results are for informational purposes only and should not be taken as legal advice.</li>
-    <li>You are responsible for how you use the Extension and any results it provides.</li>
-    <li>We do our best to keep the Extension reliable, but we can’t guarantee it will always be error-free or available.</li>
-    <li>We may update the Extension or these terms from time to time. If we make important changes, we’ll update the effective date above.</li>
-  </ul>
+  <!-- Main Content -->
+  <main>
+    <section>
+      <p><strong>Effective Date:</strong> September 28th, 2025</p>
 
-  <p>
-    This Extension is offered “as-is” without warranties. By continuing to use
-    it, you accept these terms.
-  </p>
+      <p>
+        Welcome to <strong>10DLC Check</strong> (the “Site”) and our Chrome Extension (the “Extension”).
+        By accessing or using either, you agree to the following Terms of Use.
+      </p>
 
-  <h2>Contact</h2>
-  <p>
-    If you have questions about these Terms of Use, please contact us at:
-    <a href="mailto:ipetranelle@gmail.com">ipetranelle@gmail.com</a>.
-  </p>
+      <h2>1. Purpose</h2>
+      <p>
+        10DLC Check provides tools and educational content to help users understand and evaluate SMS compliance
+        based on publicly available carrier and CTIA guidelines. The information we provide is for
+        <strong>informational and educational purposes only</strong> and should not be interpreted as legal advice.
+      </p>
 
-  <hr style="margin:2rem 0;">
-  <footer>
-    <p>
-      A Problem Solver •
-      <a href="/privacy.html">Privacy Policy</a> •
-      <a href="/terms.html">Terms of Use</a>
-    </p>
-  </footer>
+      <h2>2. Use of the Service</h2>
+      <ul>
+        <li>You may use 10DLC Check for personal or professional compliance checks.</li>
+        <li>You agree not to misuse the Site or Extension, including attempting to reverse-engineer, resell, or exploit them for unauthorized purposes.</li>
+        <li>You acknowledge that results are automated and may not reflect all carrier rules or exceptions.</li>
+      </ul>
+
+      <h2>3. Disclaimer</h2>
+      <p>
+        The Site and Extension are provided “as is,” without any warranties, express or implied.
+        We do not guarantee that results are free from error or that the services will always be available.
+        Users should consult their carrier, legal counsel, or messaging provider for final compliance confirmation.
+      </p>
+
+      <h2>4. Limitation of Liability</h2>
+      <p>
+        10DLC Check and its contributors shall not be liable for any direct, indirect, incidental or consequential
+        damages arising from your use or inability to use the Site or Extension.
+      </p>
+
+      <h2>5. Updates and Modifications</h2>
+      <p>
+        We may update or modify these Terms at any time. Changes will be reflected on this page with a revised effective date.
+        Continued use of the Site or Extension constitutes acceptance of any updates.
+      </p>
+
+      <h2>6. Contact</h2>
+      <p>
+        For questions about these Terms, contact us at
+        <a href="mailto:support@10dlccheck.com">support@10dlccheck.com</a>.
+      </p>
+    </section>
+  </main>
+
+  <!-- Footer Include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
+
+  <!-- Include Partials Script -->
+  <script>
+    (async () => {
+      const slots = document.querySelectorAll("[data-include]");
+      await Promise.all([...slots].map(async (el) => {
+        try {
+          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
+          if (res.ok) el.innerHTML = await res.text();
+        } catch (err) {
+          console.error("Include failed:", err);
+        }
+      }));
+    })();
+  </script>
 </body>
 </html>

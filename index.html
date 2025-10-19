@@ -137,7 +137,7 @@
   </head>
   <body>
 
-    <div class="container">
+   	<div class="container">
       <div class="header" role="banner">
         <h1>10DLC Compliance Checker</h1>
         <p>Analyze your SMS messages for US A2P 10DLC compliance before you send.</p>
@@ -300,7 +300,7 @@
         });
       });
     </script>
-
+	
     <script>
       // Hide learn button on production domain
       if (location.hostname === "10dlccheck.com") {
@@ -380,6 +380,24 @@
         });
       })();
     </script>
+	
+	<!-- Footer Include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
+
+  <!-- Include Partials Script -->
+  <script>
+    (async () => {
+      const slots = document.querySelectorAll("[data-include]");
+      await Promise.all([...slots].map(async (el) => {
+        try {
+          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
+          if (res.ok) el.innerHTML = await res.text();
+        } catch (err) {
+          console.error("Include failed:", err);
+        }
+      }));
+    })();
+  </script>
 
     <footer>
       <div class="foot-line">

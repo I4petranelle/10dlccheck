@@ -1,73 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - 10DLC Checker</title>
+  <!-- =====================================================
+       Privacy Policy | 10DLC Check
+       Matches site layout and design system (v1.3)
+  ====================================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy | 10DLC Check</title>
+  <meta name="description" content="Learn how 10DLC Check handles your data and privacy when using the site or Chrome Extension." />
+  <link rel="canonical" href="https://10dlccheck.com/privacy" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Privacy Policy | 10DLC Check" />
+  <meta property="og:description" content="Read the privacy policy for 10DLC Check and its Chrome Extension." />
+  <meta property="og:image" content="/favicon.png" />
+  <meta property="og:url" content="https://10dlccheck.com/privacy" />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      line-height: 1.6;
-      color: #1a1a1a;
+    :root {
+      --ink: #1C2D40;
+      --sky: #58AEDD;
+      --muted: #475569;
+      --line: #E2E8F0;
+      --bg: #F8FAFC;
     }
-    h1 { color: #1C2D40; }
-    h2 { margin-top: 1.5rem; }
-    footer { text-align: center; font-size: 0.9rem; color: #555; margin-top: 3rem; }
-    a { color: #1C2D40; text-decoration: none; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .topbar-slot, .footer-slot { min-height: 48px; }
+
+    header {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      padding: 64px 24px 48px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 12px;
+    }
+    header p {
+      font-size: 1.05rem;
+      color: #E2E8F0;
+      max-width: 800px;
+      margin: 0 auto;
+      white-space: nowrap; /* keep single line */
+    }
+
+    main {
+      max-width: 900px;
+      margin: 64px auto;
+      padding: 0 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--line);
+    }
+
+    section { padding: 48px 24px; }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      color: var(--ink);
+    }
+    p {
+      margin: 1rem 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    ul {
+      margin: 1rem 0 1rem 1.5rem;
+      color: var(--muted);
+    }
+    li { margin-bottom: 0.6rem; }
+    a { color: var(--sky); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      header { padding: 48px 20px; }
+      header p { white-space: normal; } /* allow wrapping on small screens */
+      main { margin: 48px auto; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Privacy Policy</h1>
-  <p><strong>Effective Date:</strong> September 28, 2025</p>
+  <!-- Topbar Include -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
-  <p>
-    At 10DLC Checker, we take your privacy seriously. This Chrome Extension was
-    built to help you quickly check text snippets for compliance, without
-    collecting personal information.
-  </p>
+  <!-- Hero -->
+  <header>
+    <h1>Privacy Policy</h1>
+    <p>Learn how 10DLC Check protects your data and ensures your privacy while using our site and tools.</p>
+  </header>
 
-  <h2>What We Collect</h2>
-  <p>
-    The extension does <strong>not</strong> collect or store your personal data,
-    browsing history, or messages.
-  </p>
-  <p>
-    When you highlight text and choose to run a check, that text is briefly sent
-    to our server (<code>10dlccheck.com</code>) so we can return a compliance
-    result. Once the result is shown, the text is not stored or saved.
-  </p>
+  <!-- Main Content -->
+  <main>
+    <section>
+      <p><strong>Effective Date:</strong> September 28th, 2025</p>
 
-  <h2>What We Don’t Collect</h2>
-  <ul>
-    <li>Your name, email address, or other personal details</li>
-    <li>Passwords, account information, or financial data</li>
-    <li>Health information</li>
-    <li>Your browsing history or location</li>
-  </ul>
+      <p>
+        At <strong>10DLC Check</strong>, we take your privacy seriously. Our website and Chrome Extension
+        are designed to help you verify SMS compliance without collecting personal data.
+      </p>
 
-  <h2>How We Use Data</h2>
-  <p>
-    The only purpose of processing the highlighted text is to generate a
-    compliance check result. We don’t share, sell or use this data for
-    advertising, analytics or tracking.
-  </p>
+      <h2>1. What We Collect</h2>
+      <p>
+        The site and extension do <strong>not</strong> collect or store your personal information,
+        browsing history, or messages.
+      </p>
+      <p>
+        When you highlight text and choose to run a check, that text is temporarily sent
+        to our secure server (<code>10dlccheck.com</code>) only to generate a compliance result.
+        Once the result is shown, the text is not stored or retained.
+      </p>
 
-  <h2>Contact</h2>
-  <p>
-    If you have any questions about this Privacy Policy, reach out to us at:
-    <a href="mailto:support@10dlccheck.com">support@10dlccheck.com</a>.
-  </p>
+      <h2>2. What We Don’t Collect</h2>
+      <ul>
+        <li>Your name, email address, or contact details</li>
+        <li>Passwords, account information, or financial data</li>
+        <li>Health information</li>
+        <li>Your browsing history or location</li>
+      </ul>
 
-  <hr style="margin:2rem 0;">
-  <footer>
-    <p>
-      A Problem Solver • 10dlccheck.com
-      <a href="/privacy.html">Privacy Policy</a> •
-      <a href="/terms.html">Terms of Use</a>
-    </p>
-  </footer>
+      <h2>3. How We Use Data</h2>
+      <p>
+        We process only the text you check to return a compliance result. 
+        No data is shared, sold, or used for advertising, analytics, or tracking.
+      </p>
+
+      <h2>4. Third-Party Services</h2>
+      <p>
+        10DLC Check does not use third-party trackers or analytics scripts. 
+        Any external links on our site are provided for educational reference only.
+      </p>
+
+      <h2>5. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy periodically. Updates will be reflected with
+        a new effective date at the top of this page.
+      </p>
+
+      <h2>6. Contact</h2>
+      <p>
+        For privacy-related questions, contact us at
+        <a href="mailto:support@10dlccheck.com">support@10dlccheck.com</a>.
+      </p>
+    </section>
+  </main>
+
+  <!-- Footer Include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
+
+  <!-- Include Partials Script -->
+  <script>
+    (async () => {
+      const slots = document.querySelectorAll("[data-include]");
+      await Promise.all([...slots].map(async (el) => {
+        try {
+          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
+          if (res.ok) el.innerHTML = await res.text();
+        } catch (err) {
+          console.error("Include failed:", err);
+        }
+      }));
+    })();
+  </script>
 </body>
 </html>

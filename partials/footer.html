@@ -1,81 +1,128 @@
 <!-- ./partials/footer.html -->
-<footer role="contentinfo" style="border-top:1px solid #e2e8f0;background:#fff;">
-  <div style="max-width:1000px;margin:0 auto;padding:12px 16px;color:#334155;
-              display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;">
-
-    <!-- Left: brand -->
-    <div style="font-size:.95rem">
-      Powered by <strong>A Problem Solver</strong> •
-      <a href="/" style="color:#58AEDD;text-decoration:none;">10dlccheck.com</a>
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-wrap">
+    <div class="footer-brand">
+      <a href="/" class="brand">10DLC Check</a>
+      <p class="tagline">Free tools and resources for SMS compliance and campaign registration.</p>
     </div>
 
-    <!-- Right: nav + admin -->
-    <nav aria-label="Footer" style="display:flex;align-items:center;gap:10px;font-size:.95rem;">
-      <a href="/privacy" style="color:#58AEDD;text-decoration:none;">Privacy</a>
-      <span aria-hidden="true">•</span>
-      <a href="/terms" style="color:#58AEDD;text-decoration:none;">Terms</a>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <div class="col">
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="/#checker">Compliance Checker</a></li>
+          <li><a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk" target="_blank" rel="noopener">Chrome Extension</a></li>
+          <li><a href="/learn/">Knowledge Base</a></li>
+        </ul>
+      </div>
 
-      <!-- Hidden Admin link -->
-      <span aria-hidden="true" id="dotSep" style="display:none;">•</span>
-      <a id="adminLink" href="/admin" rel="nofollow"
-         style="display:none;color:#58AEDD;text-decoration:none;">Admin</a>
+      <div class="col">
+        <h3>Learn</h3>
+        <ul>
+          <li><a href="/learn/what-is-10dlc.html">What Is 10DLC?</a></li>
+          <li><a href="/learn/ctia-guidelines-explained.html">CTIA Guidelines</a></li>
+          <li><a href="/learn/sms-compliance-checklist.html">Pre-Send Checklist</a></li>
+        </ul>
+      </div>
 
-      <!-- Hidden Admin quick search (filters your /admin by ?q=) -->
-      <form id="adminSearch" role="search" aria-label="Admin Search"
-            action="/admin" method="get"
-            style="display:none;margin-left:6px;">
-        <input name="q" type="search" placeholder="Search admin…"
-               aria-label="Search admin"
-               style="border:1px solid #cbd5e1;border-radius:999px;padding:6px 10px;font-size:.9rem;outline:none;">
-      </form>
+      <div class="col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Use</a></li>
+        </ul>
+      </div>
     </nav>
   </div>
 
-  <!-- JSON-LD: basic Website schema for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "10DLC Check",
-    "url": "https://10dlccheck.com/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://10dlccheck.com/admin?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+  <div class="footer-bottom">
+    <p>&copy; <span id="year"></span> 10DLC Check. Built by <a href="" target="_blank" rel="noopener">A Problem Solver</a>.</p>
+  </div>
 
-  <!-- Reveal Admin controls: Ctrl + . or type 'admin' quickly -->
+  <style>
+    .site-footer{
+      background:#1C2D40;
+      color:#E2E8F0;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    }
+    .footer-wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:40px 24px;
+      display:grid;
+      grid-template-columns:1.2fr 2fr;
+      gap:32px;
+      align-items:start;
+    }
+    .footer-brand .brand{
+      font-weight:800;
+      font-size:1.3rem;
+      color:#fff;
+      text-decoration:none;
+    }
+    .footer-brand .tagline{
+      color:#CBD5E1;
+      margin-top:6px;
+      font-size:.95rem;
+      max-width:52ch;
+      line-height:1.6;
+    }
+    .footer-nav{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:24px;
+    }
+    .footer-nav h3{
+      font-size:.95rem;
+      font-weight:700;
+      margin-bottom:10px;
+      color:#F1F5F9;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+    .footer-nav ul{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .footer-nav a{
+      color:#E2E8F0;
+      text-decoration:none;
+      font-size:.95rem;
+      transition:color .2s ease;
+    }
+    .footer-nav a:hover{
+      color:#58AEDD;
+    }
+    .footer-bottom{
+      border-top:1px solid #334155;
+      background:#0F172A;
+      text-align:center;
+      padding:14px 0;
+      color:#94A3B8;
+      font-size:.92rem;
+    }
+    .footer-bottom a{
+      color:#E2E8F0;
+      text-decoration:none;
+    }
+    .footer-bottom a:hover{
+      color:#58AEDD;
+      text-decoration:underline;
+    }
+    @media(max-width:880px){
+      .footer-wrap{grid-template-columns:1fr;gap:28px;text-align:center}
+      .footer-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;justify-items:center}
+    }
+    @media(max-width:520px){
+      .footer-nav{grid-template-columns:1fr}
+    }
+  </style>
+
   <script>
-  (() => {
-    const link = document.getElementById('adminLink');
-    const sep  = document.getElementById('dotSep');
-    const form = document.getElementById('adminSearch');
-    if (!link || !sep || !form) return;
-
-    function revealAdminUI() {
-      if (link.style.display !== 'inline') {
-        link.style.display = 'inline';
-        sep.style.display  = 'inline';
-        form.style.display = 'inline';
-      }
-    }
-
-    // Shortcut: Ctrl + .
-    window.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === '.') revealAdminUI();
-    });
-
-    // Shortcut: type "admin" within 2s
-    let buffer = '', last = 0;
-    window.addEventListener('keydown', (e) => {
-      const now = Date.now();
-      if (now - last > 2000) buffer = '';
-      last = now;
-      if (e.key.length === 1) buffer += e.key.toLowerCase();
-      if (buffer.endsWith('admin')) revealAdminUI();
-    });
-  })();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </footer>
