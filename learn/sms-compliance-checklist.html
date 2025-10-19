@@ -3,25 +3,25 @@
 <head>
   <!-- =============================================
     10dlccheck — Learn Article
-    File: /learn/ctia-guidelines-explained.html
+    File: /learn/sms-compliance-checklist.html
   ============================================== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CTIA Messaging Guidelines Explained | 10dlccheck</title>
-  <meta name="description" content="A practical guide to CTIA Messaging Principles and Best Practices—consent, opt-outs, identity, links and content standards for compliant A2P messaging." />
-  <link rel="canonical" href="https://10dlccheck.com/learn/ctia-guidelines-explained.html" />
+  <title>Pre-Send Compliance Checklist | 10dlccheck</title>
+  <meta name="description" content="Run this quick checklist before sending to reduce blocks, complaints, and carrier fees. Covers consent, identification, links, opt-outs, cadence, registration, hygiene, and records." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/sms-compliance-checklist.html" />
   <meta name="robots" content="index,follow" />
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="CTIA Messaging Guidelines Explained | 10dlccheck" />
-  <meta property="og:description" content="Understand CTIA principles for consent, identity, opt-outs, and content so your A2P SMS stays trusted and compliant." />
-  <meta property="og:url" content="https://10dlccheck.com/learn/ctia-guidelines-explained.html" />
+  <meta property="og:title" content="Pre-Send Compliance Checklist | 10dlccheck" />
+  <meta property="og:description" content="A practical checklist for 10DLC compliance. Verify consent, identity, links, keywords, cadence, and more before you hit send." />
+  <meta property="og:url" content="https://10dlccheck.com/learn/sms-compliance-checklist.html" />
   <meta property="og:site_name" content="10dlccheck" />
-  <!-- <meta property="og:image" content="https://10dlccheck.com/assets/og/ctia-guidelines-explained.png" /> -->
+  <!-- <meta property="og:image" content="https://10dlccheck.com/assets/og/sms-compliance-checklist.png" /> -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="CTIA Messaging Guidelines Explained | 10dlccheck" />
-  <meta name="twitter:description" content="A practical guide to CTIA best practices for A2P SMS compliance." />
+  <meta name="twitter:title" content="Pre-Send Compliance Checklist | 10dlccheck" />
+  <meta name="twitter:description" content="Quick checks to prevent filtering and fees. Consent, identity, STOP/HELP, links, cadence, hygiene, and records." />
 
   <!-- Styles (site tokens) -->
   <style>
@@ -51,7 +51,7 @@
     .anchor{visibility:hidden;margin-left:.25em;font-size:.9rem;text-decoration:none}
     h2:hover .anchor,h3:hover .anchor{visibility:visible}
 
-    /* Sidebar TOC */
+    /* TOC */
     .sidebar{position:sticky;top:20px;align-self:start}
     .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:24px}
     .toc h3{margin:0 0 16px;font-size:1.1rem;color:var(--accent)}
@@ -63,9 +63,14 @@
     .toc a.active{color:var(--sky);font-weight:600}
 
     /* Elements */
-    .note{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:8px;padding:16px;color:var(--muted);margin:20px 0}
-    ul{margin-left:1.25em}
-    blockquote{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:8px;padding:14px 18px;margin:1.5em 0;color:var(--muted)}
+    .note{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:8px;padding:16px 20px;color:var(--muted);margin:24px 0;font-size:1.03rem}
+
+    /* Checklist */
+    .checklist{list-style:none;padding:0;margin:14px 0 8px}
+    .checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
+    .checklist li:last-child{border-bottom:none}
+    .checklist input[type="checkbox"]{margin-top:4px;accent-color:var(--sky)}
+    .tip{color:#64748b;font-size:.95rem;margin-top:4px}
 
     /* CTA */
     .cta{margin-top:40px;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px;background:#f8fafc}
@@ -87,7 +92,7 @@
   </style>
 </head>
 
-<body data-prev="/learn/what-is-10dlc.html" data-next="/learn/sms-compliance-checklist.html">
+<body data-prev="/learn/ctia-guidelines-explained.html" data-next="/learn">
   <!-- Includes -->
   <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
@@ -95,8 +100,8 @@
   <section class="hero">
     <div class="wrap">
       <div class="eyebrow">10DLC Learn</div>
-      <h1>CTIA Messaging Guidelines Explained</h1>
-      <p class="sub">What the CTIA principles mean for consent, identity, opt-outs, links, and content—so your A2P SMS stays trusted.</p>
+      <h1>Pre-Send Compliance Checklist</h1>
+      <p class="sub">Run this quick checklist before sending to reduce blocks, complaints and carrier fees.</p>
       <div class="meta" id="article-meta">
         <span>By 10dlccheck Editorial</span>
         <span>•</span>
@@ -113,62 +118,70 @@
     <div class="main-content">
       <!-- Article -->
       <article class="content" id="article">
-        <h2 id="intro">Overview <a class="anchor" href="#intro" aria-label="Link to this section">#</a></h2>
-        <p>The <strong>CTIA Messaging Principles and Best Practices</strong> set expectations for trusted messaging in the U.S. wireless ecosystem. They focus on consumer protection, transparent sender identity, and responsible sending—especially for application-to-person (A2P) traffic.</p>
-        <div class="note">The CTIA document is industry guidance. It complements—does not replace—legal obligations such as TCPA, CAN-SPAM, and FCC rules.</div>
+        <p class="note">Use this page as a lightweight pre-flight. Tick each item as you verify it, then run the message through the checker for automated hints.</p>
 
-        <h2 id="consent">Consent <a class="anchor" href="#consent" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>Obtain explicit, campaign-specific opt-in. Keep a record of when, where, and how consent was captured.</li>
-          <li>Send a confirmation that includes brand name, message frequency, cost notice, and opt-out instructions.</li>
-          <li>Do not buy, rent, or share opt-in lists.</li>
-        </ul>
-        <blockquote>Example CTA: “Text JOIN to 12345 to get weekly tips from BrandName. Msg&data rates may apply. Up to 4 msgs/mo. Reply STOP to opt out.”</blockquote>
-
-        <h2 id="identity">Identity & transparency <a class="anchor" href="#identity" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>Identify the sender in the message body (brand or program name).</li>
-          <li>Use domains that reflect your brand. Avoid public shorteners in initial outreach.</li>
-          <li>If you include a phone number, it should clearly map to the identified entity.</li>
+        <h2 id="audience">Audience & consent <a class="anchor" href="#audience" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Contacts explicitly opted in to this campaign/program; records show time, method and source of consent.</li>
+          <li><input type="checkbox"> Opt-in language clearly states brand, content type, frequency and fees.</li>
+          <li><input type="checkbox"> No purchased, rented, or shared lists.</li>
+          <li><input type="checkbox"> Opt-in is recent enough for the use case; stale lists are suppressed.</li>
         </ul>
 
-        <h2 id="optouts">Opt-out and help keywords <a class="anchor" href="#optouts" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>Support STOP/UNSUBSCRIBE/CANCEL to end messages promptly.</li>
-          <li>Support HELP to return assistance or contact info.</li>
-          <li>Honor opt-outs across the program quickly and maintain clean lists.</li>
+        <h2 id="identity">Identification & content <a class="anchor" href="#identity" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Brand is named in the first message (e.g., “BrandName: your order shipped”).</li>
+          <li><input type="checkbox"> Message is truthful and not in prohibited categories.</li>
+          <li><input type="checkbox"> Copy matches the registered campaign use case and samples.</li>
         </ul>
 
-        <h2 id="content">Content standards <a class="anchor" href="#content" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>No deceptive, illegal, or harmful content. Follow carrier codes for restricted categories.</li>
-          <li>Share accurate offer terms. Avoid misleading claims or hidden conditions.</li>
-          <li>Don’t “snowshoe” (spreading traffic across numbers to evade controls) and don’t use unauthorized routes.</li>
+        <h2 id="links">Links & domains <a class="anchor" href="#links" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Link uses a branded or first-party domain (avoid public shorteners in initial outreach).</li>
+          <li><input type="checkbox"> Landing page identifies the brand and matches the message promise.</li>
+          <li><input type="checkbox"> Tracking parameters are clean; avoid suspicious redirects.</li>
         </ul>
 
-        <h2 id="numbering">Numbers & provisioning <a class="anchor" href="#numbering" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>Only text-enable numbers you’re authorized to use. Keep assignment records.</li>
-          <li>Monitor shared or proxy numbers closely for abuse.</li>
-          <li>Remove deactivated numbers promptly to minimize complaints.</li>
+        <h2 id="keywords">Opt-out & help keywords <a class="anchor" href="#keywords" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> First message includes STOP instructions when required.</li>
+          <li><input type="checkbox"> STOP/UNSUBSCRIBE/CANCEL/END/QUIT are processed immediately.</li>
+          <li><input type="checkbox"> HELP replies return assistance or contact details.</li>
         </ul>
 
-        <h2 id="mitigation">Mitigating unwanted messaging <a class="anchor" href="#mitigation" aria-label="Link to this section">#</a></h2>
-        <ul>
-          <li>Providers should filter clearly unwanted traffic and support spam reporting (e.g., 7726 “SPAM”).</li>
-          <li>Track complaint rates, bounces, and opt-outs; adjust sending accordingly.</li>
+        <h2 id="sending">Sending practices & cadence <a class="anchor" href="#sending" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Frequency matches what you promised during opt-in.</li>
+          <li><input type="checkbox"> Local quiet hours are respected; sensitive audiences are time-boxed.</li>
+          <li><input type="checkbox"> Traffic is not split across many numbers to evade filtering (“snowshoeing”).</li>
+          <li><input type="checkbox"> Content is personalized and expected for the segment.</li>
         </ul>
 
-        <h2 id="examples">Examples <a class="anchor" href="#examples" aria-label="Link to this section">#</a></h2>
-        <h3>Promotional offer (compliant)</h3>
-        <p>“BrandName: 20% off this week only at brand.com/sale. Up to 4 msgs/mo. Reply STOP to opt out.”</p>
-        <h3>Security alert (transactional)</h3>
-        <p>“BrandName: New sign-in from a new device. If this was you, no action needed. Reply HELP for support.”</p>
+        <h2 id="registration">Registration & numbers <a class="anchor" href="#registration" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Brand registration is approved and matches legal entity info.</li>
+          <li><input type="checkbox"> Campaign is approved for this use case; sample messages align.</li>
+          <li><input type="checkbox"> Numbers are assigned/verified and mapped to the campaign.</li>
+        </ul>
+
+        <h2 id="hygiene">List hygiene & deliverability <a class="anchor" href="#hygiene" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Recent bounces and deactivated numbers are removed.</li>
+          <li><input type="checkbox"> High-complaint segments are suppressed or throttled.</li>
+          <li><input type="checkbox"> Any shortened links are tested for reliability/reputation.</li>
+        </ul>
+
+        <h2 id="records">Legal & records <a class="anchor" href="#records" aria-label="Link to this section">#</a></h2>
+        <ul class="checklist">
+          <li><input type="checkbox"> Opt-in logs, message samples, and program terms are stored for audits.</li>
+          <li><input type="checkbox"> Privacy policy covers the messaging program and data retention.</li>
+          <li><input type="checkbox"> Team can service opt-out and support requests quickly.</li>
+        </ul>
 
         <!-- CTA -->
         <section class="cta">
-          <h3>Test a message before you send</h3>
-          <p>Run your SMS through our free compliance checker to reduce filtering.</p>
+          <h3>Ready to test your message?</h3>
+          <p>Use the free 10DLC compliance checker to catch risky patterns before you send.</p>
           <p>
             <a class="btn" href="/#checker?utm_source=learn&utm_medium=site&utm_campaign=cta_checker">Check now →</a>
             &nbsp;
@@ -207,12 +220,12 @@
   <script type="application/ld+json" id="article-jsonld">{
     "@context":"https://schema.org",
     "@type":"Article",
-    "headline":"CTIA Messaging Guidelines Explained",
-    "description":"A practical guide to CTIA Messaging Principles and Best Practices—consent, identity, opt-outs, links, and content standards for compliant A2P messaging.",
+    "headline":"Pre-Send Compliance Checklist",
+    "description":"Run this quick checklist before sending to reduce blocks, complaints, and carrier fees. Covers consent, identification, links, opt-outs, cadence, registration, hygiene, and records.",
     "author":{"@type":"Person","name":"10dlccheck Editorial"},
     "datePublished":"2025-10-18",
     "dateModified":"2025-10-18",
-    "mainEntityOfPage":{"@type":"WebPage","@id":"https://10dlccheck.com/learn/ctia-guidelines-explained.html"}
+    "mainEntityOfPage":{"@type":"WebPage","@id":"https://10dlccheck.com/learn/sms-compliance-checklist.html"}
   }</script>
 
   <!-- Utilities: includes, TOC, active section, read-time, prev/next -->

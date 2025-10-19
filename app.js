@@ -544,7 +544,7 @@ function showSuggestions(data) {
   if (!ta) return;
   if (s && s.text) {
     ta.value = s.text.trim();
-    document.getElementById("aiSuggestionBox").style.borderColor = "#58AEDD"; // highlight border in brand blue
+    setTimeout(() => document.getElementById("aiSuggestionBox").style.border = "2px solid #58AEDD", 100);
   } else if (!ta.value.trim()) {
     ta.value = "⚠️ No suggestion returned.";
   }

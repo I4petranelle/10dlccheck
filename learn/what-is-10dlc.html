@@ -1,57 +1,293 @@
-<!-- /learn/what-is-10dlc.html  (modal partial) -->
-<style>
-  :root { --ink:#1C2D40; --muted:#64748b; --line:#e2e8f0; --sky:#58AEDD; --bg:#f8fafc; }
-  .learn-popup{
-    background:#fff;border-radius:16px;padding:28px 32px;width:min(780px,90%);
-    max-height:80vh;overflow-y:auto;box-shadow:0 16px 40px rgba(0,0,0,.15);
-    animation:fadeIn .25s ease-in-out;color:var(--ink);
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;
-  }
-  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .learn-popup h1,.learn-popup h2{color:#0b253a}
-  .learn-popup h1{font-size:1.6rem;margin:0 0 .5em;border-bottom:2px solid var(--sky);padding-bottom:6px}
-  .learn-popup h2{font-size:1.25rem;margin:1.2em 0 .5em;border-left:4px solid var(--sky);padding-left:8px}
-  .learn-popup ul{padding-left:1.15rem;margin:.5rem 0}
-  .learn-popup li{margin:.25rem 0}
-  .learn-popup a{color:var(--sky);text-decoration:none}
-  .learn-popup a:hover{text-decoration:underline}
-  .cta{margin-top:18px;text-align:center;padding:16px;border:1px dashed var(--line);border-radius:12px;background:var(--bg)}
-  .btn{display:inline-block;background:var(--sky);color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none}
-  .note{color:var(--muted);font-size:.9rem;margin-top:6px}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =============================================
+    10dlccheck — Learn Article
+    File: /learn/what-is-10dlc.html
+  ============================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What Is 10DLC & Why It Matters | 10dlccheck</title>
+  <meta name="description" content="Understand 10DLC, how it compares to short codes and toll-free SMS, why carriers require registration, and how to stay compliant." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/what-is-10dlc.html" />
+  <meta name="robots" content="index,follow" />
 
-<div class="learn-popup" data-article="what-is-10dlc">
-  <button class="popup-close" aria-label="Close" onclick="if(window.closePopup) closePopup()">×</button>
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="What Is 10DLC & Why It Matters | 10dlccheck" />
+  <meta property="og:description" content="Understand 10DLC, how it compares to short codes and toll-free SMS, why carriers require registration, and how to stay compliant." />
+  <meta property="og:url" content="https://10dlccheck.com/learn/what-is-10dlc.html" />
+  <meta property="og:site_name" content="10dlccheck" />
+  <!-- <meta property="og:image" content="https://10dlccheck.com/assets/og/what-is-10dlc.png" /> -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="What Is 10DLC & Why It Matters | 10dlccheck" />
+  <meta name="twitter:description" content="Understand 10DLC, how it compares to short codes and toll-free SMS, why carriers require registration, and how to stay compliant." />
 
-  <h1>What Is 10DLC and Why It Matters</h1>
-  <article class="content">
-    <p><strong>10DLC</strong> stands for <em>10-Digit Long Code</em>—a U.S. carrier program that allows businesses to send Application-to-Person (A2P) text messages from standard 10-digit numbers with verified brand and campaign registration. The goal is to reduce spam, improve trust, and increase deliverability for legitimate business messaging.</p>
+  <!-- Styles (site tokens) -->
+  <style>
+    :root{--ink:#1C2D40;--muted:#334155;--sky:#58AEDD;--line:#e2e8f0;--bg:#f8fafc;--accent:#1e40af}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+    a{color:var(--sky)}
+    .wrap{max-width:1200px;margin:0 auto;padding:20px 16px}
+    .topbar-slot,.footer-slot{min-height:48px}
 
-    <h2 id="what-it-does">What Does 10DLC Do?</h2>
-    <p>Under 10DLC, each company registers its <strong>brand</strong> (the business entity) and one or more <strong>campaigns</strong> (the purpose of messaging). Registration data flows through <a href="https://www.campaignregistry.com/" target="_blank" rel="noopener">The Campaign Registry (TCR)</a>, which carriers use to determine throughput and trust levels.</p>
+    /* Hero */
+    .hero{background:#fff;border-bottom:1px solid var(--line);padding:32px 0}
+    .hero .wrap{padding:0 16px}
+    .eyebrow{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    h1{margin:0 0 12px;font-size:2.5rem;font-weight:800;line-height:1.2}
+    .sub{margin:0 0 20px;color:var(--muted);font-size:1.2rem;max-width:800px}
+    .meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.95rem;padding-top:16px;border-top:1px solid var(--line)}
 
-    <h2 id="compare">10DLC vs Short Codes vs Toll-Free SMS</h2>
-    <ul>
-      <li><strong>Short Codes:</strong> 5–6 digit numbers for very high volume; expensive but fast throughput.</li>
-      <li><strong>Toll-Free SMS:</strong> 800/888 numbers; moderate throughput and good for support or notifications.</li>
-      <li><strong>10DLC:</strong> Standard local numbers; affordable, brand-linked, and great for ongoing business texting.</li>
-    </ul>
+    /* Layout */
+    .main-content{display:grid;grid-template-columns:1fr 300px;gap:40px;margin:40px 0}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr;gap:30px}}
 
-    <h2 id="who-registers">Who Must Register?</h2>
-    <p>Any organization sending A2P messages in the U.S.—marketing, alerts, appointment reminders, or OTP—should complete 10DLC brand and campaign registration to avoid filtering and potential fees.</p>
+    /* Article */
+    article.content{background:#fff;border:1px solid var(--line);border-radius:12px;padding:40px;max-width:100%;box-sizing:border-box}
+    article.content h2{margin-top:2em;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+    article.content h3{margin-top:1.5em}
+    .anchor{visibility:hidden;margin-left:.25em;font-size:.9rem;text-decoration:none}
+    h2:hover .anchor,h3:hover .anchor{visibility:visible}
 
-    <h2 id="compliance">Staying Compliant (Quick Checklist)</h2>
-    <ul>
-      <li>Identify your brand or sender in each message.</li>
-      <li>Include required keywords: <strong>STOP</strong> (opt-out) and <strong>HELP</strong> behavior.</li>
-      <li>Avoid public link shorteners (e.g., bit.ly); prefer branded domains.</li>
-      <li>Do not request or transmit sensitive personal data.</li>
-      <li>Keep under ~918 characters to avoid excessive concatenation.</li>
-    </ul>
+    /* Sidebar TOC */
+    .sidebar{position:sticky;top:20px;align-self:start}
+    .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:24px}
+    .toc h3{margin:0 0 16px;font-size:1.1rem;color:var(--accent)}
+    .toc ol{list-style:none;margin:0;padding:0}
+    .toc li{padding:8px 0;border-bottom:1px solid var(--line)}
+    .toc li:last-child{border-bottom:none}
+    .toc a{color:var(--ink);text-decoration:none;display:block;transition:color .2s}
+    .toc a:hover{color:var(--sky)}
+    .toc a.active{color:var(--sky);font-weight:600}
 
-    <div class="cta">
-      <a class="btn" href="/#checker">Check Your SMS for 10DLC Compliance →</a>
-      <div class="note">Opens the main checker on this site.</div>
+    /* Elements */
+    .note{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:8px;padding:16px;color:var(--muted);margin:20px 0}
+    table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);margin:20px 0}
+    .compare th,.compare td{border:1px solid var(--line);padding:12px;vertical-align:top}
+    .compare th{background:#f8fafc;text-align:left}
+
+    .cta{margin-top:40px;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px;background:#f8fafc}
+    .btn{display:inline-block;background:var(--sky);color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;text-decoration:none;transition:background .2s}
+    .btn:hover{background:var(--accent)}
+    .btn.secondary{background:var(--ink)}
+    .btn.secondary:hover{background:var(--muted)}
+
+    /* Nav + Footer */
+    .article-nav{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+    .article-nav-links{display:flex;justify-content:space-between;gap:20px}
+    .article-nav a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);transition:all .2s}
+    .article-nav a:hover{border-color:var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    footer{margin-top:60px;border-top:1px solid var(--line);background:#fff}
+    .foot-line{display:flex;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;padding:20px 16px;color:var(--muted)}
+    .foot-line a{color:var(--sky);text-decoration:none}
+    .foot-line a:hover{text-decoration:underline}
+    @media(max-width:600px){.foot-line{flex-direction:column;align-items:flex-start}.article-nav-links{flex-direction:column}}
+  </style>
+</head>
+
+<body data-prev="/learn/index.html" data-next="/learn/ctia-guidelines-explained.html">
+  <!-- Includes -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">10DLC Learn</div>
+      <h1>What Is 10DLC?</h1>
+      <p class="sub">A practical guide to what 10DLC is, how it compares to other channels and what you need for compliance.</p>
+      <div class="meta" id="article-meta">
+        <span>By 10dlccheck Editorial</span>
+        <span>•</span>
+        <span>Published <time datetime="2025-10-18">October 16, 2025</time></span>
+        <span>•</span>
+        <span>Updated <time datetime="2025-10-18">October 18, 2025</time></span>
+        <span>•</span>
+        <span id="read-time">~3 min read</span>
+      </div>
     </div>
-  </article>
-</div>
+  </section>
+
+  <div class="wrap">
+    <div class="main-content">
+      <!-- Article -->
+      <article class="content" id="article">
+        <h2 id="definition">Definition and purpose <a class="anchor" href="#definition" aria-label="Link to this section">#</a></h2>
+        <p><strong>10DLC</strong> stands for 10-digit long code. It is the U.S. standard for application-to-person SMS sent from local phone numbers. Carriers use 10DLC to improve trust, control spam, and match throughput to a brand and campaign that has been reviewed.</p>
+
+        <h2 id="compare">Compare channels <a class="anchor" href="#compare" aria-label="Link to this section">#</a></h2>
+        <table class="compare">
+          <thead><tr><th>Channel</th><th>Best for</th><th>Pros</th><th>Considerations</th></tr></thead>
+          <tbody>
+            <tr><td><strong>10DLC</strong></td><td>Local presence, two-way, alerts</td><td>Recognizable number, lower cost</td><td>Registration and content rules</td></tr>
+            <tr><td><strong>Short code</strong></td><td>High volume national programs</td><td>Very high throughput</td><td>Higher cost, longer approvals</td></tr>
+            <tr><td><strong>Toll-free SMS</strong></td><td>Support and notifications</td><td>Nationwide reach</td><td>Verification recommended</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="registration">Registration process <a class="anchor" href="#registration" aria-label="Link to this section">#</a></h2>
+        <ul>
+          <li><strong>Brand registration</strong> – legal name, EIN, address, website</li>
+          <li><strong>Campaign registration</strong> – use case, sample messages, opt-in method, support keywords</li>
+        </ul>
+        <p>After review, carriers assign throughput based on campaign and trust. You manage this through your provider using The Campaign Registry workflow.</p>
+
+        <h2 id="compliance">Compliance essentials <a class="anchor" href="#compliance" aria-label="Link to this section">#</a></h2>
+        <ul>
+          <li><strong>Consent</strong> – message only opted-in recipients</li>
+          <li><strong>Identity</strong> – include the sender brand in the message</li>
+          <li><strong>Support keywords</strong> – respond to STOP and HELP</li>
+          <li><strong>Links</strong> – use branded or full links in first outreach</li>
+          <li><strong>Restricted content</strong> – avoid prohibited categories and follow carrier codes</li>
+          <li><strong>Opt-out handling</strong> – honor opt-outs quickly and maintain list hygiene</li>
+        </ul>
+        <div class="note">Non-compliant traffic can be filtered or surcharged. Consistent consent and clear sender identity reduce risk.</div>
+
+        <h2 id="examples">Examples <a class="anchor" href="#examples" aria-label="Link to this section">#</a></h2>
+        <h3>Compliant welcome</h3>
+        <p>"Welcome to BrandName alerts. Msg and data rates may apply. Up to 3 msgs per week. Reply STOP to opt out."</p>
+        <h3>Risky first message</h3>
+        <p>"50% off today only. Click bit.ly/offer" – no brand identity, no STOP, uses a public short link.</p>
+
+        <h2 id="faq">FAQs <a class="anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+        <h3>Do I need 10DLC if I use short code or toll-free</h3>
+        <p>No. Each channel is separate with its own verification. Use 10DLC for local presence and two-way conversations.</p>
+        <h3>How are volume limits set</h3>
+        <p>Throughput depends on campaign type and trust. Your provider shares the limits for your approved campaign.</p>
+        <h3>Which carriers enforce 10DLC</h3>
+        <p>All major U.S. carriers require 10DLC registration for A2P long code messaging.</p>
+
+        <!-- CTA -->
+        <section class="cta">
+          <h3>Test a message before you send</h3>
+          <p>Run your SMS through our free compliance checker to reduce filtering.</p>
+          <p>
+            <a class="btn" href="/#checker?utm_source=learn&utm_medium=site&utm_campaign=cta_checker">Check now →</a>
+            &nbsp;
+            <a class="btn secondary" target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Chrome extension</a>
+          </p>
+        </section>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="toc">
+          <h3>On this page</h3>
+          <ol id="toc-list"><!-- auto --></ol>
+        </div>
+        <div class="promo-box">
+          <h4>Check Your Message</h4>
+          <p>Test SMS compliance before sending with our free tool</p>
+          <a class="btn" href="/#checker?utm_source=learn&utm_medium=sidebar&utm_campaign=cta_checker">Check now</a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Article Navigation -->
+    <nav class="article-nav" aria-label="Learn navigation">
+      <div class="article-nav-links">
+        <a id="prev-article" href="/learn/"><span>←</span><span>Previous article</span></a>
+        <a id="next-article" href="/learn/"><span>Next article</span><span>→</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Includes -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
+
+  <!-- Schema.org -->
+  <script type="application/ld+json" id="article-jsonld">{
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline":"What Is 10DLC & Why It Matters",
+    "description":"Understand 10DLC, how it compares to short codes and toll-free SMS, why carriers require registration, and how to stay compliant.",
+    "author":{"@type":"Person","name":"10dlccheck Editorial"},
+    "datePublished":"2025-10-18",
+    "dateModified":"2025-10-18",
+    "mainEntityOfPage":{"@type":"WebPage","@id":"https://10dlccheck.com/learn/what-is-10dlc.html"}
+  }</script>
+
+  <!-- Utilities: includes, TOC, active section, read-time, prev/next -->
+  <script>
+    // 1) Include partials
+    (async function includePartials(){
+      const slots = document.querySelectorAll('[data-include]');
+      await Promise.all(Array.from(slots).map(async el=>{
+        try{ const url = el.getAttribute('data-include');
+             const r = await fetch(url,{cache:'no-store'});
+             if(r.ok) el.innerHTML = await r.text(); } catch(_){}
+      }));
+    })();
+
+    // 2) Build TOC from H2s
+    (function buildTOC(){
+      const toc = document.getElementById('toc-list');
+      if(!toc) return;
+      const sections = Array.from(document.querySelectorAll('#article h2'));
+      sections.forEach(h=>{
+        const id = h.id || h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id = id;
+        if(!h.querySelector('.anchor')){
+          const anc = document.createElement('a');
+          anc.className = 'anchor'; anc.href = '#'+id; anc.textContent = '#';
+          anc.setAttribute('aria-label','Link to this section');
+          h.appendChild(anc);
+        }
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#'+id; a.textContent = h.textContent.replace('#','').trim();
+        li.appendChild(a); toc.appendChild(li);
+      });
+    })();
+
+    // 3) Active section highlight
+    (function observeHeadings(){
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const targets = links.map(a=>document.querySelector(a.getAttribute('href')));
+      if(!targets.length) return;
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            links.forEach(l=>l.classList.remove('active'));
+            const id = '#'+e.target.id;
+            const active = links.find(l=>l.getAttribute('href')===id);
+            if(active) active.classList.add('active');
+          }
+        })
+      },{rootMargin:"-40% 0px -55% 0px",threshold:0.01});
+      targets.forEach(t=>t && io.observe(t));
+    })();
+
+    // 4) Read time (~225 wpm)
+    (function readTime(){
+      const el = document.getElementById('article');
+      const rt = document.getElementById('read-time');
+      if(!el || !rt) return;
+      const words = (el.innerText||'').trim().split(/\s+/).length;
+      const mins = Math.max(1, Math.round(words/225));
+      rt.textContent = `~${mins} min read`;
+    })();
+
+    // 5) Prev/Next from body attributes
+    (function prevNext(){
+      const prev = document.getElementById('prev-article');
+      const next = document.getElementById('next-article');
+      const p = document.body.getAttribute('data-prev');
+      const n = document.body.getAttribute('data-next');
+      if(p){ prev.href = p; prev.querySelector('span:last-child').textContent = 'Previous article'; } else { prev.style.visibility='hidden'; }
+      if(n){ next.href = n; next.querySelector('span:first-child').textContent = 'Next article'; } else { next.style.visibility='hidden'; }
+    })();
+  </script>
+
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+</body>
+</html>

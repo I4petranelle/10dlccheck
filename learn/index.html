@@ -14,225 +14,174 @@
   <meta property="og:type" content="website" />
 
   <style>
-    :root{--ink:#1C2D40;--sky:#58AEDD;--muted:#1f2937;--line:#e2e8f0;--bg:#f8fafc;--card-bg:#fff;--hover-bg:#f1f5f9}
+    :root{--ink:#1C2D40;--sky:#58AEDD;--muted:#475569;--line:#e2e8f0;--bg:#f8fafc;--card-bg:#fff;--hover-bg:#f1f5f9}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-    .site-header{background:var(--card-bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
-    .header-content{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:800;font-size:1.1rem;color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
-    .nav-links{display:flex;gap:24px;align-items:center}
-    .nav-links a{text-decoration:none;color:var(--muted);font-weight:500;transition:color .2s}
-    .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--ink)}
+    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+
+    /* Topbar/footer loaded from partials */
+    .topbar-slot,.footer-slot{min-height:48px}
+
     .hero{background:#1f2937;color:#fff;padding:64px 24px 48px;text-align:center}
     .hero-content{max-width:800px;margin:0 auto}
     .hero h1{font-size:2.5rem;font-weight:800;margin-bottom:16px;letter-spacing:-.5px}
-    .hero p{font-size:1.2rem;opacity:.95;margin-bottom:32px}
-    .hero-search{max-width:600px;margin:0 auto;position:relative}
-    .hero-search input{width:100%;padding:16px 48px 16px 20px;border:none;border-radius:12px;font-size:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1)}
-    .hero-search input::placeholder{color:var(--muted)}
-    .search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.2rem}
+    .hero p{font-size:1.15rem;opacity:.95;margin-bottom:0}
+
     .container{max-width:1200px;margin:0 auto;padding:48px 24px}
+
     .quick-tips{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:48px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-    .quick-tips h2{font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-    .tip-item{display:flex;gap:12px;align-items:start}
-    .tip-icon{color:var(--sky);font-size:1.2rem;flex-shrink:0}
+    .quick-tips h2{font-size:1.25rem;margin-bottom:12px}
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .tip-item{display:flex;gap:10px;align-items:flex-start}
+    .tip-bullet{width:8px;height:8px;border-radius:50%;background:var(--sky);margin-top:.6rem;flex:none}
     .tip-text{color:var(--muted);font-size:.95rem}
+
     .category-section{margin-bottom:56px}
-    .category-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--line)}
-    .category-icon{font-size:1.8rem}
-    .category-header h2{font-size:1.8rem;font-weight:600}
+    .category-header{display:flex;align-items:end;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+    .category-header h2{font-size:1.6rem;font-weight:700}
     .category-header .count{color:var(--muted);font-size:.9rem;font-weight:500}
-    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
-    .article-card{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:12px}
-    .article-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.08);border-color:var(--sky)}
-    .article-header{display:flex;align-items:start;gap:12px}
-    .article-icon{font-size:2rem;flex-shrink:0}
+
+    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+    .article-card{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:10px}
+    .article-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:var(--sky);background:#ffffff}
     .article-meta{flex:1}
-    .article-card h3{font-size:1.2rem;font-weight:700;margin-bottom:4px;color:var(--ink)}
+    .article-card h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;color:var(--ink)}
     .article-card p{color:var(--muted);font-size:.95rem;line-height:1.5}
     .article-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
-    .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px}
-    .badge.beginner{background:#e0f2fe;color:#0369a1}
-    .badge.intermediate{background:#fef3c7;color:#b45309}
-    .badge.advanced{background:#fee2e2;color:#b91c1c}
-    .read-time{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:4px}
-    .cta-section{background:var(--card-bg);border:2px solid var(--line);border-radius:16px;padding:48px 32px;text-align:center;margin-top:64px}
-    .cta-section h2{font-size:2rem;margin-bottom:12px}
-    .cta-section p{color:var(--muted);font-size:1.1rem;margin-bottom:32px}
-    .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-    .btn{display:inline-block;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:600;transition:all .2s;border:2px solid transparent}
+    .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px;background:#e0f2fe;color:#075985}
+    .read-time{color:var(--muted);font-size:.85rem}
+
+    .cta-section{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:40px 28px;text-align:center;margin-top:48px}
+    .cta-section h2{font-size:1.8rem;margin-bottom:10px}
+    .cta-section p{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
+    .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-block;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:700;transition:all .2s;border:2px solid transparent}
     .btn-primary{background:var(--sky);color:#fff}
-    .btn-primary:hover{background:#4a9acc;transform:translateY(-2px);box-shadow:0 4px 12px rgba(88,174,221,.4)}
-    .btn-secondary{background:var(--ink);color:#fff}
-    .btn-secondary:hover{background:#152335;transform:translateY(-2px);box-shadow:0 4px 12px rgba(28,45,64,.3)}
-    footer{background:var(--card-bg);border-top:1px solid var(--line);margin-top:64px;padding:24px}
-    .footer-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.9rem}
-    .footer-links{display:flex;gap:24px}
-    .footer-links a{color:var(--sky);text-decoration:none}
-    .footer-links a:hover{text-decoration:underline}
+    .btn-primary:hover{filter:brightness(.95);transform:translateY(-1px)}
+    .btn-secondary{background:#1f2937;color:#fff}
+    .btn-secondary:hover{filter:brightness(.95);transform:translateY(-1px)}
+
     @media (max-width:768px){
       .hero h1{font-size:2rem}
       .hero p{font-size:1rem}
       .articles-grid{grid-template-columns:1fr}
       .tips-grid{grid-template-columns:1fr}
-      .nav-links{gap:16px}
-      .footer-content{flex-direction:column;gap:16px;text-align:center}
       .cta-buttons{flex-direction:column}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     }
   </style>
-</head>
-<body>
-  <!-- Sticky Header -->
-  <header class="site-header" role="banner">
-    <div class="header-content">
-      <a href="/" class="logo" aria-label="10DLC Check home">📱 <span>10DLC Check</span></a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="/learn/" aria-current="page">Learn</a>
-        <a href="/#checker">Checker</a>
-        <a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=header&utm_campaign=chrome-extension-link" class="nav-link" target="_blank" rel="noopener">
-  Get Chrome Extension
-</a>
-      </nav>
-    </div>
-  </header>
 
-  <!-- Hero Section -->
+  <!-- Inline Article Preview (scoped) -->
+  <style>
+    #article-container{display:none;max-width:900px;margin:0 auto 64px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,.05);padding:28px}
+    #article-container h1,#article-container h2{color:#1C2D40;font-weight:800;margin:1.2em 0 .4em;font-size:1.4rem}
+    #article-container h3{color:#1C2D40;font-weight:700;margin:1em 0 .3em;font-size:1.1rem}
+    #article-container p,#article-container li{font-size:1.02rem;color:#334155}
+    #article-container a{color:#58AEDD;text-decoration:none;font-weight:600}
+    #article-container a:hover{text-decoration:underline}
+    #article-container table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem}
+    #article-container th,#article-container td{border:1px solid #e2e8f0;padding:10px 12px;text-align:left}
+    #article-container th{background:#f8fafc;font-weight:600;color:#1C2D40}
+    #close-article{background:#1C2D40;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:700;margin-top:24px;cursor:pointer}
+    #close-article:hover{filter:brightness(.95)}
+  </style>
+</head>
+
+<body>
+  <!-- Topbar include -->
+  <div class="topbar-slot" data-include="/partials/topbar.html"></div>
+
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
       <h1>10DLC Knowledge Base</h1>
-      <p>Everything you need to master SMS compliance and improve message deliverability</p>
-      <div class="hero-search">
-        <label for="kb-search" class="sr-only" style="position:absolute;left:-9999px">Search knowledge base</label>
-        <input id="kb-search" type="search" placeholder="Search guides and articles…" aria-label="Search knowledge base" />
-        <span class="search-icon" aria-hidden="true">🔍</span>
-      </div>
+      <p>Clear guides and checklists to help you stay compliant and improve deliverability.</p>
     </div>
   </section>
 
-  <!-- Main Content -->
+  <!-- Main -->
   <main class="container" id="main">
     <!-- Quick Tips -->
     <section class="quick-tips" aria-labelledby="quick-tips-title">
-      <h2 id="quick-tips-title">⚡ Quick Compliance Tips</h2>
+      <h2 id="quick-tips-title">Quick Compliance Tips</h2>
       <div class="tips-grid">
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Always identify your brand in the first message.</span></div>
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Include STOP instructions in promotional messages.</span></div>
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Avoid public link shorteners—use branded URLs.</span></div>
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Never send SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</span></div>
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Document consent before sending any messages.</span></div>
-        <div class="tip-item"><span class="tip-icon">✓</span><span class="tip-text">Honor opt-out requests within 24 hours.</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Identify your brand in the first message.</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Include STOP instructions for promotional programs.</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Use branded or first-party links; avoid public shorteners.</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Do not send SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Capture and store explicit consent before messaging.</span></div>
+        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Honor opt-out requests promptly across the program.</span></div>
       </div>
     </section>
 
     <!-- Getting Started -->
     <section class="category-section" data-category="Getting Started">
       <div class="category-header">
-        <span class="category-icon" aria-hidden="true">🎓</span>
-        <div style="flex:1">
-          <h2>Getting Started</h2>
-          <span class="count" data-count>—</span>
-        </div>
+        <h2>Getting Started</h2>
+        <span class="count" data-count>—</span>
       </div>
+
       <div class="articles-grid">
         <a class="article-card" href="/learn/what-is-10dlc.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">📚</span><div class="article-meta"><h3>What is 10DLC?</h3></div></div>
-          <p>Learn the basics of 10DLC, why it exists, and how it differs from short codes and toll-free numbers.</p>
-          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 5 min</span></div>
+          <div class="article-meta">
+            <h3>What Is 10DLC?</h3>
+            <p>What 10DLC is, why it exists, and how it differs from short codes and toll-free numbers.</p>
+          </div>
+          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">5 min</span></div>
         </a>
+
         <a class="article-card" href="/learn/ctia-guidelines-explained.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">📋</span><div class="article-meta"><h3>CTIA Messaging Guidelines</h3></div></div>
-          <p>Understand consent requirements, brand identification, STOP behavior, and content restrictions.</p>
-          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 8 min</span></div>
+          <div class="article-meta">
+            <h3>CTIA Messaging Guidelines</h3>
+            <p>Consent requirements, brand identification, STOP/HELP behavior, and content restrictions.</p>
+          </div>
+          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">8 min</span></div>
         </a>
+
         <a class="article-card" href="/learn/sms-compliance-checklist.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">✅</span><div class="article-meta"><h3>Pre-Send Compliance Checklist</h3></div></div>
-          <p>Run this quick checklist before sending to reduce blocks, complaints, and carrier fees.</p>
-          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 4 min</span></div>
-        </a>
-      </div>
-    </section>
-	
-	<!-- Inline article content will appear here -->
-    <div id="article-container" style="display:none;max-width:900px;margin:0 auto 64px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,.05)"></div>
-
-
-    <!-- ============================
-     Registration & Setup (hidden)
-=============================
-    <section class="category-section" data-category="Registration &amp; Setup">
-      <div class="category-header">
-        <span class="category-icon" aria-hidden="true">🔧</span>
-        <div style="flex:1">
-          <h2>Registration &amp; Setup</h2>
-          <span class="count" data-count>—</span>
-        </div>
-      </div>
-      <div class="articles-grid">
-        <a class="article-card" href="/learn/register-10dlc-campaign.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">📝</span><div class="article-meta"><h3>Register Your 10DLC Campaign</h3></div></div>
-          <p>Complete guide to brand/campaign registration: use cases, fees, timelines, and approval tips.</p>
-          <div class="article-footer"><span class="badge intermediate">Intermediate</span><span class="read-time">⏱️ 12 min</span></div>
-        </a>
-        <a class="article-card" href="/learn/opt-out-and-help-keywords.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">🛑</span><div class="article-meta"><h3>STOP, HELP &amp; Opt-Out Rules</h3></div></div>
-          <p>Required keywords, proper formatting, response behavior, and common mistakes to avoid.</p>
-          <div class="article-footer"><span class="badge beginner">Beginner</span><span class="read-time">⏱️ 6 min</span></div>
+          <div class="article-meta">
+            <h3>Pre-Send Compliance Checklist</h3>
+            <p>Quick checks to reduce blocks, complaints, and carrier fees before you send.</p>
+          </div>
+          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">4 min</span></div>
         </a>
       </div>
     </section>
 
-    =============================
-     Advanced Topics (hidden)
-=============================
-    <section class="category-section" data-category="Advanced Topics">
-      <div class="category-header">
-        <span class="category-icon" aria-hidden="true">🚀</span>
-        <div style="flex:1">
-          <h2>Advanced Topics</h2>
-          <span class="count" data-count>—</span>
-        </div>
-      </div>
-      <div class="articles-grid">
-        <a class="article-card" href="/learn/carrier-filtering-reasons.html">
-          <div class="article-header"><span class="article-icon" aria-hidden="true">🔍</span><div class="article-meta"><h3>Understanding Carrier Filtering</h3></div></div>
-          <p>How filtering works, reputation signals, and practical strategies to improve delivery rates.</p>
-          <div class="article-footer"><span class="badge advanced">Advanced</span><span class="read-time">⏱️ 15 min</span></div>
-        </a>
-      </div>
-    </section>
-	================================= -->
+    <!-- Inline article container (appears when a card is clicked) -->
+    <div id="article-container"></div>
 
     <!-- CTA -->
     <section class="cta-section" aria-labelledby="cta-title">
       <h2 id="cta-title">Ready to Check Your Messages?</h2>
-      <p>Use our free compliance checker to validate your SMS campaigns before sending and avoid costly mistakes.</p>
+      <p>Use our free compliance checker to validate SMS campaigns before sending and avoid costly mistakes.</p>
       <div class="cta-buttons">
-        <a href="/#checker" class="btn btn-primary">Try Compliance Checker →</a>
-        <a class="btn btn-secondary" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=learn-page&utm_campaign=chrome-extension-launch" target="_blank" rel="noopener">
-  Get Chrome Extension
-</a>
+        <a href="/#checker" class="btn btn-primary">Try Compliance Checker</a>
+        <a class="btn btn-secondary" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=learn-page&utm_campaign=chrome-extension-launch" target="_blank" rel="noopener">Get the Chrome Extension</a>
+      </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <div class="footer-content">
-      <div>Powered by <strong>A Problem Solver</strong> • 10dlccheck.com</div>
-      <div class="footer-links">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Footer include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
 
+  <!-- Partials include loader -->
   <script>
-    // Simple live search + dynamic counts
-    const q = document.getElementById('kb-search');
+    (async () => {
+      const inc=document.querySelectorAll('[data-include]');
+      await Promise.all([...inc].map(async el=>{
+        try{
+          const r=await fetch(el.dataset.include,{cache:'no-store'});
+          if(r.ok) el.innerHTML=await r.text();
+        }catch(_){}
+      }));
+    })();
+  </script>
+
+  <!-- Search + counts -->
+  <script>
+    const q = document.getElementById('kb-search'); // currently no visible search box
     const cards = [...document.querySelectorAll('.article-card')];
     const sections = [...document.querySelectorAll('.category-section')];
 
@@ -241,12 +190,11 @@
         const visible = sec.querySelectorAll('.article-card:not([hidden])').length;
         const countEl = sec.querySelector('[data-count]');
         if(countEl){ countEl.textContent = visible + (visible===1?' article':' articles'); }
-        // Hide empty sections after filtering
         sec.style.display = visible ? '' : 'none';
       });
     }
     function filterArticles(term){
-      const t = term.trim().toLowerCase();
+      const t = (term||'').trim().toLowerCase();
       cards.forEach(card=>{
         const text = card.innerText.toLowerCase();
         card.hidden = t && !text.includes(t);
@@ -254,87 +202,83 @@
       updateCounts();
     }
     q?.addEventListener('input', e=>filterArticles(e.target.value));
-    // initial counts
     updateCounts();
   </script>
-<script>
-(() => {
-  const container = document.getElementById('article-container');
-  const cards = [...document.querySelectorAll('.article-card')];
 
-  function show(msg, color='#64748b'){
-    container.style.display='block';
-    container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
-  }
+  <!-- Inline article preview (same-origin only) -->
+  <script>
+    (() => {
+      const container = document.getElementById('article-container');
+      const cards = [...document.querySelectorAll('.article-card')];
 
-  async function loadInline(urlStr){
-    try{
-      // ensure same-origin & resolve relative paths
-      const url = new URL(urlStr, location.origin);
-      if(url.origin !== location.origin){
-        show('Cannot load external article (cross-origin).', '#b91c1c'); return;
+      function show(msg, color='#64748b'){
+        container.style.display='block';
+        container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
       }
 
-      container.style.display='block';
-      container.innerHTML =
-        '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
+      async function loadInline(urlStr){
+        try{
+          const url = new URL(urlStr, location.origin);
+          if(url.origin !== location.origin){ show('Cannot load external article (cross-origin).', '#b91c1c'); return; }
 
-      const res = await fetch(url.pathname + url.search);
-      if(!res.ok){
-        show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return;
+          container.style.display='block';
+          container.innerHTML = '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
+
+          const res = await fetch(url.pathname + url.search,{cache:'no-store'});
+          if(!res.ok){ show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return; }
+
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const node = doc.querySelector('article.content') || doc.querySelector('main') || doc.querySelector('article') || doc.querySelector('.container');
+
+          if(!node || !node.innerHTML.trim()){ show('Article loaded, but no content section found.', '#b91c1c'); return; }
+
+          container.innerHTML = `
+            <article class="preview-article">
+              ${node.innerHTML}
+              <div style="text-align:center">
+                <button id="close-article" type="button">Close</button>
+              </div>
+            </article>`;
+          document.getElementById('close-article').onclick = () => { container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname); };
+          container.scrollIntoView({behavior:'smooth', block:'start'});
+        }catch(err){ show(\`Failed: \${err?.message || err}\`, '#b91c1c'); }
       }
 
-      const html = await res.text();
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      // pick the main content from the article page
-      const node =
-        doc.querySelector('main') ||
-        doc.querySelector('article') ||
-        doc.querySelector('.article') ||
-        doc.querySelector('.container');
+      // click → inline render, preserve modified-click behavior
+      cards.forEach(card=>{
+        card.addEventListener('click', e=>{
+          const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+          if(modified) return;
+          e.preventDefault();
+          const href = card.getAttribute('href'); if(!href) return;
+          history.pushState('', '', \`#article=\${encodeURIComponent(href)}\`);
+          loadInline(href);
+        });
+      });
 
-      if(!node || !node.innerHTML.trim()){
-        show('Article loaded, but no content section found (expect <main> or <article>).', '#b91c1c');
-        return;
-      }
+      // load on hash
+      const m = location.hash.match(/#article=([^&]+)/);
+      if(m) loadInline(decodeURIComponent(m[1]));
 
-      container.innerHTML = `
-        <div style="max-width:900px;margin:0 auto">
-          ${node.innerHTML}
-          <div style="text-align:center;margin-top:28px">
-            <button id="close-article"
-              style="background:#1f2937;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer">
-              Close
-            </button>
-          </div>
-        </div>`;
-
-      // close & scroll behaviors
-      document.getElementById('close-article').onclick = () => {
-        container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname);
-      };
-      container.scrollIntoView({behavior:'smooth', block:'start'});
-    }catch(err){
-      show(`Failed: ${err?.message || err}`, '#b91c1c');
-    }
-  }
-
-  // click → inline render + URL hash for back/refresh
-  cards.forEach(card => {
-    card.addEventListener('click', e => {
-      e.preventDefault();
-      const href = card.getAttribute('href');
-      if(!href) return;
-      history.pushState('', '', `#article=${encodeURIComponent(href)}`);
-      loadInline(href);
-    });
-  });
-
-  // load if the page opened with a hash
-  const m = location.hash.match(/#article=([^&]+)/);
-  if(m){ loadInline(decodeURIComponent(m[1])); }
-})();
-</script>
-
+      // back/forward
+      window.addEventListener('popstate', ()=>{
+        const m2 = location.hash.match(/#article=([^&]+)/);
+        if(m2) loadInline(decodeURIComponent(m2[1]));
+        else { container.style.display='none'; container.innerHTML=''; }
+      });
+    })();
+  </script>
+  
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+  
 </body>
 </html>

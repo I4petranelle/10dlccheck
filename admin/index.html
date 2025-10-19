@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Admin — Live Pages</title>
+  <style>
+    :root{
+      --ink:#0B1220; --sky:#1E88E5; --muted:#64748B; --bg:#F8FAFC; --card:#FFFFFF; --line:#E2E8F0; --ok:#16A34A; --bad:#B91C1C;
+    }
+    *{ box-sizing:border-box }
+    body{ background:var(--bg); color:var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin:0; padding:24px; }
+    h1{ font-size:1.9rem; margin:0 0 10px }
+    p{ color:var(--muted); margin:0 0 12px }
+    .card{
+      background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.05);
+      padding:16px; margin:14px 0;
+    }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center }
+    .grow{ flex:1 1 auto }
+    label{ font-weight:600; font-size:.95rem; display:block; margin:2px 0 6px }
+    input, select{
+      width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#fff; font-size:15px;
+      outline: none; transition: box-shadow .12s ease, border-color .12s ease;
+    }
+    input:focus, select:focus{ border-color:var(--sky); box-shadow:0 0 0 3px rgba(30,136,229,.18) }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+      padding:.7rem 1.1rem; border-radius:9999px; border:2px solid transparent; cursor:pointer; user-select:none;
+      font-weight:600; font-size:.95rem; background:#fff; color:#111827; transition: transform .08s ease, filter .12s ease, box-shadow .12s ease;
+    }
+    .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(30,136,229,.35) }
+    .btn:active{ transform:translateY(0) }
+    .btn-primary{ background:var(--sky); color:#fff; box-shadow:0 6px 16px rgba(30,136,229,.35) }
+    .btn-primary:hover{ filter:brightness(.95); transform:translateY(-1px) }
+    .btn-outline{ border-color:var(--line) }
+    .btn-outline:hover{ background:#F8FAFC }
+
+    table{ width:100%; border-collapse: collapse; margin-top:10px; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden }
+    th, td{ padding:12px 14px; border-bottom:1px solid var(--line); text-align:left; font-size:15px }
+    th{ background:#F1F5F9; font-weight:700 }
+    tr:hover td{ background:#F9FAFB }
+    .muted{ color:var(--muted) }
+    .status{ font-size:.85rem; padding:4px 10px; border-radius:999px; display:inline-block; font-weight:600 }
+    .ok{ background:#DCFCE7; color:#15803D }
+    .fail{ background:#FEE2E2; color:#B91C1C }
+    .pend{ background:#E5E7EB; color:#374151 }
+
+    .pill{ display:inline-flex; align-items:center; gap:.35rem; padding:.35rem .6rem; background:#EEF2FF; color:#334155; border-radius:999px; font-size:.8rem; font-weight:600 }
+    .help{ font-size:.95rem; line-height:1.6 }
+    .small{ font-size:.9rem }
+
+    .footer-note{ color:#6B7280; font-size:.9rem; margin-top:8px }
+    .sep{ color:#CBD5E1 }
+  </style>
+</head>
+<body>
+
+<!-- ========= Access Gate (7-digit code) ========= -->
+<script>
+/**
+ * Beginner tip:
+ * Change ACCESS_CODE to your own 7-digit code (numbers or letters).
+ * The prompt appears once per tab. To reset, close the tab or clear session storage.
+ */
+const ACCESS_CODE = "6242660"; // <-- set your 7-digit passphrase
+if (sessionStorage.getItem("adminAccess") !== "granted") {
+  const input = prompt("Enter 7-digit admin access code:");
+  if (input === ACCESS_CODE) {
+    sessionStorage.setItem("adminAccess", "granted");
+    alert("Access granted ✅");
+  } else {
+    alert("Access denied 🚫");
+    window.location.href = "/";
+  }
+}
+</script>
+
+<header class="card">
+  <h1>10DLC Admin — Live Pages</h1>
+  <div class="help">
+    <p><strong>What this does:</strong> Loads your <code>/sitemap.xml</code>, lists every page, and checks if the URL responds. Use it to find broken links and copy live URLs.</p>
+    <p><strong>Quick start:</strong> Choose the base site (Prod or Staging), press <em>Load Pages</em>, then use <em>Check All</em> to verify status. You can also add manual pages that are not in the sitemap yet.</p>
+    <div class="footer-note">Tip: Keep your <code>sitemap.xml</code> updated so this list stays accurate for search engines and this tool.</div>
+  </div>
+</header>
+
+<!-- ========= Controls ========= -->
+<section class="card">
+  <div class="row">
+    <div class="grow">
+      <label for="baseUrl">Base site</label>
+      <select id="baseUrl">
+        <!-- Update these two to your exact domains if different -->
+        <option value="https://10dlccheck.com" selected>Prod — 10dlccheck.com</option>
+        <option value="https://10dlccheck.vercel.app">Staging — vercel.app</option>
+      </select>
+    </div>
+    <div class="grow">
+      <label for="sitemapUrl">Sitemap URL</label>
+      <input id="sitemapUrl" type="url" placeholder="https://10dlccheck.com/sitemap.xml" />
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <div class="grow">
+      <label for="search">Search pages</label>
+      <input id="search" type="text" placeholder="Filter by path or page name…" />
+    </div>
+    <button class="btn btn-outline" id="loadBtn">Load Pages</button>
+    <button class="btn btn-primary" id="checkAllBtn">Check All</button>
+    <button class="btn btn-outline" id="exportBtn" title="Export table to CSV">Export CSV</button>
+  </div>
+</section>
+
+<!-- ========= Add Manual Pages (not in sitemap yet) ========= -->
+<section class="card">
+  <div class="row">
+    <div class="grow">
+      <label for="manualPath">Add a page path</label>
+      <input id="manualPath" type="text" placeholder="/learn/ctia-guidelines-explained" />
+    </div>
+    <button class="btn btn-outline" id="addManualBtn">Add</button>
+  </div>
+  <div class="footer-note">Example paths: <code>/sandbox</code> <span class="sep">•</span> <code>/partials/guidelines</code> <span class="sep">•</span> <code>/learn/what-is-10dlc</code></div>
+</section>
+
+<!-- ========= Table ========= -->
+<section class="card">
+  <div class="row" style="justify-content:space-between; align-items:center;">
+    <div class="pill">LIVE PAGES</div>
+    <div class="small muted">Click “Check” to verify status. “Open” opens in a new tab. “Copy” copies the full URL.</div>
+  </div>
+
+  <table id="pages">
+    <thead>
+      <tr>
+        <th>Page</th>
+        <th>Path</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="pageRows">
+      <tr><td colspan="4" class="muted">Load pages to begin…</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========= Footer (optional: your site footer can be injected here) ========= -->
+<section class="card">
+  <div class="small muted">
+    Need help? Check <a href="/learn/ctia-guidelines-explained" style="color:var(--sky);text-decoration:none;">CTIA & 10DLC guidelines</a>.
+  </div>
+</section>
+
+<script>
+/* ========================
+   BEGINNER-FRIENDLY JS
+   Everything is separated into small functions.
+   Edit BASE_URLS to match your environments.
+======================== */
+const BASE_URLS = {
+  prod: "https://10dlccheck.com",
+  staging: "https://10dlccheck.vercel.app"
+};
+
+// State: holds all rows (from sitemap + manual)
+let PAGES = [];  // { name, path, full, status: 'Pending'|'Live'|'Broken' }
+let FILTER = "";
+
+// Elements
+const baseSel   = document.getElementById('baseUrl');
+const sitemapIn = document.getElementById('sitemapUrl');
+const searchIn  = document.getElementById('search');
+const rowsEl    = document.getElementById('pageRows');
+
+document.getElementById('loadBtn').addEventListener('click', loadPages);
+document.getElementById('checkAllBtn').addEventListener('click', checkAll);
+document.getElementById('exportBtn').addEventListener('click', exportCSV);
+document.getElementById('addManualBtn').addEventListener('click', addManual);
+searchIn.addEventListener('input', () => { FILTER = searchIn.value.trim().toLowerCase(); render(); });
+
+// Helpers -------------
+function baseUrl() {
+  return baseSel.value || BASE_URLS.prod;
+}
+function toNameFromPath(path){
+  const last = (path || '/').split('/').filter(Boolean).pop();
+  return last ? last.replace(/[-_]/g,' ').replace(/\.\w+$/,'') : 'Home';
+}
+function makeRow({name, path, full, status='Pending'}){
+  const tr = document.createElement('tr');
+  tr.dataset.path = path.toLowerCase();
+  tr.innerHTML = `
+    <td>${name}</td>
+    <td class="muted">${path}</td>
+    <td class="status-cell"><span class="status pend">${status}</span></td>
+    <td>
+      <button class="btn btn-outline" data-action="open"  data-url="${full}">Open</button>
+      <button class="btn btn-outline" data-action="check" data-url="${full}">Check</button>
+      <button class="btn btn-outline" data-action="copy"  data-url="${full}">Copy</button>
+    </td>
+  `;
+  // attach events
+  tr.querySelectorAll('button').forEach(btn=>{
+    const url = btn.dataset.url;
+    const cell = tr.querySelector('.status-cell');
+    btn.addEventListener('click', async (e)=>{
+      const action = btn.dataset.action;
+      if(action==='open') window.open(url,'_blank');
+      if(action==='copy'){ await navigator.clipboard.writeText(url); btn.textContent='Copied'; setTimeout(()=>btn.textContent='Copy',900); }
+      if(action==='check') await checkOne(cell, url);
+    });
+  });
+  return tr;
+}
+
+// Render -------------
+function render(){
+  rowsEl.innerHTML = '';
+  let list = PAGES;
+  if(FILTER){
+    list = list.filter(x => x.path.toLowerCase().includes(FILTER) || x.name.toLowerCase().includes(FILTER));
+  }
+  if(list.length === 0){
+    rowsEl.innerHTML = `<tr><td colspan="4" class="muted">No pages to show.</td></tr>`;
+    return;
+  }
+  list.forEach(item => rowsEl.appendChild(makeRow(item)));
+}
+
+// Load from sitemap ----
+async function loadPages(){
+  try{
+    const sm = sitemapIn.value.trim() || (baseUrl() + '/sitemap.xml');
+    const res = await fetch(sm, { cache: 'no-store' });
+    const text = await res.text();
+    const xml = new DOMParser().parseFromString(text, 'application/xml');
+    const locs = [...xml.querySelectorAll('url loc')].map(n => n.textContent.trim());
+
+    // Convert to paths anchored to the selected base
+    const base = baseUrl();
+    const baseHost = new URL(base).host;
+    const items = locs
+      .filter(u => { try{ return new URL(u).host === baseHost; } catch{ return false; } })
+      .map(u => {
+        const url = new URL(u);
+        const path = url.pathname.replace(/\/index\.html$/,'/'); // clean index.html
+        return { name: toNameFromPath(path), path, full: base + path, status:'Pending' };
+      });
+
+    PAGES = dedupeByPath(items);
+    render();
+  }catch(e){
+    alert('Could not load sitemap. Check the URL and try again.');
+  }
+}
+
+// Add manual path -----
+function addManual(){
+  const input = document.getElementById('manualPath');
+  const path = (input.value || '').trim();
+  if(!path || !path.startsWith('/')){ alert('Enter a path that starts with /. Example: /sandbox'); return; }
+  const base = baseUrl();
+  const item = { name: toNameFromPath(path), path, full: base + path, status:'Pending' };
+  PAGES = dedupeByPath([item, ...PAGES]);
+  input.value = '';
+  render();
+}
+function dedupeByPath(list){
+  const seen = new Set();
+  const out = [];
+  for(const it of list){
+    const key = it.path.toLowerCase();
+    if(!seen.has(key)){ out.push(it); seen.add(key); }
+  }
+  return out;
+}
+
+// Checkers ------------
+async function checkOne(cell, url){
+  cell.innerHTML = `<span class="status pend">Checking…</span>`;
+  try{
+    // HEAD is ideal, but some servers block it. Fall back to GET if needed.
+    let r = await fetch(url, { method:'HEAD', cache:'no-store' });
+    if(!r.ok){
+      // fallback GET
+      r = await fetch(url, { method:'GET', cache:'no-store' });
+    }
+    const ok = r.ok;
+    cell.innerHTML = `<span class="status ${ok ? 'ok' : 'fail'}">${ok ? 'Live' : 'Broken'}</span>`;
+  }catch{
+    cell.innerHTML = `<span class="status fail">Error</span>`;
+  }
+}
+async function checkAll(){
+  const buttons = [...document.querySelectorAll('button[data-action="check"]')];
+  // throttle requests to avoid spikes (2 at a time)
+  const pool = 2;
+  let i = 0;
+  async function next(){
+    if(i >= buttons.length) return;
+    const btn = buttons[i++];
+    btn.click();
+    setTimeout(next, 150); // small stagger
+  }
+  for(let k=0;k<pool;k++) next();
+}
+
+// Export --------------
+function exportCSV(){
+  const rows = [["Page","Path","URL","Status"]];
+  document.querySelectorAll('#pageRows tr').forEach(tr=>{
+    const tds = tr.querySelectorAll('td');
+    if(tds.length < 4) return;
+    const page = tds[0].innerText.trim();
+    const path = tds[1].innerText.trim();
+    const url  = baseUrl() + path;
+    const status = tds[2].innerText.trim();
+    rows.push([page,path,url,status]);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'live-pages.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
