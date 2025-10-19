@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Shared <head> partial: tokens, fonts, favicon, analytics -->
+  <!-- Shared <header> partial: tokens, fonts, favicon, analytics -->
   <script>
     (async () => {
       try {
         const res = await fetch("/partials/header.html", { cache: "no-store" });
         document.write(res.ok ? await res.text() : "");
-      } catch (e) { console.warn("Head partial failed to load", e); }
+      } catch (e) { console.warn("Header partial failed to load", e); }
     })();
   </script>
 
@@ -19,7 +19,7 @@
 
   <style>
     :root{
-      /* Brand + UI tokens (fallbacks; your head partial may already define) */
+      /* Brand + UI tokens (fallbacks; your header partial may already define) */
       --ink:#1C2D40;           /* brand navy (text) */
       --navy:#1C2D40;          /* brand primary */
       --navy-2:#17324e;        /* deeper brand blue for gradient depth */
