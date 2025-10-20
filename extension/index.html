@@ -1,288 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>10DLC Chrome Extension — Help & Guide</title>
-  <meta name="description" content="User-friendly documentation for the 10DLC Chrome Extension. Learn what it does, how to use it." />
+
+  <!-- Page-specific meta -->
+  <title>10DLC Chrome Extension — Install & Guide | 10dlccheck</title>
+  <meta name="description" content="Install the 10DLC Chrome Extension to check SMS content for A2P 10DLC compliance in Salesforce or anywhere on the web. Learn what it does, see examples, and review privacy." />
+  <link rel="canonical" href="https://10dlccheck.com/extension" />
+  <meta name="robots" content="index,follow" />
+
   <style>
     :root{
-      --navy:#1C2D40;
-      --navy-2:#21384f;
-      --gold:#FDB813;
-      --ink:#0f172a;
-      --muted:#6b7280;
-      --bg:#f3f4f6;
-      --card:#ffffff;
+      /* Brand + UI tokens (fallbacks; your header partial may already define) */
+      --ink:#1C2D40;           /* brand navy (text) */
+      --navy:#1C2D40;          /* brand primary */
+      --navy-2:#17324e;        /* deeper brand blue for gradient depth */
+      --sky:#58AEDD;           /* brand sky accent */
+      --gold:#FDB813;          /* accent (sparingly) */
+      --bg:#f8fafc;            /* page bg */
+      --card:#ffffff;          /* card bg */
+      --line:#e2e8f0;          /* subtle borders */
+      --muted:#64748b;         /* secondary text */
       --ring:rgba(28,45,64,.12);
       --radius:18px;
-      --shadow:0 10px 28px rgba(0,0,0,.08);
+      --shadow:0 14px 36px rgba(0,0,0,.10);
+      --shadow-sm:0 8px 20px rgba(0,0,0,.07);
     }
+
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      color:var(--ink);
-      background:
-        radial-gradient(1400px 600px at 50% -50%, #e9eef5 0%, transparent 60%),
-        var(--bg);
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.6;
     }
     a{color:var(--navy);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* Header */
-    .site-header{
-      background:linear-gradient(140deg,var(--navy),var(--navy-2));
-      color:#fff;
-      padding:36px 20px 80px; /* more bottom padding */
-      position:relative;
-      overflow:hidden;
-      box-shadow:inset 0 -1px 0 rgba(255,255,255,.08);
+    /* Topbar (partial mounts above hero) */
+    #site-topbar{position:relative;z-index:20}
+
+    /* Hero — mirrors Learn template vibe */
+    .site-hero{
+      background:linear-gradient(135deg,var(--navy),var(--navy-2));
+      color:#fff; padding:28px 20px 92px; position:relative; overflow:hidden;
+      box-shadow:inset 0 -1px 0 rgba(255,255,255,.04);
     }
-    .container{max-width:880px;margin:0 auto;padding:0 20px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand-logo{
-      width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;
-      box-shadow:0 6px 14px rgba(0,0,0,.18)
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .hero-wrap{margin-top:8px}
+    .eyebrow{
+      display:inline-block; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18);
+      color:#e6eef8; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
     }
-    .brand-logo svg{width:22px;height:22px;color:var(--navy)}
-    .brand-title{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
-    .hero h1{font-size:clamp(24px,3.4vw,34px);line-height:1.2;margin:6px 0 8px}
-    .hero p{max-width:640px;color:#e7eaf0;font-size:15px;margin:0}
-    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    h1.hero-title{font-size:clamp(26px,3.5vw,38px);line-height:1.15;margin:10px 0 6px}
+    p.hero-sub{max-width:760px;color:#e7eaf0;font-size:15.5px;margin:8px 0 0}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     .btn{
-      display:inline-flex;align-items:center;gap:8px;font-weight:700;border:none;cursor:pointer;
-      padding:10px 16px;border-radius:999px;box-shadow:0 8px 18px rgba(0,0,0,.14)
+      display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;font-weight:700;
+      padding:12px 18px;border-radius:999px;box-shadow:var(--shadow-sm)
     }
-    .btn-primary{background:var(--gold);color:#1b2540}
-    .btn-light{background:#fff;color:var(--navy)}
+    .btn-primary{background:var(--sky);color:#fff;border:1px solid var(--sky)}
+    .btn-alt{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+    .trust-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;color:#dbe1ea;font-size:13px}
+    .trust-pill{
+      display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px
+    }
 
-    /* Main – single column */
-    main{margin-top:0;margin-bottom:50px} /* no negative margin */
-    .stack{display:flex;flex-direction:column;gap:16px}
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      border:1px solid var(--ring);
-    }
+    /* Content grid (content + sticky sidebar like Learn pages) */
+    main{margin-top:-56px;margin-bottom:64px}
+    .grid{display:grid;grid-template-columns:1fr;gap:18px}
+    @media(min-width:980px){.grid{grid-template-columns:1fr 330px}}
+
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--ring)}
     .card .inner{padding:22px}
-    .kicker{color:var(--gold);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-    .card h2{margin:6px 0 8px;font-size:22px;color:#122136}
-    .card p{color:var(--muted);margin:0}
-    .list{margin:12px 0 0;padding-left:18px;color:#122136}
-    .list li{margin:8px 0}
-    .callout{
-      margin-top:14px;background:#fff7e6;border:1px solid #ffe2a3;color:#6b4e00;
-      border-radius:14px;padding:12px 14px;box-shadow:0 6px 18px rgba(253,184,19,.12)
+    .kicker{color:var(--sky);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+    h2.section-title{margin:8px 0 10px;font-size:22px;color:#10233b}
+    p.muted{color:var(--muted)}
+
+    /* Lists */
+    .list{margin:10px 0 0;padding-left:18px}
+    .list li{margin:6px 0}
+
+    /* Feature blocks */
+    .feature-row{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:720px){.feature-row{grid-template-columns:1fr 1fr}}
+    .feature{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm)}
+    .feature h3{margin:2px 0 6px;font-size:16px;color:#10233b}
+    .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em}
+    .good{background:#eaf7ea;color:#155c2f;border:1px solid #cde9cf}
+    .warn{background:#fff5e6;color:#8a5a00;border:1px solid #ffdf99}
+    .neutral{background:#eef6ff;color:#0f3a66;border:1px solid #d9ecff}
+
+    /* Screenshot placeholders */
+    .shots{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:720px){.shots{grid-template-columns:1fr 1fr}}
+    .shot{
+      aspect-ratio:16/9;border-radius:14px;border:1px dashed var(--line);
+      display:grid;place-items:center;color:var(--muted);font-size:14px;background:#fafcff
     }
 
-    /* Spotlight/feature chips */
-    .feature-block{display:flex;flex-direction:column;gap:12px;margin-top:10px}
-    .feature-card{
-      display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--ring);
-      border-radius:14px;padding:14px;box-shadow:var(--shadow)
-    }
-    .feature-card h3{margin:4px 0 6px;font-size:16px;color:#122136}
-    .bullets{margin:6px 0 0;padding-left:16px;color:#122136}
-    .bullets li{margin:6px 0}
-    .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em}
-    .chip-good{background:#eaf7ea;color:#155c2f;border:1px solid #cde9cf}
-    .chip-warn{background:#fff5e6;color:#8a5a00;border:1px solid #ffdf99}
-    .chip-neutral{background:#eef2ff;color:#243189;border:1px solid #e0e7ff}
-    .legend{margin-top:8px;color:var(--muted);font-size:13px}
+    /* Sidebar (sticky) */
+    .sidebar{position:sticky;top:16px;height:max-content}
+    .install .title{font-weight:800;font-size:18px;color:#10233b;margin:4px 0 6px}
+    .install .meta{font-size:13px;color:var(--muted)}
+    .install .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .mini-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .badge{font-size:12px;border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:#fff}
 
     /* FAQ */
     .faq-item{border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:#fff}
-    .faq-q{
-      width:100%;text-align:left;background:#fff;padding:14px 16px;border:none;cursor:pointer;
-      font-weight:700;color:#122136
-    }
-    .faq-a{display:none;padding:0 16px 16px;color:var(--muted)}
+    .faq-q{width:100%;text-align:left;background:#fff;padding:14px 16px;border:none;cursor:pointer;font-weight:700;color:#10233b}
+    .faq-a{display:none;padding:0 16px 14px;color:#muted}
     .faq-item.active .faq-a{display:block}
     .faq-item + .faq-item{margin-top:10px}
-
-    /* Footer */
-    footer .fineprint{
-      color:var(--muted);
-      font-size:13px;
-      padding:18px 0 48px;
-      text-align:center
-    }
-
-    /* Small tweaks */
-    @media (min-width:720px){
-      .card .inner{padding:24px 24px}
-    }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <div class="brand">
-        <div class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="7" y="2" width="10" height="20" rx="2" ry="2"></rect>
-            <path d="M11 18h2"></path>
-            <path d="M9 7l2 2 4-4"></path>
-          </svg>
-        </div>
-        <div>
-          <div class="brand-title">10DLC Chrome Extension</div>
-          <h1 class="hero-title">Help &amp; User Guide</h1>
-        </div>
-      </div>
 
-      <div class="hero">
-        <p>This page explains what the extension does and how to use it effectively. It is an extension of <strong>10dlccheck.com</strong>.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#how-it-works">How it Works</a>
-          <a class="btn btn-light" href="#access">How to Access this Page</a>
-        </div>
+  <!-- Shared Topbar -->
+  <div id="site-topbar"></div>
+  <script>
+    (async function(){
+      try {
+        const h = await fetch('/partials/topbar.html', { cache:'no-store' });
+        if (h.ok) document.getElementById('site-topbar').innerHTML = await h.text();
+      } catch (e) { console.warn('Topbar failed to load', e); }
+    })();
+  </script>
+
+  <!-- Hero -->
+  <header class="site-hero">
+    <div class="container hero-wrap">
+      <span class="eyebrow">10DLC Chrome Extension</span>
+      <h1 class="hero-title">Check SMS for 10DLC compliance</h1>
+      <p class="hero-sub">
+        Run instant checks on outbound text in Salesforce or any web page. Designed for clarity, speed, and privacy — aligned with best-practice messaging.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#install" id="btn-install-hero">Add to Chrome</a>
+        <a class="btn btn-alt" href="#how">How it works</a>
+        <a class="btn btn-alt" href="/learn">Open Learn hub</a>
+      </div>
+      <div class="trust-row" aria-label="trust signals">
+        <span class="trust-pill">⚡ One-click checks</span>
+        <span class="trust-pill">🧩 Built for Salesforce</span>
+        <span class="trust-pill">🌐 Right-click anywhere</span>
+        <span class="trust-pill">🔒 Privacy-first</span>
       </div>
     </div>
   </header>
 
+  <div style="height:100px"></div>
+
+  <!-- Content -->
   <main>
-    <div class="container stack">
+    <div class="container grid">
 
-      <!-- Overview -->
-      <section class="card">
-        <div class="inner">
-          <span class="kicker">Overview</span>
-          <h2>What is the 10DLC Chrome Extension?</h2>
-          <p>The extension helps Salesforce users quickly review outbound SMS text content for alignment with 10DLC expectations. It is simple, fast and private. Your text messages are not saved or stored anywhere.</p>
-          <div class="callout"><strong>Privacy-first:</strong> The extension analyzes text you select or the message in view. It returns a clear status with issues and tips.</div>
-        </div>
-      </section>
-
-      <!-- How it works -->
-      <section class="card" id="how-it-works">
-        <div class="inner">
-          <span class="kicker">How it works</span>
-          <h2 style="margin-bottom:6px">Two Ways to Run a Check</h2>
-          <p style="color:var(--muted);margin:0 0 12px">This is the core experience. Pick the flow that matches where you are working.</p>
-
-          <div class="feature-block">
-            <article class="feature-card">
-              <div class="chip chip-good">Opt-in assumed</div>
-              <h3>1) Floating Pill (Salesforce)</h3>
-              <ul class="bullets">
-                <li>Bottom-right button labeled <strong>Check 10DLC</strong> appears in Salesforce.</li>
-                <li>Click to check the message currently in view.</li>
-                <li><strong>Stop</strong> instructions and <strong>Help tips</strong> are <em>removed</em> — you’re allowed to text the merchant in this context.</li>
-              </ul>
-            </article>
-
-            <article class="feature-card">
-              <div class="chip chip-warn">Opt-in unknown</div>
-              <h3>2) Right-Click Menu (Anywhere)</h3>
-              <ul class="bullets">
-                <li>Highlight any text → right-click → <strong>Check 10DLC</strong>.</li>
-                <li>Works inside or outside Salesforce, on any web page.</li>
-                <li><strong>Stop</strong> and <strong>Help tips</strong> are shown when opt-in isn’t guaranteed.</li>
-              </ul>
-            </article>
-
-            <article class="feature-card">
-              <div class="chip chip-neutral">What you’ll see</div>
-              <h3>Results You’ll See</h3>
-              <ul class="bullets">
-                <li><strong>Status</strong>: Pass · Warning · Fail</li>
-                <li><strong>Issues</strong>: Concise reasons, no internal rules exposed</li>
-                <li><strong>Tips</strong>: Practical suggestions to improve your message</li>
-              </ul>
-            </article>
+      <!-- Main column -->
+      <div class="stack">
+        <!-- Overview -->
+        <section class="card" id="overview">
+          <div class="inner">
+            <span class="kicker">Overview</span>
+            <h2 class="section-title">What the extension does</h2>
+            <p>
+              The 10DLC Extension helps you quickly review outbound text for alignment with 10DLC expectations. It summarizes results without storing message content.
+            </p>
+            <ul class="list">
+              <li><strong>Status</strong>: Pass · Warning · Fail</li>
+              <li><strong>Issues</strong>: Clear reasons, no internal rules exposed</li>
+              <li><strong>Tips</strong>: Practical edits to improve deliverability</li>
+            </ul>
           </div>
+        </section>
 
-          <div class="legend">
-            <span class="chip chip-good">Opt-in assumed</span> = Pill mode hides Stop/Help lines &nbsp;·&nbsp;
-            <span class="chip chip-warn">Opt-in unknown</span> = Right-click mode includes Stop/Help lines.
+        <div style="height:10px"></div>
+
+        <!-- How it works -->
+        <section class="card" id="how">
+          <div class="inner">
+            <span class="kicker">How it works</span>
+            <h2 class="section-title">Three ways to run a check</h2>
+
+            <div class="feature-row">
+              <!-- 1) Salesforce Floating Pill -->
+              <article class="feature">
+                <span class="chip good">Opt-in assumed</span>
+                <h3>Floating Pill in Salesforce</h3>
+                <p class="muted">
+                  A bottom-right <strong>Check 10DLC</strong> pill appears in Salesforce. Click to review the message in view.
+                  In this trusted context, Stop/Help lines are hidden.
+                </p>
+                <ul class="list">
+                  <li>Works in <strong>Lightning</strong> and <strong>Classic</strong></li>
+                  <li>One-click review of the current message</li>
+                </ul>
+              </article>
+
+              <!-- 2) Right-click anywhere (incl. Salesforce) -->
+              <article class="feature">
+                <span class="chip warn">Opt-in unknown</span>
+                <h3>Highlight text → Right-click</h3>
+                <p class="muted">
+                  Highlight any text, right-click, choose <strong>Check 10DLC Compliance</strong>. Works inside or outside Salesforce.
+                </p>
+                <ul class="list">
+                  <li>Supported in <strong>Lightning</strong> and <strong>Classic</strong></li>
+                  <li>Great for ad-hoc checks on any web page</li>
+                </ul>
+              </article>
+            </div>
+
+            <div class="feature-row" style="margin-top:12px">
+              <!-- 3) Open panel from the extension icon -->
+              <article class="feature">
+                <span class="chip neutral">Universal</span>
+                <h3>Open the panel from the extension icon</h3>
+                <p class="muted">
+                  Click the <strong>10DLC Checker</strong> extension icon in Chrome to open the panel on any page. Paste or type your message to analyze it directly.
+                </p>
+                <ul class="list">
+                  <li>Works on any site, no selection required</li>
+                  <li>Use when you want to draft and refine copy</li>
+                </ul>
+              </article>
+
+              <!-- Optional: what you’ll see -->
+              <article class="feature">
+                <span class="chip neutral">What you’ll see</span>
+                <h3>Results panel</h3>
+                <ul class="list">
+                  <li><strong>Status</strong>: Pass · Warning · Fail</li>
+                  <li><strong>Issues</strong>: Clear reasons in plain language</li>
+                  <li><strong>Tips</strong>: Actionable edits for safer phrasing</li>
+                </ul>
+              </article>
+            </div>
+
+            <p class="muted" style="margin-top:10px">
+              <span class="chip good">Opt-in assumed</span> = Salesforce pill hides Stop/Help <br>
+              <span class="chip warn">Opt-in unknown</span> = Right-click shows Stop/Help <br>
+              <span class="chip neutral">Universal</span> = Extension icon panel works anywhere
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Access -->
-      <section class="card" id="access">
-        <div class="inner">
-          <span class="kicker">Access</span>
-          <h2>Installation &amp; How to Open this Help</h2>
-          <ol class="list">
-            <li>Install the extension (via your admin or the provided CRX/Chrome Web Store link).</li>
-            <li>After install, you’ll see the floating <em>Check 10DLC</em> pill in Salesforce and the right-click menu everywhere.</li>
-            <li><strong>To open this Help page later:</strong>
-              <ul>
-                <li>Right-click the extension icon → <em>Options</em> → <strong>Help / Documentation</strong>.</li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-      </section>
+        <div style="height:10px"></div>
 
-      <!-- Troubleshooting -->
-      <section class="card" id="troubleshooting">
-        <div class="inner">
-          <span class="kicker">Troubleshooting</span>
-          <h2>Quick Fixes</h2>
-          <ul class="list">
-            <li><strong>Don’t see the pill in Salesforce?</strong> Refresh the page. Ensure you’re on a Salesforce tab and the extension is enabled.</li>
-            <li><strong>Right-click item missing?</strong> Select some text first, then right-click. Reopen Chrome if needed.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="card" id="faq">
-        <div class="inner">
-          <span class="kicker">FAQ</span>
-          <h2>Frequently Asked Questions</h2>
-
-          <div class="faq-item">
-            <button class="faq-q" aria-expanded="false">Does the page reveal internal rules?</button>
-            <div class="faq-a">No. The extension summarizes results (Status, Issues, Tips) without storing any personal data.</div>
+        <!-- Examples -->
+        <section class="card" id="examples">
+          <div class="inner">
+            <span class="kicker">Examples</span>
+            <h2 class="section-title">Good vs risky phrasing</h2>
+            <p class="muted">Explore more examples in the Learn hub to understand what passes, what needs edits and what fails.</p>
+            <ul class="list">
+              <li><strong>Good:</strong> “Reply YES to confirm your appointment on Tuesday at 3 pm.”</li>
+              <li><strong>Needs work:</strong> “Click now for a special offer. Reply STOP to opt out.”</li>
+              <li><strong>Risky:</strong> “Limited time crypto investment opportunity. Act fast.”</li>
+            </ul>
+            <p style="margin-top:10px">
+              Learn more: <a href="/learn/what-is-10dlc">What is 10DLC</a> ·
+              <a href="/learn/sms-compliance-checklist">SMS Compliance Checklist</a>
+            </p>
           </div>
+        </section>
 
-          <div class="faq-item">
-            <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
-            <div class="faq-a">Yes. Use the right-click menu to check any selected text in any Chrome tab.</div>
+        <div style="height:10px"></div>
+
+        <!-- Troubleshooting -->
+        <section class="card" id="troubleshooting">
+          <div class="inner">
+            <span class="kicker">Troubleshooting</span>
+            <h2 class="section-title">Quick fixes</h2>
+            <ul class="list">
+              <li><strong>Do not see the pill in Salesforce?</strong> Refresh the tab and confirm the extension is enabled.</li>
+              <li><strong>Right-click item missing?</strong> Select text first, then right-click. Restart Chrome if needed.</li>
+            </ul>
           </div>
+        </section>
 
-          <div class="faq-item">
-            <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
-            <div class="faq-a">Use the <em>Help Contact</em> shown on the Options page.</div>
+        <div style="height:10px"></div>
+
+        <!-- FAQ -->
+        <section class="card" id="faq">
+          <div class="inner">
+            <span class="kicker">FAQ</span>
+            <h2 class="section-title">Frequently asked questions</h2>
+
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Does it reveal internal rules?</button>
+              <div class="faq-a">No. It summarizes results (Status, Issues, Tips) without exposing internal rules or storing personal data.</div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
+              <div class="faq-a"> Yes. You can open the panel by clicking the <strong>10DLCCheck</strong> extension icon in Chrome on any page.</div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
+              <div class="faq-a">Open the extension Options page and use the Help contact listed there.</div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <section class="card" id="install">
+          <div class="inner install">
+            <span class="kicker">Install</span>
+            <div class="title">Add the 10DLC extension</div>
+            <p class="meta">Install from the Chrome Web Store or by an unlisted url by your admin.</p>
+            <div class="actions">
+              <!-- Update the store link when available -->
+              <a class="btn btn-primary" id="btn-install-store" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Open in Chrome Web Store</a>
+            </div>
+            <ul class="list" style="margin-top:8px">
+              <li>Works with Salesforce and any web page</li>
+              <li>Right-click → Check 10DLC Compliance</li>
+              <li>No storage of analyzed text</li>
+            </ul>
+            <div class="mini-badges">
+              <span class="badge">Privacy-first</span>
+              <span class="badge">Fast</span>
+              <span class="badge">Lightweight</span>
+            </div>
+          </div>
+        </section>
+
+        <div style="height:10px"></div>
+
+        <section class="card">
+          <div class="inner">
+            <span class="kicker">What’s new</span>
+            <h2 class="section-title">Release highlights</h2>
+            <ul class="list">
+              <li>Improved detection for risky categories</li>
+              <li>Smarter tips for opt-in clarity</li>
+              <li>Refined Salesforce pill behavior</li>
+            </ul>
+          </div>
+        </section>
+      </aside>
     </div>
   </main>
 
-  <footer class="container">
-    <div class="fineprint"><span id="y"></span> 10DLCCheck.com.</div>
-  </footer>
-
+  <!-- Shared Footer -->
+  <div id="site-footer"></div>
   <script>
-    // Year
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // FAQ toggle (single-open)
-    document.querySelectorAll('.faq-item').forEach((item)=>{
-      const q = item.querySelector('.faq-q');
-      q.addEventListener('click', ()=>{
-        const expanded = item.classList.contains('active');
-        document.querySelectorAll('.faq-item').forEach(i=>{
-          i.classList.remove('active');
-          const b = i.querySelector('.faq-q');
-          if(b) b.setAttribute('aria-expanded','false');
-        });
-        if(!expanded){
-          item.classList.add('active');
-          q.setAttribute('aria-expanded','true');
+    (async () => {
+      try {
+        const res = await fetch("/partials/footer.html", { cache: "no-store" });
+        if (res.ok) {
+          document.getElementById("site-footer").innerHTML = await res.text();
         }
+      } catch (e) { console.warn("Footer partial failed to load", e); }
+
+      // FAQ single-open behavior
+      document.addEventListener("click", (e) => {
+        const q = e.target.closest(".faq-q");
+        if(!q) return;
+        const item = q.closest(".faq-item");
+        const expanded = item.classList.contains("active");
+        document.querySelectorAll(".faq-item").forEach(i=>{
+          i.classList.remove("active");
+          const b = i.querySelector(".faq-q"); if(b) b.setAttribute("aria-expanded","false");
+        });
+        if(!expanded){ item.classList.add("active"); q.setAttribute("aria-expanded","true"); }
       });
-    });
+
+      // Smooth-scroll CTA
+      document.getElementById("btn-install-hero")?.addEventListener("click", (e)=>{
+        const target = document.querySelector("#install");
+        if(target){ e.preventDefault(); target.scrollIntoView({ behavior:"smooth", block:"start" }); }
+      });
+    })();
   </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 </body>
 </html>

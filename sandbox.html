@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>SMS Sandbox — 10dlccheck</title>
+  <title>SMS Sandbox — Test 10DLC Message Compliance | 10dlccheck</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Test SMS without sending real texts. Simulate delivery, quiet hours and carrier filtering. Privacy-first: no tracking cookies." />
+  <meta name="description" content="Test SMS message compliance in a privacy-first sandbox. Simulate carrier filtering, quiet hours, and delivery results without sending real texts. Secure, cookie-free, and free to use." />
+  <link rel="canonical" href="https://10dlccheck.com/sandbox.html" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="SMS Sandbox — Test 10DLC Message Compliance" />
+  <meta property="og:description" content="Run SMS simulations and 10DLC compliance checks with no real texts sent. Secure sandbox with carrier-style filters and delivery results." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://10dlccheck.com/sandbox.html" />
+  <meta property="og:image" content="/favicon.png" />
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,10 +20,10 @@
       theme: {
         extend: {
           colors: {
-            ink:"#0B1220", // deep navy for dark header
+            ink:"#0B1220",
             onyx:"#131C2B",
             snow:"#ffffff",
-            sky:"#1E88E5", // primary blue
+            sky:"#1E88E5",
             line:"#E5E7EB",
             bg:"#F3F6FB"
           },
@@ -31,12 +38,7 @@
   </script>
 
   <style>
-  :root {
-    --ink: #0B1220;
-    --onyx: #131C2B;
-    --sky: #1E88E5;
-    --bg: #F3F6FB;
-  }
+  :root { --ink:#0B1220; --onyx:#131C2B; --sky:#1E88E5; --bg:#F3F6FB; }
 
   body {
     background: var(--bg);
@@ -44,174 +46,42 @@
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 
-  /* ====== Full-width Inputs ====== */
-  .input,
-  .textarea {
+  .input, .textarea {
     width: 100%;
     display: block;
-    box-sizing: border-box;
     border-radius: 16px;
     border: 1.8px solid #d1d5db;
     background: #fff;
-    color: #111827;
     padding: 1rem 1.25rem;
     font-size: 16px;
-    line-height: 1.5;
     transition: all 0.15s ease-in-out;
   }
+  .input:focus, .textarea:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(30,136,229,0.25); outline: none; }
+  .textarea { min-height: 140px; resize: vertical; }
+  label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: #0f172a; }
 
-  .input:focus,
-  .textarea:focus {
-    border-color: var(--sky);
-    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.25);
-    outline: none;
-  }
+  .btn { display:inline-flex; align-items:center; justify-content:center; padding:0.85rem 1.6rem; border-radius:9999px; cursor:pointer; font-weight:600; font-size:15px; transition:all .12s ease; border:none; }
+  .btn-primary { background: var(--sky); color:#fff; box-shadow:0 6px 16px rgba(30,136,229,0.35); }
+  .btn-primary:hover { background:#1976d2; }
+  .btn-outline { background:#fff; color:#0f172a; border:2px solid #d1d5db; }
+  .btn-outline:hover { background:#f8fafc; border-color:#bfc6cf; }
+  .btn-ghost { background:transparent; color:#374151; }
+  .btn-ghost:hover { background:#f3f4f6; }
 
-  .textarea {
-    min-height: 140px;
-    resize: vertical;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-    color: #0f172a;
-  }
-
-  .grid > div {
-    width: 100%;
-  }
-
-  /* ====== Buttons ====== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.6rem;
-    border-radius: 9999px;
-    cursor: pointer;
-    user-select: none;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 1;
-    transition: transform 0.08s ease, filter 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-    border: 2px solid transparent;
-    background: #fff;
-    color: #111827;
-  }
-
-  .btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.35), 0 10px 22px rgba(30, 136, 229, 0.18);
-    transform: translateY(-1px);
-  }
-
-  .btn:active {
-    transform: translateY(0);
-  }
-
-  /* Primary (Blue) */
-  .btn-primary {
-    background: var(--sky);
-    color: #fff;
-    border: none;
-    box-shadow: 0 6px 16px rgba(30, 136, 229, 0.35);
-  }
-
-  .btn-primary:hover {
-    background: #1976d2;
-    transform: translateY(-1px);
-  }
-
-  /* Outline */
-  .btn-outline {
-    background: #fff;
-    color: #0f172a;
-    border: 2px solid #d1d5db;
-    box-shadow: 0 4px 10px rgba(2, 6, 23, 0.06);
-  }
-
-  .btn-outline:hover {
-    background: #f8fafc;
-    border-color: #bfc6cf;
-  }
-
-  /* Ghost */
-  .btn-ghost {
-    background: transparent;
-    color: #374151;
-  }
-
-  .btn-ghost:hover {
-    background: #f3f4f6;
-  }
-
-  /* Button Row */
-  .button-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.75rem;
-  }
-
-  /* ====== Phone Frame ====== */
-  .phone-wrap {
-    background: linear-gradient(135deg, #0f172a 0%, #233047 38%, #0b1322 100%);
-    padding: 16px;
-    border-radius: 36px;
-    box-shadow: 0 20px 44px rgba(2, 6, 23, 0.35);
-  }
-
-  .phone-bezel {
-    background: #000;
-    border-radius: 28px;
-    padding: 12px;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  }
-
-  .phone-screen {
-    background: #fff;
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .phone-notch {
-    width: 44%;
-    height: 18px;
-    background: #000;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    z-index: 10;
-  }
-
-  .phone-home {
-    width: 34%;
-    height: 5px;
-    background: #11182715;
-    border-radius: 999px;
-    margin: 10px auto 12px;
-  }
-
-  .chat-bg {
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 60%);
-  }
-</style>
-
+  .phone-wrap { background: linear-gradient(135deg,#0f172a,#233047,#0b1322); padding:16px; border-radius:36px; box-shadow:0 20px 44px rgba(2,6,23,0.35); }
+  .phone-bezel { background:#000; border-radius:28px; padding:12px; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); }
+  .phone-screen { background:#fff; border-radius:24px; overflow:hidden; position:relative; }
+  .phone-notch { width:44%; height:18px; background:#000; border-bottom-left-radius:12px; border-bottom-right-radius:12px; position:absolute; left:50%; transform:translateX(-50%); top:0; z-index:10; }
+  .phone-home { width:34%; height:5px; background:#11182715; border-radius:999px; margin:10px auto 12px; }
+  .chat-bg { background: linear-gradient(180deg, #f8fafc 0%, #ffffff 60%); }
+  </style>
 </head>
 <body>
 
-  <!-- ===== Header (auto-load your template) ===== -->
-  <div id="site-header"></div>
+  <!-- Topbar -->
+  <div id="site-topbar"></div>
 
-  <!-- ===== Dark hero ===== -->
+  <!-- Dark hero -->
   <section class="bg-ink text-white">
     <div class="max-w-6xl mx-auto px-4 pt-10 pb-6">
       <div class="rounded-3xl bg-onyx shadow-card">
@@ -220,19 +90,14 @@
             <div>
               <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight">10DLC Compliance Checker &amp; SMS Sandbox</h1>
               <p class="mt-3 text-white/80 text-[15px] leading-7">
-                Test SMS content without sending real messages. Simulate carrier delivery, <span class="font-semibold">Quiet Hours</span> and
-                <span class="font-semibold">filter probability</span>. Privacy-first: <span class="underline decoration-white/40">no tracking cookies</span>.
+                Test SMS content without sending real messages. Simulate carrier delivery,
+                <span class="font-semibold">Quiet Hours</span> and <span class="font-semibold">filter probability</span>.
+                Privacy-first: <span class="underline decoration-white/40">no tracking cookies</span>.
               </p>
               <div class="mt-5 flex flex-wrap gap-3 text-sm">
-                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">
-                  ✅ No real SMS sent
-                </span>
-                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">
-                  🔒 HTTPS secured
-                </span>
-                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">
-                  🍪 No tracking cookies
-                </span>
+                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">No real SMS sent</span>
+                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">HTTPS secured</span>
+                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3 py-1.5">Cookie-free</span>
               </div>
             </div>
 
@@ -251,7 +116,7 @@
                     </div>
                     <div class="chat-bg border-t border-gray-200/70 px-3 pb-2">
                       <div class="pt-3 space-y-3 h-[260px] overflow-hidden">
-                        <div class="mr-auto max-w-[80%] bg-gray-100 text-gray-900 rounded-2xl px-3 py-2 shadow">Welcome to SMS Sandbox 👋</div>
+                        <div class="mr-auto max-w-[80%] bg-gray-100 text-gray-900 rounded-2xl px-3 py-2 shadow">Welcome to SMS Sandbox</div>
                         <div class="ml-auto max-w-[80%] text-white rounded-2xl px-3 py-2 shadow" style="background:var(--sky)">Testing a message…</div>
                         <div class="mr-auto max-w-[80%] bg-gray-100 text-gray-900 rounded-2xl px-3 py-2 shadow">DLR: DELIVERED • Risk 5</div>
                       </div>
@@ -266,49 +131,27 @@
       </div>
     </div>
   </section>
-	  <!-- Sandbox Intro (Business Friendly, with Trust Badge) -->
-<section class="sandbox-intro" style="
-  background:linear-gradient(180deg,#0B1220 0%,#131C2B 80%);
-  color:#F8FAFC;
-  padding:48px 24px 40px;
-  text-align:center;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-">
-  <div style="max-width:820px;margin:0 auto;">
-    <h1 style="font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:700;margin-bottom:16px;line-height:1.3;">
-      10DLC Message Sandbox for Businesses
-    </h1>
-    <p style="font-size:1.05rem;line-height:1.75;margin-bottom:18px;color:rgba(255,255,255,0.9);">
-      If you send text messages to customers, this sandbox helps you stay compliant before you send them.
-      It simulates how major U.S. carriers such as AT&amp;T, Verizon and T-Mobile review your messages
-      for potential 10DLC issues like restricted words, payment requests or missing opt-outs.
-    </p>
-    <p style="font-size:1.05rem;line-height:1.75;margin-bottom:18px;color:rgba(255,255,255,0.9);">
-      Type a text message below to preview delivery results, filter risks and best practice feedback.
-      You will see whether your campaign would be <strong>delivered, delayed or blocked</strong> without
-      sending a real SMS. This is an easy way for small teams and marketers to test their content
-      against <a href="/learn/ctia-guidelines-explained" style="color:#58AEDD;font-weight:600;text-decoration:none;">CTIA and 10DLC compliance guidelines explained</a>.
-    </p>
-    <p style="font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.8);margin-bottom:24px;">
-      💡 Tip: Messages that mention loans, payments or personal details are often flagged by carriers. Use this tool to
-      review and adjust your message before launching your campaign.
-    </p>
 
-    <!-- Trust Badge -->
-    <div style="display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.25rem;border-radius:9999px;
-                background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
-                font-size:.9rem;font-weight:500;color:#E2E8F0;">
-      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2'
-           stroke='#58AEDD' width='18' height='18'><path stroke-linecap='round' stroke-linejoin='round'
-           d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-      100% Private Sandbox · No Tracking Cookies · No Data Stored
+  <!-- Sandbox Intro -->
+  <section class="sandbox-intro" style="background:linear-gradient(180deg,#0B1220 0%,#131C2B 80%);color:#F8FAFC;padding:48px 24px 40px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.1);">
+    <div style="max-width:820px;margin:0 auto;">
+      <h1 style="font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:700;margin-bottom:16px;line-height:1.3;">10DLC Message Sandbox for Businesses</h1>
+      <p style="font-size:1.05rem;line-height:1.75;margin-bottom:18px;color:rgba(255,255,255,0.9);">
+        If you send text messages to customers, this sandbox helps you stay compliant before you send them.
+        It simulates how major U.S. carriers such as AT&amp;T, Verizon and T-Mobile review your messages
+        for potential 10DLC issues like restricted words, payment requests or missing opt-outs.
+      </p>
+      <p style="font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.8);margin-bottom:24px;">
+        Tip: Messages that mention loans, payments or personal details are often flagged by carriers.
+        Use this tool to review and adjust your message before launching your campaign.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- ===== Main (white) ===== -->
+  <!-- Main -->
   <main class="max-w-6xl mx-auto px-4 py-10">
     <div class="grid lg:grid-cols-2 gap-8">
+
       <!-- Controls -->
       <section class="bg-white rounded-3xl p-6 shadow-card">
         <h2 class="text-xl font-bold text-ink">Test Controls</h2>
@@ -364,14 +207,13 @@
           </div>
 
           <!-- Buttons -->
-          <div class="button-row">
-  <button id="sendBtn" class="btn btn-primary">Check Compliance</button>
-  <button id="stopBtn" class="btn btn-outline">Simulate STOP</button>
-  <button id="helpBtn" class="btn btn-outline">Simulate HELP</button>
-  <button id="csvBtn" class="btn btn-ghost">Download CSV</button>
-  <button id="clearBtn" class="btn btn-ghost">Clear</button>
-</div>
-
+          <div class="flex flex-wrap items-center gap-3 mt-2">
+            <button id="sendBtn" class="btn btn-primary">Check Compliance</button>
+            <button id="stopBtn" class="btn btn-outline">Simulate STOP</button>
+            <button id="helpBtn" class="btn btn-outline">Simulate HELP</button>
+            <button id="csvBtn" class="btn btn-ghost">Download CSV</button>
+            <button id="clearBtn" class="btn btn-ghost">Clear</button>
+          </div>
 
           <div class="text-xs text-gray-500 mt-1">
             <strong>Privacy:</strong> No real texts are sent. The sandbox runs in your browser and fetches simulated delivery data. No tracking cookies.
@@ -410,55 +252,97 @@
 
         <div class="text-xs text-gray-500 mt-3">Local time: <span id="localTime"></span></div>
       </section>
+
     </div>
   </main>
 
-  <!-- ===== Footer (auto-load) ===== -->
-  <div id="site-footer" class="mb-10"></div>
+  <!-- Footer Include -->
+  <div id="site-footer"></div>
 
   <script>
     // --------- SET YOUR WORKER ENDPOINT ----------
     const API_URL = "https://sandbox-test.ipetranelle.workers.dev/api/sandbox/send";
     // --------------------------------------------
 
-    // Autoload header/footer (relative paths for local + prod)
-    (async function(){
-      try {
-        const h = await fetch('partials/header.html');
-        document.getElementById('site-header').innerHTML = h.ok ? await h.text() : defaultHeader();
-      } catch { defaultHeader(); }
-      try {
-        const f = await fetch('partials/footer.html');
-        document.getElementById('site-footer').innerHTML = f.ok ? await f.text() : defaultFooter();
-      } catch { defaultFooter(); }
-    })();
+    // Autoload topbar/footer partials (works local + prod)
+    // Autoload topbar/footer partials (works local + prod)
+(async function loadChrome(){
+  const topbarEl = document.getElementById('site-topbar');
+  const footerEl = document.getElementById('site-footer');
 
-    function defaultHeader(){
-      document.getElementById('site-header').innerHTML = `
-        <div class="bg-white border-b border-gray-200">
-          <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3">
-              <img src="assets/logo1.png" alt="10dlccheck logo" class="h-8 w-auto" onerror="this.style.display='none'">
-              <span class="text-xl font-bold text-ink">10dlccheck</span>
-            </a>
-            <nav class="text-sm flex items-center gap-5">
-              <a class="text-ink/80 hover:text-ink" href="learn/index.html">Learn</a>
-            </nav>
-          </div>
-        </div>`;
+  // TOPBAR
+  if (topbarEl) {
+    try {
+      const h = await fetch('partials/topbar.html', { cache: 'no-store' });
+      if (h.ok) {
+        topbarEl.innerHTML = await h.text();
+      } else {
+        defaultTopbar(topbarEl);
+      }
+    } catch {
+      defaultTopbar(topbarEl);
     }
-    function defaultFooter(){
-      document.getElementById('site-footer').innerHTML = `
-        <div class="max-w-6xl mx-auto px-4 text-sm text-gray-600">
-          <div class="rounded-3xl bg-white shadow-soft px-6 py-5 flex flex-wrap items-center justify-between gap-3">
-            <div>© <span id="year"></span> 10dlccheck • Privacy-first tools.</div>
-            <div class="flex items-center gap-4">
-           
-            </div>
-          </div>
-        </div>`;
-      document.getElementById('year').textContent = new Date().getFullYear();
+  }
+
+  // FOOTER
+  if (footerEl) {
+    try {
+      const f = await fetch('partials/footer.html', { cache: 'no-store' });
+      if (f.ok) {
+        footerEl.innerHTML = await f.text();
+      } else {
+        defaultFooter(footerEl);
+      }
+    } catch {
+      defaultFooter(footerEl);
     }
+  }
+})();
+
+function defaultTopbar(target){
+  target.innerHTML = `
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <img src="/favicon.png" alt="10dlccheck logo" class="h-8 w-auto" onerror="this.style.display='none'">
+          <span class="text-xl font-bold text-ink">10dlccheck</span>
+        </a>
+        <nav class="text-sm flex items-center gap-5">
+          <a class="text-ink/80 hover:text-ink" href="/learn/index.html">Learn</a>
+          <a class="text-ink/80 hover:text-ink" href="/#checker">Checker</a>
+        </nav>
+      </div>
+    </div>`;
+}
+
+function defaultFooter(target){
+  const year = new Date().getFullYear();
+  target.innerHTML = `
+    <footer style="border-top:1px solid #e2e8f0;background:#fff;">
+      <div style="max-width:1000px;margin:0 auto;padding:12px 16px;
+                  color:#334155;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;">
+        <div style="font-size:.95rem">© ${year} 10dlccheck • Privacy-first tools.</div>
+        <nav style="display:flex;align-items:center;gap:12px;font-size:.95rem;">
+          <a href="/privacy.html" style="color:#58AEDD;text-decoration:none;">Privacy</a>
+          <span aria-hidden="true">•</span>
+          <a href="/terms.html" style="color:#58AEDD;text-decoration:none;">Terms</a>
+        </nav>
+      </div>
+    </footer>`;
+}
+
+// Include loader for any [data-include] slots (e.g., other partials)
+(async () => {
+  const slots = document.querySelectorAll('[data-include]');
+  await Promise.all([...slots].map(async (el) => {
+    try {
+      const res = await fetch(el.getAttribute('data-include'), { cache: 'no-store' });
+      if (res.ok) el.innerHTML = await res.text();
+    } catch (err) {
+      console.error('Include failed:', err);
+    }
+  }));
+})();
 
     // ----- App state -----
     const threadEl = document.getElementById('thread');

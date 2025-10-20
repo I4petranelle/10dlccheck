@@ -34,18 +34,16 @@
       "source": "/learn/index.html",
       "destination": "/learn/",
       "permanent": true
+    },
+    {
+      "source": "/extension/index.html",
+      "destination": "/extension",
+	  "permanent": true
     }
   ],
 
   "rewrites": [
-    {
-      "source": "/extension/help",
-      "destination": "/extension/index.html"
-    },
-    {
-      "source": "/extension/help/",
-      "destination": "/extension/index.html"
-    }
+    { "source": "/extension", "destination": "/extension/index.html" }
   ],
 
   "headers": [

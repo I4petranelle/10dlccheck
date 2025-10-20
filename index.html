@@ -11,10 +11,10 @@
     <!-- Social -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="10DLC Message Compliance Checker" />
-    <meta name="twitter:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
+    <meta name="twitter:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
     <meta name="twitter:image" content="/favicon.png" />
     <meta property="og:title" content="10DLC Message Compliance Checker" />
-    <meta property="og:description" content="Validate SMS content for 10DLC compliance and avoid carrier filtering." />
+    <meta property="og:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://10dlccheck.com/" />
     <meta property="og:image" content="/favicon.png" />
@@ -23,7 +23,7 @@
     <!-- Styles (base + cards/guidelines + Results Lite) -->
     <style>
       *{margin:0;padding:0;box-sizing:border-box}
-      body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f1f5f9;min-height:100vh;padding:20px;color:#111827}
+      body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f1f5f9;min-height:100vh;padding:0px;color:#111827}
       .container{max-width:1000px;margin:0 auto;background:rgba(255,255,255,.95);border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.1);backdrop-filter:blur(10px);overflow:hidden}
 
       .header{background:#1f2937;color:#fff;padding:22px 30px;text-align:center}
@@ -118,10 +118,6 @@
       .guidelines ul.expanded{max-height:1000px;opacity:1;margin:8px 0}
       .guidelines li{margin-bottom:6px;color:#475569}
 
-      footer{padding:14px 16px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;color:#475569}
-      .foot-line{margin:4px auto;max-width:1000px}
-      .foot-small{font-size:.9rem}
-      .foot-small a{color:#374151;text-decoration:underline}
 
       @media (max-width:480px){
         .results-card{padding:18px}
@@ -137,7 +133,7 @@
   </head>
   <body>
 
-    <div class="container">
+   	<div class="container">
       <div class="header" role="banner">
         <h1>10DLC Compliance Checker</h1>
         <p>Analyze your SMS messages for US A2P 10DLC compliance before you send.</p>
@@ -151,7 +147,7 @@
       <div class="content">
         <p class="intro">Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending.</p>
         <p class="intro" style="margin-top: 1.5rem;">Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and other 10DLC compliance issues that may trigger carrier filtering. Quickly validate your text messages, avoid penalties and ensure your campaigns reach customers without being blocked.</p>
-
+<div style="height:20px"></div>
         <div class="input-section">
           <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
           <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
@@ -191,14 +187,15 @@
         <div id="results" class="results-card" role="status" aria-live="polite"></div>
 
         <!-- AI Suggestion -->
-        <section class="panel" aria-labelledby="aiSuggestionHdr" style="margin-top:1.5rem;">
-          <h4 id="aiSuggestionHdr" style="font-weight:600;margin-bottom:0.5rem;">AI Suggestion (optional):</h4>
-          <div id="aiSuggestionBox"
-               style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.04);min-height:72px">
-            <div id="aiSuggestionText" style="color:#1f2937;">Suggestion will appear here.</div>
-            <div id="aiSuggestionFlags" class="note" style="margin-top:8px;color:#6b7280;"></div>
-          </div>
-        </section>
+		<section class="panel" aria-labelledby="aiSuggestionHdr" style="margin-top:1.5rem;">
+		  <h4 id="aiSuggestionHdr" style="font-weight:600;margin-bottom:0.5rem;">AI Suggestion (optional):</h4>
+		  <div id="aiSuggestionBox"
+			   style="background:#fff;border:2px solid #58AEDD;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.04);min-height:72px;transition:border-color .2s;">
+			<div id="aiSuggestionText" style="color:#1f2937;">Suggestion will appear here.</div>
+			<div id="aiSuggestionFlags" class="note" style="margin-top:8px;color:#6b7280;"></div>
+		  </div>
+		</section>
+
 
         <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
 
@@ -300,7 +297,7 @@
         });
       });
     </script>
-
+	
     <script>
       // Hide learn button on production domain
       if (location.hostname === "10dlccheck.com") {
@@ -380,14 +377,27 @@
         });
       })();
     </script>
+	<div style="height:60px"></div>
 
-    <footer>
-      <div class="foot-line">
-        <div class="foot-small">Powered by <strong>A Problem Solver</strong> •  10dlccheck.com </div>
-        <div class="foot-small"><a href="/privacy">Privacy</a> • <a href="/terms">Terms</a></div>
-      </div>
-    </footer>
+	<!-- Footer Include -->
+  <div class="footer-slot" data-include="/partials/footer.html"></div>
 
+  <!-- Include Partials Script -->
+  <script>
+    (async () => {
+      const slots = document.querySelectorAll("[data-include]");
+      await Promise.all([...slots].map(async (el) => {
+        try {
+          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
+          if (res.ok) el.innerHTML = await res.text();
+        } catch (err) {
+          console.error("Include failed:", err);
+        }
+      }));
+    })();
+  </script>
+
+   
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
     <script>
