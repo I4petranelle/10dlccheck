@@ -1,5 +1,8 @@
 User-agent: *
+Disallow: /admin
+Disallow: /partials/
 Disallow: /sbgfunding
 Allow: /
+
 Sitemap: https://10dlccheck.com/sitemap.xml
 
