@@ -38,20 +38,18 @@
     {
       "source": "/extension/index.html",
       "destination": "/extension",
-	  "permanent": true
+      "permanent": true
     }
-  ],
-
-  "rewrites": [
-    { "source": "/extension", "destination": "/extension/index.html" }
   ],
 
   "headers": [
     {
       "source": "/partials/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     }
-  ]
+  ],
+
+  "hooks": {
+    "postbuild": "curl -X POST https://www.bing.com/indexnow -H \"Content-Type: application/json\" -d '{\"host\": \"10dlccheck.com\", \"key\": \"93c83e5f844f450ea061f67f36ebe710\", \"urlList\": [\"https://10dlccheck.com/\", \"https://10dlccheck.com/learn/\", \"https://10dlccheck.com/learn/what-is-10dlc\", \"https://10dlccheck.com/learn/sms-compliance-checklist\", \"https://10dlccheck.com/learn/ctia-guidelines-explained\", \"https://10dlccheck.com/sitemap.xml\"]}'"
+  }
 }
