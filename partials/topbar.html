@@ -6,7 +6,7 @@
   .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
   .skip-link:focus{position:static;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:8px}
   .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800}
-  .brand img{height:28px;width:auto;display:block}
+  .brand img{height:40px;width:auto;display:block}
   .brand .name{color:var(--sky, #58AEDD);} /* brand text in blue */
   nav[aria-label="Primary"]{margin-left:auto}
   .nav-list{display:flex;gap:22px;list-style:none;margin:0;padding:0}
@@ -55,18 +55,7 @@
 </header>
 
 <script>
-  // Mobile toggle
-  (function(){
-    const btn = document.getElementById('menuBtn');
-    const nav = document.getElementById('primaryNav');
-    if(!btn || !nav) return;
-    btn.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  })();
-
-  // Auto-mark current link
+   // Auto-mark current link
   (function(){
     const here = location.pathname.replace(/\/+$/,'') || '/';
     document.querySelectorAll('#primaryNav a').forEach(a => {

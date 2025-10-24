@@ -560,6 +560,54 @@ document.addEventListener('DOMContentLoaded', async function(){
   });
 });
 
+// app.js — global site script for 10dlccheck.com
+
+(async function loadPartials() {
+  // Load Topbar
+  const topbar = document.getElementById('site-topbar');
+  if (topbar) {
+    try {
+      const res = await fetch('/partials/topbar.html', { cache: 'no-store' });
+      topbar.innerHTML = res.ok ? await res.text() : '<p>Navigation failed to load</p>';
+      initTopbar();
+    } catch (err) {
+      console.error('Topbar load failed:', err);
+    }
+  }
+
+  // Load Footer
+  const footer = document.getElementById('site-footer');
+  if (footer) {
+    try {
+      const res = await fetch('/partials/footer.html', { cache: 'no-store' });
+      footer.innerHTML = res.ok ? await res.text() : '<p>Footer failed to load</p>';
+    } catch (err) {
+      console.error('Footer load failed:', err);
+    }
+  }
+})();
+
+// Initialize the topbar toggle (mobile nav)
+function initTopbar() {
+  const host = document.getElementById('site-topbar') || document;
+  const btn = host.querySelector('#menuBtn');
+  const nav = host.querySelector('#primaryNav');
+  if (!btn || !nav) return;
+
+  function toggle(open) {
+    const isOpen = (open !== undefined) ? open : !nav.classList.contains('open');
+    nav.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  btn.addEventListener('click', () => toggle());
+  nav.addEventListener('click', e => { if (e.target.closest('a')) toggle(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') toggle(false); });
+
+  const mq = window.matchMedia('(max-width: 800px)');
+  mq.addEventListener('change', e => { if (!e.matches) toggle(false); });
+}
+
 // -------------------------------
 // Analyze -> render -> suggestions -> metrics
 // -------------------------------
