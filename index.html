@@ -394,31 +394,10 @@
 </section>
 
 
-    <script>
-      // Collapsible guideline toggles
-      document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".guidelines h4").forEach(header => {
-          header.addEventListener("click", () => {
-            const list = header.nextElementSibling;
-            const isOpen = list.classList.contains("expanded");
-            document.querySelectorAll(".guidelines ul").forEach(ul => ul.classList.remove("expanded"));
-            document.querySelectorAll(".guidelines h4").forEach(h => h.classList.remove("expanded"));
-            if (!isOpen) {
-              list.classList.add("expanded");
-              header.classList.add("expanded");
-            }
-          });
-        });
-      });
-    </script>
+    <script>document.addEventListener("DOMContentLoaded",()=>{const r=document.querySelector(".guidelines");if(!r)return;const e=r.querySelectorAll(".guidelines h4");function t(){r.querySelectorAll(".guidelines ul.expanded,.guidelines .acc-panel.expanded").forEach(e=>e.classList.remove("expanded"));r.querySelectorAll(".guidelines h4.expanded").forEach(e=>e.classList.remove("expanded"));r.querySelectorAll(".guidelines h4[aria-expanded='true']").forEach(e=>e.setAttribute("aria-expanded","false"))}e.forEach(e=>{let n=e.nextElementSibling;for(;n&&!(n.matches&&("ul"===n.tagName.toLowerCase()||n.matches(".acc-panel")));)n=n.nextElementSibling;if(!n)return;e.setAttribute("aria-expanded","false");n.classList.remove("expanded");e.addEventListener("click",()=>{const r=e.classList.contains("expanded");t();r||(e.classList.add("expanded"),e.setAttribute("aria-expanded","true"),n.classList.add("expanded"))});e.setAttribute("tabindex","0");e.setAttribute("role","button");e.addEventListener("keydown",t=>{"Enter"!==t.key&&" "!==t.key||(t.preventDefault(),e.click())})})});</script>
+
 	
-    <script>
-      // Hide learn button on production domain
-      if (location.hostname === "10dlccheck.com") {
-        const btn = document.querySelector('.guide-btn[href="/learn/index.html"]');
-        if (btn) btn.style.display = "none";
-      }
-    </script>
+  
 
     <script>
       // Cloudflare Worker endpoint
