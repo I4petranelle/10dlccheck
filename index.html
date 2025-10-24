@@ -297,27 +297,7 @@
 </section>
 
 
-                <!-- Collapsible guideline sections -->
-        <div class="guidelines">
-          <h4 id="g1">🔍 10DLC Compliance Guidelines</h4>
-          <ul id="compliance-list">
-            <li><strong>Consent basis:</strong> Message only opted-in recipients; keep records (CTIA).</li>
-            <li><strong>Branding:</strong> Identify your business early in the message.</li>
-            <li><strong>Opt-out:</strong> Provide a clear opt-out path when requested (e.g., “Reply STOP”).</li>
-            <li><strong>Content matching:</strong> Align content with what users consented to receive.</li>
-            <li><strong>Professional tone:</strong> Avoid profanity or pushy sales copy.</li>
-            <li><strong>Anti-abuse:</strong> Avoid snowshoeing, spoofing and number rotation.</li>
-          </ul>
-          <h4 id="g2">🚫 Restricted Content Categories</h4>
-          <ul id="restricted-list">
-            <li><strong>High-risk Financial:</strong> Payday loans, crypto, debt collection.</li>
-            <li><strong>Get Rich Quick:</strong> Work-from-home schemes, MLM, gambling, sweepstakes.</li>
-            <li><strong>Third-party Services:</strong> Services not directly provided by your brand.</li>
-            <li><strong>Controlled Substances:</strong> Tobacco, vaping, cannabis/CBD, illegal drugs.</li>
-            <li><strong>SHAFT Content:</strong> Sex, Hate, Alcohol, Firearms, Tobacco, Profanity.</li>
-            <li><strong>Scams &amp; Misleading Claims:</strong> Phishing, “verify account,” “risk-free,” “expires today.”</li>
-          </ul>
-        </div>
+                
       </div>
     </div>
 <!-- Learn More Section (above footer) -->
@@ -392,9 +372,6 @@
     </a>
   </div>
 </section>
-
-
-    <script>document.addEventListener("DOMContentLoaded",()=>{const r=document.querySelector(".guidelines");if(!r)return;const e=r.querySelectorAll(".guidelines h4");function t(){r.querySelectorAll(".guidelines ul.expanded,.guidelines .acc-panel.expanded").forEach(e=>e.classList.remove("expanded"));r.querySelectorAll(".guidelines h4.expanded").forEach(e=>e.classList.remove("expanded"));r.querySelectorAll(".guidelines h4[aria-expanded='true']").forEach(e=>e.setAttribute("aria-expanded","false"))}e.forEach(e=>{let n=e.nextElementSibling;for(;n&&!(n.matches&&("ul"===n.tagName.toLowerCase()||n.matches(".acc-panel")));)n=n.nextElementSibling;if(!n)return;e.setAttribute("aria-expanded","false");n.classList.remove("expanded");e.addEventListener("click",()=>{const r=e.classList.contains("expanded");t();r||(e.classList.add("expanded"),e.setAttribute("aria-expanded","true"),n.classList.add("expanded"))});e.setAttribute("tabindex","0");e.setAttribute("role","button");e.addEventListener("keydown",t=>{"Enter"!==t.key&&" "!==t.key||(t.preventDefault(),e.click())})})});</script>
 
 	
   
