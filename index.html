@@ -178,96 +178,30 @@ input[type="text"]:focus,button:focus,select:focus{outline:none;border-color:#58
         <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
 
         <!-- Panel: Real Message Examples -->
-<section class="panel" aria-labelledby="examples">
-  <h4 id="examples">Real-World 10DLC Message Examples</h4>
-  <p class="note">
-  Explore compliant and non-compliant examples from industries most often flagged by carriers. <br>
-    
-  You can copy any of the messages below and paste them into the checker above to test their compliance.
-</p>
-<div style="height:25px"></div>
+<section class="panel" id="examples" aria-labelledby="examples-title">
+  <h4 id="examples-title">Real-World 10DLC Message Examples</h4>
+  <p class="note">Explore compliant and non-compliant examples from industries most often flagged by carriers. You can copy any message below into the checker to test compliance.</p>
   <div class="grid">
 
     <!-- FINANCE -->
-    <div class="card">
-      <h5>Finance </h5>
-      <div class="sample">
-        FundHouse: Your loan application update — docs received. We’ll contact you within 1 business day.  
-        Reply HELP for support or STOP to opt out.
-      </div>
-      <p class="note">✅ Clear brand ID, transparent purpose and opt-out language included.</p>
-    </div>
-
-    <div class="card">
-      <h5>Finance </h5>
-      <div class="sample">
-        You’re pre-approved for $250K right now! Click to claim before it’s gone: bit.ly/loan123  
-        No opt-out included.
-      </div>
-      <p class="note">🚫 Misleading urgency, short-link without brand and missing STOP/HELP.</p>
-    </div>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="finance"><h5><a id="ex-finance-1">Finance</a></h5><div class="sample" itemprop="text">FundHouse: Your loan application update — docs received. We’ll contact you within 1 business day. Reply HELP for support or STOP to opt out.</div><p class="note">✅ Clear brand ID, transparent purpose and opt-out language included.</p></article>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="finance"><h5><a id="ex-finance-2">Finance</a></h5><div class="sample" itemprop="text">You’re pre-approved for $250K right now! Click to claim before it’s gone: bit.ly/loan123  No opt-out included.</div><p class="note">🚫 Misleading urgency, short-link without brand, and missing STOP/HELP.</p></article>
 
     <!-- HEALTHCARE -->
-    <div class="card">
-      <h5>Healthcare</h5>
-      <div class="sample">
-        HealthFirst: Reminder — Dr. Patel appointment on Aug 5 at 3 PM.  
-        Reply C to confirm or STOP to cancel text reminders.
-      </div>
-      <p class="note">✅ HIPAA-safe phrasing, brand upfront and clear opt-out.</p>
-    </div>
-
-    <div class="card">
-      <h5>Healthcare</h5>
-      <div class="sample">
-        Your test results are ready! Click here to view: tinyurl.com/abc123  
-        (No brand or consent context.)
-      </div>
-      <p class="note">🚫 No sender identity, potential PHI disclosure and uses risky short-link.</p>
-    </div>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="healthcare"><h5><a id="ex-health-1">Healthcare</a></h5><div class="sample" itemprop="text">HealthFirst: Reminder — Dr. Patel appointment on Aug 5 at 3 PM. Reply C to confirm or STOP to cancel text reminders.</div><p class="note">✅ HIPAA-safe phrasing, brand upfront and clear opt-out.</p></article>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="healthcare"><h5><a id="ex-health-2">Healthcare</a></h5><div class="sample" itemprop="text">Your test results are ready! Click here to view: tinyurl.com/abc123 (No brand or consent context.)</div><p class="note">🚫 No sender identity, potential PHI disclosure, and risky short-link.</p></article>
 
     <!-- REAL ESTATE -->
-    <div class="card">
-      <h5>Real Estate</h5>
-      <div class="sample">
-        Metro Realty: Thanks for touring 22 Park Ave!  
-        View more listings anytime: metrorealty.com/listings.  
-        Reply STOP to unsubscribe.
-      </div>
-      <p class="note">✅ Includes brand, relevant link, and opt-out for follow-ups.</p>
-    </div>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="real-estate"><h5><a id="ex-re-1">Real Estate</a></h5><div class="sample" itemprop="text">Metro Realty: Thanks for touring 22 Park Ave! View more listings anytime: metrorealty.com/listings. Reply STOP to unsubscribe.</div><p class="note">✅ Includes brand, relevant link and opt-out for follow-ups.</p></article>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="real-estate"><h5><a id="ex-re-2">Real Estate</a></h5><div class="sample" itemprop="text">Need a new home fast? We can guarantee approval today! Click: bit.ly/dealnow  No brand or consent info.</div><p class="note">🚫 Unverified claim, no brand identification, missing consent proof.</p></article>
 
-    <div class="card">
-      <h5>Real Estate</h5>
-      <div class="sample">
-        Need a new home fast? We can guarantee approval today! Click: bit.ly/dealnow  
-        No brand or consent info.
-      </div>
-      <p class="note">🚫 Unverified claim, lack of brand identification, missing consent proof.</p>
-    </div>
-
-    <!-- E-COMMERCE / RETAIL -->
-<div class="card">
-  <h5>E-commerce </h5>
-  <div class="sample">
-    TrendWear: Thanks for subscribing! Your exclusive 15% off code is WELCOME15.  
-    You’ll receive 2–3 texts per month. Reply HELP for info or STOP to unsubscribe.
-  </div>
-  <p class="note">✅ Brand identified upfront, clear frequency disclosure, and opt-out language included.</p>
-</div>
-
-<div class="card">
-  <h5>E-commerce</h5>
-  <div class="sample">
-    HUGE SALE!!! 90% OFF EVERYTHING 😱 Shop now → bit.ly/deals123  
-    No prior consent or opt-out option.
-  </div>
-  <p class="note">🚫 Excessive caps/emojis, risky short link, no brand or opt-out information.</p>
-</div>
-
+    <!-- E-COMMERCE -->
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="ecommerce"><h5><a id="ex-ecom-1">E-commerce</a></h5><div class="sample" itemprop="text">TrendWear: Thanks for subscribing! Your exclusive 15% off code is WELCOME15. You’ll receive 2–3 texts per month. Reply HELP for info or STOP to unsubscribe.</div><p class="note">✅ Brand identified upfront, clear frequency disclosure.</p></article>
+    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="ecommerce"><h5><a id="ex-ecom-2">E-commerce</a></h5><div class="sample" itemprop="text">HUGE SALE!!! 90% OFF EVERYTHING 😱 Shop now → bit.ly/deals123  No prior consent or opt-out option.</div><p class="note">🚫 Excessive caps/emojis, risky short link, and no brand/opt-out info.</p></article>
 
   </div>
 </section>
+
 
 
                 
