@@ -102,7 +102,7 @@ function postIncrementGlobal() {
 // -------------------------------
 // Suggestions endpoint (Cloudflare Worker)
 // -------------------------------
-const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/"; // <-- your worker URL
+const SUGGEST_URL = "https://bold-disk-9289.ipetranelle.workers.dev/suggest"; // <-- your worker URL
 
 function ensureSuggestionsContainer() {
   let box = document.getElementById("suggestions");
@@ -274,23 +274,29 @@ var URL_SHORTENER_REGEX = null; // compiled at load
 
 async function loadRules() {
   try {
-    var res = await fetch('/partials/rules.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('fetch failed');
+    // Fetch from the new API endpoint first
+    var res = await fetch('/api/public-rules', { cache: 'no-store' });
+    if (!res.ok) throw new Error('API fetch failed');
+
     var data = await res.json();
 
-    // compile url shortener regex if present
+    // Compile URL shortener regex if present
     if (data && data.urlSecurity && data.urlSecurity.shortenerPattern) {
       URL_SHORTENER_REGEX = new RegExp(data.urlSecurity.shortenerPattern, 'i');
     } else {
       URL_SHORTENER_REGEX = new RegExp(complianceRulesFallback.urlSecurity.shortenerPattern, 'i');
     }
+
+    console.log('[rules] loaded from /api/public-rules');
     return data;
+
   } catch (e) {
     console.warn('⚠️ Using fallback rules. Reason:', e && e.message ? e.message : e);
     URL_SHORTENER_REGEX = new RegExp(complianceRulesFallback.urlSecurity.shortenerPattern, 'i');
     return complianceRulesFallback;
   }
 }
+
 
 // -------------------------------
 // Math verification
@@ -428,78 +434,116 @@ function performComplianceCheck(message) {
 }
 
 // -------------------------------
-// Results rendering (also shows tips)
+// Results rendering — Variant A (flat, no buttons)
 // -------------------------------
+function escapeHTML(s){
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function resultIcon(isCompliant){
+  // Explicit size prevents oversized “checkbox” appearance if CSS is missing
+  return isCompliant
+    ? '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
+    : '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
+}
+
 function displayResults(analysis) {
   var resultsDiv = document.getElementById('results');
-  var isCompliant = analysis.isCompliant;
+  var isCompliant = !!analysis.isCompliant;
   resultsDiv.className = 'results ' + (isCompliant ? 'compliant' : 'non-compliant');
 
-  var iconSvg = isCompliant
-    ? '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
-    : '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
+  // quick counts
+  var issues = Array.isArray(analysis.issues) ? analysis.issues : [];
+  var high = issues.filter(function(i){ return i.severity === 'high'; }).length;
+  var med  = issues.filter(function(i){ return i.severity === 'medium'; }).length;
+  var low  = issues.filter(function(i){ return i.severity === 'low'; }).length;
 
-  var html = ''
-    + '<h3>' + iconSvg + ' ' + (isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found') + '</h3>'
-    + '<p><strong>Message Length:</strong> ' + analysis.messageLength + ' characters (' + analysis.wordCount + ' words)</p>';
+  // detected categories
+  var cats = analysis.detectedCategories || [];
+  var catBadges = cats.map(function(c){
+    var cls =
+      c.impact.indexOf('PROHIBITED') > -1 ? 'bad-prohib' :
+      c.impact.indexOf('RESTRICTED') > -1 ? 'bad-restrict' :
+      c.impact.indexOf('HIGH RISK') > -1 ? 'bad-warn' : 'bad-info';
+    return '<span class="badge ' + cls + '" title="' + escapeHTML(c.impact) + '">' + escapeHTML(c.name) + '</span>';
+  }).join('');
 
-  if (analysis.detectedCategories.length) {
-    html += '<div class="category-warning">';
-    html += '<h4>⚠️ Detected Issues — Campaign Impact Analysis</h4>';
-    html += '<div class="category-summary">';
-    analysis.detectedCategories.forEach(function(c){
-      var impactClass = c.impact.indexOf('PROHIBITED')>-1 ? 'prohibited'
-        : c.impact.indexOf('RESTRICTED')>-1 ? 'restricted'
-        : c.impact.indexOf('HIGH RISK')>-1 ? 'warning' : 'branding';
-      html += '<span class="category-badge ' + impactClass + '">' + c.name + '</span>';
-    });
-    html += '</div>';
-    html += '<button class="toggle-details" id="toggleImpactBtn">Show Details</button>';
-    html += '<div class="category-details" id="impactDetails">';
-    analysis.detectedCategories.forEach(function(c){
-      html += '<div class="category-item">'
-        + '<div class="category-title">' + c.name + '</div>'
-        + '<p><strong>Impact:</strong> ' + (c.impact.split(' - ')[1] || c.impact) + '</p>'
-        + '<div class="category-keywords">Keywords found: "' + c.keywords.join('", "') + '"</div>'
-        + '</div>';
-    });
-    html += '</div></div>';
-  }
+  var catDetails = cats.map(function(c){
+    var impactText = (c.impact.split(' - ')[1] || c.impact);
+    return (
+      '<div class="cat-item">' +
+        '<div class="cat-head">' +
+          '<div class="cat-name">' + escapeHTML(c.name) + '</div>' +
+          '<div class="cat-impact">' + escapeHTML(impactText) + '</div>' +
+        '</div>' +
+        (c.keywords && c.keywords.length
+          ? '<div class="cat-body"><strong>Keywords:</strong> "' + escapeHTML(c.keywords.join('", "')) + '"</div>'
+          : ''
+        ) +
+      '</div>'
+    );
+  }).join('');
 
-  if (analysis.issues.length) {
-    var high = analysis.issues.filter(function(i){return i.severity==='high';}).length;
-    var med  = analysis.issues.filter(function(i){return i.severity==='medium';}).length;
-    var low  = analysis.issues.filter(function(i){return i.severity==='low';}).length;
+  var issueItems = issues.map(function(issue){
+    var sev = escapeHTML(issue.severity || 'low');
+    var msg = escapeHTML(issue.message || '');
+    var sug = issue.suggestion ? '<div class="issue-sug">' + escapeHTML(issue.suggestion) + '</div>' : '';
+    return (
+      '<li class="issue ' + sev + '">' +
+        '<div class="issue-msg">' + msg + '</div>' +
+        sug +
+      '</li>'
+    );
+  }).join('');
 
-    html += '<div class="issue-header"><div class="issue-summary">';
-    if (high) html += '<span class="issue-count high">' + high + ' Critical</span>';
-    if (med)  html += '<span class="issue-count medium">' + med + ' Medium</span>';
-    if (low)  html += '<span class="issue-count low">' + low + ' Minor</span>';
-    html += '</div><button class="toggle-issues" id="toggleIssuesBtn">Show Issues</button></div>';
+  var html =
+    '<section class="res-card">' +
+      '<header class="res-header">' +
+        '<div class="res-title">' +
+          resultIcon(isCompliant) +
+          '<h3>' + (isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found') + '</h3>' +
+        '</div>' +
+        '<div class="res-metrics">' +
+          '<div class="chip"><span class="chip-k">Chars</span><span class="chip-v">' + analysis.messageLength + '</span></div>' +
+          '<div class="chip"><span class="chip-k">Words</span><span class="chip-v">' + analysis.wordCount + '</span></div>' +
+          '<div class="chip"><span class="chip-k">Issues</span><span class="chip-v">' + (high+med+low) + '</span></div>' +
+        '</div>' +
+      '</header>';
 
-    html += '<ul class="issue-list" id="issuesList">';
-    analysis.issues.forEach(function(issue){
-      html += '<li class="' + issue.severity + '">'
-        + '<div class="issue-message">' + issue.message + '</div>'
-        + (issue.suggestion ? '<div class="issue-suggestion">' + issue.suggestion + '</div>' : '')
-        + '</li>';
-    });
-    html += '</ul>';
-  } else if (!analysis.detectedCategories.length) {
-    html += '<p>✅ No compliance issues detected! Your message appears to follow 10DLC guidelines.</p>';
-  }
+  if (cats.length) {
+  html +=
+    '<section class="res-block">' +
+      '<div class="okline" style="background:#fff8e6;border-color:#f59e0b;color:#92400e;">⚠️ Potential Compliance Risks Detected</div>' +
+      '<div class="badge-row" style="margin-top:10px">' + catBadges + '</div>' +
+      '<div class="cat-grid" style="margin-top:10px">' + catDetails + '</div>' +
+    '</section>';
+} else if (!issues.length) {
+  html +=
+    '<section class="res-block">' +
+      '<div class="okline">✅ No compliance issues detected. Your message appears to follow 10DLC guidelines.</div>' +
+    '</section>';
+}
 
-  // Tips (advice)
+
   if (analysis.tips && analysis.tips.length) {
-    html += '<div class="advice"><h4>💡 Suggestions</h4><ul>';
-    analysis.tips.forEach(function(t){ html += '<li>' + t + '</li>'; });
-    html += '</ul></div>';
+    html +=
+      '<section class="res-block">' +
+        '<div class="block-title">Suggestions</div>' +
+        '<ul class="tips">' + analysis.tips.map(function(t){ return '<li>' + escapeHTML(t) + '</li>'; }).join('') + '</ul>' +
+      '</section>';
   }
+
+  html += '</section>'; // res-card
 
   resultsDiv.innerHTML = html;
   resultsDiv.style.display = 'block';
 
-  // attach toggles after render
+  // If you still render any legacy toggle buttons somewhere else, this block won’t attach because elements don’t exist.
   var tIssues = document.getElementById('toggleIssuesBtn');
   var issuesList = document.getElementById('issuesList');
   if (tIssues && issuesList) {
@@ -521,7 +565,7 @@ function displayResults(analysis) {
 }
 
 // -------------------------------
-// Collapses helper
+// Collapses helper (used by g1/g2 lists on page)
 // -------------------------------
 function toggleCollapse(headerEl, listEl) {
   var expanded = listEl.classList.contains('expanded');
