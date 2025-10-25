@@ -159,7 +159,7 @@ function showSuggestions(data) {
 
 // -------------------------------
 // Built-in fallback rules (minimal)
-// Only used if /partials/rules.json can't be fetched
+// Only used if /api/rules.js can't be fetched
 // -------------------------------
 var complianceRulesFallback = {
   version: "fallback",
@@ -579,6 +579,8 @@ function toggleCollapse(headerEl, listEl) {
 document.addEventListener('DOMContentLoaded', async function(){
   // Load external rules (with fallback)
   RULES = await loadRules();
+  console.log("[rules] version", RULES.version || "(fallback)");
+
 
   renderStats();          // show local + estimated global
   tryFetchRealGlobal();   // replace estimate with real total if API is configured
