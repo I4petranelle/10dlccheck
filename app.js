@@ -331,21 +331,24 @@ function hasHttpUrl(text) { return /https?:\/\//i.test(text); }
 // Category metadata (name + impact labels shown in UI)
 // -------------------------------
 var CATEGORY_META = {
-  highRiskFinancial: { name: 'High-Risk Financial Services', impact: 'RESTRICTED - May require carrier pre-approval and enhanced monitoring' },
-  getRichQuick: { name: 'Get Rich Quick Schemes', impact: 'PROHIBITED - Campaign will be rejected' },
-  thirdPartyServices: { name: 'Third-Party Services', impact: 'RESTRICTED - Requires proof of direct relationship with customers' },
-  controlledSubstances: { name: 'Controlled Substances', impact: 'PROHIBITED - Campaign will be rejected' },
-  shaft: { name: 'SHAFT Content', impact: 'PROHIBITED - Campaign will be rejected' },
-  scams: { name: 'Suspicious/Scam Content', impact: 'PROHIBITED - Campaign will be rejected for suspicious content' },
-  aggressiveMarketing: { name: 'Aggressive Marketing Language', impact: 'HIGH RISK - Carriers actively filter this type of language' },
-  personalInfo: { name: 'Personal Information Request', impact: 'PROHIBITED - Violates privacy and security guidelines' },
-  charity: { name: 'Charity / Donation Appeals', impact: 'CASE-BY-CASE - May require additional approval' },
-  personalFinancialQuestions: { name: 'Personal Financial Questions', impact: 'HIGH RISK - Privacy/security concerns' },
-  competitorMention: { name: 'Competitor Mentions', impact: 'LOW RISK - Brand confusion / misleading claims' },
-  consentDocumentation: { name: 'Consent Documentation', impact: 'REQUIRED - Maintain records per CTIA' },
-  consentScope: { name: 'Consent Scope', impact: 'MEDIUM RISK - Clarify program scope' },
-  urlSecurity: { name: 'URL Security / Shorteners', impact: 'MEDIUM RISK - Prefer branded HTTPS links' }
+  highRiskFinancial:{name:'High-Risk Financial Services',impact:'RESTRICTED - May require carrier pre-approval and enhanced monitoring'},
+  getRichQuick:{name:'Get Rich Quick Schemes',impact:'PROHIBITED - Campaign will be rejected'},
+  thirdPartyServices:{name:'Third-Party Services',impact:'RESTRICTED - Requires proof of direct relationship with customers'},
+  controlledSubstances:{name:'Controlled Substances',impact:'PROHIBITED - Campaign will be rejected'},
+  shaft:{name:'SHAFT Content',impact:'PROHIBITED - Campaign will be rejected'},
+  scams:{name:'Suspicious/Scam Content',impact:'PROHIBITED - Campaign will be rejected for suspicious content'},
+  aggressiveMarketing:{name:'Aggressive Marketing Language',impact:'HIGH RISK - Carriers actively filter this type of language'},
+  aggressiveFinancialClaims:{name:'Aggressive Financial Claims',impact:'HIGH RISK - Filtering likely for approval/guarantee claims'},
+  personalInfo:{name:'Personal Information Request',impact:'PROHIBITED - Violates privacy and security guidelines'},
+  charity:{name:'Charity / Donation Appeals',impact:'CASE-BY-CASE - May require additional approval'},
+  personalFinancialQuestions:{name:'Personal Financial Questions',impact:'HIGH RISK - Privacy/security concerns'},
+  competitorMention:{name:'Competitor Mentions',impact:'LOW RISK - Brand confusion / misleading claims'},
+  consentDocumentation:{name:'Consent Documentation',impact:'REQUIRED - Maintain records per CTIA'},
+  consentScope:{name:'Consent Scope',impact:'MEDIUM RISK - Clarify program scope'},
+  optOutDisclosureMissing:{name:'Missing STOP/HELP Disclosure',impact:'MEDIUM RISK - Add “STOP to opt out, HELP for help.”'},
+  urlSecurity:{name:'URL Security / Shorteners',impact:'MEDIUM RISK - Prefer branded HTTPS links'}
 };
+
 
 // Build the category list dynamically from RULES keys present
 function buildCategoryList(rules) {
