@@ -656,6 +656,13 @@ function initTopbar() {
   const mq = window.matchMedia('(max-width: 800px)');
   mq.addEventListener('change', e => { if (!e.matches) toggle(false); });
 }
+// Make sure the function runs after the page loads
+if (document.readyState !== 'loading') {
+  initTopbar();
+} else {
+  document.addEventListener('DOMContentLoaded', initTopbar, { once:true });
+}
+
 
 // -------------------------------
 // Analyze -> render -> suggestions -> metrics
