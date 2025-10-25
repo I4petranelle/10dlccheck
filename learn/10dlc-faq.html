@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-prev="/learn/what-is-10dlc" data-next="/learn/sms-compliance-checklist">
+<head>
+  <!-- =============================================
+    10dlccheck — Learn Article (FAQ, no sidebar)
+    File: /learn/10dlc-faq.html
+  ============================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Frequently Asked Questions (2025 Guide) | 10dlccheck</title>
+  <meta name="description" content="Your up-to-date 2025 FAQ on 10DLC: registration, consent, spam filtering and carrier rules, CTIA best practices, STOP/HELP and message examples." />
+  <link rel="canonical" href="https://10dlccheck.com/learn/10dlc-faq.html" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="10DLC Frequently Asked Questions (2025 Guide) | 10dlccheck" />
+  <meta property="og:description" content="The authoritative 10DLC FAQ for 2025—covering registration, consent, spam filtering and carrier rules with practical examples." />
+  <meta property="og:url" content="https://10dlccheck.com/learn/10dlc-faq.html" />
+  <meta property="og:site_name" content="10dlccheck" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="10DLC Frequently Asked Questions (2025 Guide) | 10dlccheck" />
+  <meta name="twitter:description" content="The authoritative 10DLC FAQ for 2025—covering registration, consent, spam filtering and carrier rules with practical examples." />
+
+  <!-- Styles (site tokens) -->
+  <style>
+    :root{
+      --ink:#1C2D40; --muted:#334155; --sky:#58AEDD; --line:#e2e8f0; --bg:#f8fafc; --accent:#1e40af;
+    }
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+    a{color:var(--sky)}
+    .wrap{max-width:1200px;margin:0 auto;padding:20px 16px}
+    .topbar-slot,.footer-slot{min-height:48px}
+
+    /* Hero */
+    .hero{background:#fff;border-bottom:1px solid var(--line);padding:32px 0}
+    .eyebrow{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    h1{margin:0 0 12px;font-size:2.4rem;font-weight:800;line-height:1.2}
+    .sub{margin:0 0 20px;color:var(--muted);font-size:1.1rem;max-width:900px}
+    .meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.95rem;padding-top:16px;border-top:1px solid var(--line)}
+
+    /* Layout (no sidebar) */
+    .main-content{margin:40px 0}
+    article.content{background:#fff;border:1px solid var(--line);border-radius:12px;padding:40px;max-width:100%;box-sizing:border-box}
+    article.content h2{margin-top:2em;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+    article.content h3{margin-top:1.5em}
+    .anchor{visibility:hidden;margin-left:.25em;font-size:.9rem;text-decoration:none}
+    h2:hover .anchor,h3:hover .anchor{visibility:visible}
+
+    /* FAQ blocks */
+    .faq-item{border-top:1px solid var(--line);padding:18px 0}
+    .faq-item:first-of-type{border-top:0}
+    .faq-q{font-weight:700;font-size:1.05rem}
+    .faq-a{margin-top:8px}
+    .note{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:8px;padding:16px;color:var(--muted);margin:20px 0}
+
+    /* Tables */
+    .desktop-only{display:block}
+    @media (max-width:768px){.desktop-only{display:none}}
+    table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);margin:20px 0}
+    .compare th,.compare td{border:1px solid var(--line);padding:12px;vertical-align:top}
+    .compare th{background:#f8fafc;text-align:left}
+
+    /* CTA + Nav */
+    .cta{margin-top:40px;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:12px;background:#f8fafc}
+    .btn{display:inline-block;background:var(--sky);color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;text-decoration:none;transition:background .2s}
+    .btn:hover{background:var(--accent)}
+    .btn.secondary{background:var(--ink)} .btn.secondary:hover{background:var(--muted)}
+
+    .article-nav{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+    .article-nav-links{display:flex;justify-content:space-between;gap:20px}
+    .article-nav a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);transition:all .2s}
+    .article-nav a:hover{border-color:var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+
+    /* Footer */
+    footer{margin-top:60px;border-top:1px solid var(--line);background:#fff}
+    .foot-line{display:flex;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;padding:20px 16px;color:var(--muted)}
+    .foot-line a{color:var(--sky);text-decoration:none}
+    .foot-line a:hover{text-decoration:underline}
+    @media(max-width:600px){.foot-line{flex-direction:column;align-items:flex-start}.article-nav-links{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <!-- Partials -->
+  <div class="topbar-slot" data-include="./partials/topbar.html"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">10DLC Learn</div>
+      <h1>10DLC Frequently Asked Questions (2025 Guide)</h1>
+      <p class="sub">Answers to the most common 10DLC and SMS compliance questions. We cover registration, consent, spam filtering and carrier rules. Updated for 2025.</p>
+      <div class="meta" id="article-meta">
+        <span>By 10dlccheck Editorial</span><span>•</span>
+        <span>Published <time datetime="2025-10-25">Oct 25 2025</time></span><span>•</span>
+        <span>Updated <time datetime="2025-10-25">Oct 25 2025</time></span><span>•</span>
+        <span id="read-time">~3 min read</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <div class="wrap">
+    <div class="main-content">
+      <article class="content" id="article">
+        <h2 id="overview">Quick Overview <a class="anchor" href="#overview" aria-label="Link">#</a></h2>
+        <p><strong>10DLC</strong> (ten-digit long code) is the US carrier-approved channel for <em>application-to-person</em> texting using local numbers. To send A2P on 10DLC, brands register with <strong>The Campaign Registry</strong>, then register a <em>campaign</em> and assign phone numbers. Carriers enforce policies on consent, brand identification, STOP/HELP support and restricted content.</p>
+        <div class="note">If you are unsure whether a message meets policy, paste it into the <a href="/#checker?utm_source=learn&utm_medium=faq&utm_campaign=cta_checker">10DLC Compliance Checker</a> or use the <a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=faq&utm_campaign=cta_extension">Chrome extension</a>.</div>
+
+        <h2 id="faq">Top Questions & Answers <a class="anchor" href="#faq" aria-label="Link">#</a></h2>
+
+        <div class="faq-item">
+          <div class="faq-q">1) Do all major US carriers require 10DLC registration for A2P long-code messaging?</div>
+          <div class="faq-a">Yes. AT&amp;T, T-Mobile and Verizon require brands and campaigns to be registered via TCR and they enforce content and consent rules across A2P messaging. See the carrier policy pages and CTIA guidance below.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">2) What are the core steps to register for 10DLC?</div>
+          <div class="faq-a">
+            <ol>
+              <li><strong>Register your brand</strong> with legal entity details.</li>
+              <li><strong>Register a campaign</strong> with your use case, opt-in method and three sample messages.</li>
+              <li><strong>Assign number(s)</strong> to the campaign before sending traffic.</li>
+            </ol>
+            <p>Example workflow (AT&amp;T): Admin Portal → Enhanced Business SMS → 10DLC Registration → create brand → create campaign → assign numbers.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">3) What consent and disclosure elements do carriers expect?</div>
+          <div class="faq-a">
+            <ul>
+              <li><strong>Proactive consent</strong> (documented opt-in) for non-consumer messaging.</li>
+              <li><strong>Sender identity</strong> at the start where practical.</li>
+              <li><strong>STOP/HELP</strong> keyword support.</li>
+              <li><strong>Clear terms</strong> such as frequency and “message and data rates may apply”.</li>
+              <li><strong>Risk-aware links</strong>; avoid public shorteners in first contact.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">4) What types of content are restricted or prohibited?</div>
+          <div class="faq-a">
+            <p>Illegal content is never allowed. Categories like SHAFT, scams and get-rich-quick are prohibited. High-risk finance and aggressive claims face strict scrutiny. Review against the carrier code of conduct and CTIA guidance.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">5) What is the difference between 10DLC, short code and toll-free SMS?</div>
+          <div class="faq-a">
+            <div class="desktop-only">
+              <table class="compare">
+                <thead><tr><th>Channel</th><th>Best for</th><th>Pros</th><th>Considerations</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>10DLC</strong></td><td>Local presence and two-way</td><td>Recognisable number; cost-effective</td><td>Requires brand and campaign registration; content rules</td></tr>
+                  <tr><td><strong>Short code</strong></td><td>High-volume national alerts</td><td>Very high throughput</td><td>More expensive; longer approvals</td></tr>
+                  <tr><td><strong>Toll-free SMS</strong></td><td>Support and notifications</td><td>Nationwide reach</td><td>Verification recommended; content rules still apply</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="note">On mobile we hide the comparison table to improve readability. All channels still require compliant content and sender practices.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">6) Do I need STOP/HELP even for single-message interactions?</div>
+          <div class="faq-a">Single-message programmes may not display STOP/HELP in that one message, although systems must support those commands. This is reflected in CTIA guidance and carrier practice.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">7) Can I use public link shorteners?</div>
+          <div class="faq-a">Avoid public shorteners in first contact. Use branded or first-party links tied to your business to reduce filtering risk.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">8) What sample messages should I provide to TCR?</div>
+          <div class="faq-a">Provide three unique, accurate examples that match your use case, show brand identity and include opt-out language. Do not use generic templates you found online.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">9) Will unregistered or non-compliant traffic be filtered?</div>
+          <div class="faq-a">Yes. Carriers use content and behaviour-based filtering, including machine-learning systems. Unregistered or deceptive content is more likely to be blocked or rate-limited.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">10) What do carriers say about A2P channels?</div>
+          <div class="faq-a">Verizon recognises short code, toll-free and 10DLC as A2P channels on its public guidance. T-Mobile requires adherence to its Code of Conduct and CTIA Principles. AT&amp;T publishes step-by-step TCR registration instructions for business products.</div>
+        </div>
+
+        <h2 id="how-to-register">How to Register (Brand → Campaign → Numbers) <a class="anchor" href="#how-to-register" aria-label="Link">#</a></h2>
+			<ol>
+			  <li><strong>Brand</strong>: legal name, EIN/Tax ID, address and website.</li>
+			  <li><strong>Campaign</strong>: use case selection, opt-in method with proof, three sample messages and STOP/HELP keywords.</li>
+			  <li><strong>Assign numbers</strong>: link long codes to your campaign before sending.</li>
+			</ol>
+
+			<p class="note">
+			  <strong>Where to complete registration:</strong> check your carrier’s guidance and your messaging platform’s admin portal. 
+			  Most businesses finish 10DLC registration inside their provider portal, which submits details to The Campaign Registry on your behalf.
+			</p>
+
+			<ul>
+			  <li><strong>T-Mobile:</strong> non-consumer messaging must follow the Code of Conduct and CTIA Principles. <a href="https://www.t-mobile.com/support/plans-features/consumer-versus-non-consumer-text-messaging" target="_blank" rel="noopener">Policy overview</a></li>
+			  <li><strong>Verizon:</strong> A2P channels include short code, toll-free and 10DLC. <a href="https://www.verizon.com/about/account-security/smishing-and-spam-text-messages" target="_blank" rel="noopener">Guidance page</a></li>
+			  <li><strong>AT&amp;T (example):</strong> step-by-step brand, campaign and number assignment workflow. <a href="https://asecare.att.com/tutorials/setting-up-tcr-registration-and-assigning-numbers-to-your-sms-campaigns-for-att-officehand-95268/" target="_blank" rel="noopener">Registration tutorial</a></li>
+			</ul>
+
+			<details>
+			  <summary><strong>Tip:</strong> common places to find the 10DLC form in provider portals</summary>
+			  <ul>
+				<li>Admin settings → Messaging or SMS</li>
+				<li>Compliance or Trust Centre</li>
+				<li>10DLC/Brand & Campaigns → Create brand → Create campaign → Assign numbers</li>
+			  </ul>
+			</details>
+
+        <p class="note">Keep screenshots and logs of your opt-in flow (timestamp, IP, form text and source) for audits and carrier reviews.</p>
+
+        <h2 id="compliant-examples">Compliant vs risky examples <a class="anchor" href="#compliant-examples" aria-label="Link">#</a></h2>
+        <h3>✅ Compliant first message</h3>
+        <p><strong>BrandName:</strong> Thanks for joining delivery alerts. Up to 4 msgs/mo. Msg&amp;data rates may apply. Reply <strong>STOP</strong> to opt out, <strong>HELP</strong> for help.</p>
+        <h3>❌ Risky first message</h3>
+        <p>You are pre-approved - claim now: bit.ly/xxxx (no brand identity, public short link, implied finance claim and no STOP).</p>
+
+        <section class="cta">
+          <h3>Test a message before you send</h3>
+          <p>Run your SMS through our free compliance checker to reduce carrier filtering.</p>
+          <p>
+            <a class="btn" href="/#checker?utm_source=learn&utm_medium=site&utm_campaign=faq_cta_checker">Check Now →</a>
+            &nbsp;
+            <a class="btn secondary" target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=faq_cta_extension">Chrome extension</a>
+          </p>
+        </section>
+
+        <h2 id="official-refs">Official references (Carriers and CTIA) <a class="anchor" href="#official-refs" aria-label="Link">#</a></h2>
+        <ul>
+          <li><strong>T-Mobile:</strong> Non-consumer messaging must follow T-Mobile’s Code of Conduct and CTIA Principles. <a href="https://www.t-mobile.com/support/plans-features/consumer-versus-non-consumer-text-messaging" target="_blank" rel="noopener">Policy overview</a>.</li>
+          <li><strong>Verizon:</strong> A2P can use short code, toll-free or ten-digit long code (10DLC). <a href="https://www.verizon.com/about/account-security/smishing-and-spam-text-messages" target="_blank" rel="noopener">Guidance page</a>.</li>
+          <li><strong>AT&amp;T (example product):</strong> Admin steps to set up TCR brand, campaign and number assignment. <a href="https://asecare.att.com/tutorials/setting-up-tcr-registration-and-assigning-numbers-to-your-sms-campaigns-for-att-officehand-95268/" target="_blank" rel="noopener">Registration tutorial</a>.</li>
+          <li><strong>CTIA:</strong> <em>Messaging Principles &amp; Best Practices</em> (May 2023) and the monitoring handbook describe consent, HELP/STOP support and anti-spam measures. <a href="https://www.ctia.org/the-wireless-industry/industry-commitments/messaging-interoperability-sms-mms" target="_blank" rel="noopener">Principles landing</a> • <a href="https://api.ctia.org/wp-content/uploads/2024/01/CTIA-Short-Code-Monitoring-Handbook-v1.9-FINAL.pdf" target="_blank" rel="noopener">Monitoring handbook</a>.</li>
+        </ul>
+
+        <!-- Article navigation -->
+        <nav class="article-nav" aria-label="Learn navigation">
+          <div class="article-nav-links">
+            <a id="prev-article" href="/learn/">
+              <span>←</span><span>Previous article</span>
+            </a>
+            <a id="next-article" href="/learn/">
+              <span>Next article</span><span>→</span>
+            </a>
+          </div>
+        </nav>
+      </article>
+    </div>
+  </div>
+
+  <!-- Partials -->
+  <div class="footer-slot" data-include="./partials/footer.html"></div>
+
+  <!-- JSON-LD: Article + FAQPage -->
+  <script type="application/ld+json" id="article-jsonld">{
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline":"10DLC Frequently Asked Questions (2025 Guide)",
+    "description":"Your up-to-date 2025 FAQ on 10DLC: registration, consent, spam filtering and carrier rules, CTIA best practices, STOP/HELP and message examples.",
+    "author":{"@type":"Organization","name":"10dlccheck"},
+    "datePublished":"2025-10-25",
+    "dateModified":"2025-10-25",
+    "mainEntityOfPage":{"@type":"WebPage","@id":"https://10dlccheck.com/learn/10dlc-faq.html"}
+  }</script>
+
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Do all major US carriers require 10DLC registration for A2P long-code messaging?","acceptedAnswer":{"@type":"Answer","text":"Yes—AT&T, T-Mobile and Verizon require brand and campaign registration via The Campaign Registry and they enforce consent and content policies for A2P long-code traffic."}},
+      {"@type":"Question","name":"What are the core steps to register for 10DLC?","acceptedAnswer":{"@type":"Answer","text":"Register your brand, register a campaign with your use case and opt-in method, then assign numbers before sending."}},
+      {"@type":"Question","name":"What consent and disclosure elements do carriers expect?","acceptedAnswer":{"@type":"Answer","text":"Documented opt-in, brand identity, STOP/HELP support, clear programme terms and risk-aware links aligned with CTIA and carrier codes of conduct."}},
+      {"@type":"Question","name":"What types of content are restricted or prohibited?","acceptedAnswer":{"@type":"Answer","text":"Illegal content is never allowed. SHAFT, scams and get-rich-quick are prohibited. High-risk finance and aggressive claims face strict scrutiny."}},
+      {"@type":"Question","name":"What is the difference between 10DLC, short code and toll-free SMS?","acceptedAnswer":{"@type":"Answer","text":"10DLC is best for local presence and two-way messaging; short code for high-volume national alerts; toll-free for support and notifications. All require compliant content."}},
+      {"@type":"Question","name":"Do I need STOP/HELP even for single-message interactions?","acceptedAnswer":{"@type":"Answer","text":"Single-message programmes may not display HELP/STOP in the one message although systems should still support HELP and STOP keywords."}},
+      {"@type":"Question","name":"Can I use public link shorteners?","acceptedAnswer":{"@type":"Answer","text":"Avoid public shorteners in first contact. Use branded or first-party links to reduce filtering risk."}},
+      {"@type":"Question","name":"What sample messages should I provide to TCR?","acceptedAnswer":{"@type":"Answer","text":"Provide three unique, truthful examples aligned to your use case which include brand identity and opt-out language."}},
+      {"@type":"Question","name":"Will unregistered or non-compliant traffic be filtered?","acceptedAnswer":{"@type":"Answer","text":"Yes. Carriers use content and behaviour-based filtering including machine-learning systems."}},
+      {"@type":"Question","name":"What do carriers say about A2P channels?","acceptedAnswer":{"@type":"Answer","text":"Verizon lists short code, toll-free and 10DLC as A2P channels. T-Mobile requires adherence to its Code of Conduct and CTIA Principles. AT&T provides step-by-step TCR setup for business products."}}
+    ]
+  }</script>
+
+  <!-- Utilities: includes, anchors, read-time, prev/next -->
+  <script>
+    (async function includePartials(){
+      const slots=document.querySelectorAll('[data-include]');
+      await Promise.all(Array.from(slots).map(async el=>{
+        try{
+          const url=el.getAttribute('data-include');
+          const r=await fetch(url,{cache:'no-store'});
+          if(r.ok) el.innerHTML=await r.text();
+        }catch(_){}
+      }));
+    })();
+
+    (function attachAnchors(){
+      const sections=Array.from(document.querySelectorAll('#article h2'));
+      sections.forEach(h=>{
+        const id=h.id||h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id=id;
+        if(!h.querySelector('.anchor')){
+          const a=document.createElement('a'); a.className='anchor'; a.href='#'+id; a.textContent='#';
+          a.setAttribute('aria-label','Link to this section'); h.appendChild(a);
+        }
+      });
+    })();
+
+    (function readTime(){
+      const el=document.getElementById('article'), rt=document.getElementById('read-time');
+      if(!el||!rt) return;
+      const words=(el.innerText||'').trim().split(/\s+/).length;
+      const mins=Math.max(1,Math.round(words/225));
+      rt.textContent=`~${mins} min read`;
+    })();
+
+    (function prevNext(){
+      const prev=document.getElementById('prev-article');
+      const next=document.getElementById('next-article');
+      const p=document.body.getAttribute('data-prev');
+      const n=document.body.getAttribute('data-next');
+      if(p){prev.href=p}else{prev.style.visibility='hidden'}
+      if(n){next.href=n}else{next.style.visibility='hidden'}
+    })();
+  </script>
+</body>
+</html>

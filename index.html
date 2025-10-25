@@ -268,19 +268,56 @@ input[type="text"]:focus,button:focus,select:focus{outline:none;border-color:#58
       </span>
     </a>
 
-    <a href="/learn/10dlc-registration-guide"
+    <a href="/learn/10dlc-faq"
        style="display:block;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;
               padding:16px;text-decoration:none;color:#1C2D40;font-weight:600;
               box-shadow:0 2px 6px rgba(0,0,0,0.04);transition:all .2s ease;">
-      10DLC Registration Guide
+      10DLC Fequently Asked Questions
       <span style="display:block;font-size:.9rem;color:#6b7280;font-weight:400;">
-        Learn how to register your brand and campaign to stay compliant.
+        Learn how to register your brand and campaign for A2P messaging and prevent your SMS from being marked as spam.
       </span>
     </a>
   </div>
 </section>
 
-	
+	<!-- Social Proof (place above footer) -->
+<section id="social-proof" class="wrap" style="margin:40px auto;">
+  <div class="sp-card" style="
+    background:#fff;border:1px solid #e5e7eb;border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.06);padding:20px 18px;">
+    <h3 style="margin:0 0 8px;font-size:1.15rem;color:#1C2D40;">Why users trust 10DLC Check</h3>
+    <p id="usage-line" style="margin:0 0 12px;color:#334155;font-size:.98rem;">
+      ✅ <span id="usage-alltime">—</span> messages checked for compliance since launch
+    </p>
+    <p style="margin:0 0 12px;color:#475569;font-size:.95rem;">
+      We are new and building in the open. Our goal is clear guidance aligned to CTIA and carrier documentation so your SMS avoids spam filtering.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="/#checker" class="btn" style="background:#58AEDD;color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none;">Try the free checker</a>
+      <a href="/contact" class="btn secondary" style="background:#1C2D40;color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none;">Share feedback</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  (async function(){
+    try{
+      const r = await fetch('/api/global-count', { headers:{'accept':'application/json'}, cache:'no-store' });
+      if(!r.ok) throw 0;
+      const data = await r.json(); // { all_time: number } expected
+      const n = typeof data.all_time === 'number' ? data.all_time : 0;
+      const el = document.getElementById('usage-alltime');
+      if(el) el.textContent = n.toLocaleString();
+      // subtle reveal
+      document.getElementById('usage-line').style.opacity = '1';
+    }catch{
+      // if API unavailable, hide the metric line
+      const line = document.getElementById('usage-line');
+      if(line) line.style.display = 'none';
+    }
+  })();
+</script>
+
   
 
     <script>
