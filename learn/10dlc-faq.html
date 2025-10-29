@@ -10,6 +10,7 @@
   <title>10DLC Frequently Asked Questions (2025 Guide) | 10dlccheck</title>
   <meta name="description" content="Your up-to-date 2025 FAQ on 10DLC: registration, consent, spam filtering and carrier rules, CTIA best practices, STOP/HELP and message examples." />
   <link rel="canonical" href="https://10dlccheck.com/learn/10dlc-faq.html" />
+  <meta name="robots" content="index,follow" />
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="article" />
@@ -21,18 +22,31 @@
   <meta name="twitter:title" content="10DLC Frequently Asked Questions (2025 Guide) | 10dlccheck" />
   <meta name="twitter:description" content="The authoritative 10DLC FAQ for 2025—covering registration, consent, spam filtering and carrier rules with practical examples." />
 
-<!-- Robots + Browser Hints -->
-<meta name="robots" content="index,follow">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-
-<!-- Stylesheets -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjH3zD7zs+GxG7z1U3yF" crossorigin="anonymous">
-<link rel="stylesheet" href="/learn/style.css">
-
-
   <!-- Styles (site tokens) -->
   <style>
+  :root{
+  --ink:#1C2D40; --muted:#334155; --sky:#58AEDD; --line:#e2e8f0; --bg:#f8fafc; --accent:#1e40af;
+}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+a{color:var(--sky)}
+.wrap{max-width:1200px;margin:0 auto;padding:20px 16px}
+.topbar-slot,.footer-slot{min-height:48px}
+
+/* Hero */
+.hero{background:#fff;border-bottom:1px solid var(--line);padding:32px 0}
+.eyebrow{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+h1{margin:0 0 12px;font-size:2.4rem;font-weight:800;line-height:1.2}
+.sub{margin:0 0 20px;color:var(--muted);font-size:1.1rem;max-width:900px}
+.meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.95rem;padding-top:16px;border-top:1px solid var(--line)}
+
+/* Layout (no sidebar) */
+.main-content{margin:40px 0}
+article.content{background:#fff;border:1px solid var(--line);border-radius:12px;padding:40px;max-width:100%;box-sizing:border-box}
+article.content h2{margin-top:2em;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+article.content h3{margin-top:1.5em}
+.anchor{visibility:hidden;margin-left:.25em;font-size:.9rem;text-decoration:none}
+h2:hover .anchor,h3:hover .anchor{visibility:visible}
 
 /* FAQ blocks */
 .faq-item{border-top:1px solid var(--line);padding:18px 0}
@@ -48,13 +62,82 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
 .compare th,.compare td{border:1px solid var(--line);padding:12px;vertical-align:top}
 .compare th{background:#f8fafc;text-align:left}
 
+/* CTA + Buttons */
+.cta{margin-top:40px;text-align:center;padding:28px;border:1px dashed var(--line);border-radius:14px;background:#f8fafc}
+.btn{display:inline-block;min-width:180px;text-align:center;background:var(--sky);color:#fff;padding:14px 20px;border-radius:12px;font-weight:600;text-decoration:none;line-height:1.2;transition:all .2s ease;border:2px solid transparent}
+.btn:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 14px rgba(28,45,64,.08)}
+.btn:active{transform:translateY(0);box-shadow:none}
+.btn.secondary{background:var(--ink)}
+.btn.secondary:hover{background:var(--muted)}
+
+/* Article navigation (resilient) */
+.article-nav{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);position:static;overflow:visible}
+.article-nav-links{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.article-nav a{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;background:#fff;border:1px solid var(--line);border-radius:8px;
+  text-decoration:none;color:var(--ink)!important;transition:all .2s;
+  min-width:220px
+}
+.article-nav a span{display:inline}
+.article-nav a:hover{border-color:var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+/* Unhide in case of global overrides */
+.article-nav,.article-nav *{visibility:visible;opacity:1}
+
+/* Footer */
+footer{margin-top:60px;border-top:1px solid var(--line);background:#fff}
+.foot-line{display:flex;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;padding:20px 16px;color:var(--muted)}
+.foot-line a{color:var(--sky);text-decoration:none}
+.foot-line a:hover{text-decoration:underline}
+
+/* -------- Mobile (≤768px) overrides -------- */
+@media(max-width:768px){
+  .wrap{padding:16px 14px}
+  .hero{padding:20px 0}.eyebrow{font-size:.8rem;margin-bottom:6px}
+  h1{font-size:1.9rem;line-height:1.25;margin:0 0 8px}
+  .sub{font-size:1rem;margin:0 0 12px}
+  .meta{font-size:.9rem;gap:10px;padding-top:12px}
+
+  .main-content{margin:22px 0}
+  article.content{padding:18px;border-radius:12px}
+  article.content h2{margin-top:1.25em;padding-bottom:6px}
+  article.content h3{margin-top:1.05em}
+
+  .faq-item{padding:14px 0}.faq-q{font-size:1rem}
+  .note{padding:12px 14px;margin:14px 0;border-radius:10px}
+
+  .compare{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .compare th,.compare td{padding:10px}
+
+ .cta{padding:26px 18px;margin-top:24px;border-radius:14px;text-align:center;background:#f8fafc}
+.cta-buttons{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:50px;margin:22px auto 0;width:100%;max-width:280px}
+.btn{display:block;width:90%;text-align:center;padding:13px 16px;border-radius:12px}
+
+ /* Turn article nav into a sticky bottom bar */
+  .article-nav{position:sticky;bottom:0;left:0;right:0;margin:0;padding:10px 0;border-top:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:saturate(1.2) blur(8px);box-shadow:0 -6px 18px rgba(28,45,64,.08)}
+  .article-nav-links{flex-direction:row;gap:10px;padding:0 12px}
+  .article-nav a{flex:1;justify-content:center;padding:12px 14px;border-radius:12px}
+
+  /* Footer: stack cleanly */
+  .foot-line{flex-direction:column;gap:8px}
+}
+
+/* Small phones (≤420px) tighten */
+@media(max-width:420px){
+  h1{font-size:1.7rem}
+  .sub{font-size:.98rem}
+}
+
+/* Motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
 
   </style>
 </head>
 <body>
-<body data-prev="/learn" data-next="/learn/sms-compliance-checklist">
   <!-- Partials -->
-  
   <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
   <!-- Hero -->
@@ -76,11 +159,11 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
   <div class="wrap">
     <div class="main-content">
       <article class="content" id="article">
-        <h2 id="overview">Quick Overview <a class="anchor" href="#overview" aria-label="Link"></a></h2>
+        <h2 id="overview">Quick Overview <a class="anchor" href="#overview" aria-label="Link">#</a></h2>
         <p><strong>10DLC</strong> (ten-digit long code) is the US carrier-approved channel for <em>application-to-person</em> texting using local numbers. To send A2P on 10DLC, brands register with <strong>The Campaign Registry</strong>, then register a <em>campaign</em> and assign phone numbers. Carriers enforce policies on consent, brand identification, STOP/HELP support and restricted content.</p>
         <div class="note">If you are unsure whether a message meets policy, paste it into the <a href="/#checker?utm_source=learn&utm_medium=faq&utm_campaign=cta_checker">10DLC Compliance Checker</a> or use the <a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=faq&utm_campaign=cta_extension">Chrome extension</a>.</div>
 
-        <h2 id="faq">Top Questions & Answers <a class="anchor" href="#faq" aria-label="Link"></a></h2>
+        <h2 id="faq">Top Questions & Answers <a class="anchor" href="#faq" aria-label="Link">#</a></h2>
 
         <div class="faq-item">
           <div class="faq-q">1) Do all major US carriers require 10DLC registration for A2P long-code messaging?</div>
@@ -161,7 +244,7 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
           <div class="faq-a">Verizon recognises short code, toll-free and 10DLC as A2P channels on its public guidance. T-Mobile requires adherence to its Code of Conduct and CTIA Principles. AT&amp;T publishes step-by-step TCR registration instructions for business products.</div>
         </div>
 
-        <h2 id="how-to-register">How to Register (Brand → Campaign → Numbers) <a class="anchor" href="#how-to-register" aria-label="Link"></a></h2>
+        <h2 id="how-to-register">How to Register (Brand → Campaign → Numbers) <a class="anchor" href="#how-to-register" aria-label="Link">#</a></h2>
 			<ol>
 			  <li><strong>Brand</strong>: legal name, EIN/Tax ID, address and website.</li>
 			  <li><strong>Campaign</strong>: use case selection, opt-in method with proof, three sample messages and STOP/HELP keywords.</li>
@@ -190,7 +273,7 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
 
         <p class="note">Keep screenshots and logs of your opt-in flow (timestamp, IP, form text and source) for audits and carrier reviews.</p>
 
-        <h2 id="compliant-examples">Compliant vs Risky examples <a class="anchor" href="#compliant-examples" aria-label="Link"></a></h2>
+        <h2 id="compliant-examples">Compliant vs risky examples <a class="anchor" href="#compliant-examples" aria-label="Link">#</a></h2>
         <h3>✅ Compliant first message</h3>
         <p><strong>BrandName:</strong> Thanks for joining delivery alerts. Up to 4 msgs/mo. Msg&amp;data rates may apply. Reply <strong>STOP</strong> to opt out, <strong>HELP</strong> for help.</p>
         <h3>❌ Risky first message</h3>
@@ -206,8 +289,8 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
 	</section>
 
 	<h2 id="official-refs">
-	  Official References (Carriers and CTIA)
-	  <a class="anchor" href="#official-refs" aria-label="Link"></a>
+	  Official references (Carriers and CTIA)
+	  <a class="anchor" href="#official-refs" aria-label="Link">#</a>
 	</h2>
 	<ul>
 	  <li><strong>T-Mobile:</strong> Non-consumer messaging must follow T-Mobile’s Code of Conduct and CTIA Principles. <a href="https://www.t-mobile.com/support/plans-features/consumer-versus-non-consumer-text-messaging" target="_blank" rel="noopener">Policy overview</a>.</li>
@@ -218,17 +301,21 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
 		<a href="https://api.ctia.org/wp-content/uploads/2024/01/CTIA-Short-Code-Monitoring-Handbook-v1.9-FINAL.pdf" target="_blank" rel="noopener">Short Code Monitoring Handbook</a>.
 	  </li>
 	</ul>
-	</article>
-	
 
-	<!-- Article Navigation -->
-    <nav class="article-nav" aria-label="Learn navigation">
-      <div class="article-nav-links">
-        <a id="prev-article" href="/learn/"><span>←</span><span>Previous article</span></a>
-        <a id="next-article" href="/learn/"><span>Next article</span><span>→</span></a>
-      </div>
-    </nav>
-  </div>
+	<!-- Article navigation -->
+	<nav class="article-nav" aria-label="Learn navigation">
+	  <div class="article-nav-links">
+		<a id="prev-article" href="/learn/what-is-10dlc">
+		  <span>←</span>
+		  <span>What Is 10DLC</span>
+		</a>
+		<a id="next-article" href="/learn/sms-compliance-checklist">
+		  <span>SMS Compliance Checklist</span>
+		  <span>→</span>
+		</a>
+	  </div>
+	</nav>
+	</article>
 	</div>
 	</div>
 
@@ -277,6 +364,17 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
       }));
     })();
 
+    (function attachAnchors(){
+      const sections=Array.from(document.querySelectorAll('#article h2'));
+      sections.forEach(h=>{
+        const id=h.id||h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id=id;
+        if(!h.querySelector('.anchor')){
+          const a=document.createElement('a'); a.className='anchor'; a.href='#'+id; a.textContent='#';
+          a.setAttribute('aria-label','Link to this section'); h.appendChild(a);
+        }
+      });
+    })();
 
     (function readTime(){
       const el=document.getElementById('article'), rt=document.getElementById('read-time');
@@ -286,14 +384,13 @@ table.compare{width:100%;border-collapse:collapse;border:1px solid var(--line);m
       rt.textContent=`~${mins} min read`;
     })();
 
-    // 5) Prev/Next from body attributes
     (function prevNext(){
-      const prev = document.getElementById('prev-article');
-      const next = document.getElementById('next-article');
-      const p = document.body.getAttribute('data-prev');
-      const n = document.body.getAttribute('data-next');
-      if(p){ prev.href = p; prev.querySelector('span:last-child').textContent = 'Previous article'; } else { prev.style.visibility='hidden'; }
-      if(n){ next.href = n; next.querySelector('span:first-child').textContent = 'Next article'; } else { next.style.visibility='hidden'; }
+      const prev=document.getElementById('prev-article');
+      const next=document.getElementById('next-article');
+      const p=document.body.getAttribute('data-prev');
+      const n=document.body.getAttribute('data-next');
+      if(p){prev.href=p}else{prev.style.visibility='hidden'}
+      if(n){next.href=n}else{next.style.visibility='hidden'}
     })();
   </script>
 </body>
