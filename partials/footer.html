@@ -1,129 +1,62 @@
 <!-- ./partials/footer.html -->
-<footer class="site-footer" role="contentinfo">
-  <div class="footer-wrap">
-    <div class="footer-brand">
-      <a href="/" class="brand">10DLC Check</a>
-      <p class="tagline">Free tools and resources for SMS compliance.</p>
-	<a href="/contact">Contact Us</a><br><a href="mailto:support@10dlccheck.com">support@10dlccheck.com</a>
+<footer class="site-footer" style="
+  background:#1E2A38;
+  color:#F8FAFC;
+  font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  padding:3em 1em 2em;
+  border-top:1px solid rgba(255,255,255,.05);
+">
+  <div style="max-width:1200px;margin:0 auto;display:grid;gap:2em;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+    
+    <!-- Brand Column -->
+    <div>
+      <h3 style="color:#58AEDD;margin-bottom:0.5em;">10DLC Check</h3>
+      <p style="font-size:0.95em;line-height:1.6;margin:0 0 0.8em;">
+        Free tools and resources for SMS compliance.
+      </p>
+      <p style="margin:0;">
+        <a href="/contact" style="color:#FDB813;text-decoration:none;">Contact Us</a><br>
+        <a href="mailto:support@10dlccheck.com" style="color:#FDB813;text-decoration:none;">support@10dlccheck.com</a>
+      </p>
     </div>
 
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <div class="col">
-        <h3>Tools</h3>
-        <ul>
-          <li><a href="/#checker">Compliance Checker</a></li>
-          <li><a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk" target="_blank" rel="noopener">Chrome Extension</a></li>
-		  <li><a href="/sandbox/">SMS Sandbox</a></li>
-          <li><a href="/learn/">Knowledge Base</a></li>
-        </ul>
-      </div>
+    <!-- Tools -->
+    <div>
+      <h4 style="color:#fff;margin-bottom:0.6em;">TOOLS</h4>
+      <ul style="list-style:none;margin:0;padding:0;line-height:1.8;">
+        <li><a href="/#checker" style="color:#E2E8F0;text-decoration:none;">Compliance Checker</a></li>
+        <li><a href="/extension/" style="color:#E2E8F0;text-decoration:none;">Chrome Extension</a></li>
+        <li><a href="/sandbox/" style="color:#E2E8F0;text-decoration:none;">SMS Sandbox</a></li>
+        <li><a href="/learn/" style="color:#E2E8F0;text-decoration:none;">Knowledge Base</a></li>
+      </ul>
+    </div>
 
-      <div class="col">
-        <h3>Learn</h3>
-        <ul>
-          <li><a href="/learn/what-is-10dlc.html">What Is 10DLC?</a></li>
-          <li><a href="/learn/10dlc-faq.html">FAQ?</a></li>
-          <li><a href="/learn/ctia-guidelines-explained.html">CTIA Guidelines</a></li>
-          <li><a href="/learn/sms-compliance-checklist.html">Pre-Send Checklist</a></li>
-        </ul>
-      </div>
+    <!-- Learn -->
+    <div>
+      <h4 style="color:#fff;margin-bottom:0.6em;">LEARN</h4>
+      <ul style="list-style:none;margin:0;padding:0;line-height:1.8;">
+        <li><a href="/learn/what-is-10dlc" style="color:#E2E8F0;text-decoration:none;">What is 10DLC?</a></li>
+        <li><a href="/learn/faq" style="color:#E2E8F0;text-decoration:none;">FAQ</a></li>
+        <li><a href="/learn/ctia-guidelines-explained" style="color:#E2E8F0;text-decoration:none;">CTIA Guidelines</a></li>
+        <li><a href="/learn/sms-compliance-checklist" style="color:#E2E8F0;text-decoration:none;">Pre-Send Checklist</a></li>
+      </ul>
+    </div>
 
-      <div class="col">
-        <h3>Legal</h3>
-        <ul>
-          <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/terms">Terms of Use</a></li>
-        </ul>
-      </div>
-    </nav>
+    <!-- Legal -->
+    <div>
+      <h4 style="color:#fff;margin-bottom:0.6em;">LEGAL</h4>
+      <ul style="list-style:none;margin:0;padding:0;line-height:1.8;">
+        <li><a href="/privacy-policy" style="color:#E2E8F0;text-decoration:none;">Privacy Policy</a></li>
+        <li><a href="/terms-of-use" style="color:#E2E8F0;text-decoration:none;">Terms of Use</a></li>
+      </ul>
+    </div>
+
   </div>
 
-  <div class="footer-bottom">
-    <p>&copy; <span id="year"></span> 10DLC Check. Built by <a href="" target="_blank" rel="noopener">A Problem Solver</a>.</p>
+  <div style="text-align:center;margin-top:2.5em;border-top:1px solid rgba(255,255,255,.08);padding-top:1.5em;font-size:0.9em;color:#CBD5E1;">
+    © <span id="year"></span> 10DLC Check. Built by 
+    <a href="https://gopetranelle.com" style="color:#58AEDD;text-decoration:none;">A Problem Solver</a>.
   </div>
-
-  <style>
-    .site-footer{
-      background:#1C2D40;
-      color:#E2E8F0;
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-    }
-    .footer-wrap{
-      max-width:1300px;
-      margin:0 auto;
-      padding:40px 24px;
-      display:grid;
-      grid-template-columns:1.2fr 2fr;
-      gap:32px;
-      align-items:start;
-    }
-    .footer-brand .brand{
-      font-weight:800;
-      font-size:1.3rem;
-      color:#fff;
-      text-decoration:none;
-    }
-    .footer-brand .tagline{
-      color:#CBD5E1;
-      margin-top:6px;
-      font-size:.95rem;
-      max-width:52ch;
-      line-height:1.6;
-    }
-    .footer-nav{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:24px;
-    }
-    .footer-nav h3{
-      font-size:.95rem;
-      font-weight:700;
-      margin-bottom:10px;
-      color:#F1F5F9;
-      text-transform:uppercase;
-      letter-spacing:.5px;
-    }
-    .footer-nav ul{
-      list-style:none;
-      margin:0;
-      padding:0;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .footer-nav a{
-      color:#E2E8F0;
-      text-decoration:none;
-      font-size:.95rem;
-      transition:color .2s ease;
-    }
-    .footer-nav a:hover{
-      color:#58AEDD;
-    }
-    .footer-bottom{
-      border-top:1px solid #334155;
-      background:#0F172A;
-      text-align:center;
-      padding:14px 0;
-      color:#94A3B8;
-      font-size:.92rem;
-    }
-    .footer-bottom a{
-      color:#E2E8F0;
-      text-decoration:none;
-    }
-    .footer-bottom a:hover{
-      color:#58AEDD;
-      text-decoration:underline;
-    }
-    @media(max-width:880px){
-      .footer-wrap{grid-template-columns:1fr;gap:28px;text-align:center}
-      .footer-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;justify-items:center}
-    }
-    @media(max-width:520px){
-      .footer-nav{grid-template-columns:1fr}
-    }
-  </style>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
