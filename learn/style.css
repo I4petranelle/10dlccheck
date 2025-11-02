@@ -49,7 +49,7 @@
 .learn blockquote{border-left:4px solid var(--sky);background:#f1f5f9;border-radius:10px;padding:14px 18px;margin:1.5em 0;color:var(--muted)}
 
 /* CTA blocks & buttons */
-.learn .cta{margin-top:32px;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:14px;background:#f8fafc}
+.learn section .cta{margin-top:32px;text-align:center;padding:24px;border:1px dashed var(--line);border-radius:14px;background:#f8fafc}
 .learn .btn{display:inline-block;background:var(--sky);color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;text-decoration:none;transition:transform .12s ease, box-shadow .12s ease, background .2s;box-shadow:0 6px 18px rgba(88,174,221,.22)}
 .learn .btn:hover{background:var(--accent)}
 .learn .btn:active{transform:scale(.98)}
@@ -89,6 +89,8 @@
 .learn .checklist input[type=checkbox]{margin-top:2px;flex:0 0 auto;width:18px;height:18px;accent-color:var(--sky)}
 .learn .checklist label{display:block;cursor:pointer}
 
+.learn .wrap{max-width:1200px;margin:0 auto;padding:0 16px;box-sizing:border-box}
+
 /* FAQ Page */
 .learn .faq-accordion{display:grid;gap:14px}
 .learn .faq-accordion.two-col{grid-template-columns:1fr 1fr}
@@ -104,6 +106,43 @@
 .learn .faq-panel.open{display:block}
 .learn .faq-panel p,.learn .faq-panel ul,.learn .faq-panel ol,.learn .faq-panel .note,.learn .faq-panel table.compare{margin-top:12px}
 
+
+/* ===== Learn Hub (index) – minimal add-ons using existing tokens ===== */
+.learn .hub-hero{background:#1f2937;color:#fff;padding:48px 0 40px}
+.learn .hub-hero .wrap{max-width:1200px;margin:0 auto;padding:0 16px;}
+.learn .hub-hero h1{font-size:2.2rem;font-weight:800;line-height:1.2;margin:0 0 10px}
+.learn .hub-hero p.sub{color:#e5e7eb;font-size:1.05rem;margin:0}
+
+
+/* Quick Tips */
+.learn .quick-tips{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin:32px 0;box-shadow:0 2px 8px rgba(28,45,64,.04)}
+.learn .quick-tips h2{font-size:1.15rem;margin:0 0 10px}
+.learn .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.learn .tip-item{display:flex;gap:10px;align-items:flex-start}
+.learn .tip-bullet{width:8px;height:8px;border-radius:999px;background:var(--sky);margin-top:.6rem;flex:none}
+.learn .tip-text{color:var(--muted);font-size:.95rem}
+
+/* Article cards */
+.learn .articles{margin:32px 0 8px}
+.learn .articles .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin:0 0 12px;padding:0 0 10px;border-bottom:2px solid var(--line)}
+.learn .articles .section-head h2{font-size:1.4rem;margin:0}
+.learn .articles .count{color:var(--muted);font-size:.9rem}
+
+.learn .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.learn .article-card{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;text-decoration:none;color:var(--ink);transition:box-shadow .15s ease,border-color .15s ease,transform .15s ease}
+.learn .article-card:hover{border-color:var(--sky);box-shadow:0 10px 24px rgba(28,45,64,.08);transform:translateY(-1px)}
+.learn .article-card h3{font-size:1.05rem;margin:0 0 4px}
+.learn .article-card p{color:var(--muted);font-size:.95rem;margin:0}
+
+.learn .article-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+.learn .badge{display:inline-block;background:#e0f2fe;color:#075985;border-radius:999px;padding:4px 10px;font-size:.72rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.learn .read-time{color:var(--muted);font-size:.85rem}
+
+/* CTA */
+.learn .cta-section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;text-align:center;margin:40px 0;box-shadow:0 2px 8px rgba(28,45,64,.04)}
+.learn .cta-section h2{font-size:1.6rem;margin:0 0 8px}
+.learn .cta-section p{color:var(--muted);font-size:1.02rem;margin:0 0 18px}
+.learn .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
 
 /* Footer (scoped) */
@@ -138,6 +177,19 @@
   .learn .article-nav a{ flex: 0 0 auto;padding:10px 18px;}
 
   .learn .foot-line{flex-direction:column;gap:8px}
+  
+  
+  /* Mobile tweaks (reuse your breakpoint) */
+@media (max-width:768px){
+  .learn .hub-hero{padding:28px 0 20px}
+  .learn .hub-hero h1{font-size:1.9rem}
+  .learn .hub-hero p.sub{font-size:1rem}
+  .learn .quick-tips{padding:16px;margin:20px 0;border-radius:14px}
+  .learn .tips-grid{grid-template-columns:1fr}
+  .learn .articles-grid{grid-template-columns:1fr;gap:12px}
+  .learn .article-card{padding:16px;border-radius:14px}
+  .learn .cta-section{padding:22px 16px;border-radius:16px;margin:24px 0}
+  .learn .cta-buttons{flex-direction:column}
 }
 
 /* Motion preferences (scoped) */
