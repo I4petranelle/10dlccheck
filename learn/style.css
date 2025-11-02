@@ -81,6 +81,17 @@
 .learn .article-nav a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--ink);transition:border-color .2s,box-shadow .2s}
 .learn .article-nav a:hover{border-color:var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.05)}
 
+/* Progress bar and checklist for the list article */
+.learn .progress-container{height:10px;background:#eef2f7;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:16px 0 24px}
+.learn .progress-bar{height:100%;width:0;background:var(--sky);border-radius:999px;transition:width .2s ease}
+.learn .checklist{list-style:none;padding-left:0;margin:10px 0 24px}
+.learn .checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;margin:10px 0}
+.learn .checklist input[type=checkbox]{margin-top:2px;flex:0 0 auto;width:18px;height:18px;accent-color:var(--sky)}
+.learn .checklist label{display:block;cursor:pointer}
+
+
+
+
 /* Footer (scoped) */
 .learn footer{margin-top:60px;border-top:1px solid var(--line);background:#fff}
 .learn .foot-line{display:flex;justify-content:space-between;gap:10px;max-width:1320px;margin:0 auto;padding:20px 16px;color:var(--muted)}
