@@ -89,6 +89,20 @@
 .learn .checklist input[type=checkbox]{margin-top:2px;flex:0 0 auto;width:18px;height:18px;accent-color:var(--sky)}
 .learn .checklist label{display:block;cursor:pointer}
 
+/* FAQ Page */
+.learn .faq-accordion{display:grid;gap:14px}
+.learn .faq-accordion.two-col{grid-template-columns:1fr 1fr}
+@media(max-width:900px){.learn .faq-accordion.two-col{grid-template-columns:1fr}}
+.learn .faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 24px rgba(28,45,64,.04);overflow:hidden}
+.learn .faq-toggle{width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;background:#fff;border:0;cursor:pointer;font-weight:600;color:var(--ink)}
+.learn .faq-toggle:hover{background:#f9fbfd}
+.learn .faq-toggle .icon{position:relative;width:18px;height:18px;flex:0 0 18px}
+.learn .faq-toggle .icon::before,.learn .faq-toggle .icon::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;background:var(--ink);transform:translate(-50%,-50%);transition:transform .18s ease,opacity .18s ease}
+.learn .faq-toggle .icon::after{transform:translate(-50%,-50%) rotate(90deg)}
+.learn .faq-toggle[aria-expanded=true] .icon::after{opacity:0;transform:translate(-50%,-50%) rotate(0)}
+.learn .faq-panel{display:none;padding:0 16px 16px;border-top:1px dashed var(--line)}
+.learn .faq-panel.open{display:block}
+.learn .faq-panel p,.learn .faq-panel ul,.learn .faq-panel ol,.learn .faq-panel .note,.learn .faq-panel table.compare{margin-top:12px}
 
 
 
@@ -131,3 +145,4 @@
   .learn *{scroll-behavior:auto}
   .learn .btn{transition:none}
 }
+
