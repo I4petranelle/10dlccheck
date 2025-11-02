@@ -1,56 +1,212 @@
 <style>
-:root{--ink:#1C2D40;--sky:#58AEDD;--line:#e2e8f0}
-.site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
-.site-header .wrap{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px}
-.skip-link{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.skip-link:focus{position:static;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:8px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800}
-.brand img{height:40px;width:auto;display:block}
-.brand .name{color:var(--sky)}
-nav[aria-label="Primary"]{margin-left:auto;display:flex;align-items:center}
-.nav-list{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0}
-.nav-list a{color:var(--ink);text-decoration:none;font-weight:600;line-height:1}
-.nav-list a:hover,.nav-list a:focus{text-decoration:underline}
-.nav-list a[aria-current="page"]{color:var(--sky)}
-.nav-list a.cta{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;background:var(--sky);color:#fff;border:none;font-weight:700;text-decoration:none;line-height:1}
-.nav-list a.cta:hover{background:#3da4d2;text-decoration:none}
-.menu-btn{display:none;margin-left:auto;background:0 0;border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
-.menu-btn:focus{outline:2px solid var(--sky);outline-offset:2px}
-@media(max-width:800px){
-  nav[aria-label="Primary"]{display:none}
-  nav[aria-label="Primary"].open{display:block;position:absolute;left:0;right:0;top:56px;background:#fff;border-bottom:1px solid var(--line)}
-  .nav-list{flex-direction:column;gap:0}
-  .nav-list li{border-top:1px solid var(--line)}
-  .nav-list a{display:block;padding:12px 16px}
-  .menu-btn{display:inline-flex}
-  .nav-list a.cta{margin:10px 16px;align-self:flex-start}
+/* ===========================
+   10DLC CHECK TOPBAR (SCOPED)
+   =========================== */
+#topbar {
+  --ink:#1C2D40;
+  --sky:#58AEDD;
+  --line:#e2e8f0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+/* Header layout */
+#topbar .site-header {
+  position:sticky;
+  top:0;
+  z-index:900;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+#topbar .wrap {
+  max-width:1200px;
+  margin:0 auto;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+#topbar .brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none !important;
+  color:var(--ink) !important;
+  font-weight:800;
+}
+#topbar .brand img {
+  height:40px;
+  width:auto;
+  display:block;
+}
+#topbar .brand .name { color:var(--sky) !important; }
+
+#topbar nav[aria-label="Primary"] {
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+}
+#topbar .nav-list {
+  display:flex;
+  align-items:center;
+  gap:22px;
+  list-style:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+#topbar .nav-list a {
+  color:var(--ink) !important;
+  text-decoration:none !important;
+  font-weight:600 !important;
+  line-height:1;
+}
+#topbar .nav-list a:hover,
+#topbar .nav-list a:focus {
+  text-decoration:underline !important;
+}
+#topbar .nav-list a[aria-current="page"] {
+  color:var(--sky) !important;
+}
+#topbar .nav-list a.cta {
+  display:inline-flex;
+  align-items:center;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--sky);
+  color:#fff !important;
+  font-weight:700 !important;
+  text-decoration:none !important;
+  line-height:1;
+}
+#topbar .nav-list a.cta:hover {
+  background:#3da4d2;
+}
+
+/* Mobile */
+@media (max-width:800px) {
+  #topbar #primaryNav { display:none !important; }
+  #topbar .menu-link {
+    margin-left:auto;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 12px;
+    text-decoration:none !important;
+    font-weight:700;
+    color:var(--ink) !important;
+  }
+  #topbar .menu-link:focus {
+    outline:2px solid var(--sky);
+    outline-offset:2px;
+  }
+}
+
+/* Overlay */
+#site-menu {
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:9999;
+  display:none;
+  opacity:0;
+  transform:translateY(-8px);
+  transition:opacity .18s ease, transform .18s ease;
+  padding:16px;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  border-top:1px solid var(--line);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+#site-menu:target {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+html:has(#site-menu:target),
+body:has(#site-menu:target) {
+  overflow:hidden;
+}
+
+#site-menu .menu-close {
+  display:inline-block;
+  margin:4px 0 12px;
+  font-weight:700;
+  color:var(--ink);
+  text-decoration:none !important;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:8px 12px;
+}
+#site-menu .menu-title {
+  font-weight:800;
+  font-size:1.125rem;
+  color:var(--ink);
+  margin:6px 0 14px;
+}
+#site-menu ul {
+  list-style:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-top:1px solid var(--line);
+}
+#site-menu li { border-bottom:1px solid var(--line); }
+#site-menu a {
+  display:block;
+  padding:14px 6px;
+  text-decoration:none !important;
+  color:var(--ink) !important;
+  font-weight:700 !important;
+}
+#site-menu a:hover,
+#site-menu a:focus {
+  text-decoration:underline !important;
+}
+#site-menu a.cta {
+  background:var(--sky);
+  color:#fff !important;
+  border-radius:10px;
+  margin:12px 0;
+  text-align:center;
+  text-decoration:none !important;
+}
+@media (min-width:801px) {
+  #topbar .menu-link { display:none; }
 }
 </style>
 
-<a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header" role="banner" itemscope itemtype="https://schema.org/WPHeader">
-  <div class="wrap">
-    <a href="/" class="brand" aria-label="10DLC Check home" itemprop="headline">
-      <img src="/assets/logo1.png" alt="10DLC Check logo"/><span class="name">10DLC Check</span>
-    </a>
-    <button class="menu-btn" id="menuBtn" aria-controls="primaryNav" aria-expanded="false">Menu</button>
-    <nav id="primaryNav" aria-label="Primary" itemscope itemtype="https://schema.org/SiteNavigationElement">
-      <ul class="nav-list">
-        <li><a href="/learn/" title="10DLC knowledge base">Learn</a></li>
-        <li><a href="/#checker" title="Run the compliance checker">Checker</a></li>
-        <li><a href="/about" title="About 10DLC Check">About</a></li>
-        <li><a class="cta" href="/extension/?utm_source=topbar&utm_medium=nav&utm_campaign=extension_promo&utm_content=cta_button" title="Chrome extension" target="_blank" rel="noopener">Extension</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+<!-- Header -->
+<div id="topbar">
+  <a class="skip-link" href="#main"></a>
+  <header class="site-header" role="banner" itemscope itemtype="https://schema.org/WPHeader">
+    <div class="wrap">
+      <a href="/" class="brand" aria-label="10DLC Check home" itemprop="headline">
+        <img src="/assets/logo1.png" alt="10DLC Check logo" />
+        <span class="name">10DLC Check</span>
+      </a>
 
-<script>
-(function(){
-  const here=location.pathname.replace(/\/+$/,'')||'/';
-  document.querySelectorAll('#primaryNav a').forEach(a=>{
-    const href=new URL(a.getAttribute('href',a.href),location.origin).pathname.replace(/\/+$/,'')||'/';
-    if(href===here)a.setAttribute('aria-current','page');
-  });
-})();
-</script>
+      <!-- Desktop nav -->
+      <nav id="primaryNav" aria-label="Primary" itemscope itemtype="https://schema.org/SiteNavigationElement">
+        <ul class="nav-list">
+          <li><a href="/learn/">Learn</a></li>
+          <li><a href="/#checker">Checker</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a class="cta" href="/extension/?utm_source=topbar&utm_medium=nav&utm_campaign=extension_promo"
+                 target="_blank" rel="noopener">Extension</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile trigger -->
+      <a class="menu-link" href="#site-menu" aria-label="Open menu">Menu</a>
+    </div>
+  </header>
+</div>
+
+<!-- Overlay -->
+<div id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu">
+  <a class="menu-close" href="#" aria-label="Close menu">Close ✕</a>
+  <div class="menu-title">Navigation</div>
+  <ul>
+    <li><a href="/learn/">Learn</a></li>
+    <li><a href="/#checker">Checker</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a class="cta" href="/extension/?utm_source=overlay&utm_medium=nav&utm_campaign=extension_promo">Extension</a></li>
+  </ul>
+</div>
