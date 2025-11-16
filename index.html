@@ -1,223 +1,797 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>10DLC Message Compliance Checker | Free SMS Validator</title>
-    <meta name="description" content="Free A2P 10DLC SMS compliance checker. Instantly validate your text messages against carrier rules, restricted categories, SHAFT content and best practices to avoid filtering." />
-    <link rel="canonical" href="https://10dlccheck.com/" />
-    <meta name="robots" content="index,follow" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free 10DLC Compliance Checker | SMS Validator</title>
+  <meta name="description" content="Instantly check SMS against 10DLC rules. Flag SHAFT, risky links, missing STOP/HELP & consent issues to reduce filtering and improve delivery." />
+  <link rel="canonical" href="https://10dlccheck.com/" />
+  <meta name="robots" content="index,follow" />
 
-    <!-- Social -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="10DLC Message Compliance Checker" />
-    <meta name="twitter:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
-    <meta name="twitter:image" content="/favicon.png" />
-    <meta property="og:title" content="10DLC Message Compliance Checker" />
-    <meta property="og:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://10dlccheck.com/" />
-    <meta property="og:image" content="/favicon.png" />
-    <link rel="icon" href="/favicon.png" type="image/png" />
+  <!-- Social -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10DLC Message Compliance Checker" />
+  <meta name="twitter:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
+  <meta property="og:title" content="10DLC Message Compliance Checker" />
+  <meta property="og:description" content="Validate SMS content for A2P 10DLC compliance and avoid carrier filtering." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://10dlccheck.com/" />
 
-    <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f1f5f9;min-height:100vh;color:#111827}
-.container{max-width:1000px;margin:0 auto;background:rgba(255,255,255,.95);border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.1);backdrop-filter:blur(10px);overflow:hidden}
-.header{background:#1f2937;color:#fff;padding:22px 30px;text-align:center}
-.header h1{font-size:2rem;font-weight:800;letter-spacing:-.01em}
-.header p{font-size:.98rem;opacity:.9;margin-top:4px}
-.stats-bar{margin-top:10px;display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap}
-.badge{display:inline-flex;align-items:center;gap:6px;background:#f9fafb;border:1px solid #cbd5e1;color:#1e293b;padding:6px 12px;border-radius:999px;font-size:.9rem;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.05)}
-.content{padding:24px 30px 18px;text-align:left}
-.intro{color:#1f2937;line-height:1.5}
-.input-section{margin:18px 0}
-label{display:block;margin-bottom:10px;font-weight:700;color:#374151;font-size:1.05rem}
-textarea{width:100%;min-height:120px;padding:15px;border:2px solid #e5e7eb;border-radius:12px;font-size:16px;transition:.3s;resize:vertical}
-textarea:focus{outline:none;border-color:#58AEDD;box-shadow:0 0 0 3px rgba(88,174,221,.15)}
-.helper{margin-top:6px;font-size:.86rem;color:#6b7280}
-.verify-bar{margin:10px 0 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;width:100%;border:2px solid #1c2D40;background:#f0f6fa;border-radius:10px;padding:8px 12px;box-shadow:0 2px 6px rgba(28,45,64,.1)}
-.verify-label{font-size:.95rem;color:#1C2D40;font-weight:700}
-.math-inline{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:1rem;color:#1C2D40}
-.math-inline input{width:72px;padding:6px 8px;text-align:center;border:2px solid #1C2D40;border-radius:8px;font-size:.95rem;background:#fff;color:#1C2D40;font-weight:600}
-.math-inline input:focus{outline:none;border-color:#58AEDD;box-shadow:0 0 4px #58AEDD}
-.verify-note{margin-left:auto;font-size:.85rem;color:#1C2D40;font-style:italic;white-space:nowrap}
-input[type="text"]:focus,button:focus,select:focus{outline:none;border-color:#58AEDD;box-shadow:0 0 0 3px rgba(88,174,221,.15)}
-.button-container{text-align:center;margin:14px 0 16px}
-.check-btn{background:#1f2937;color:#fff;padding:12px 28px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 15px rgba(31,41,55,.3)}
-.check-btn:hover{background:#58AEDD;transform:translateY(-1px);box-shadow:none}
-.check-btn:disabled{background:#9ca3af;cursor:not-allowed;opacity:.7}
-.guide-btn{display:inline-block;margin-top:28px;background:#58AEDD;color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.3px;padding:14px 34px;border-radius:999px;text-decoration:none;transition:.25s;box-shadow:0 6px 18px rgba(88,174,221,.3)}
-.guide-btn:hover{background:#1C2D40;box-shadow:0 6px 18px rgba(28,45,64,.25);transform:translateY(-1px)}
-.loading{text-align:left;padding:10px;display:none}
-.spinner{border:3px solid #f3f4f6;border-top:3px solid #1f2937;border-radius:50%;width:28px;height:28px;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.results{margin-top:14px}
-.res-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.06);min-height:120px;padding:16px 18px}
-.res-header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid #e5e7eb}
-.res-title{display:flex;align-items:center;gap:8px}
-.res-title h3{margin:0;font-size:1.06rem;line-height:1.2}
-.icon{width:20px;height:20px;color:#16a34a;flex:0 0 auto}
-.res-metrics{display:flex;gap:8px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:6px 10px;font-size:.86rem}
-.chip .chip-k{color:#6b7280;font-weight:700;text-transform:uppercase}
-.chip .chip-v{color:#111827;font-weight:800}
-.res-block{margin-top:14px}
-.res-block ul{list-style:none;padding-left:0;margin:0}
-.block-title{font-weight:700;font-size:.95rem;margin-bottom:8px;color:#1C2D40}
-.res-badge-row{display:flex;gap:6px;flex-wrap:wrap}
-.res-badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.78rem;border:1px solid transparent}
-.res-badge.info{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
-.res-badge.warn{background:#fffbeb;color:#92400e;border-color:#fde68a}
-.res-badge.restrict{background:#ecfeff;color:#155e75;border-color:#a5f3fc}
-.res-badge.prohib{background:#fef2f2;color:#991b1b;border-color:#fecaca}
-.cat-grid{display:grid;gap:8px}
-.cat-item{padding:10px;border:1px solid #58AEDD;border-radius:10px;background:#E6F4FA;box-shadow:0 2px 8px rgba(88,174,221,.25);transition:.25s all ease-in-out}
-.cat-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
-.cat-name{font-weight:500}
-.cat-impact{color:#6b7280}
-.issue-list{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}
-.issue{border:1px solid #e5e7eb;border-left-width:4px;border-radius:10px;padding:10px 12px;background:#fff}
-.issue.high{border-left-color:#ef4444;background:#fff1f1}
-.issue.medium{border-left-color:#f59e0b;background:#fff7e6}
-.issue.low{border-left-color:#16a34a;background:#ecfdf5}
-.issue-msg{font-weight:500;color:#1e293b;margin-bottom:6px}
-.issue-sug{color:#374151;font-size:.92rem}
-.okline{padding:10px 12px;border:1px solid #d1fae5;background:#ecfdf5;color:#065f46;border-radius:10px}
-.panel{margin-top:40px;padding:16px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;text-align:left}
-.panel h4{font-size:1rem;color:#111827;margin-bottom:10px;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
-.card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px}
-.card h5{margin-bottom:6px;font-size:.88rem;color:#111827;font-weight:600}
-.card p{font-size:.7rem;line-height:1.5;color:#374151;word-break:break-word}
-.sample{white-space:pre-line;font-size:.83rem;color:#374151;background:#fff;border:1px dashed #d1d5db;border-radius:8px;padding:10px;text-align:left;margin:0}
-.note{font-size:.88rem;color:#4b5563;margin-top:8px;line-height:1.6}
-.guidelines{margin-top:18px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0}
-.guidelines h4{color:#1e293b;margin-bottom:8px;font-size:1rem;cursor:pointer;display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;transition:.2s}
-.guidelines h4:hover{background:#e2e8f0}
-.guidelines h4::before{content:"▶";font-size:.8rem;transition:transform .2s}
-.guidelines h4.expanded::before{content:"▼"}
-.guidelines ul{transition:all .2s ease;overflow:hidden;max-height:0;opacity:0;margin:0;padding:0 0 0 18px;list-style:disc}
-.guidelines ul.expanded{max-height:1000px;opacity:1;margin:8px 0}
-.guidelines li{margin-bottom:6px;color:#475569}
-@media(max-width:480px){.res-card{padding:14px}.verify-bar{flex-direction:column;align-items:flex-start}.verify-note{margin-left:0;white-space:normal}.res-header{gap:10px}.res-metrics{gap:6px}.cat-item{padding:8px}.card{padding:10px}.card h5{font-size:.9rem}}
+  <style>
+  /* =========================
+     DESIGN TOKENS
+     ========================= */
+  :root{
+    --ink:#1C2D40;
+    --muted:#334155;
+    --sky:#58AEDD;
+    --line:#e2e8f0;
+    --bg:#f8fafc;
+    --accent:#2563EB;
+    --success:#10b981;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+    --hero-bg:#0a0f1a;
+    --hero-bg-secondary:#111827;
+    --shadow-sm:0 2px 4px rgba(28,45,64,.06);
+    --shadow-md:0 8px 16px rgba(28,45,64,.10);
+    --shadow-lg:0 16px 32px rgba(28,45,64,.12);
+    --shadow-xl:0 24px 48px rgba(28,45,64,.15);
+    --space-1:.25rem;
+    --space-2:.5rem;
+    --space-3:.75rem;
+    --space-4:1rem;
+    --space-5:1.25rem;
+    --space-6:1.5rem;
+    --space-8:2rem;
+    --space-10:3rem;
+    --radius-sm:.5rem;
+    --radius-md:.75rem;
+    --radius-lg:1rem;
+    --radius-xl:1.25rem;
+    --radius-2xl:1.75rem;
+    --radius-full:9999px;
+  }
+
+  /* Dark mode: global (dark surfaces) */
+  @media (prefers-color-scheme: dark) {
+    :root{
+      --bg:#0b1220;
+      --ink:#e6eef7;
+      --muted:#b8c6d8;   /* for dark backgrounds */
+      --line:#192233;
+      --sky:#58AEDD;
+      --accent:#7aa7ff;
+    }
+
+    /* Light surface override: any white card/panel in dark mode */
+    .card,
+    .surface,
+    .panel,
+    .content-card,
+    .main-card,
+    .ai-lead,
+    .ai-panel {
+      background:#fff;
+      color:#1C2D40;        /* reset body text for white bg */
+      --ink:#1C2D40;        /* dark-on-light tokens */
+      --muted:#334155;      /* readable on white */
+      --line:#e2e8f0;       /* light border on white */
+    }
+
+    /* Ensure helpers/placeholders aren’t faded on white cards */
+    .card .text-muted,
+    .card .muted,
+    .main-card .text-muted,
+    .main-card .muted,
+    .ai-lead .text-muted,
+    .ai-lead .muted,
+    .ai-panel .text-muted,
+    .ai-panel .muted {
+      color:var(--muted);
+      opacity:1;
+    }
+
+    .card input::placeholder,
+    .card textarea::placeholder,
+    .main-card input::placeholder,
+    .main-card textarea::placeholder,
+    .ai-lead input::placeholder,
+    .ai-panel textarea::placeholder {
+      color:#475569;
+      opacity:1;
+    }
+  }
+
+  /* BASE */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;font-size:15px}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg,var(--hero-bg) 0%,var(--hero-bg-secondary) 100%);
+    padding:var(--space-10) var(--space-5) var(--space-8);
+    text-align:center;
+    overflow:visible !important;
+    z-index:1;
+  }
+  .hero-content{ position:relative; max-width:900px; margin:0 auto; }
+  .hero h1{
+    font-size:clamp(2rem,5vw,3.25rem);
+    font-weight:900;
+    color:#fff;
+    margin-bottom:var(--space-3);
+    letter-spacing:-.02em;
+    line-height:1.1;
+  }
+  .hero p{
+    font-size:clamp(1rem,1.6vw,1.2rem);
+    color:rgba(255,255,255,.9);
+    margin-bottom:var(--space-6);
+    max-width:800px;
+    margin-inline:auto;
+    font-weight:400;
+  }
+
+  /* Stats */
+  .stats-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:.75rem;
+    max-width:640px;
+    margin:1rem auto 0;
+  }
+  .stat-card {
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    padding:.85rem 1rem;
+    color:#fff;
+    text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .stat-label {
+    font-size:.75rem;
+    font-weight:700;
+    opacity:.85;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:.35rem;
+  }
+  .stat-value {
+    font-size:1.45rem;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:#fff;
+  }
+  #rulesDate {
+    color:var(--sky);
+    font-size:1.1rem;
+    font-weight:900;
+  }
+
+  /* MAIN */
+  .container{
+    max-width:1200px;
+    margin:-3rem auto 0;
+    padding:0 var(--space-5);
+    position:relative;
+    z-index:10;
+  }
+  .main-card{
+    background:#fff;
+    border-radius:var(--radius-2xl);
+    box-shadow:var(--shadow-xl);
+    padding:var(--space-8);
+    margin-bottom:var(--space-8);
+    border:1px solid var(--line);
+    margin-top: calc(var(--space-8) * 2);
+  }
+
+  /* FORM */
+  .intro{
+    color:var(--muted);
+    margin-bottom:var(--space-5);
+    font-size:1rem;
+    line-height:1.7;
+  }
+  .intro strong{
+    color:var(--ink);
+    font-weight:700;
+  }
+  .form-group{ margin-bottom:var(--space-5); }
+  label{
+    display:block;
+    font-weight:700;
+    font-size:1rem;
+    color:var(--ink);
+    margin-bottom:var(--space-3);
+  }
+  textarea{
+    width:100%;
+    min-height:140px;
+    padding:var(--space-4);
+    border:2px solid var(--line);
+    border-radius:var(--radius-lg);
+    font-size:.95rem;
+    font-family:inherit;
+    background:#fff;
+    color:var(--ink);
+    transition:all .2s ease;
+    resize:vertical;
+    line-height:1.6;
+  }
+  textarea:focus{
+    outline:none;
+    border-color:var(--sky);
+    box-shadow:0 0 0 4px rgba(88,174,221,.15);
+  }
+  .char-counter{
+    text-align:right;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-top:var(--space-2);
+    font-weight:600;
+  }
+
+  .ai-optin{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    margin:var(--space-3) 0;
+    cursor:pointer;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .ai-optin input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    cursor:pointer;
+    accent-color:var(--sky);
+  }
+
+  /* ===== Email Gate (AI Lead) ===== */
+  .ai-lead {
+    margin-top: var(--space-5);
+    padding: var(--space-4);
+    background: linear-gradient(
+      135deg,
+      rgba(88,174,221,.08) 0%,
+      rgba(37,99,235,.05) 100%
+    );
+    border: 1.5px solid var(--sky);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ai-lead-form-label {
+    display: block;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .5rem;
+  }
+
+  /* Helper text – full color, centered */
+  .ai-lead .privacy {
+    text-align: center;
+    margin: 0 auto 0.9rem;
+    max-width: 520px;
+    font-size: .95rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .ai-lead-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ai-lead-row input[type="email"] {
+    flex: 1 1 280px;
+    max-width: 320px;
+    height: 42px;
+    padding: 0 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    font-size: .95rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ai-lead-row input[type="email"]::placeholder {
+    color: var(--ink);
+    opacity: .7;
+  }
+
+  .ai-lead-row input[type="email"]:focus {
+    outline: none;
+    border-color: var(--sky);
+    box-shadow: 0 0 0 3px rgba(88,174,221,.15);
+  }
+
+  .btn-lead{
+    height:36px;
+    padding:0 16px;
+    border:none;
+    border-radius:var(--radius-lg);
+    background:var(--sky);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+    white-space:nowrap;
+  }
+  .btn-lead:hover{ background:var(--accent); transform:translateY(-1px); }
+  .btn-lead:active{ transform:none; }
+
+  .lead-confirm{
+    margin-top:.6rem;
+    color:var(--success);
+    font-weight:700;
+  }
+/* Mobile: tighten the email AI unlock area */
+@media (max-width: 480px) {
+  .ai-lead-panel,
+  .ai-lead-input-shell,
+  .ai-lead-row {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    min-height: 0 !important;
+  }
+
+  .ai-lead-row input[type="email"] {
+    height: 40px !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
+  }
+  }
+
+  .verify-box{ display:none !important; } /* to be removed */
+  .verify-box{
+    background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%);
+    border:2px solid var(--sky);
+    border-radius:var(--radius-xl);
+    padding:var(--space-4);
+    margin:var(--space-4) 0;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:var(--space-4);
+  }
+  .verify-label{
+    font-weight:700;
+    color:var(--ink);
+    font-size:1rem;
+  }
+  .math-group input{
+    width:74px;
+    height:42px;
+    text-align:center;
+    border:2px solid var(--ink);
+    border-radius:var(--radius-md);
+    font-size:1.1rem;
+    font-weight:700;
+    background:#fff;
+    color:var(--ink);
+  }
+
+  /* BUTTONS */
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.5rem;
+    width:100%;
+    height:48px;
+    padding:0 var(--space-6);
+    background:var(--sky);
+    color:#fff;
+    font-size:1rem;
+    font-weight:700;
+    border:none;
+    border-radius:var(--radius-lg);
+    cursor:pointer;
+    box-shadow:var(--shadow-md);
+  }
+  .btn-primary:hover{ background:var(--accent); transform:translateY(-2px); }
+  .btn-primary:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-primary.w-full {
+    flex: 0 0 auto;
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 10px;
+    width: auto;
+    font-size: .95rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* =========================
+     RESULTS (scoped + simple)
+     ========================= */
+  .results{margin-top:14px}
+  .res-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    min-height:120px;
+    padding:16px 18px;
+  }
+  .res-header{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    padding-bottom:8px;
+    border-bottom:1px solid #e5e7eb;
+  }
+  .res-title{display:flex;align-items:center;gap:8px}
+  .res-title h3{margin:0;font-size:1.06rem;line-height:1.2}
+  .icon{width:20px;height:20px;color:#16a34a;flex:0 0 auto}
+  .res-metrics{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.86rem;
+  }
+  .chip .chip-k{color:#6b7280;font-weight:700;text-transform:uppercase}
+  .chip .chip-v{color:#111827;font-weight:800}
+  .res-block{margin-top:14px}
+  .res-block ul{list-style:none;padding-left:0;margin:0}
+  .block-title{font-weight:700;font-size:.95rem;margin-bottom:8px;color:#1C2D40}
+
+  /* Inline notice line */
+  .results .okline{
+    background:#fff8e6;
+    border:1px solid #fde68a;
+    color:#92400e;
+    padding:8px 10px;
+    border-radius:8px;
+  }
+
+  /* -------- Badges (support both .badge & .res-badge) -------- */
+  .results .badge-row,
+  .results .res-badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+
+  .results .badge,
+  .results .res-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 10px;
+    border-radius:9999px;
+    background:#fff;
+    color:var(--ink,#1C2D40);
+    font-size:.85rem;
+    font-weight:500;
+    line-height:1.1;
+    border:1.5px solid var(--accent,#58AEDD);
+    box-shadow:0 2px 4px rgba(28,45,64,.06);
+    transition:background .25s ease,transform .2s ease;
+  }
+
+  /* Severity variants */
+  .results .badge.bad-info,
+  .results .res-badge.info{
+    background:#eef2ff;
+    color:#3730a3;
+    border-color:#c7d2fe;
+  }
+
+  .results .badge.bad-warn,
+  .results .res-badge.warn{
+    background:#fffbeb;
+    color:#92400e;
+    border-color:#fde68a;
+  }
+
+  .results .badge.bad-restrict,
+  .results .res-badge.restrict{
+    background:#ecfeff;
+    color:#155e75;
+    border-color:#a5f3fc;
+  }
+
+  .results .badge.bad-prohib,
+  .results .res-badge.prohib{
+    background:#fef2f2;
+    color:#991b1b;
+    border-color:#fecaca;
+  }
+
+  /* Category cards */
+  .cat-grid{display:grid;gap:8px}
+  .cat-item{
+    padding:10px;
+    border:1px solid #58AEDD;
+    border-radius:10px;
+    background:#E6F4FA;
+    box-shadow:0 2px 8px rgba(88,174,221,.25);
+    transition:.25s all ease-in-out;
+  }
+  .cat-head{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .cat-name{font-weight:500}
+  .cat-impact{color:#6b7280}
+
+  /* Issues list */
+  .issue-list{
+    list-style:none;
+    padding:0;
+    margin:8px 0 0;
+    display:grid;
+    gap:10px;
+  }
+  .issue{
+    border:1px solid #e5e7eb;
+    border-left-width:4px;
+    border-radius:10px;
+    padding:10px 12px;
+    background:#fff;
+  }
+  .issue.high{border-left-color:#ef4444;background:#fff1f1}
+  .issue.medium{border-left-color:#f59e0b;background:#fff7e6}
+  .issue.low{border-left-color:#16a34a;background:#ecfdf5}
+  .issue-msg{
+    font-weight:500;
+    color:#1e293b;
+    margin-bottom:6px;
+  }
+  .issue-sug{
+    color:#374151;
+    font-size:.92rem;
+  }
+
+  /* Force proper line breaks for labels coming from JS */
+  .results .res-card .res-block strong,
+  .results .res-card .res-block b,
+  .results .res-card .category-label{
+    display:block !important;
+    margin-bottom:6px !important;
+    font-weight:600 !important;
+    color:var(--ink,#1C2D40) !important;
+    line-height:1.4 !important;
+    white-space:normal !important;
+    word-break:break-word !important;
+  }
+
+  /* Export chips */
+  .export-bar{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    flex-wrap:wrap;
+    margin:1rem 0 0;
+  }
+  .btn-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.5rem .85rem;
+    background:#fff;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:999px;
+    font-weight:600;
+    box-shadow:var(--shadow-sm);
+  }
+
+  /* AI panel */
+  .ai-panel{
+    margin-top:var(--space-5);
+    padding:var(--space-5);
+    background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%);
+    border:2px solid var(--sky);
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow-md);
+  }
+  .ai-panel h3{
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:var(--space-3);
+    color:var(--ink);
+  }
+  .ai-suggestion-box{
+    padding:var(--space-4);
+    background:#fff;
+    border-radius:var(--radius-lg);
+    min-height:100px;
+    color:var(--ink);
+    line-height:1.7;
+    border:1px solid var(--line);
+  }
+
+  /* Mobile layout */
+  @media (max-width:768px){
+    .hero{
+      padding:var(--space-8) var(--space-4) var(--space-6);
+    }
+    .main-card{
+      padding:var(--space-6);
+      border-radius:var(--radius-xl);
+    }
+  }
+  @media (max-width:480px){
+    .results .issue-card{ padding:.9rem 1rem; }
+    .results .issue-card .cat{ font-size:1.05rem; }
+    .results .issue-card li.desc{ font-size:.92rem; }
+  }
 </style>
 
-
-    <!-- App JS -->
-    <script src="/app.js"></script> <!-- uses COMPLIANCE_RULES -->
-  </head>
-  <body>
+</head>
+<body>
 <div class="topbar-slot" data-include="/partials/topbar.html"></div>
-<div style="height:50px"></div>
-   	<div class="container">
-      <div class="header" role="banner">
-        <h1>10DLC Compliance Checker</h1>
-        <p>Analyze your SMS messages for US A2P 10DLC compliance before you send.</p>
-        <div class="stats-bar" aria-live="polite">
-          <span class="badge">🔢 Your 10DLC checks: <span id="localCount">0</span></span>
-          <span class="badge">🌍 Site-wide checks: <span id="globalCount">—</span></span>
-          <span class="badge">⚡ Avg. analysis: <span id="avgTime">—</span></span>
-        </div>
+  <div style="height:1px"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>10DLC Compliance Checker</h1>
+      <p>Analyze your SMS messages for US A2P 10DLC compliance before sending.</p>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">📊 Your Checks</div><div class="stat-value" id="localCount">0</div></div>
+        <div class="stat-card"><div class="stat-label">🌎 Global Checks</div><div class="stat-value" id="globalCount">—</div></div>
+        <div class="stat-card"><div class="stat-label">⚡ Avg Analysis</div><div class="stat-value" id="avgTime">—</div></div>
+        <div class="stat-card"><div class="stat-label">🛡️ Rules Updates</div><div class="stat-value" id="rulesDate">Nov 2025</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="container">
+    <div class="main-card">
+      <p class="intro">
+        Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending.
+      </p>
+      <p class="intro" style="margin-top: var(--space-4);">
+        Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and other 10DLC compliance issues
+        that may trigger carrier filtering.
+      </p>
+
+      <div style="height:16px"></div>
+
+      <div class="form-group">
+        <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
+        <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You'll get weekly updates. Reply STOP to opt out."></textarea>
+        <div class="char-counter" id="charCounter">0 / 320 (1 segment)</div>
       </div>
 
-      <div class="content">
-        <p class="intro">Use this free online <strong>10DLC compliance checker</strong> to test your SMS campaigns before sending.</p>
-        <p class="intro" style="margin-top: 1.5rem;">Our validator scans for <em>restricted categories</em>, <em>SHAFT content</em>, <em>phishing risks</em> and other 10DLC compliance issues that may trigger carrier filtering. Quickly validate your text messages, avoid penalties and ensure your campaigns reach customers without being blocked.</p>
-<div style="height:20px"></div>
-        <div class="input-section">
-          <label for="message">Enter your SMS message to check for 10DLC compliance:</label>
-          <textarea id="message" placeholder="Example: ExampleCo: Thanks for joining! You’ll get weekly updates. Reply STOP to opt out."></textarea>
+      <label class="ai-optin">
+        <input id="aiOptIn" type="checkbox" checked />
+        <span>Allow grammar &amp; clarity suggestions (AI)</span>
+      </label>
 
-          <!-- live counter -->
-          <div id="charCounter" style="text-align:right;font-size:.85rem;color:#6b7280;margin-top:4px"></div>
+      
+	  
 
-          <!-- AI opt-in -->
-          <label class="ai-optin" style="display:flex;gap:8px;align-items:center;margin:8px 0 4px 0;">
-            <input id="aiOptIn" type="checkbox" checked />
-            <span>Allow grammar &amp; clarity suggestions (AI)</span>
-          </label>
-          <div style="margin:-2px 0 10px 26px;color:#6b7280;font-size:.85rem">
-            We don’t sell your data. See our <a href="/privacy">Privacy Policy</a>.
-          </div>
+     <div class="action-row" style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
+  
+		  <!-- Check Compliance -->
+		  <button class="btn-primary" id="checkBtn" style="flex:1;">
+			<span class="btn-label">Check Compliance</span>
+		  </button>
 
-          <div class="verify-bar" title="Quick human verification">
-            <span class="verify-label">Verification:</span>
-            <div class="math-inline">
-              <span id="mathQuestion">4 + 2 =</span>
-              <input type="text" id="mathAnswer" inputmode="numeric" placeholder="?" aria-label="Answer" />
-            </div>
-            <span class="verify-note">Solve to verify you're human</span>
-          </div>
-        </div>
+		  <!-- Clear Message -->
+		  <button id="clearBtn" type="button" class="btn-chip"
+			style="white-space:nowrap; padding:0 16px; height:48px;">
+			🧹 Clear
+		  </button>
 
-        <div class="button-container">
-          <button class="check-btn" id="checkBtn">Check Compliance</button>
-        </div>
+		</div>
 
-        <div id="loading" class="loading" aria-live="polite">
-          <div class="spinner"></div>
-          <p>Analyzing message...</p>
-        </div>
+      <div id="loading" class="loading" style="display:none;text-align:center;margin:var(--space-5) 0" aria-live="polite">
+        <p style="color:var(--muted);font-weight:600;">Analyzing message...</p>
+      </div>
 
-        <!-- Results container -->
-        <div id="results" class="results-card" role="status" aria-live="polite"></div>
+      <div id="results" class="results" role="status" aria-live="polite"></div>
 
-        <!-- AI Suggestion -->
-		<section class="panel" aria-labelledby="aiSuggestionHdr" style="margin-top:1.5rem;">
-		  <h4 id="aiSuggestionHdr" style="font-weight:600;margin-bottom:0.5rem;">AI Suggestion (optional):</h4>
-		  <div id="aiSuggestionBox"
-			   style="background:#fff;border:2px solid #58AEDD;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.04);min-height:72px;transition:border-color .2s;">
-			<div id="aiSuggestionText" style="color:#1f2937;">Suggestion will appear here.</div>
-			<div id="aiSuggestionFlags" class="note" style="margin-top:8px;color:#6b7280;"></div>
-		  </div>
-		</section>
+		<!-- Export / Share -->
+		<div id="exportBar" class="export-bar" style="display:none">
+		  <button class="btn-chip" id="copyReportBtn">📋 Copy Report</button>
+		  <button class="btn-chip" id="emailReportBtn">📧 Email Report</button>
+		</div>
+		
+      <div id="aiFixCta" class="ai-fix-cta" style="margin-top:1rem;display:none">
+  <button type="button" class="btn-primary" id="aiFixBtn">💡 Get AI-Powered Fix</button>
+</div>
 
+<section id="aiLeadPanel" class="ai-lead" aria-label="AI fix lead capture" style="display:none">
+  <form
+    id="signupForm"
+    action="javascript:void(0)"
+    data-endpoint="https://formsubmit.co/ipetranelle@gmail.com"
+    method="POST"
+    onsubmit="handleLeadSubmit(event)"
+    class="space-y-4"
+  >
+    <!-- hidden fields -->
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_template" value="table" />
+    <input type="hidden" name="_subject" value="New AI Fix Lead — 10DLC Check" />
+    <input type="hidden" name="form_name" value="AI Fix Lead" />
+    <input type="hidden" name="site" value="" />
+    <input type="hidden" name="page" value="" />
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
-        <div class="helper">Tip: Identify your brand early and include a clear opt-out when appropriate.</div>
+    <!-- Label + helper text -->
+    <label for="leadEmail" class="ai-lead-form-label"></label>
+    <p class="privacy">
+      Enter your email to unlock the cleaned, CTIA-friendly AI version of your message.
+    </p>
 
-        <!-- Panel: Real Message Examples -->
-<section class="panel" id="examples" aria-labelledby="examples-title">
-  <h4 id="examples-title">Real-World 10DLC Message Examples</h4>
-  <p class="note">Explore compliant and non-compliant examples from industries most often flagged by carriers. You can copy any message below into the checker to test compliance.</p>
-  <div class="grid">
+    <!-- Single email field + button -->
+    <div class="ai-lead-row">
+      <input
+        type="email"
+        name="email"
+        id="leadEmail"
+        placeholder="you@example.com"
+        required
+      />
+      <button type="submit" class="btn-lead">
+        Get My AI Fix
+      </button>
+    </div>
 
-    <!-- FINANCE -->
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="finance"><h5><a id="ex-finance-1">Finance</a></h5><div class="sample" itemprop="text">FundHouse: Your loan application update — docs received. We’ll contact you within 1 business day. Reply HELP for support or STOP to opt out.</div><p class="note">✅ Clear brand ID, transparent purpose and opt-out language included.</p></article>
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="finance"><h5><a id="ex-finance-2">Finance</a></h5><div class="sample" itemprop="text">You’re pre-approved for $250K right now! Click to claim before it’s gone: bit.ly/loan123  No opt-out included.</div><p class="note">🚫 Misleading urgency, short-link without brand, and missing STOP/HELP.</p></article>
-
-    <!-- HEALTHCARE -->
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="healthcare"><h5><a id="ex-health-1">Healthcare</a></h5><div class="sample" itemprop="text">HealthFirst: Reminder — Dr. Patel appointment on Aug 5 at 3 PM. Reply C to confirm or STOP to cancel text reminders.</div><p class="note">✅ HIPAA-safe phrasing, brand upfront and clear opt-out.</p></article>
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="healthcare"><h5><a id="ex-health-2">Healthcare</a></h5><div class="sample" itemprop="text">Your test results are ready! Click here to view: tinyurl.com/abc123 (No brand or consent context.)</div><p class="note">🚫 No sender identity, potential PHI disclosure, and risky short-link.</p></article>
-
-    <!-- REAL ESTATE -->
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="real-estate"><h5><a id="ex-re-1">Real Estate</a></h5><div class="sample" itemprop="text">Metro Realty: Thanks for touring 22 Park Ave! View more listings anytime: metrorealty.com/listings. Reply STOP to unsubscribe.</div><p class="note">✅ Includes brand, relevant link and opt-out for follow-ups.</p></article>
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="real-estate"><h5><a id="ex-re-2">Real Estate</a></h5><div class="sample" itemprop="text">Need a new home fast? We can guarantee approval today! Click: bit.ly/dealnow  No brand or consent info.</div><p class="note">🚫 Unverified claim, no brand identification, missing consent proof.</p></article>
-
-    <!-- E-COMMERCE -->
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="ecommerce"><h5><a id="ex-ecom-1">E-commerce</a></h5><div class="sample" itemprop="text">TrendWear: Thanks for subscribing! Your exclusive 15% off code is WELCOME15. You’ll receive 2–3 texts per month. Reply HELP for info or STOP to unsubscribe.</div><p class="note">✅ Brand identified upfront, clear frequency disclosure.</p></article>
-    <article class="card" itemscope itemtype="https://schema.org/CreativeWork" data-industry="ecommerce"><h5><a id="ex-ecom-2">E-commerce</a></h5><div class="sample" itemprop="text">HUGE SALE!!! 90% OFF EVERYTHING 😱 Shop now → bit.ly/deals123  No prior consent or opt-out option.</div><p class="note">🚫 Excessive caps/emojis, risky short link, and no brand/opt-out info.</p></article>
-
-  </div>
+    <div id="leadConfirm" class="lead-confirm" style="display:none;">
+      Got it — your AI-cleaned version will appear below.
+    </div>
+  </form>
 </section>
 
 
-
-                
-      </div>
+      <!-- AI Panel -->
+      <section class="ai-panel" aria-labelledby="aiSuggestionHdr" id="aiPanel" style="display:none">
+        <h3 id="aiSuggestionHdr">AI Suggestion</h3>
+        <div class="ai-suggestion-box">
+          <div id="aiSuggestionText">Preparing suggestion…</div>
+          <div id="aiSuggestionFlags" class="fineprint" style="margin-top:.5rem;"></div>
+        </div>
+      </section>
     </div>
+  </div>
+
+  <div style="height:10px"></div>
 <!-- Learn More Section (above footer) -->
 <section class="learn-more" style="
-  margin:40px 30px 24px;
+  margin:18px auto 24px;
   background:#fff;
-  border:1px solid #e5e7eb;
+  border:1px solid var(--line,#e5e7eb);
   border-radius:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
-  padding:24px 20px;
-  max-width:1000px;
-  margin-left:auto;
-  margin-right:auto;
+  box-shadow:0 4px 12px rgba(28,45,64,0.05);
+  padding:22px 20px;
+  max-width:1150px;
+  width:95%;
 ">
 
   <h2 style="
@@ -230,7 +804,7 @@ input[type="text"]:focus,button:focus,select:focus{outline:none;border-color:#58
     padding-bottom:8px;
     border-bottom:1px solid #e5e7eb;
   ">
-    Learn More About 10DLC Compliance
+    Learn More
   </h2>
 
   <p style="
@@ -280,109 +854,24 @@ input[type="text"]:focus,button:focus,select:focus{outline:none;border-color:#58
   </div>
 </section>
 
-	  
-
-    <script>
-      // Cloudflare Worker endpoint
-      const AI_API = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
-      // If routed later: const AI_API = "/api/suggest";
-
-      // Live character counter (segments aware)
-      (function () {
-        const msg = document.getElementById('message');
-        const counter = document.getElementById('charCounter');
-        if (!msg || !counter) return;
-        function updateCount(){
-          const len = (msg.value||'').length;
-          const seg = len<=160?1:(len<=320?2:'2+');
-          counter.textContent = `${len} / 320 (${seg} segment${seg===1?'':'s'})`;
-          counter.style.color = len>320 ? '#b91c1c' : (len>160 ? '#b45309' : '#6b7280');
-        }
-        msg.addEventListener('input', updateCount);
-        updateCount();
-      })();
-
-      // Hook the existing "Check Compliance" flow (no changes to app.js)
-      (function wireAISuggestion() {
-        const checkBtn = document.getElementById("checkBtn");
-        const msgEl    = document.getElementById("message");
-        const aiOptIn  = document.getElementById("aiOptIn");
-        const aiText   = document.getElementById("aiSuggestionText");
-        const aiFlags  = document.getElementById("aiSuggestionFlags");
-
-        if (!checkBtn || !msgEl || !aiOptIn || !aiText) return;
-
-        checkBtn.addEventListener("click", async () => {
-          const message = (msgEl.value || "").trim();
-
-          // disable during analysis (prevents double clicks)
-          checkBtn.disabled = true;
-          const originalLabel = checkBtn.textContent;
-          checkBtn.textContent = "Analyzing…";
-
-          try {
-            if (!aiOptIn.checked || !message) {
-              aiText.textContent = "Suggestion will appear here.";
-              aiFlags.textContent = "";
-              return;
-            }
-
-            aiText.textContent = "Generating AI suggestion…";
-            aiFlags.textContent = "";
-
-            const r = await fetch(AI_API, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ brand: "10DLC Check", message })
-            });
-
-            const data = await r.json().catch(() => ({}));
-            aiText.textContent = (data?.suggestion || "").trim() || "No suggestion returned.";
-            if (Array.isArray(data?.risks) && data.risks.length) {
-              aiFlags.innerHTML = "<strong>Flags:</strong> " + data.risks.map(x => x.message).join(" • ");
-            } else {
-              aiFlags.textContent = "";
-            }
-          } catch {
-            aiText.textContent = "Couldn’t reach AI service.";
-            aiFlags.textContent = "";
-          } finally {
-            checkBtn.disabled = false;
-            checkBtn.textContent = originalLabel;
-          }
-        });
-      })();
-    </script>
-	<div style="height:60px"></div>
-
-	<!-- Footer Include -->
+  <!-- Footer Include -->
   <div class="footer-slot" data-include="/partials/footer.html"></div>
 
-  <!-- Include Partials Script -->
+  <!-- Core checker logic -->
+  <script src="./app.js"></script>
+
+  <!-- AI gate, export bar, includes, clear button -->
+  <script src="./main.js"></script>
+
+  <!-- Google Analytics & Ads (leave as-is) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
-    (async () => {
-      const slots = document.querySelectorAll("[data-include]");
-      await Promise.all([...slots].map(async (el) => {
-        try {
-          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
-          if (res.ok) el.innerHTML = await res.text();
-        } catch (err) {
-          console.error("Include failed:", err);
-        }
-      }));
-    })();
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
   </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 
-   
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-C64QWDBMQZ');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
-
-  </body>
+</body>
 </html>
