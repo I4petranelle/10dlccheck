@@ -22,18 +22,85 @@
      DESIGN TOKENS
      ========================= */
   :root{
-    --ink:#1C2D40; --muted:#334155; --sky:#58AEDD; --line:#e2e8f0; --bg:#f8fafc; --accent:#2563EB;
-    --success:#10b981; --warning:#f59e0b; --danger:#ef4444;
-    --hero-bg:#0a0f1a; --hero-bg-secondary:#111827;
+    --ink:#1C2D40;
+    --muted:#334155;
+    --sky:#58AEDD;
+    --line:#e2e8f0;
+    --bg:#f8fafc;
+    --accent:#2563EB;
+    --success:#10b981;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+    --hero-bg:#0a0f1a;
+    --hero-bg-secondary:#111827;
     --shadow-sm:0 2px 4px rgba(28,45,64,.06);
     --shadow-md:0 8px 16px rgba(28,45,64,.10);
     --shadow-lg:0 16px 32px rgba(28,45,64,.12);
     --shadow-xl:0 24px 48px rgba(28,45,64,.15);
-    --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:3rem;
-    --radius-sm:.5rem; --radius-md:.75rem; --radius-lg:1rem; --radius-xl:1.25rem; --radius-2xl:1.75rem; --radius-full:9999px;
+    --space-1:.25rem;
+    --space-2:.5rem;
+    --space-3:.75rem;
+    --space-4:1rem;
+    --space-5:1.25rem;
+    --space-6:1.5rem;
+    --space-8:2rem;
+    --space-10:3rem;
+    --radius-sm:.5rem;
+    --radius-md:.75rem;
+    --radius-lg:1rem;
+    --radius-xl:1.25rem;
+    --radius-2xl:1.75rem;
+    --radius-full:9999px;
   }
-  @media (prefers-color-scheme: dark){
-    :root{ --bg:#0b1220; --ink:#e6eef7; --muted:#b6c2d1; --line:#192233; --sky:#58AEDD; --accent:#7aa7ff; }
+
+  /* Dark mode: global (dark surfaces) */
+  @media (prefers-color-scheme: dark) {
+    :root{
+      --bg:#0b1220;
+      --ink:#e6eef7;
+      --muted:#b8c6d8;   /* for dark backgrounds */
+      --line:#192233;
+      --sky:#58AEDD;
+      --accent:#7aa7ff;
+    }
+
+    /* Light surface override: any white card/panel in dark mode */
+    .card,
+    .surface,
+    .panel,
+    .content-card,
+    .main-card,
+    .ai-lead,
+    .ai-panel {
+      background:#fff;
+      color:#1C2D40;        /* reset body text for white bg */
+      --ink:#1C2D40;        /* dark-on-light tokens */
+      --muted:#334155;      /* readable on white */
+      --line:#e2e8f0;       /* light border on white */
+    }
+
+    /* Ensure helpers/placeholders aren’t faded on white cards */
+    .card .text-muted,
+    .card .muted,
+    .main-card .text-muted,
+    .main-card .muted,
+    .ai-lead .text-muted,
+    .ai-lead .muted,
+    .ai-panel .text-muted,
+    .ai-panel .muted {
+      color:var(--muted);
+      opacity:1;
+    }
+
+    .card input::placeholder,
+    .card textarea::placeholder,
+    .main-card input::placeholder,
+    .main-card textarea::placeholder,
+    .ai-lead input::placeholder,
+    .ai-panel textarea::placeholder {
+      color:#475569;
+      opacity:1;
+    }
   }
 
   /* BASE */
@@ -41,8 +108,11 @@
   html{scroll-behavior:smooth;font-size:15px}
   body{
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:var(--bg); color:var(--ink); line-height:1.6;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
   }
 
   /* HERO */
@@ -50,259 +120,537 @@
     position:relative;
     background:linear-gradient(180deg,var(--hero-bg) 0%,var(--hero-bg-secondary) 100%);
     padding:var(--space-10) var(--space-5) var(--space-8);
-    text-align:center; overflow:visible !important; z-index:1;
+    text-align:center;
+    overflow:visible !important;
+    z-index:1;
   }
   .hero-content{ position:relative; max-width:900px; margin:0 auto; }
   .hero h1{
-    font-size:clamp(2rem,5vw,3.25rem); font-weight:900; color:#fff; margin-bottom:var(--space-3);
-    letter-spacing:-.02em; line-height:1.1;
+    font-size:clamp(2rem,5vw,3.25rem);
+    font-weight:900;
+    color:#fff;
+    margin-bottom:var(--space-3);
+    letter-spacing:-.02em;
+    line-height:1.1;
   }
   .hero p{
-    font-size:clamp(1rem,1.6vw,1.2rem); color:rgba(255,255,255,.9);
-    margin-bottom:var(--space-6); max-width:800px; margin-inline:auto; font-weight:400;
+    font-size:clamp(1rem,1.6vw,1.2rem);
+    color:rgba(255,255,255,.9);
+    margin-bottom:var(--space-6);
+    max-width:800px;
+    margin-inline:auto;
+    font-weight:400;
   }
 
   /* Stats */
-  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:.75rem; max-width:640px; margin:1rem auto 0; }
-  .stat-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:.85rem 1rem; color:#fff; text-align:center; box-shadow:0 4px 16px rgba(0,0,0,.05); }
-  .stat-label { font-size:.75rem; font-weight:700; opacity:.85; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.35rem; }
-  .stat-value { font-size:1.45rem; font-weight:800; letter-spacing:-.02em; color:#fff; }
-  #rulesDate { color:var(--sky); font-size:1.1rem; font-weight:900; }
+  .stats-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:.75rem;
+    max-width:640px;
+    margin:1rem auto 0;
+  }
+  .stat-card {
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    padding:.85rem 1rem;
+    color:#fff;
+    text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .stat-label {
+    font-size:.75rem;
+    font-weight:700;
+    opacity:.85;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:.35rem;
+  }
+  .stat-value {
+    font-size:1.45rem;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:#fff;
+  }
+  #rulesDate {
+    color:var(--sky);
+    font-size:1.1rem;
+    font-weight:900;
+  }
 
   /* MAIN */
-  .container{ max-width:1200px; margin:-3rem auto 0; padding:0 var(--space-5); position:relative; z-index:10; }
-  .main-card{ background:#fff; border-radius:var(--radius-2xl); box-shadow:var(--shadow-xl); padding:var(--space-8); margin-bottom:var(--space-8); border:1px solid var(--line); margin-top: calc(var(--space-8) * 2);}
+  .container{
+    max-width:1200px;
+    margin:-3rem auto 0;
+    padding:0 var(--space-5);
+    position:relative;
+    z-index:10;
+  }
+  .main-card{
+    background:#fff;
+    border-radius:var(--radius-2xl);
+    box-shadow:var(--shadow-xl);
+    padding:var(--space-8);
+    margin-bottom:var(--space-8);
+    border:1px solid var(--line);
+    margin-top: calc(var(--space-8) * 2);
+  }
 
   /* FORM */
-  .intro{ color:var(--muted); margin-bottom:var(--space-5); font-size:1rem; line-height:1.7; }
-  .intro strong{ color:var(--ink); font-weight:700; }
-  .form-group{ margin-bottom:var(--space-5); }
-  label{ display:block; font-weight:700; font-size:1rem; color:var(--ink); margin-bottom:var(--space-3); }
-  textarea{
-    width:100%; min-height:140px; padding:var(--space-4); border:2px solid var(--line); border-radius:var(--radius-lg);
-    font-size:.95rem; font-family:inherit; background:#fff; color:var(--ink); transition:all .2s ease; resize:vertical; line-height:1.6;
+  .intro{
+    color:var(--muted);
+    margin-bottom:var(--space-5);
+    font-size:1rem;
+    line-height:1.7;
   }
-  textarea:focus{ outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(88,174,221,.15); }
-  .char-counter{ text-align:right; font-size:.85rem; color:var(--muted); margin-top:var(--space-2); font-weight:600; }
+  .intro strong{
+    color:var(--ink);
+    font-weight:700;
+  }
+  .form-group{ margin-bottom:var(--space-5); }
+  label{
+    display:block;
+    font-weight:700;
+    font-size:1rem;
+    color:var(--ink);
+    margin-bottom:var(--space-3);
+  }
+  textarea{
+    width:100%;
+    min-height:140px;
+    padding:var(--space-4);
+    border:2px solid var(--line);
+    border-radius:var(--radius-lg);
+    font-size:.95rem;
+    font-family:inherit;
+    background:#fff;
+    color:var(--ink);
+    transition:all .2s ease;
+    resize:vertical;
+    line-height:1.6;
+  }
+  textarea:focus{
+    outline:none;
+    border-color:var(--sky);
+    box-shadow:0 0 0 4px rgba(88,174,221,.15);
+  }
+  .char-counter{
+    text-align:right;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-top:var(--space-2);
+    font-weight:600;
+  }
 
-  .ai-optin{ display:flex; align-items:center; gap:.5rem; margin:var(--space-3) 0; cursor:pointer; font-weight:600; color:var(--ink); }
-  .ai-optin input[type="checkbox"]{ width:18px; height:18px; cursor:pointer; accent-color:var(--sky); }
-/* ===== Email Gate (AI Lead) ===== */
-.ai-lead{
-  margin-top:var(--space-5);
-  padding:var(--space-4);
-  background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%);
-  border:1.5px solid var(--sky);
-  border-radius:var(--radius-xl);
-  box-shadow:var(--shadow-md);
-}
+  .ai-optin{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    margin:var(--space-3) 0;
+    cursor:pointer;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .ai-optin input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    cursor:pointer;
+    accent-color:var(--sky);
+  }
 
-.ai-lead-form label{
-  display:block;
-  font-weight:700;
-  color:var(--ink);
-  margin-bottom:.5rem;
-}
+  /* ===== Email Gate (AI Lead) ===== */
+  .ai-lead {
+    margin-top: var(--space-5);
+    padding: var(--space-4);
+    background: linear-gradient(
+      135deg,
+      rgba(88,174,221,.08) 0%,
+      rgba(37,99,235,.05) 100%
+    );
+    border: 1.5px solid var(--sky);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+  }
 
-.ai-lead-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:.6rem;
-}
+  .ai-lead-form-label {
+    display: block;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .5rem;
+  }
 
-.ai-lead-row input[type="email"]{
-  height:46px;
-  padding:0 14px;
-  border:2px solid var(--line);
-  border-radius:var(--radius-lg);
-  background:#fff;
-  color:var(--ink);
-  font-size:.98rem;
-  box-shadow:var(--shadow-sm);
-}
+  /* Helper text – full color, centered */
+  .ai-lead .privacy {
+    text-align: center;
+    margin: 0 auto 0.9rem;
+    max-width: 520px;
+    font-size: .95rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
 
-.ai-lead-row input[type="email"]::placeholder{ color:#9aa6b2; }
-.ai-lead-row input[type="email"]:focus{
-  outline:none;
-  border-color:var(--sky);
-  box-shadow:0 0 0 4px rgba(88,174,221,.15);
-}
+  .ai-lead-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 
-.btn-lead{
-  height:46px;
-  padding:0 16px;
-  border:none;
-  border-radius:var(--radius-lg);
-  background:var(--sky);
-  color:#fff;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:var(--shadow-sm);
-  white-space:nowrap;
-}
-.btn-lead:hover{ background:var(--accent); transform:translateY(-1px); }
-.btn-lead:active{ transform:none; }
+  .ai-lead-row input[type="email"] {
+    flex: 1 1 280px;
+    max-width: 320px;
+    height: 42px;
+    padding: 0 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    font-size: .95rem;
+    box-shadow: var(--shadow-sm);
+  }
 
-.lead-confirm{
-  margin-top:.6rem;
-  color:var(--success);
-  font-weight:700;
-}
+  .ai-lead-row input[type="email"]::placeholder {
+    color: var(--ink);
+    opacity: .7;
+  }
 
-.ai-lead .privacy{
-  margin-top:.4rem;
-  color:var(--muted);
-  font-size:.85rem;
-}
+  .ai-lead-row input[type="email"]:focus {
+    outline: none;
+    border-color: var(--sky);
+    box-shadow: 0 0 0 3px rgba(88,174,221,.15);
+  }
 
-/* Mobile */
-@media (max-width:520px){
-  .ai-lead-row{ grid-template-columns:1fr; }
-  .btn-lead{ width:100%; }
-}
+  .btn-lead{
+    height:36px;
+    padding:0 16px;
+    border:none;
+    border-radius:var(--radius-lg);
+    background:var(--sky);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+    white-space:nowrap;
+  }
+  .btn-lead:hover{ background:var(--accent); transform:translateY(-1px); }
+  .btn-lead:active{ transform:none; }
 
- .verify-box{ display:none !important; } /* to be removed */
+  .lead-confirm{
+    margin-top:.6rem;
+    color:var(--success);
+    font-weight:700;
+  }
+/* Mobile: tighten the email AI unlock area */
+@media (max-width: 480px) {
+  .ai-lead-panel,
+  .ai-lead-input-shell,
+  .ai-lead-row {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    min-height: 0 !important;
+  }
+
+  .ai-lead-row input[type="email"] {
+    height: 40px !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
+  }
+  }
+
+  .verify-box{ display:none !important; } /* to be removed */
   .verify-box{
     background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%);
-    border:2px solid var(--sky); border-radius:var(--radius-xl); padding:var(--space-4); margin:var(--space-4) 0;
-    display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-4);
+    border:2px solid var(--sky);
+    border-radius:var(--radius-xl);
+    padding:var(--space-4);
+    margin:var(--space-4) 0;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:var(--space-4);
   }
-  .verify-label{ font-weight:700; color:var(--ink); font-size:1rem; }
+  .verify-label{
+    font-weight:700;
+    color:var(--ink);
+    font-size:1rem;
+  }
   .math-group input{
-    width:74px; height:42px; text-align:center; border:2px solid var(--ink); border-radius:var(--radius-md);
-    font-size:1.1rem; font-weight:700; background:#fff; color:var(--ink);
+    width:74px;
+    height:42px;
+    text-align:center;
+    border:2px solid var(--ink);
+    border-radius:var(--radius-md);
+    font-size:1.1rem;
+    font-weight:700;
+    background:#fff;
+    color:var(--ink);
   }
 
   /* BUTTONS */
   .btn-primary{
-    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-    width:100%; height:48px; padding:0 var(--space-6); background:var(--sky); color:#fff;
-    font-size:1rem; font-weight:700; border:none; border-radius:var(--radius-lg); cursor:pointer; box-shadow:var(--shadow-md);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.5rem;
+    width:100%;
+    height:48px;
+    padding:0 var(--space-6);
+    background:var(--sky);
+    color:#fff;
+    font-size:1rem;
+    font-weight:700;
+    border:none;
+    border-radius:var(--radius-lg);
+    cursor:pointer;
+    box-shadow:var(--shadow-md);
   }
   .btn-primary:hover{ background:var(--accent); transform:translateY(-2px); }
   .btn-primary:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-primary.w-full {
+    flex: 0 0 auto;
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 10px;
+    width: auto;
+    font-size: .95rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
 
-/* =========================
-   RESULTS (scoped + simple)
-   ========================= */
-.results{margin-top:14px}
-.res-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.06);min-height:120px;padding:16px 18px}
-.res-header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid #e5e7eb}
-.res-title{display:flex;align-items:center;gap:8px}
-.res-title h3{margin:0;font-size:1.06rem;line-height:1.2}
-.icon{width:20px;height:20px;color:#16a34a;flex:0 0 auto}
-.res-metrics{display:flex;gap:8px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:6px 10px;font-size:.86rem}
-.chip .chip-k{color:#6b7280;font-weight:700;text-transform:uppercase}
-.chip .chip-v{color:#111827;font-weight:800}
-.res-block{margin-top:14px}
-.res-block ul{list-style:none;padding-left:0;margin:0}
-.block-title{font-weight:700;font-size:.95rem;margin-bottom:8px;color:#1C2D40}
+  /* =========================
+     RESULTS (scoped + simple)
+     ========================= */
+  .results{margin-top:14px}
+  .res-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    min-height:120px;
+    padding:16px 18px;
+  }
+  .res-header{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    padding-bottom:8px;
+    border-bottom:1px solid #e5e7eb;
+  }
+  .res-title{display:flex;align-items:center;gap:8px}
+  .res-title h3{margin:0;font-size:1.06rem;line-height:1.2}
+  .icon{width:20px;height:20px;color:#16a34a;flex:0 0 auto}
+  .res-metrics{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.86rem;
+  }
+  .chip .chip-k{color:#6b7280;font-weight:700;text-transform:uppercase}
+  .chip .chip-v{color:#111827;font-weight:800}
+  .res-block{margin-top:14px}
+  .res-block ul{list-style:none;padding-left:0;margin:0}
+  .block-title{font-weight:700;font-size:.95rem;margin-bottom:8px;color:#1C2D40}
 
-/* Inline notice line */
-.results .okline{
-  background:#fff8e6;
-  border:1px solid #fde68a;
-  color:#92400e;
-  padding:8px 10px;
-  border-radius:8px;
-}
+  /* Inline notice line */
+  .results .okline{
+    background:#fff8e6;
+    border:1px solid #fde68a;
+    color:#92400e;
+    padding:8px 10px;
+    border-radius:8px;
+  }
 
-/* -------- Badges (support both .badge & .res-badge) -------- */
-.results .badge-row,
-.results .res-badge-row{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+  /* -------- Badges (support both .badge & .res-badge) -------- */
+  .results .badge-row,
+  .results .res-badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
 
-.results .badge,
-.results .res-badge{
-  display:inline-flex;
-  align-items:center;
-  padding:6px 10px;
-  border-radius:9999px;
-  background:#fff;
-  color:var(--ink,#1C2D40);
-  font-size:.85rem;
-  font-weight:500;
-  line-height:1.1;
-  border:1.5px solid var(--accent,#58AEDD);
-  box-shadow:0 2px 4px rgba(28,45,64,.06);
-  transition:background .25s ease,transform .2s ease;
-}
+  .results .badge,
+  .results .res-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 10px;
+    border-radius:9999px;
+    background:#fff;
+    color:var(--ink,#1C2D40);
+    font-size:.85rem;
+    font-weight:500;
+    line-height:1.1;
+    border:1.5px solid var(--accent,#58AEDD);
+    box-shadow:0 2px 4px rgba(28,45,64,.06);
+    transition:background .25s ease,transform .2s ease;
+  }
 
-/* Severity variants */
-.results .badge.bad-info,
-.results .res-badge.info{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
+  /* Severity variants */
+  .results .badge.bad-info,
+  .results .res-badge.info{
+    background:#eef2ff;
+    color:#3730a3;
+    border-color:#c7d2fe;
+  }
 
-.results .badge.bad-warn,
-.results .res-badge.warn{background:#fffbeb;color:#92400e;border-color:#fde68a}
+  .results .badge.bad-warn,
+  .results .res-badge.warn{
+    background:#fffbeb;
+    color:#92400e;
+    border-color:#fde68a;
+  }
 
-.results .badge.bad-restrict,
-.results .res-badge.restrict{background:#ecfeff;color:#155e75;border-color:#a5f3fc}
+  .results .badge.bad-restrict,
+  .results .res-badge.restrict{
+    background:#ecfeff;
+    color:#155e75;
+    border-color:#a5f3fc;
+  }
 
-.results .badge.bad-prohib,
-.results .res-badge.prohib{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+  .results .badge.bad-prohib,
+  .results .res-badge.prohib{
+    background:#fef2f2;
+    color:#991b1b;
+    border-color:#fecaca;
+  }
 
-/* Category cards */
-.cat-grid{display:grid;gap:8px}
-.cat-item{padding:10px;border:1px solid #58AEDD;border-radius:10px;background:#E6F4FA;box-shadow:0 2px 8px rgba(88,174,221,.25);transition:.25s all ease-in-out}
-.cat-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
-.cat-name{font-weight:500}
-.cat-impact{color:#6b7280}
+  /* Category cards */
+  .cat-grid{display:grid;gap:8px}
+  .cat-item{
+    padding:10px;
+    border:1px solid #58AEDD;
+    border-radius:10px;
+    background:#E6F4FA;
+    box-shadow:0 2px 8px rgba(88,174,221,.25);
+    transition:.25s all ease-in-out;
+  }
+  .cat-head{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .cat-name{font-weight:500}
+  .cat-impact{color:#6b7280}
 
-/* Issues list */
-.issue-list{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}
-.issue{border:1px solid #e5e7eb;border-left-width:4px;border-radius:10px;padding:10px 12px;background:#fff}
-.issue.high{border-left-color:#ef4444;background:#fff1f1}
-.issue.medium{border-left-color:#f59e0b;background:#fff7e6}
-.issue.low{border-left-color:#16a34a;background:#ecfdf5}
-.issue-msg{font-weight:500;color:#1e293b;margin-bottom:6px}
-.issue-sug{color:#374151;font-size:.92rem}
+  /* Issues list */
+  .issue-list{
+    list-style:none;
+    padding:0;
+    margin:8px 0 0;
+    display:grid;
+    gap:10px;
+  }
+  .issue{
+    border:1px solid #e5e7eb;
+    border-left-width:4px;
+    border-radius:10px;
+    padding:10px 12px;
+    background:#fff;
+  }
+  .issue.high{border-left-color:#ef4444;background:#fff1f1}
+  .issue.medium{border-left-color:#f59e0b;background:#fff7e6}
+  .issue.low{border-left-color:#16a34a;background:#ecfdf5}
+  .issue-msg{
+    font-weight:500;
+    color:#1e293b;
+    margin-bottom:6px;
+  }
+  .issue-sug{
+    color:#374151;
+    font-size:.92rem;
+  }
 
-/* Force proper line breaks for labels coming from JS (e.g., "SHAFT Content" + "URL Security") */
-.results .res-card .res-block strong,
-.results .res-card .res-block b,
-.results .res-card .category-label{
-  display:block !important;
-  margin-bottom:6px !important;
-  font-weight:600 !important;
-  color:var(--ink,#1C2D40) !important;
-  line-height:1.4 !important;
-  white-space:normal !important;
-  word-break:break-word !important;
-}
-
-
-
+  /* Force proper line breaks for labels coming from JS */
+  .results .res-card .res-block strong,
+  .results .res-card .res-block b,
+  .results .res-card .category-label{
+    display:block !important;
+    margin-bottom:6px !important;
+    font-weight:600 !important;
+    color:var(--ink,#1C2D40) !important;
+    line-height:1.4 !important;
+    white-space:normal !important;
+    word-break:break-word !important;
+  }
 
   /* Export chips */
-  .export-bar{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; margin:1rem 0 0; }
-  .btn-chip{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .85rem; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:999px; font-weight:600; box-shadow:var(--shadow-sm); }
+  .export-bar{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    flex-wrap:wrap;
+    margin:1rem 0 0;
+  }
+  .btn-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.5rem .85rem;
+    background:#fff;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:999px;
+    font-weight:600;
+    box-shadow:var(--shadow-sm);
+  }
 
   /* AI panel */
-  .ai-panel{ margin-top:var(--space-5); padding:var(--space-5); background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%); border:2px solid var(--sky); border-radius:var(--radius-xl); box-shadow:var(--shadow-md); }
-  .ai-panel h3{ font-size:1.15rem; font-weight:700; margin-bottom:var(--space-3); color:var(--ink); }
-  .ai-suggestion-box{ padding:var(--space-4); background:#fff; border-radius:var(--radius-lg); min-height:100px; color:var(--ink); line-height:1.7; border:1px solid var(--line); }
+  .ai-panel{
+    margin-top:var(--space-5);
+    padding:var(--space-5);
+    background:linear-gradient(135deg, rgba(88,174,221,.08) 0%, rgba(37,99,235,.05) 100%);
+    border:2px solid var(--sky);
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow-md);
+  }
+  .ai-panel h3{
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:var(--space-3);
+    color:var(--ink);
+  }
+  .ai-suggestion-box{
+    padding:var(--space-4);
+    background:#fff;
+    border-radius:var(--radius-lg);
+    min-height:100px;
+    color:var(--ink);
+    line-height:1.7;
+    border:1px solid var(--line);
+  }
 
-  /* Mobile */
+  /* Mobile layout */
   @media (max-width:768px){
-    .hero{ padding:var(--space-8) var(--space-4) var(--space-6); }
-    .main-card{ padding:var(--space-6); border-radius:var(--radius-xl); }
+    .hero{
+      padding:var(--space-8) var(--space-4) var(--space-6);
+    }
+    .main-card{
+      padding:var(--space-6);
+      border-radius:var(--radius-xl);
+    }
   }
   @media (max-width:480px){
     .results .issue-card{ padding:.9rem 1rem; }
     .results .issue-card .cat{ font-size:1.05rem; }
     .results .issue-card li.desc{ font-size:.92rem; }
   }
-  </style>
-  <!-- App JS -->
-    <script src="/app.js"></script> <!-- uses COMPLIANCE_RULES -->
+</style>
+
 </head>
 <body>
-  <div style="height:50px"></div>
+<div class="topbar-slot" data-include="/partials/topbar.html"></div>
+  <div style="height:1px"></div>
 
   <!-- HERO -->
   <div class="hero">
@@ -344,16 +692,22 @@
       </label>
 
       
-	  <div class="verify-box" title="Quick human verification">
-        <span class="verify-label">Verification:</span>
-        <div class="math-group">
-          <span id="mathQuestion">4 + 2 =</span>
-          <input type="text" id="mathAnswer" inputmode="numeric" placeholder="?" aria-label="Answer" />
-        </div>
-        <span style="margin-left:auto;color:var(--ink);font-size:.85rem;font-weight:600">Solve to verify you're human</span>
-      </div>
+	  
 
-      <button class="btn-primary" id="checkBtn"><span class="btn-label">Check Compliance</span></button>
+     <div class="action-row" style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
+  
+		  <!-- Check Compliance -->
+		  <button class="btn-primary" id="checkBtn" style="flex:1;">
+			<span class="btn-label">Check Compliance</span>
+		  </button>
+
+		  <!-- Clear Message -->
+		  <button id="clearBtn" type="button" class="btn-chip"
+			style="white-space:nowrap; padding:0 16px; height:48px;">
+			🧹 Clear
+		  </button>
+
+		</div>
 
       <div id="loading" class="loading" style="display:none;text-align:center;margin:var(--space-5) 0" aria-live="polite">
         <p style="color:var(--muted);font-weight:600;">Analyzing message...</p>
@@ -367,27 +721,52 @@
 		  <button class="btn-chip" id="emailReportBtn">📧 Email Report</button>
 		</div>
 		
-      <!-- AI Fix CTA + Email Gate -->
       <div id="aiFixCta" class="ai-fix-cta" style="margin-top:1rem;display:none">
-        <button type="button" class="btn-primary" id="aiFixBtn">💡 Get AI-Powered Fix</button>
-      </div>
+  <button type="button" class="btn-primary" id="aiFixBtn">💡 Get AI-Powered Fix</button>
+</div>
 
-      <section id="aiLeadPanel" class="ai-lead" aria-label="AI fix lead capture" style="display:none">
- <form
-  id="signupForm"
-  action="javascript:void(0)"
-  data-endpoint="https://formsubmit.co/ipetranelle@gmail.com"
-  method="POST"
-  class="space-y-4"
->
-  <input type="hidden" name="_next" value="https://travel-calculator.gopetranelle.com" />
-  <input type="hidden" name="_captcha" value="false" />
-  <input type="email" name="email" id="gateEmail" placeholder="Your email address" required
-    class="w-full rounded-xl px-4 py-3 border focus:ring-2"
-    style="border-color:#1C2D4033; outline:none; --tw-ring-color:#FDB81380;" />
-  <button type="submit" class="btn-primary w-full">Unlock Calculator</button>
-</form>
+<section id="aiLeadPanel" class="ai-lead" aria-label="AI fix lead capture" style="display:none">
+  <form
+    id="signupForm"
+    action="javascript:void(0)"
+    data-endpoint="https://formsubmit.co/ipetranelle@gmail.com"
+    method="POST"
+    onsubmit="handleLeadSubmit(event)"
+    class="space-y-4"
+  >
+    <!-- hidden fields -->
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_template" value="table" />
+    <input type="hidden" name="_subject" value="New AI Fix Lead — 10DLC Check" />
+    <input type="hidden" name="form_name" value="AI Fix Lead" />
+    <input type="hidden" name="site" value="" />
+    <input type="hidden" name="page" value="" />
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
+    <!-- Label + helper text -->
+    <label for="leadEmail" class="ai-lead-form-label"></label>
+    <p class="privacy">
+      Enter your email to unlock the cleaned, CTIA-friendly AI version of your message.
+    </p>
+
+    <!-- Single email field + button -->
+    <div class="ai-lead-row">
+      <input
+        type="email"
+        name="email"
+        id="leadEmail"
+        placeholder="you@example.com"
+        required
+      />
+      <button type="submit" class="btn-lead">
+        Get My AI Fix
+      </button>
+    </div>
+
+    <div id="leadConfirm" class="lead-confirm" style="display:none;">
+      Got it — your AI-cleaned version will appear below.
+    </div>
+  </form>
 </section>
 
 
@@ -402,7 +781,7 @@
     </div>
   </div>
 
-  <div style="height:60px"></div>
+  <div style="height:10px"></div>
 <!-- Learn More Section (above footer) -->
 <section class="learn-more" style="
   margin:18px auto 24px;
@@ -411,7 +790,7 @@
   border-radius:14px;
   box-shadow:0 4px 12px rgba(28,45,64,0.05);
   padding:22px 20px;
-  max-width:1200px;
+  max-width:1150px;
   width:95%;
 ">
 
@@ -475,295 +854,24 @@
   </div>
 </section>
 
-	<!-- Footer Include -->
+  <!-- Footer Include -->
   <div class="footer-slot" data-include="/partials/footer.html"></div>
-<script>
-  const AI_API = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
 
-  (function aiEmailGate() {
-    const SESSION_KEY = "userEmail10DLC_session"; // Skip gate in this tab only
-    const LOCAL_KEY   = "userEmail10DLC";         // Prefill email after refresh
+  <!-- Core checker logic -->
+  <script src="./app.js"></script>
 
-    const checkBtn     = document.getElementById("checkBtn");
-    const msgEl        = document.getElementById("message");
-    const aiOptIn      = document.getElementById("aiOptIn");
-    const aiFixCta     = document.getElementById("aiFixCta");
-    const aiFixBtn     = document.getElementById("aiFixBtn");
-    const aiLeadPanel  = document.getElementById("aiLeadPanel");
-    const leadForm     = document.getElementById("signupForm");
-    const leadEmailEl  = document.getElementById("leadEmail");
-    const aiPanel      = document.getElementById("aiPanel");
-    const aiText       = document.getElementById("aiSuggestionText");
-    const aiFlags      = document.getElementById("aiSuggestionFlags");
-    const results      = document.getElementById("results");
+  <!-- AI gate, export bar, includes, clear button -->
+  <script src="./main.js"></script>
 
-    // Prefill from previous visits (do NOT auto-skip after refresh)
-    const savedEmail = localStorage.getItem(LOCAL_KEY);
-    if (savedEmail && leadEmailEl) leadEmailEl.value = savedEmail;
-
-    if (!checkBtn || !msgEl || !aiText || !aiFlags) return;
-
-    // Optional CTA button path
-    aiFixBtn?.addEventListener("click", () => {
-      aiLeadPanel.style.display = "block";
-      aiFixCta && (aiFixCta.style.display = "none");
-      leadEmailEl?.focus();
-    });
-
-    // ===== Results observer – show gate unless unlocked this session =====
-    if (results) {
-      const onResultsRender = () => {
-        const hasContent = (results.textContent || results.innerHTML || "").trim().length > 0;
-        if (!hasContent) return;
-
-        const sessionEmail = sessionStorage.getItem(SESSION_KEY);
-        if (sessionEmail) {
-          // Gate already unlocked for this tab
-          aiLeadPanel.style.display = "none";
-          aiPanel.style.display = "block";
-          renderAiSuggestion();
-        } else {
-          // Require email for first-time in this tab
-          aiLeadPanel.style.display = "block";
-          aiPanel.style.display = "none";
-          aiFixCta && (aiFixCta.style.display = "none");
-          aiText.textContent = "Suggestion will appear after you enter your email.";
-          aiFlags.textContent = "";
-        }
-      };
-
-      onResultsRender(); // in case results were pre-rendered
-      new MutationObserver(onResultsRender).observe(results, { childList: true, subtree: true });
-    }
-
-    // ===== Email submit – save, post via fetch, then show AI immediately =====
-    window.handleLeadSubmit = async function (e) {
-      if (e && typeof e.preventDefault === "function") e.preventDefault();
-
-      const email = (leadEmailEl?.value || "").trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        leadEmailEl.setCustomValidity("Enter a valid email address");
-        leadEmailEl.reportValidity();
-        return false;
-      }
-      leadEmailEl.setCustomValidity("");
-
-      try {
-        // Store for this tab (skip gate) + for prefill after refresh
-        sessionStorage.setItem(SESSION_KEY, email);
-        localStorage.setItem(LOCAL_KEY, email);
-      } catch {}
-
-      // Post to FormSubmit without leaving the page
-      try {
-        const fd = new FormData(leadForm);
-        const endpoint = leadForm?.getAttribute("data-endpoint") || leadForm?.action;
-        if (endpoint) await fetch(endpoint, { method: "POST", body: fd, mode: "cors" });
-      } catch {}
-
-      // Show AI now
-      aiLeadPanel.style.display = "none";
-      aiPanel.style.display = "block";
-      await renderAiSuggestion();
-      return false;
-    };
-
-    // ===== Render AI suggestion =====
-    async function renderAiSuggestion() {
-      const message = (msgEl.value || "").trim();
-      if (!aiOptIn?.checked || !message) {
-        aiText.textContent = "Suggestion will appear here.";
-        aiFlags.textContent = "";
-        return;
-      }
-      aiText.textContent = "Generating AI suggestion…";
-      aiFlags.textContent = "";
-
-      const originalLabel = checkBtn.textContent;
-      checkBtn.disabled = true;
-      checkBtn.textContent = "Analyzing…";
-
-      try {
-        const r = await fetch(AI_API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ brand: "10DLC Check", message }),
-        });
-        const data = await r.json().catch(() => ({}));
-        aiText.textContent = (data?.suggestion || "").trim() || "No suggestion returned.";
-        aiFlags.textContent = Array.isArray(data?.risks) && data.risks.length
-          ? "Flags: " + data.risks.map((x) => x.message).join(" • ")
-          : "";
-      } catch {
-        aiText.textContent = "Couldn't reach AI service.";
-        aiFlags.textContent = "";
-      } finally {
-        checkBtn.disabled = false;
-        checkBtn.textContent = originalLabel;
-      }
-    }
-
-    // ===== Keep your existing "Check" click light – no duplicate observers =====
-    (function wireAISuggestion() {
-      checkBtn.addEventListener("click", () => {
-        // Let app.js render results; our observer above will gate/ungate
-        aiText.textContent = "Suggestion will appear after you enter your email.";
-        aiFlags.textContent = "";
-        aiPanel && (aiPanel.style.display = "none");
-        // Do NOT force aiLeadPanel here — the observer will decide based on session
-      });
-    })();
-  })();
-
-  // ===== Character counter (unchanged) =====
-  (function () {
-    const msg = document.getElementById('message');
-    const counter = document.getElementById('charCounter');
-    if (!msg || !counter) return;
-    function updateCount(){
-      const len = (msg.value||'').length;
-      const seg = len<=160?1:(len<=320?2:'2+');
-      counter.textContent = `${len} / 320 (${seg} segment${seg===1?'':'s'})`;
-      counter.style.color = len>320 ? '#b91c1c' : (len>160 ? '#b45309' : '#6b7280');
-    }
-    msg.addEventListener('input', updateCount);
-    updateCount();
-  })();
-
-      // Hook the existing "Check Compliance" flow (no changes to app.js)
-      (function wireAISuggestion() {
-    const checkBtn = document.getElementById("checkBtn");
-    const msgEl    = document.getElementById("message");
-    const aiOptIn  = document.getElementById("aiOptIn");
-    const aiLeadPanel = document.getElementById("aiLeadPanel");
-    const aiPanel  = document.getElementById("aiPanel");
-    const aiFlags  = document.getElementById("aiSuggestionFlags");
-    const aiText   = document.getElementById("aiSuggestionText");
-
-    if (!checkBtn || !msgEl || !aiOptIn || !aiText) return;
-
-    checkBtn.addEventListener("click", async () => {
-      // Let app.js handle the analysis + results rendering.
-      // We simply ensure AI stays gated until email is provided.
-      checkBtn.disabled = true;
-      const originalLabel = checkBtn.textContent;
-      checkBtn.textContent = "Analyzing…";
-
-      try {
-        // Clear any old AI text/flags
-        aiText.textContent = "Suggestion will appear after you enter your email.";
-        if (aiFlags) aiFlags.textContent = "";
-
-        // Hide AI output; the observer will show the gate as soon as results render
-        if (aiPanel) aiPanel.style.display = "none";
-        if (aiLeadPanel) aiLeadPanel.style.display = "none";
-      } finally {
-        checkBtn.disabled = false;
-        checkBtn.textContent = originalLabel;
-      }
-    });
-  })();
-    </script>
-	
-	<script>
-(function setupExportBar() {
-  const results = document.getElementById('results');
-  const exportBar = document.getElementById('exportBar');
-  const copyBtn = document.getElementById('copyReportBtn');
-  const emailBtn = document.getElementById('emailReportBtn');
-
-  if (!results || !exportBar) return;
-
-  // Show export bar once results appear
-  new MutationObserver(() => {
-    const hasContent = (results.textContent || '').trim().length > 0;
-    if (hasContent) exportBar.style.display = 'flex';
-  }).observe(results, { childList: true, subtree: true });
-
-  // Copy Report
-  copyBtn?.addEventListener('click', () => {
-    const text = results.innerText.trim();
-    if (!text) return alert('No results to copy.');
-    navigator.clipboard.writeText(text)
-      .then(() => alert('Report copied to clipboard.'))
-      .catch(() => alert('Copy failed.'));
-  });
-
-  // Email Report
-  emailBtn?.addEventListener('click', () => {
-    const subject = encodeURIComponent('10DLC Compliance Report');
-    const body = encodeURIComponent(results.innerText.trim() || '');
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  });
-})();
-</script>
-
-	
-
-  <!-- Include Partials Script -->
+  <!-- Google Analytics & Ads (leave as-is) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
-    (async () => {
-      const slots = document.querySelectorAll("[data-include]");
-      await Promise.all([...slots].map(async (el) => {
-        try {
-          const res = await fetch(el.getAttribute("data-include"), { cache: "no-store" });
-          if (res.ok) el.innerHTML = await res.text();
-        } catch (err) {
-          console.error("Include failed:", err);
-        }
-      }));
-    })();
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
   </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 
-
-
-<script>
-  // --- STAGING ONLY: auto-solve the math challenge without touching app.js ---
-  (function(){
-    function fillAnswer(){
-      const el = document.getElementById('mathAnswer');
-      if (el) el.value = String(window.mathAnswer || 0);
-    }
-
-    // Ensure our fill happens BEFORE app.js's click handler (capture phase)
-    const btn = document.getElementById('checkBtn');
-    if (btn) btn.addEventListener('click', fillAnswer, true);
-
-    // If app.js regenerates the question, re-fill afterwards
-    if (window.generateMathQuestion) {
-      const _gen = window.generateMathQuestion;
-      window.generateMathQuestion = function(){
-        _gen();
-        fillAnswer();
-      };
-    } else {
-      // If app.js loads later, patch once it’s available
-      window.addEventListener('DOMContentLoaded', function(){
-        if (window.generateMathQuestion) {
-          const _gen = window.generateMathQuestion;
-          window.generateMathQuestion = function(){
-            _gen();
-            fillAnswer();
-          };
-        }
-        fillAnswer();
-      }, { once:true });
-    }
-
-    // Safety net: if DOM changes, try to keep it filled
-    new MutationObserver(fillAnswer).observe(document.documentElement, { childList:true, subtree:true });
-  })();
-</script>
-
-   
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-C64QWDBMQZ');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 </body>
 </html>

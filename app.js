@@ -298,25 +298,6 @@ async function loadRules() {
 }
 
 
-// -------------------------------
-// Math verification
-// -------------------------------
-var mathAnswer = 0;
-function generateMathQuestion() {
-  var ops = ['+','-','×'];
-  var op = ops[Math.floor(Math.random()*ops.length)];
-  var a = Math.floor(Math.random()*20)+1;
-  var b = Math.floor(Math.random()*20)+1;
-  var q = '', ans = 0;
-
-  if (op === '+') { q = a + ' + ' + b; ans = a + b; }
-  else if (op === '-') { var L = Math.max(a,b), S = Math.min(a,b); q = L + ' - ' + S; ans = L - S; }
-  else { a = Math.floor(Math.random()*10)+1; b = Math.floor(Math.random()*10)+1; q = a + ' × ' + b; ans = a * b; }
-
-  var mq = document.getElementById('mathQuestion');
-  if (mq) mq.textContent = q + ' =';
-  mathAnswer = ans;
-}
 
 // -------------------------------
 // Utilities
@@ -584,30 +565,30 @@ document.addEventListener('DOMContentLoaded', async function(){
   RULES = await loadRules();
   console.log("[rules] version", RULES.version || "(fallback)");
 
-
   renderStats();          // show local + estimated global
   tryFetchRealGlobal();   // replace estimate with real total if API is configured
-  generateMathQuestion();
 
-  var btn = document.getElementById('checkBtn');
+  var btn     = document.getElementById('checkBtn');
   var message = document.getElementById('message');
-  var mathIn = document.getElementById('mathAnswer');
-  var g1 = document.getElementById('g1');
-  var g2 = document.getElementById('g2');
-  var list1 = document.getElementById('compliance-list');
-  var list2 = document.getElementById('restricted-list');
+  var g1      = document.getElementById('g1');
+  var g2      = document.getElementById('g2');
+  var list1   = document.getElementById('compliance-list');
+  var list2   = document.getElementById('restricted-list');
 
   if (g1 && list1) g1.addEventListener('click', function(){ toggleCollapse(g1, list1); });
   if (g2 && list2) g2.addEventListener('click', function(){ toggleCollapse(g2, list2); });
 
   if (btn) btn.addEventListener('click', analyzeMessage);
-  if (message) message.addEventListener('keydown', function(e){
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); analyzeMessage(); }
-  });
-  if (mathIn) mathIn.addEventListener('keydown', function(e){
-    if (e.key === 'Enter') { e.preventDefault(); analyzeMessage(); }
-  });
+  if (message) {
+    message.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        analyzeMessage();
+      }
+    });
+  }
 });
+
 
 // app.js — global site script for 10dlccheck.com
 
@@ -664,29 +645,24 @@ if (document.readyState !== 'loading') {
 }
 
 
+
 // -------------------------------
 // Analyze -> render -> suggestions -> metrics
 // -------------------------------
 function analyzeMessage(){
   var messageText = (document.getElementById('message').value || '').trim();
-  if (!messageText) { alert('Please enter a message to analyze.'); return; }
-
-  var raw = (document.getElementById('mathAnswer').value || '').trim();
-  var userAnswer = Number(raw);
-  if (!isFinite(userAnswer) || userAnswer !== mathAnswer) {
-    alert('Please solve the math problem correctly to verify you\'re human.');
-    generateMathQuestion();
-    document.getElementById('mathAnswer').value = '';
+  if (!messageText) {
+    alert('Please enter a message to analyze.');
     return;
   }
 
   var loading = document.getElementById('loading');
   var results = document.getElementById('results');
-  var btn = document.getElementById('checkBtn');
+  var btn     = document.getElementById('checkBtn');
 
-  loading.style.display = 'block';
-  results.style.display = 'none';
-  btn.disabled = true;
+  if (loading) loading.style.display = 'block';
+  if (results) results.style.display = 'none';
+  if (btn)     btn.disabled = true;
 
   var t0 = performance.now();
 
@@ -703,26 +679,27 @@ function analyzeMessage(){
       var next = getLocalCount() + 1;
       setLocalCount(next);
       var lEl = document.getElementById('localCount');
-      if (lEl) animateCount(lEl, Number(lEl.textContent)||0, next, 400);
+      if (lEl) animateCount(lEl, Number(lEl.textContent) || 0, next, 400);
 
       // global: update estimate and try real POST increment
       var gEl = document.getElementById('globalCount');
-      if (gEl) animateCount(gEl, Number(gEl.textContent)||0, getGlobalEstimate(), 400);
+      if (gEl) animateCount(gEl, Number(gEl.textContent) || 0, getGlobalEstimate(), 400);
       postIncrementGlobal();
-
-      // reset verification
-      generateMathQuestion();
-      document.getElementById('mathAnswer').value = '';
 
       // avg duration
       var dur = Math.round(performance.now() - t0);
       setAvgTime(dur);
     } catch (err) {
-      results.innerHTML = '<div class="error-message"><strong>Analysis Failed:</strong> ' + (err && err.message ? err.message : 'Unable to check compliance right now.') + '</div>';
-      results.style.display = 'block';
+      if (results) {
+        results.innerHTML =
+          '<div class="error-message"><strong>Analysis Failed:</strong> ' +
+          (err && err.message ? err.message : 'Unable to check compliance right now.') +
+          '</div>';
+        results.style.display = 'block';
+      }
     } finally {
-      loading.style.display = 'none';
-      btn.disabled = false;
+      if (loading) loading.style.display = 'none';
+      if (btn)     btn.disabled = false;
     }
   }, 900);
 }
