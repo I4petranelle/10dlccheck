@@ -255,7 +255,7 @@ var complianceRulesFallback = {
   },
   // store regex source as string; we'll compile it at load
   urlSecurity: {
-    shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly|cutt\\.ly)"
+    shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly|cutt\\.ly)",
     severity: "medium",
     message: "Public link shortener detected — use branded HTTPS links",
     suggestion: "Prefer your own domain (e.g., links.yourbrand.com) with HTTPS"
