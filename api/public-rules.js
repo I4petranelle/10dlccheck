@@ -180,23 +180,26 @@ export default async function handler(req, res) {
         suggestion: "Use a secure portal for sensitive information."
       },
 
-      loginHarvesting: {
-	   keywords: [
-		"log in",
-		"login",
-		"sign in",
-		"account verification",
-		"verify your account",
-		"verify account",
-		"account needs verification",
-		"avoid suspension",
-		"account suspended",
-		"secure login"
-	  ],
-	  severity: "high",
-	  message: "Login or credential collection language detected.",
-	  suggestion: "Avoid directing users to log in via SMS. Use neutral notifications or direct them to your app or website without urgency."
-	},
+			loginHarvesting: {
+  keywords: [
+    "log in",
+    "login",
+    "sign in",
+    "secure login",
+    "account verification",
+    "verify account",
+    "verify your account",
+    "needs verification",
+    "account suspended",
+    "avoid suspension",
+    "account locked"
+  ],
+  severity: "high",
+  message: "Login or credential collection language detected.",
+  suggestion: "Avoid directing users to log in via SMS. Use neutral notifications instead."
+},
+
+
 
 
       urlSecurity: {
