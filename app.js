@@ -236,7 +236,7 @@ var complianceRulesFallback = {
     suggestion: "Use professional, consultative language instead of high-pressure tactics"
   },
   competitorMention: {
-    keywords: ["headway","mulligan","credibly","on deck","ondeck","libertas","alliance funding group","cfg","peac solutions","kcg","byzfunder","good funding","channel partners","elevate","expansion","forward financing","fox","fundation","pearl","kapitus"],
+    keywords: ["headway","mulligan","credibly","on deck","ondeck","libertas","alliance funding group","cfg","peac solutions","kcg","byzfunder","good funding","channel partners","elevate","expansion","forward financing","fundation","kapitus"],
     severity: "low",
     message: "Mentions other lenders — may confuse recipients about sender",
     suggestion: "Keep brand references clear to avoid confusion or misleading comparisons"
@@ -255,7 +255,7 @@ var complianceRulesFallback = {
   },
   // store regex source as string; we'll compile it at load
   urlSecurity: {
-    shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly)",
+    shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly|cutt\\.ly)"
     severity: "medium",
     message: "Public link shortener detected — use branded HTTPS links",
     suggestion: "Prefer your own domain (e.g., links.yourbrand.com) with HTTPS"
@@ -264,7 +264,24 @@ var complianceRulesFallback = {
     linkTip: "Consider adding a helpful link (if relevant).",
     optOutTip: "Include STOP to opt out and HELP for assistance when opt-in is unknown.",
     optOutTipExcludeModes: ["pill"] // extension pill mode excludes STOP/HELP tip; web uses 'web'
-  }
+  },
+  aggressiveFinancialClaims: {
+  keywords: ["guaranteed approval","instant approval","no credit check","pre-approved","risk-free","no obligation"],
+  severity: "high",
+  message: "Aggressive financial claims trigger filtering.",
+  suggestion: "Avoid guarantees or unverifiable approval promises."
+},
+loginHarvesting: {
+  keywords: ["log in","login","sign in","secure login","account verification","verify account","verify your account","needs verification","account suspended","avoid suspension","account locked"],
+  severity: "high",
+  message: "Login or credential collection language detected.",
+  suggestion: "Avoid directing users to log in via SMS. Use neutral notifications instead."
+},
+missingBrandIdentification: {
+  severity: "medium",
+  message: "Brand identification missing at start of message.",
+  suggestion: "Include your brand name at the beginning (e.g., “Acme: ...”)."
+}
 };
 
 // -------------------------------
@@ -313,22 +330,32 @@ function hasHttpUrl(text) { return /https?:\/\//i.test(text); }
 // Category metadata (name + impact labels shown in UI)
 // -------------------------------
 var CATEGORY_META = {
-  highRiskFinancial:{name:'High-Risk Financial Services',impact:'RESTRICTED - May require carrier pre-approval and enhanced monitoring'},
-  getRichQuick:{name:'Get Rich Quick Schemes',impact:'PROHIBITED - Campaign will be rejected'},
-  thirdPartyServices:{name:'Third-Party Services',impact:'RESTRICTED - Requires proof of direct relationship with customers'},
-  controlledSubstances:{name:'Controlled Substances',impact:'PROHIBITED - Campaign will be rejected'},
-  shaft:{name:'SHAFT Content',impact:'PROHIBITED - Campaign will be rejected'},
-  scams:{name:'Suspicious/Scam Content',impact:'PROHIBITED - Campaign will be rejected for suspicious content'},
-  aggressiveMarketing:{name:'Aggressive Marketing Language',impact:'HIGH RISK - Carriers actively filter this type of language'},
-  aggressiveFinancialClaims:{name:'Aggressive Financial Claims',impact:'HIGH RISK - Filtering likely for approval/guarantee claims'},
-  personalInfo:{name:'Personal Information Request',impact:'PROHIBITED - Violates privacy and security guidelines'},
-  charity:{name:'Charity / Donation Appeals',impact:'CASE-BY-CASE - May require additional approval'},
-  personalFinancialQuestions:{name:'Personal Financial Questions',impact:'HIGH RISK - Privacy/security concerns'},
-  competitorMention:{name:'Competitor Mentions',impact:'LOW RISK - Brand confusion / misleading claims'},
-  consentDocumentation:{name:'Consent Documentation',impact:'REQUIRED - Maintain records per CTIA'},
-  consentScope:{name:'Consent Scope',impact:'MEDIUM RISK - Clarify program scope'},
-  optOutDisclosureMissing:{name:'Missing STOP/HELP Disclosure',impact:'MEDIUM RISK - Add “STOP to opt out, HELP for help.”'},
-  urlSecurity:{name:'URL Security / Shorteners',impact:'MEDIUM RISK - Prefer branded HTTPS links'}
+  // --- Public + fallback (shared) ---
+  highRiskFinancial:{name:'High-Risk Financial Services',impact:'RESTRICTED – May require carrier pre-approval'},
+  getRichQuick:{name:'Get-Rich-Quick / Prize Language',impact:'PROHIBITED – Likely campaign rejection'},
+  thirdPartyServices:{name:'Third-Party Services',impact:'RESTRICTED – Must promote only direct/registered services'},
+  controlledSubstances:{name:'Controlled Substances',impact:'PROHIBITED – Campaign will be rejected'},
+  shaft:{name:'SHAFT Content',impact:'PROHIBITED – Sex, Hate, Alcohol, Firearms, Tobacco, or Profanity'},
+  scams:{name:'Suspicious / Scam Content',impact:'PROHIBITED – Likely phishing or deceptive messaging'},
+  aggressiveMarketing:{name:'Aggressive Marketing Language',impact:'HIGH RISK – Carriers actively filter pressure tactics'},
+  consentScope:{name:'Consent Scope',impact:'MEDIUM RISK – Message may exceed original opt-in scope'},
+  urlSecurity:{name:'URL Security / Shorteners',impact:'MEDIUM RISK – Prefer branded HTTPS links'},
+  competitorMention:{name:'Competitor Mentions',impact:'LOW RISK – May cause brand confusion'},
+  optOutDisclosureMissing:{name:'Missing STOP / HELP Disclosure',impact:'MEDIUM RISK – STOP and HELP disclosures are required'},
+
+  // --- Public-only (but safe to keep even if fallback) ---
+  aggressiveFinancialClaims:{name:'Aggressive Financial Claims',impact:'PROHIBITED – Approval/guarantee claims are filtered'},
+  sensitivePersonalInfo:{name:'Sensitive Personal Information',impact:'PROHIBITED – Never request SSN, passwords, or bank data via SMS'},
+  loginHarvesting:{name:'Login / Credential Harvesting',impact:'PROHIBITED – Login, verification, or suspension language detected'},
+  missingBrandIdentification:{name:'Missing Brand Identification',impact:'MEDIUM RISK – Brand name should appear at message start'},
+
+  // --- Fallback-only (legacy categories) ---
+  charity:{name:'Charity / Donation Appeals',impact:'CASE-BY-CASE – May require additional approval'},
+  personalFinancialQuestions:{name:'Personal Financial Questions',impact:'HIGH RISK – Privacy/security concerns'},
+  consentDocumentation:{name:'Consent Documentation',impact:'LOW RISK – Maintain opt-in/HELP/STOP records'},
+
+  // --- Aliases so fallback + public both work ---
+  personalInfo:{name:'Sensitive Personal Information',impact:'PROHIBITED – Never request SSN, passwords, or bank data via SMS'}
 };
 
 
