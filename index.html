@@ -662,7 +662,7 @@
         <div class="stat-card"><div class="stat-label">📊 Your Checks</div><div class="stat-value" id="localCount">0</div></div>
         <div class="stat-card"><div class="stat-label">🌎 Global Checks</div><div class="stat-value" id="globalCount">—</div></div>
         <div class="stat-card"><div class="stat-label">⚡ Avg Analysis</div><div class="stat-value" id="avgTime">—</div></div>
-        <div class="stat-card"><div class="stat-label">🛡️ Rules Updates</div><div class="stat-value" id="rulesDate">Nov 2025</div></div>
+        <div class="stat-card"><div class="stat-label">🛡️ Rules Updates</div><div class="stat-value" id="rulesDate">Jan 2026</div></div>
       </div>
     </div>
   </div>
@@ -725,7 +725,13 @@
   <button type="button" class="btn-primary" id="aiFixBtn">💡 Get AI-Powered Fix</button>
 </div>
 
-<section id="aiLeadPanel" class="ai-lead" aria-label="AI fix lead capture" style="display:none">
+<section
+  id="aiLeadPanel"
+  class="ai-lead"
+  aria-label="AI fix lead capture"
+  style="display:none"
+  data-track-view="ai_gate"
+>
   <form
     id="signupForm"
     action="javascript:void(0)"
@@ -733,6 +739,7 @@
     method="POST"
     onsubmit="handleLeadSubmit(event)"
     class="space-y-4"
+    data-track="email_form"
   >
     <!-- hidden fields -->
     <input type="hidden" name="_captcha" value="false" />
@@ -744,9 +751,10 @@
     <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
     <!-- Label + helper text -->
-    <label for="leadEmail" class="ai-lead-form-label"></label>
+    <label for="leadEmail" class="ai-lead-form-label">Unlock the AI Fix</label>
     <p class="privacy">
       Enter your email to unlock the cleaned, CTIA-friendly AI version of your message.
+      <span class="fineprint">One email. No spam.</span>
     </p>
 
     <!-- Single email field + button -->
@@ -757,6 +765,9 @@
         id="leadEmail"
         placeholder="you@example.com"
         required
+        autocomplete="email"
+        inputmode="email"
+        data-track="email_input"
       />
       <button type="submit" class="btn-lead">
         Get My AI Fix
@@ -768,6 +779,7 @@
     </div>
   </form>
 </section>
+
 
 
       <!-- AI Panel -->
@@ -864,14 +876,57 @@
   <script src="./main.js"></script>
 
   <!-- Google Analytics & Ads (leave as-is) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-C64QWDBMQZ');
-  </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){ dataLayer.push(arguments); }
+
+  // Safe wrapper so calls don't error if gtag isn't ready yet
+  function track(eventName, params){
+    try{
+      gtag('event', eventName, params || {});
+    }catch(e){}
+  }
+
+  gtag('js', new Date());
+
+  // GA4 config (keep your ID)
+  gtag('config', 'G-C64QWDBMQZ', {
+    anonymize_ip: true
+  });
+
+  // ---------------------------
+  // Optional: automatic outbound click tracking
+  // Add data-track="install" / "docs" etc. to links
+  // ---------------------------
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+
+    const label = a.getAttribute('data-track');
+    if (!label) return;
+
+    track('link_click', {
+      event_category: 'Navigation',
+      event_label: label,
+      link_url: a.href
+    });
+  });
+
+  // ---------------------------
+  // Your custom events (call these in your app code)
+  // Example: track('ai_gate_viewed');
+  // ---------------------------
+  // track('ai_gate_viewed');
+  // track('email_focus');
+  // track('email_submit');
+  // track('ai_result_unlocked');
+  // track('result_copied');
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+
 
 </body>
 </html>

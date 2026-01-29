@@ -4,347 +4,483 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Page-specific meta -->
-  <title>10DLC Chrome Extension — Install & Guide | 10dlccheck</title>
-  <meta name="description" content="Install the 10DLC Chrome Extension to check SMS content for A2P 10DLC compliance in Salesforce or anywhere on the web. Learn what it does, see examples, and review privacy." />
+  <title>10DLC Chrome Extension — SMS Compliance Checker for A2P 10DLC | 10dlccheck</title>
+  <meta name="description" content="A minimalist Chrome extension that checks SMS copy for A2P 10DLC compliance. Works in Salesforce and on any webpage. Privacy-first, lightweight, and developer-friendly." />
   <link rel="canonical" href="https://10dlccheck.com/extension" />
   <meta name="robots" content="index,follow" />
 
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="10DLC Chrome Extension — SMS Compliance Checker" />
+  <meta property="og:description" content="Check SMS copy for A2P 10DLC compliance in Salesforce or anywhere on the web. Privacy-first and lightweight." />
+  <meta property="og:url" content="https://10dlccheck.com/extension" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10DLC Chrome Extension — SMS Compliance Checker" />
+  <meta name="twitter:description" content="Check SMS copy for A2P 10DLC compliance. Salesforce + web. Privacy-first." />
+
   <style>
     :root{
-      /* Brand + UI tokens (fallbacks; your header partial may already define) */
-      --ink:#1C2D40;           /* brand navy (text) */
-      --navy:#1C2D40;          /* brand primary */
-      --navy-2:#17324e;        /* deeper brand blue for gradient depth */
-      --sky:#58AEDD;           /* brand sky accent */
-      --gold:#FDB813;          /* accent (sparingly) */
-      --bg:#f8fafc;            /* page bg */
-      --card:#ffffff;          /* card bg */
-      --line:#e2e8f0;          /* subtle borders */
-      --muted:#64748b;         /* secondary text */
-      --ring:rgba(28,45,64,.12);
-      --radius:18px;
-      --shadow:0 14px 36px rgba(0,0,0,.10);
-      --shadow-sm:0 8px 20px rgba(0,0,0,.07);
+      --bg:#ffffff;
+      --surface:#ffffff;
+      --ink:#0b1220;
+      --muted:#556575;
+      --line:#e7eef4;
+      --soft:#f7fafc;
+
+      --accent:#0284c7;
+
+      --radius:14px;
+      --container: 920px;
+      --gutter: 22px;
+
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1220;
+        --surface:#0b1220;
+        --ink:#e5e7eb;
+        --muted:#b7c2cf;
+        --line:rgba(231,238,244,.14);
+        --soft:rgba(255,255,255,.03);
+        --accent:#58AEDD;
+      }
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
-      margin:0; background:var(--bg); color:var(--ink);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      line-height:1.6;
+      margin:0;
+      font-family:var(--font);
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-weight: 400;
+      font-size: 16px; /* bigger base */
     }
-    a{color:var(--navy);text-decoration:none}
-    a:hover{text-decoration:underline}
 
-    /* Topbar (partial mounts above hero) */
-    #site-topbar{position:relative;z-index:20}
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    :focus-visible{ outline: 3px solid rgba(2,132,199,.26); outline-offset: 3px; border-radius: 10px; }
 
-    /* Hero — mirrors Learn template vibe */
-    .site-hero{
-      background:linear-gradient(135deg,var(--navy),var(--navy-2));
-      color:#fff; padding:28px 20px 92px; position:relative; overflow:hidden;
-      box-shadow:inset 0 -1px 0 rgba(255,255,255,.04);
+    #site-topbar{ position:relative; z-index:10; }
+
+    .container{
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
     }
-    .container{max-width:1100px;margin:0 auto;padding:0 20px}
-    .hero-wrap{margin-top:8px}
+
+    /* Flat, quiet header */
+    header{
+      padding: 38px 0 26px;
+      background: var(--surface);
+      border-bottom:1px solid var(--line);
+    }
+
     .eyebrow{
-      display:inline-block; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18);
-      color:#e6eef8; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+      font-size: 13px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      margin: 0 0 10px;
     }
-    h1.hero-title{font-size:clamp(26px,3.5vw,38px);line-height:1.15;margin:10px 0 6px}
-    p.hero-sub{max-width:760px;color:#e7eaf0;font-size:15.5px;margin:8px 0 0}
-    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+    h1{
+      margin: 0 0 12px;
+      font-size: clamp(30px, 3.2vw, 42px);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      font-weight: 760;
+    }
+
+    .sub{
+      margin: 0;
+      max-width: 72ch;
+      color: var(--muted);
+      font-size: 17px; /* larger */
+      font-weight: 400;
+    }
+
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      margin-top: 16px;
+    }
+
     .btn{
-      display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;font-weight:700;
-      padding:12px 18px;border-radius:999px;box-shadow:var(--shadow-sm)
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 11px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--ink);
+      font-weight: 500;
+      font-size: 15px; /* larger */
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease, transform .12s ease;
+      text-decoration:none;
     }
-    .btn-primary{background:var(--sky);color:#fff;border:1px solid var(--sky)}
-    .btn-alt{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
-    .trust-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;color:#dbe1ea;font-size:13px}
-    .trust-pill{
-      display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:8px 12px
-    }
-
-    /* Content grid (content + sticky sidebar like Learn pages) */
-    main{margin-top:-56px;margin-bottom:64px}
-    .grid{display:grid;grid-template-columns:1fr;gap:18px}
-    @media(min-width:980px){.grid{grid-template-columns:1fr 330px}}
-
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--ring)}
-    .card .inner{padding:22px}
-    .kicker{color:var(--sky);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-    h2.section-title{margin:8px 0 10px;font-size:22px;color:#10233b}
-    p.muted{color:var(--muted)}
-
-    /* Lists */
-    .list{margin:10px 0 0;padding-left:18px}
-    .list li{margin:6px 0}
-
-    /* Feature blocks */
-    .feature-row{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:720px){.feature-row{grid-template-columns:1fr 1fr}}
-    .feature{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm)}
-    .feature h3{margin:2px 0 6px;font-size:16px;color:#10233b}
-    .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.02em}
-    .good{background:#eaf7ea;color:#155c2f;border:1px solid #cde9cf}
-    .warn{background:#fff5e6;color:#8a5a00;border:1px solid #ffdf99}
-    .neutral{background:#eef6ff;color:#0f3a66;border:1px solid #d9ecff}
-
-    /* Screenshot placeholders */
-    .shots{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:720px){.shots{grid-template-columns:1fr 1fr}}
-    .shot{
-      aspect-ratio:16/9;border-radius:14px;border:1px dashed var(--line);
-      display:grid;place-items:center;color:var(--muted);font-size:14px;background:#fafcff
+    .btn:hover{
+      background: rgba(2,132,199,.07);
+      border-color: rgba(2,132,199,.22);
+      text-decoration:none;
+      transform: translateY(-1px);
     }
 
-    /* Sidebar (sticky) */
-    .sidebar{position:sticky;top:16px;height:max-content}
-    .install .title{font-weight:800;font-size:18px;color:#10233b;margin:4px 0 6px}
-    .install .meta{font-size:13px;color:var(--muted)}
-    .install .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .mini-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .badge{font-size:12px;border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:#fff}
+    .btn-primary{
+      background: var(--accent);
+      border-color: var(--accent);
+      color:#fff;
+      font-weight: 520;
+    }
+    .btn-primary:hover{
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      filter: brightness(.97);
+    }
 
-    /* FAQ */
-    .faq-item{border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:#fff}
-    .faq-q{width:100%;text-align:left;background:#fff;padding:14px 16px;border:none;cursor:pointer;font-weight:700;color:#10233b}
-    .faq-a{display:none;padding:0 16px 14px;color:#muted}
-    .faq-item.active .faq-a{display:block}
-    .faq-item + .faq-item{margin-top:10px}
+    /* Quiet chips */
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 9px;
+      margin-top: 16px;
+    }
+    .chip{
+      font-size: 14px; /* larger */
+      color: var(--muted);
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      line-height: 1.2;
+      font-weight: 450;
+      white-space:nowrap;
+    }
+
+    main{ padding: 26px 0 72px; }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      margin-top: 18px;
+    }
+    .panel-inner{ padding: 20px; }
+
+    .kicker{
+      font-size: 13px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      margin: 0 0 10px;
+    }
+
+    h2{
+      margin: 0 0 10px;
+      font-size: 18px; /* larger */
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    h3{
+      margin: 18px 0 10px;
+      font-size: 16px; /* larger */
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px; /* larger body */
+      font-weight: 400;
+    }
+
+    .lede{ margin-top: 10px; }
+
+    .list{
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .list li{ margin: 8px 0; }
+    .list strong{ font-weight: 560; color: var(--ink); }
+
+    /* Method blocks (flat) */
+    .method{
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+    .method:first-of-type{ border-top: 0; padding-top: 0; }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 14px; /* larger */
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-weight: 460;
+    }
+    .dot{
+      width:8px; height:8px;
+      border-radius: 999px;
+      background: var(--accent);
+      opacity: .85;
+    }
+
+    /* FAQ via details/summary */
+    details{
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+    }
+    details:first-of-type{ border-top: 0; padding-top: 0; }
+
+    summary{
+      cursor:pointer;
+      font-weight: 520;
+      font-size: 16px; /* larger */
+      color: var(--ink);
+      list-style: none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    .chev{
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      display:grid;
+      place-items:center;
+      color: var(--muted);
+      flex: 0 0 auto;
+      transition: transform .14s ease;
+      font-weight: 400;
+    }
+    details[open] .chev{ transform: rotate(45deg); }
+
+    .fineprint{
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    code{
+      font-family: var(--mono);
+      font-size: 13px;
+    }
   </style>
-</head>
-<body>
 
+  <!-- Structured data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "10DLC Chrome Extension",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Chrome",
+    "description": "A minimalist Chrome extension that checks SMS copy for A2P 10DLC compliance. Works in Salesforce and on any webpage. Privacy-first and lightweight.",
+    "url": "https://10dlccheck.com/extension",
+    "downloadUrl": "https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk"
+  }
+  </script>
+
+  <!-- Structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the extension store or transmit my messages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Checks run locally in your browser. Message content is not stored, logged, or transmitted to external servers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will it work outside Salesforce?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Use the right-click menu on any webpage or open the extension panel from the toolbar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if the extension stops working?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Refresh the page, then toggle the extension in chrome://extensions. Restart Chrome and check for updates if needed."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
   <!-- Shared Topbar -->
   <div id="site-topbar"></div>
   <script>
-    (async function(){
+    (async () => {
       try {
-        const h = await fetch('/partials/topbar.html', { cache:'no-store' });
-        if (h.ok) document.getElementById('site-topbar').innerHTML = await h.text();
-      } catch (e) { console.warn('Topbar failed to load', e); }
+        const res = await fetch('/partials/topbar.html', { cache: 'no-store' });
+        if (res.ok) document.getElementById('site-topbar').innerHTML = await res.text();
+      } catch (e) { console.warn('Topbar failed to load'); }
     })();
   </script>
 
-  <!-- Hero -->
-  <header class="site-hero">
-    <div class="container hero-wrap">
-      <span class="eyebrow">10DLC Chrome Extension</span>
-      <h1 class="hero-title">Check SMS for 10DLC compliance</h1>
-      <p class="hero-sub">
-        Run instant checks on outbound text in Salesforce or any web page. Designed for clarity, speed, and privacy — aligned with best-practice messaging.
+  <header>
+    <div class="container">
+      <div class="eyebrow">Chrome Extension · A2P 10DLC</div>
+      <h1>Check SMS copy for 10DLC compliance</h1>
+      <p class="sub">
+        Quick compliance checks for developers and sales teams. Works in Salesforce and on any webpage, with a privacy-first workflow.
       </p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#install" id="btn-install-hero">Add to Chrome</a>
-        <a class="btn btn-alt" href="#how">How it works</a>
-        <a class="btn btn-alt" href="/learn">Open Learn hub</a>
+
+      <div class="cta-row" aria-label="Primary links">
+        <a class="btn btn-primary"
+           href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk">
+          Add to Chrome
+        </a>
+        <a class="btn" href="/learn">Learn</a>
       </div>
-      <div class="trust-row" aria-label="trust signals">
-        <span class="trust-pill">⚡ One-click checks</span>
-        <span class="trust-pill">🧩 Built for Salesforce</span>
-        <span class="trust-pill">🌐 Right-click anywhere</span>
-        <span class="trust-pill">🔒 Privacy-first</span>
+
+      <div class="chips" aria-label="Key points">
+        <span class="chip">One-click checks</span>
+        <span class="chip">Built for Salesforce</span>
+        <span class="chip">Right-click anywhere</span>
+        <span class="chip">Privacy-first</span>
       </div>
+
+      
     </div>
   </header>
 
-  <div style="height:100px"></div>
-
-  <!-- Content -->
   <main>
-    <div class="container grid">
+    <div class="container">
 
-      <!-- Main column -->
-      <div class="stack">
-        <!-- Overview -->
-        <section class="card" id="overview">
-          <div class="inner">
-            <span class="kicker">Overview</span>
-            <h2 class="section-title">What the extension does</h2>
-            <p>
-              The 10DLC Extension helps you quickly review outbound text for alignment with 10DLC expectations. It summarizes results without storing message content.
+      <section class="panel" id="overview">
+        <div class="panel-inner">
+          <div class="kicker">Overview</div>
+          <h2>What the 10DLC compliance checker does</h2>
+          <p class="lede">
+            The extension reviews SMS content for common A2P 10DLC risk patterns (opt-in clarity, sensitive categories, pressure tactics, and misleading claims)
+            and returns a simple status with suggestions. It does not expose carrier filtering rules.
+          </p>
+
+          <h3>Three ways to run a check</h3>
+
+          <div class="method">
+            <span class="tag"><span class="dot"></span> Opt-in assumed · Salesforce</span>
+            <p class="lede">
+              A small “Check 10DLC” action appears in Salesforce message views. In this trusted context, Stop/Help lines can be hidden.
             </p>
             <ul class="list">
-              <li><strong>Status</strong>: Pass · Warning · Fail</li>
-              <li><strong>Issues</strong>: Clear reasons, no internal rules exposed</li>
-              <li><strong>Tips</strong>: Practical edits to improve deliverability</li>
+              <li>Works in <strong>Lightning</strong> and <strong>Classic</strong></li>
+              <li>Designed for fast review while working a record</li>
             </ul>
           </div>
-        </section>
 
-        <div style="height:10px"></div>
-
-        <!-- How it works -->
-        <section class="card" id="how">
-          <div class="inner">
-            <span class="kicker">How it works</span>
-            <h2 class="section-title">Three ways to run a check</h2>
-
-            <div class="feature-row">
-              <!-- 1) Salesforce Floating Pill -->
-              <article class="feature">
-                <span class="chip good">Opt-in assumed</span>
-                <h3>Floating Pill in Salesforce</h3>
-                <p class="muted">
-                  A bottom-right <strong>Check 10DLC</strong> pill appears in Salesforce. Click to review the message in view.
-                  In this trusted context, Stop/Help lines are hidden.
-                </p>
-                <ul class="list">
-                  <li>Works in <strong>Lightning</strong> and <strong>Classic</strong></li>
-                  <li>One-click review of the current message</li>
-                </ul>
-              </article>
-
-              <!-- 2) Right-click anywhere (incl. Salesforce) -->
-              <article class="feature">
-                <span class="chip warn">Opt-in unknown</span>
-                <h3>Highlight text → Right-click</h3>
-                <p class="muted">
-                  Highlight any text, right-click, choose <strong>Check 10DLC Compliance</strong>. Works inside or outside Salesforce.
-                </p>
-                <ul class="list">
-                  <li>Supported in <strong>Lightning</strong> and <strong>Classic</strong></li>
-                  <li>Great for ad-hoc checks on any web page</li>
-                </ul>
-              </article>
-            </div>
-
-            <div class="feature-row" style="margin-top:12px">
-              <!-- 3) Open panel from the extension icon -->
-              <article class="feature">
-                <span class="chip neutral">Universal</span>
-                <h3>Open the panel from the extension icon</h3>
-                <p class="muted">
-                  Click the <strong>10DLC Checker</strong> extension icon in Chrome to open the panel on any page. Paste or type your message to analyze it directly.
-                </p>
-                <ul class="list">
-                  <li>Works on any site, no selection required</li>
-                  <li>Use when you want to draft and refine copy</li>
-                </ul>
-              </article>
-
-              <!-- Optional: what you’ll see -->
-              <article class="feature">
-                <span class="chip neutral">What you’ll see</span>
-                <h3>Results panel</h3>
-                <ul class="list">
-                  <li><strong>Status</strong>: Pass · Warning · Fail</li>
-                  <li><strong>Issues</strong>: Clear reasons in plain language</li>
-                  <li><strong>Tips</strong>: Actionable edits for safer phrasing</li>
-                </ul>
-              </article>
-            </div>
-
-            <p class="muted" style="margin-top:10px">
-              <span class="chip good">Opt-in assumed</span> = Salesforce pill hides Stop/Help <br>
-              <span class="chip warn">Opt-in unknown</span> = Right-click shows Stop/Help <br>
-              <span class="chip neutral">Universal</span> = Extension icon panel works anywhere
+          <div class="method">
+            <span class="tag"><span class="dot"></span> Opt-in unknown · Right-click</span>
+            <p class="lede">
+              Highlight any text on a webpage, right-click, and select “Check 10DLC Compliance”. Useful for reviewing copy outside Salesforce.
             </p>
-          </div>
-        </section>
-
-        <div style="height:10px"></div>
-
-        <!-- Examples -->
-        <section class="card" id="examples">
-          <div class="inner">
-            <span class="kicker">Examples</span>
-            <h2 class="section-title">Good vs risky phrasing</h2>
-            <p class="muted">Explore more examples in the Learn hub to understand what passes, what needs edits and what fails.</p>
             <ul class="list">
-              <li><strong>Good:</strong> “Reply YES to confirm your appointment on Tuesday at 3 pm.”</li>
-              <li><strong>Needs work:</strong> “Click now for a special offer. Reply STOP to opt out.”</li>
-              <li><strong>Risky:</strong> “Limited time crypto investment opportunity. Act fast.”</li>
+              <li>Best for ad-hoc checks when opt-in context is unclear</li>
             </ul>
-            <p style="margin-top:10px">
-              Learn more: <a href="/learn/what-is-10dlc">What is 10DLC</a> ·
-              <a href="/learn/sms-compliance-checklist">SMS Compliance Checklist</a>
+          </div>
+
+          <div class="method">
+            <span class="tag"><span class="dot"></span> Universal · Extension panel</span>
+            <p class="lede">
+              Open the extension panel from the Chrome toolbar and paste content for quick review.
             </p>
-          </div>
-        </section>
-
-        <div style="height:10px"></div>
-
-        <!-- Troubleshooting -->
-        <section class="card" id="troubleshooting">
-          <div class="inner">
-            <span class="kicker">Troubleshooting</span>
-            <h2 class="section-title">Quick fixes</h2>
             <ul class="list">
-              <li><strong>Do not see the pill in Salesforce?</strong> Refresh the tab and confirm the extension is enabled.</li>
-              <li><strong>Right-click item missing?</strong> Select text first, then right-click. Restart Chrome if needed.</li>
+              <li>Great for drafting and tightening messages before sending</li>
             </ul>
           </div>
-        </section>
 
-        <div style="height:10px"></div>
+          <h3>What you’ll see</h3>
+          <ul class="list">
+            <li><strong>Status:</strong> Pass · Warning · Fail</li>
+            <li><strong>Issues:</strong> what triggered the status, in plain language</li>
+            <li><strong>Tips:</strong> edits that improve clarity and reduce risk</li>
+          </ul>
 
-        <!-- FAQ -->
-        <section class="card" id="faq">
-          <div class="inner">
-            <span class="kicker">FAQ</span>
-            <h2 class="section-title">Frequently asked questions</h2>
+          <p class="fineprint">
+            Helpful reading:
+            <a href="/learn/what-is-10dlc">What is 10DLC</a> ·
+            <a href="/learn/sms-compliance-checklist">SMS compliance checklist</a>
+          </p>
+        </div>
+      </section>
 
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">Does it reveal internal rules?</button>
-              <div class="faq-a">No. It summarizes results (Status, Issues, Tips) without exposing internal rules or storing personal data.</div>
-            </div>
+      <section class="panel" id="faq" aria-label="Frequently asked questions">
+        <div class="panel-inner">
+          <div class="kicker">FAQ</div>
+          <h2>Common questions</h2>
 
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">Will it work outside Salesforce?</button>
-              <div class="faq-a"> Yes. You can open the panel by clicking the <strong>10DLCCheck</strong> extension icon in Chrome on any page.</div>
-            </div>
+          <details>
+            <summary>
+              <span>Does the extension store or transmit message content?</span>
+              <span class="chev" aria-hidden="true">+</span>
+            </summary>
+            <p style="margin-top:12px">
+              No. Checks run locally in your browser. Message content is not stored, logged, or transmitted to external servers.
+            </p>
+          </details>
 
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">Who do I contact for help?</button>
-              <div class="faq-a">Open the extension Options page and use the Help contact listed there.</div>
-            </div>
-          </div>
-        </section>
-      </div>
+          <details>
+            <summary>
+              <span>Can I use it outside Salesforce?</span>
+              <span class="chev" aria-hidden="true">+</span>
+            </summary>
+            <p style="margin-top:12px">
+              Yes. Use the right-click menu on any webpage or open the extension panel from the toolbar.
+            </p>
+          </details>
 
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <section class="card" id="install">
-          <div class="inner install">
-            <span class="kicker">Install</span>
-            <div class="title">Add the 10DLC extension</div>
-            <p class="meta">Install from the Chrome Web Store or by an unlisted url by your admin.</p>
-            <div class="actions">
-              <!-- Update the store link when available -->
-              <a class="btn btn-primary" id="btn-install-store" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Open in Chrome Web Store</a>
-            </div>
-            <ul class="list" style="margin-top:8px">
-              <li>Works with Salesforce and any web page</li>
-              <li>Right-click → Check 10DLC Compliance</li>
-              <li>No storage of analyzed text</li>
-            </ul>
-            <div class="mini-badges">
-              <span class="badge">Privacy-first</span>
-              <span class="badge">Fast</span>
-              <span class="badge">Lightweight</span>
-            </div>
-          </div>
-        </section>
+          <details>
+            <summary>
+              <span>What if the extension stops working?</span>
+              <span class="chev" aria-hidden="true">+</span>
+            </summary>
+            <p style="margin-top:12px">
+              Refresh the page, then toggle the extension in <code>chrome://extensions</code>. Restart Chrome and check for updates if needed.
+            </p>
+          </details>
+        </div>
+      </section>
 
-        <div style="height:10px"></div>
-
-        <section class="card">
-          <div class="inner">
-            <span class="kicker">What’s new</span>
-            <h2 class="section-title">Release highlights</h2>
-            <ul class="list">
-              <li>Improved detection for risky categories</li>
-              <li>Smarter tips for opt-in clarity</li>
-              <li>Refined Salesforce pill behavior</li>
-            </ul>
-          </div>
-        </section>
-      </aside>
     </div>
   </main>
 
@@ -353,34 +489,13 @@
   <script>
     (async () => {
       try {
-        const res = await fetch("/partials/footer.html", { cache: "no-store" });
-        if (res.ok) {
-          document.getElementById("site-footer").innerHTML = await res.text();
-        }
-      } catch (e) { console.warn("Footer partial failed to load", e); }
-
-      // FAQ single-open behavior
-      document.addEventListener("click", (e) => {
-        const q = e.target.closest(".faq-q");
-        if(!q) return;
-        const item = q.closest(".faq-item");
-        const expanded = item.classList.contains("active");
-        document.querySelectorAll(".faq-item").forEach(i=>{
-          i.classList.remove("active");
-          const b = i.querySelector(".faq-q"); if(b) b.setAttribute("aria-expanded","false");
-        });
-        if(!expanded){ item.classList.add("active"); q.setAttribute("aria-expanded","true"); }
-      });
-
-      // Smooth-scroll CTA
-      document.getElementById("btn-install-hero")?.addEventListener("click", (e)=>{
-        const target = document.querySelector("#install");
-        if(target){ e.preventDefault(); target.scrollIntoView({ behavior:"smooth", block:"start" }); }
-      });
+        const res = await fetch('/partials/footer.html', { cache: 'no-store' });
+        if (res.ok) document.getElementById('site-footer').innerHTML = await res.text();
+      } catch (e) { console.warn('Footer failed to load'); }
     })();
   </script>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -388,6 +503,8 @@
     gtag('js', new Date());
     gtag('config', 'G-C64QWDBMQZ');
   </script>
+
+  <!-- Ads -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 // -------------------------------
 // Local + Global counters & stats
 // -------------------------------
+
 var COUNT_KEY = 'tdlc_local_validation_count';
 var GLOBAL_SEED_KEY = 'tdlc_global_seed_v1';
 var GLOBAL_DAY_KEY = 'tdlc_global_day_v1';
@@ -404,18 +405,44 @@ function performComplianceCheck(message) {
     }
   }
 
-  var highCount = issues.filter(function(i){ return i.severity === 'high'; }).length;
+    // -------------------------------
+  // Compliance scoring + status
+  // -------------------------------
+  var severityPoints = (RULES && RULES.scoring && RULES.scoring.severityPoints) || {
+    low: 1,
+    medium: 3,
+    high: 5
+  };
+
+  var thresholds = (RULES && RULES.scoring && RULES.scoring.thresholds) || {
+    pass: 0,
+    warn: 3,
+    fail: 5
+  };
+
+  var score = issues.reduce(function(sum, i){
+    var sev = (i.severity || 'low').toLowerCase();
+    return sum + (severityPoints[sev] || 0);
+  }, 0);
+
+  var status =
+    score >= thresholds.fail ? 'fail' :
+    score >= thresholds.warn ? 'warn' :
+    'pass';
 
   return {
-    isCompliant: highCount === 0,
+    isCompliant: status === 'pass', // backward compatible
+    status: status,                 // NEW: pass | warn | fail
+    score: score,                   // NEW: numeric score
     issues: issues,
     tips: tips,
     messageLength: message.length,
     wordCount: safeWordCount(message),
-    restrictedContent: highCount,
+    restrictedContent: issues.filter(function(i){ return i.severity === 'high'; }).length,
     detectedCategories: detectedCategories
   };
 }
+
 
 // -------------------------------
 // Results rendering — Variant A (flat, no buttons)
@@ -435,11 +462,24 @@ function resultIcon(isCompliant){
     ? '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
     : '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
 }
+function resultIconByStatus(status){
+  if (status === 'pass') return resultIcon(true);
+
+  if (status === 'warn') {
+    // yellow warning icon
+    return '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20">' +
+           '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-12.5a.75.75 0 00-1.5 0v5a.75.75 0 001.5 0v-5zM10 14.25a1 1 0 110 2 1 1 0 010-2z" clip-rule="evenodd"></path>' +
+           '</svg>';
+  }
+
+  // fail
+  return resultIcon(false);
+}
 
 function displayResults(analysis) {
   var resultsDiv = document.getElementById('results');
   var isCompliant = !!analysis.isCompliant;
-  resultsDiv.className = 'results ' + (isCompliant ? 'compliant' : 'non-compliant');
+  resultsDiv.className = 'results ' + statusClass;
 
   // quick counts
   var issues = Array.isArray(analysis.issues) ? analysis.issues : [];
@@ -485,19 +525,32 @@ function displayResults(analysis) {
     );
   }).join('');
 
-  var html =
-    '<section class="res-card">' +
-      '<header class="res-header">' +
-        '<div class="res-title">' +
-          resultIcon(isCompliant) +
-          '<h3>' + (isCompliant ? 'Message is 10DLC Compliant!' : 'Compliance Issues Found') + '</h3>' +
-        '</div>' +
-        '<div class="res-metrics">' +
-          '<div class="chip"><span class="chip-k">Chars</span><span class="chip-v">' + analysis.messageLength + '</span></div>' +
-          '<div class="chip"><span class="chip-k">Words</span><span class="chip-v">' + analysis.wordCount + '</span></div>' +
-          '<div class="chip"><span class="chip-k">Issues</span><span class="chip-v">' + (high+med+low) + '</span></div>' +
-        '</div>' +
-      '</header>';
+  var status = analysis.status || (isCompliant ? 'pass' : 'fail');
+
+var title =
+  status === 'pass' ? 'Message looks 10DLC compliant' :
+  status === 'warn' ? 'Compliant, but risks detected' :
+  'Not 10DLC compliant';
+
+var statusClass =
+  status === 'pass' ? 'compliant' :
+  status === 'warn' ? 'warning' :
+  'non-compliant';
+
+var html =
+  '<section class="res-card ' + statusClass + '">' +
+    '<header class="res-header">' +
+      '<div class="res-title">' +
+        resultIconByStatus(status) +
+        '<h3>' + title + '</h3>' +
+      '</div>' +
+      '<div class="res-metrics">' +
+        '<div class="chip"><span class="chip-k">Chars</span><span class="chip-v">' + analysis.messageLength + '</span></div>' +
+        '<div class="chip"><span class="chip-k">Words</span><span class="chip-v">' + analysis.wordCount + '</span></div>' +
+        '<div class="chip"><span class="chip-k">Issues</span><span class="chip-v">' + (high+med+low) + '</span></div>' +
+      '</div>' +
+    '</header>';
+
 
   if (cats.length) {
   html +=

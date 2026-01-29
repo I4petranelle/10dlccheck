@@ -23,6 +23,13 @@ const AI_API = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
     const aiFlags      = document.getElementById("aiSuggestionFlags");
     const results      = document.getElementById("results");
 
+   // Track email intent (focus)
+if (leadEmailEl) {
+  leadEmailEl.addEventListener("focus", () => {
+    if (typeof track === "function") track("email_focus");
+  });
+}
+
     // --- helpers ---
     function resetAiSuggestionBox() {
       if (aiText)  aiText.textContent  = "Suggestion will appear here.";
@@ -111,38 +118,55 @@ const AI_API = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
 
     // Handle email submit
     window.handleLeadSubmit = async function (e) {
-      if (e?.preventDefault) e.preventDefault();
+  if (e?.preventDefault) e.preventDefault();
 
-      const email = (leadEmailEl?.value || "").trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        leadEmailEl?.setCustomValidity("Enter a valid email address");
-        leadEmailEl?.reportValidity();
-        return false;
+  // Track submit attempt
+  if (typeof track === "function") track("email_submit");
+
+  const email = (leadEmailEl?.value || "").trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    leadEmailEl?.setCustomValidity("Enter a valid email address");
+    leadEmailEl?.reportValidity();
+    return false;
+  }
+  leadEmailEl?.setCustomValidity("");
+
+  try {
+    sessionStorage.setItem(SESSION_KEY, email);
+    localStorage.setItem(LOCAL_KEY, email);
+  } catch {}
+
+  // Post to FormSubmit without navigating
+  try {
+    if (leadForm) {
+      const fd = new FormData(leadForm);
+      fd.append("form_name", "AI Fix Lead");
+      fd.append("site", location.hostname);
+      fd.append("page", location.pathname + location.search);
+
+      const endpoint = leadForm.getAttribute("data-endpoint") || leadForm.action;
+      if (endpoint) {
+        const resp = await fetch(endpoint, { method: "POST", body: fd, mode: "cors" });
+        if (!resp.ok) console.warn("[lead] FormSubmit non-OK:", resp.status);
       }
-      leadEmailEl?.setCustomValidity("");
+    }
+  } catch (err) {
+    console.warn("[lead] FormSubmit error:", err);
+  }
 
-      try {
-        sessionStorage.setItem(SESSION_KEY, email);
-        localStorage.setItem(LOCAL_KEY, email);
-      } catch {}
+  // Close lead gate, show AI panel
+  if (aiLeadPanel) aiLeadPanel.style.display = "none";
+  if (aiPanel)     aiPanel.style.display     = "block";
 
-      // Post to FormSubmit without navigating
-      try {
-        if (leadForm) {
-          const fd = new FormData(leadForm);
-          fd.append("form_name", "AI Fix Lead");
-          fd.append("site", location.hostname);
-          fd.append("page", location.pathname + location.search);
-          const endpoint = leadForm.getAttribute("data-endpoint") || leadForm.action;
-          if (endpoint) await fetch(endpoint, { method: "POST", body: fd, mode: "cors" });
-        }
-      } catch {}
+  // Track conversion when results are unlocked/shown
+  if (typeof track === "function") track("ai_result_unlocked");
 
-      if (aiLeadPanel) aiLeadPanel.style.display = "none";
-      if (aiPanel)     aiPanel.style.display     = "block";
-      if (aiText || aiFlags) renderAiSuggestion();
-      return false;
-    };
+  // Render AI suggestion
+  if (aiText || aiFlags) await renderAiSuggestion();
+
+  return false;
+};
+
 
     // Request AI suggestion (resilient JSON/text)
     async function renderAiSuggestion() {

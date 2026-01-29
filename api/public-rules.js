@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     const PUBLIC_RULES = {
-      version: "2025.10.25-public",
+      version: "2026.01.25-public",
 
       // -------------------------------
       // Deterministic Evaluation Order
@@ -181,13 +181,23 @@ export default async function handler(req, res) {
       },
 
       loginHarvesting: {
-        keywords: [
-          "log in","enter your password","verify identity now"
-        ],
-        severity: "high",
-        message: "Login or credential collection language detected.",
-        suggestion: "Never request passwords over SMS."
-      },
+	   keywords: [
+		"log in",
+		"login",
+		"sign in",
+		"account verification",
+		"verify your account",
+		"verify account",
+		"account needs verification",
+		"avoid suspension",
+		"account suspended",
+		"secure login"
+	  ],
+	  severity: "high",
+	  message: "Login or credential collection language detected.",
+	  suggestion: "Avoid directing users to log in via SMS. Use neutral notifications or direct them to your app or website without urgency."
+	},
+
 
       urlSecurity: {
         shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly|cutt\\.ly)",
