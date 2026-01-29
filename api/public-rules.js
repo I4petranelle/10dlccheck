@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     const PUBLIC_RULES = {
-      version: "2026.01.25-public",
+      version: "2026.01.25-public.1",
 
       // -------------------------------
       // Deterministic Evaluation Order
