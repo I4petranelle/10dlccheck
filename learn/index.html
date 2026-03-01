@@ -14,171 +14,87 @@
   <meta property="og:url" content="https://10dlccheck.com/learn/" />
   <meta property="og:type" content="website" />
 
-  <style>
-    :root{--ink:#1C2D40;--sky:#58AEDD;--muted:#475569;--line:#e2e8f0;--bg:#f8fafc;--card-bg:#fff;--hover-bg:#f1f5f9}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-
-    /* Topbar/footer loaded from partials */
-    .topbar-slot,.footer-slot{min-height:48px}
-
-    .hero{background:#1f2937;color:#fff;padding:64px 24px 48px;text-align:center}
-    .hero-content{max-width:800px;margin:0 auto}
-    .hero h1{font-size:2.5rem;font-weight:800;margin-bottom:16px;letter-spacing:-.5px}
-    .hero p{font-size:1.15rem;opacity:.95;margin-bottom:0}
-
-    .container{max-width:1200px;margin:0 auto;padding:48px 24px}
-
-    .quick-tips{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:48px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-    .quick-tips h2{font-size:1.25rem;margin-bottom:12px}
-    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-    .tip-item{display:flex;gap:10px;align-items:flex-start}
-    .tip-bullet{width:8px;height:8px;border-radius:50%;background:var(--sky);margin-top:.6rem;flex:none}
-    .tip-text{color:var(--muted);font-size:.95rem}
-
-    .category-section{margin-bottom:56px}
-    .category-header{display:flex;align-items:end;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
-    .category-header h2{font-size:1.6rem;font-weight:700}
-    .category-header .count{color:var(--muted);font-size:.9rem;font-weight:500}
-
-    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
-    .article-card{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:10px}
-    .article-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:var(--sky);background:#ffffff}
-    .article-meta{flex:1}
-    .article-card h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;color:var(--ink)}
-    .article-card p{color:var(--muted);font-size:.95rem;line-height:1.5}
-    .article-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
-    .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px;background:#e0f2fe;color:#075985}
-    .read-time{color:var(--muted);font-size:.85rem}
-
-    .cta-section{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:40px 28px;text-align:center;margin-top:48px}
-    .cta-section h2{font-size:1.8rem;margin-bottom:10px}
-    .cta-section p{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
-    .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .btn{display:inline-block;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:700;transition:all .2s;border:2px solid transparent}
-    .btn-primary{background:var(--sky);color:#fff}
-    .btn-primary:hover{filter:brightness(.95);transform:translateY(-1px)}
-    .btn-secondary{background:#1f2937;color:#fff}
-    .btn-secondary:hover{filter:brightness(.95);transform:translateY(-1px)}
-
-    @media (max-width:768px){
-      .hero h1{font-size:2rem}
-      .hero p{font-size:1rem}
-      .articles-grid{grid-template-columns:1fr}
-      .tips-grid{grid-template-columns:1fr}
-      .cta-buttons{flex-direction:column}
-    }
-    @media (prefers-reduced-motion:reduce){
-      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-    }
- 
-    #article-container{display:none;max-width:900px;margin:0 auto 64px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,.05);padding:28px}
-    #article-container h1,#article-container h2{color:#1C2D40;font-weight:800;margin:1.2em 0 .4em;font-size:1.4rem}
-    #article-container h3{color:#1C2D40;font-weight:700;margin:1em 0 .3em;font-size:1.1rem}
-    #article-container p,#article-container li{font-size:1.02rem;color:#334155}
-    #article-container a{color:#58AEDD;text-decoration:none;font-weight:600}
-    #article-container a:hover{text-decoration:underline}
-    #article-container table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.95rem}
-    #article-container th,#article-container td{border:1px solid #e2e8f0;padding:10px 12px;text-align:left}
-    #article-container th{background:#f8fafc;font-weight:600;color:#1C2D40}
-    #close-article{background:#1C2D40;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:700;margin-top:24px;cursor:pointer}
-    #close-article:hover{filter:brightness(.95)}
-	
-	```css
-@media(max-width:768px){
- body{line-height:1.55}
- .container{padding:20px 14px}.wrap{padding:14px 12px}
- .hero{padding:28px 16px 20px}.hero h1{font-size:1.9rem;line-height:1.25;margin:0 0 8px}.hero p{font-size:1rem;margin:0}
- .quick-tips{padding:16px;border-radius:14px;margin-bottom:20px;box-shadow:0 8px 24px rgba(28,45,64,.06)}.quick-tips h2{font-size:1.1rem;margin-bottom:8px}.tips-grid{grid-template-columns:1fr;gap:10px}.tip-item{gap:8px}.tip-text{font-size:.95rem}
- .category-section{margin-bottom:28px}.category-header{gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}.category-header h2{font-size:1.25rem}.category-header .count{font-size:.85rem}
- .articles-grid{grid-template-columns:1fr;gap:12px}.article-card{padding:16px;border-radius:14px;gap:8px;box-shadow:0 10px 28px rgba(28,45,64,.08)}.article-card:hover{transform:none;box-shadow:0 10px 28px rgba(28,45,64,.08)}.article-card h3{font-size:1.02rem;margin-bottom:2px}.article-card p{font-size:.95rem}
- .article-footer{padding-top:10px}.badge{font-size:.68rem;padding:4px 8px}.read-time{font-size:.8rem}
- .cta-section{padding:22px 16px;border-radius:16px;margin-top:24px;box-shadow:0 10px 28px rgba(28,45,64,.08)}.cta-section h2{font-size:1.35rem;margin-bottom:6px}.cta-section p{font-size:.98rem;margin-bottom:14px}.cta-buttons{flex-direction:column;gap:10px}.btn{display:block;width:100%;text-align:center;padding:14px 16px;margin:0;border-radius:14px;transition:transform .15s ease}.btn:active{transform:translateY(1px)}.btn-primary,.btn-secondary{border-width:0}
- .main-content{margin:16px 0}article.content{padding:18px;border-radius:16px;box-shadow:0 10px 28px rgba(28,45,64,.08)}article.content h2{margin-top:1.25em;padding-bottom:6px}article.content h3{margin-top:1.05em}.note,blockquote{padding:12px 14px;margin:14px 0;border-radius:12px;background:var(--hover-bg)}
- .article-nav{position:sticky;bottom:0;left:0;right:0;margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:saturate(1.2) blur(8px);box-shadow:0 -6px 18px rgba(28,45,64,.08);z-index:20}.article-nav-links{display:flex;flex-direction:row;gap:10px}.article-nav a{flex:1;display:flex;justify-content:center;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);text-decoration:none}
- .foot-line{flex-direction:column;gap:8px}
- #article-container{padding:18px 14px;border-radius:14px;margin:0 0 28px}#article-container h1,#article-container h2{font-size:1.2rem;margin:1em 0 .4em}#article-container h3{font-size:1rem;margin:.8em 0 .3em}#article-container p,#article-container li{font-size:1rem}#article-container table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}#close-article{padding:10px 14px;border-radius:10px}
- a,button,.btn,.article-nav a{min-height:44px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-```
-
-  </style>
+  <link rel="stylesheet" href="/learn/style.css?v=2">
 </head>
 
-<body>
+<body class="learn">
   <!-- Topbar include -->
   <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>10DLC Knowledge Base</h1>
-      <p>Clear guides and checklists to help you stay compliant and improve deliverability.</p>
-    </div>
-  </section>
-
-  <!-- Main -->
-  <main class="container" id="main">
-    <!-- Quick Tips -->
-    <section class="quick-tips" aria-labelledby="quick-tips-title">
-      <h2 id="quick-tips-title">Quick Compliance Tips</h2>
-      <div class="tips-grid">
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Identify your brand in the first message.</span></div>
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Include STOP instructions for promotional programs.</span></div>
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Use branded or first-party links; avoid public shorteners.</span></div>
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Do not send SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</span></div>
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Capture and store explicit consent before messaging.</span></div>
-        <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Honor opt-out requests promptly across the program.</span></div>
+  <main>
+    <!-- Hero -->
+    <section class="hero hub-hero">
+      <div class="wrap">
+        <h1>10DLC Knowledge Base</h1>
+        <p class="sub">Clear guides and checklists to help you stay compliant and improve deliverability.</p>
       </div>
     </section>
 
-    <!-- Getting Started -->
-    <section class="category-section" data-category="Getting Started">
-      <div class="category-header">
-        <h2>Getting Started</h2>
-        <span class="count" data-count>—</span>
-      </div>
+    <!-- Content -->
+    <div class="wrap">
+      <!-- Quick Tips -->
+      <section class="quick-tips" aria-labelledby="quick-tips-title">
+        <h2 id="quick-tips-title">Quick Compliance Tips</h2>
+        <div class="tips-grid">
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Identify your brand in the first message.</span></div>
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Include STOP instructions for promotional programs.</span></div>
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Use branded or first-party links; avoid public shorteners.</span></div>
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Do not send SHAFT content (Sex, Hate, Alcohol, Firearms, Tobacco).</span></div>
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Capture and store explicit consent before messaging.</span></div>
+          <div class="tip-item"><span class="tip-bullet" aria-hidden="true"></span><span class="tip-text">Honor opt-out requests promptly across the program.</span></div>
+        </div>
+      </section>
 
-      <div class="articles-grid">
-        <a class="article-card" href="/learn/what-is-10dlc">
-          <div class="article-meta">
+      <!-- Getting Started -->
+      <section class="category-section articles" data-category="Getting Started">
+        <div class="section-head">
+          <h2>Getting Started</h2>
+          <span class="count" data-count>—</span>
+        </div>
+
+        <div class="articles-grid">
+          <a class="article-card" href="/learn/what-is-10dlc">
             <h3>What Is 10DLC?</h3>
             <p>What 10DLC is, why it exists, and how it differs from short codes and toll-free numbers.</p>
-          </div>
-          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">5 min</span></div>
-        </a>
+            <div class="article-footer">
+              <span class="badge">Beginner</span>
+              <span class="read-time">1 min</span>
+            </div>
+          </a>
 
-        <a class="article-card" href="/learn/ctia-guidelines-explained">
-          <div class="article-meta">
+          <a class="article-card" href="/learn/ctia-guidelines-explained">
             <h3>CTIA Messaging Guidelines</h3>
             <p>Consent requirements, brand identification, STOP/HELP behavior, and content restrictions.</p>
-          </div>
-          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">8 min</span></div>
-        </a>
+            <div class="article-footer">
+              <span class="badge">Beginner</span>
+              <span class="read-time">2 min</span>
+            </div>
+          </a>
 
-        <a class="article-card" href="/learn/sms-compliance-checklist">
-          <div class="article-meta">
+          <a class="article-card" href="/learn/sms-compliance-checklist">
             <h3>Pre-Send Compliance Checklist</h3>
             <p>Quick checks to reduce blocks, complaints, and carrier fees before you send.</p>
-          </div>
-          <div class="article-footer"><span class="badge">Beginner</span><span class="read-time">4 min</span></div>
-        </a>
-      </div>
-    </section>
+            <div class="article-footer">
+              <span class="badge">Beginner</span>
+              <span class="read-time">1 min</span>
+            </div>
+          </a>
+        </div>
+      </section>
 
-    <!-- Inline article container (appears when a card is clicked) -->
-    <div id="article-container"></div>
+      <!-- Inline article container (appears when a card is clicked) -->
+      <div id="article-container"></div>
 
-    <!-- CTA -->
-    <section class="cta-section" aria-labelledby="cta-title">
-      <h2 id="cta-title">Ready to Check Your Messages?</h2>
-      <p>Use our free compliance checker to validate SMS campaigns before sending and avoid costly mistakes.</p>
-      <div class="cta-buttons">
-        <a href="/#checker" class="btn btn-primary">Try Compliance Checker</a>
-        <a class="btn btn-secondary" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=10dlccheck&utm_medium=learn-page&utm_campaign=chrome-extension-launch" target="_blank" rel="noopener">Get the Chrome Extension</a>
-      </div>
-    </section>
+      <!-- CTA -->
+      <section class="cta-section" aria-labelledby="cta-title">
+        <h2 id="cta-title">Ready to Check Your Messages?</h2>
+        <p>Use our free compliance checker to validate campaigns before sending.</p>
+        <div class="cta-buttons">
+          <a class="btn" href="/#checker?utm_source=learn&utm_medium=site&utm_campaign=cta_checker">Try Compliance Checker</a>
+          <a class="btn secondary" target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Get the Chrome Extension</a>
+        </div>
+      </section>
+    </div>
   </main>
 
   <!-- Footer include -->
@@ -187,39 +103,41 @@
   <!-- Partials include loader -->
   <script>
     (async () => {
-      const inc=document.querySelectorAll('[data-include]');
-      await Promise.all([...inc].map(async el=>{
-        try{
-          const r=await fetch(el.dataset.include,{cache:'no-store'});
-          if(r.ok) el.innerHTML=await r.text();
-        }catch(_){}
+      const inc = document.querySelectorAll('[data-include]');
+      await Promise.all([...inc].map(async el => {
+        try {
+          const r = await fetch(el.dataset.include, { cache: 'no-store' });
+          if (r.ok) el.innerHTML = await r.text();
+        } catch (_) {}
       }));
     })();
   </script>
 
-  <!-- Search + counts -->
+  <!-- Search + counts (kept for future search box) -->
   <script>
-    const q = document.getElementById('kb-search'); // currently no visible search box
+    const q = document.getElementById('kb-search');
     const cards = [...document.querySelectorAll('.article-card')];
     const sections = [...document.querySelectorAll('.category-section')];
 
-    function updateCounts(){
-      sections.forEach(sec=>{
+    function updateCounts() {
+      sections.forEach(sec => {
         const visible = sec.querySelectorAll('.article-card:not([hidden])').length;
         const countEl = sec.querySelector('[data-count]');
-        if(countEl){ countEl.textContent = visible + (visible===1?' article':' articles'); }
+        if (countEl) countEl.textContent = visible + (visible === 1 ? ' article' : ' articles');
         sec.style.display = visible ? '' : 'none';
       });
     }
-    function filterArticles(term){
-      const t = (term||'').trim().toLowerCase();
-      cards.forEach(card=>{
+
+    function filterArticles(term) {
+      const t = (term || '').trim().toLowerCase();
+      cards.forEach(card => {
         const text = card.innerText.toLowerCase();
         card.hidden = t && !text.includes(t);
       });
       updateCounts();
     }
-    q?.addEventListener('input', e=>filterArticles(e.target.value));
+
+    q?.addEventListener('input', e => filterArticles(e.target.value));
     updateCounts();
   </script>
 
@@ -229,27 +147,27 @@
       const container = document.getElementById('article-container');
       const cards = [...document.querySelectorAll('.article-card')];
 
-      function show(msg, color='#64748b'){
-        container.style.display='block';
+      function show(msg, color = '#64748b') {
+        container.style.display = 'block';
         container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
       }
 
-      async function loadInline(urlStr){
-        try{
+      async function loadInline(urlStr) {
+        try {
           const url = new URL(urlStr, location.origin);
-          if(url.origin !== location.origin){ show('Cannot load external article (cross-origin).', '#b91c1c'); return; }
+          if (url.origin !== location.origin) { show('Cannot load external article (cross-origin).', '#b91c1c'); return; }
 
-          container.style.display='block';
+          container.style.display = 'block';
           container.innerHTML = '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
 
-          const res = await fetch(url.pathname + url.search,{cache:'no-store'});
-          if(!res.ok){ show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return; }
+          const res = await fetch(url.pathname + url.search, { cache: 'no-store' });
+          if (!res.ok) { show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return; }
 
           const html = await res.text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const node = doc.querySelector('article.content') || doc.querySelector('main') || doc.querySelector('article') || doc.querySelector('.container');
 
-          if(!node || !node.innerHTML.trim()){ show('Article loaded, but no content section found.', '#b91c1c'); return; }
+          if (!node || !node.innerHTML.trim()) { show('Article loaded, but no content section found.', '#b91c1c'); return; }
 
           container.innerHTML = `
             <article class="preview-article">
@@ -258,45 +176,43 @@
                 <button id="close-article" type="button">Close</button>
               </div>
             </article>`;
-          document.getElementById('close-article').onclick = () => { container.style.display='none'; container.innerHTML=''; history.pushState('', '', location.pathname); };
-          container.scrollIntoView({behavior:'smooth', block:'start'});
-        }catch(err){ show(\`Failed: \${err?.message || err}\`, '#b91c1c'); }
+          document.getElementById('close-article').onclick = () => { container.style.display = 'none'; container.innerHTML = ''; history.pushState('', '', location.pathname); };
+          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          show(\`Failed: \${err?.message || err}\`, '#b91c1c');
+        }
       }
 
-      // click → inline render, preserve modified-click behavior
-      cards.forEach(card=>{
-        card.addEventListener('click', e=>{
+      cards.forEach(card => {
+        card.addEventListener('click', e => {
           const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-          if(modified) return;
+          if (modified) return;
           e.preventDefault();
-          const href = card.getAttribute('href'); if(!href) return;
+          const href = card.getAttribute('href'); if (!href) return;
           history.pushState('', '', \`#article=\${encodeURIComponent(href)}\`);
           loadInline(href);
         });
       });
 
-      // load on hash
       const m = location.hash.match(/#article=([^&]+)/);
-      if(m) loadInline(decodeURIComponent(m[1]));
+      if (m) loadInline(decodeURIComponent(m[1]));
 
-      // back/forward
-      window.addEventListener('popstate', ()=>{
+      window.addEventListener('popstate', () => {
         const m2 = location.hash.match(/#article=([^&]+)/);
-        if(m2) loadInline(decodeURIComponent(m2[1]));
-        else { container.style.display='none'; container.innerHTML=''; }
+        if (m2) loadInline(decodeURIComponent(m2[1]));
+        else { container.style.display = 'none'; container.innerHTML = ''; }
       });
     })();
   </script>
-  
+
   <!-- Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
-    window.dataLayer=window.dataLayer||[];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js',new Date());
-    gtag('config','G-C64QWDBMQZ');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
-  
 </body>
 </html>
