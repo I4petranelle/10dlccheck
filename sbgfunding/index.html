@@ -435,25 +435,80 @@
       const lower = text.toLowerCase();
       const d = rules.defaults, p = rules.patterns;
 
-      if (d.forbid_risky_terms && new RegExp(p.risky_terms_regex,"i").test(lower)){
-        issues.push("⚠️ Contains risky financial terms. Try safer language (e.g., 'working capital').");
+      // Risky financial terms
+      if (d.forbid_risky_terms && new RegExp(p.risky_terms_regex,"gi").test(lower)){
+        const found = [...new Set(lower.match(new RegExp(p.risky_terms_regex,"gi")) || [])];
+        issues.push(`⚠️ Replace risky terms (${found.map(s=>`"${s}"`).join(", ")}) with safer language.`);
         const alts = (rules.allowed_terms_suggestions || []).slice(0,3);
         if (alts.length) tips.push("Try: " + alts.map(s=>`"${s}"`).join(", "));
       }
+
+      // Competitor / other lender names
       if (d.forbid_other_lenders && new RegExp(p.other_lenders_regex,"i").test(lower))
-        issues.push("🧽 Remove competitor lender names.");
+        issues.push("🧽 Remove mentions of other lenders by name.");
+
+      // Lead-gen solicitation (carrier-flagged probing/cold outreach)
+      if (d.forbid_lead_gen_solicitation && p.lead_gen_solicitation_regex &&
+          new RegExp(p.lead_gen_solicitation_regex,"i").test(lower))
+        issues.push("📵 Remove lead-gen language (probing questions, pre-approval claims, or cold outreach targeting). Carriers flag this as prohibited financial solicitation.");
+
+      // PII
       if (d.forbid_pii_requests && new RegExp(p.pii_regex,"i").test(lower))
-        issues.push("🔒 Don't request PII in SMS (SSN, DOB, bank, cards, passwords).");
+        issues.push("🔒 Do not ask for SSN, date of birth, bank info, card numbers or passwords by SMS.");
+
+      // Money / payment requests
       if (d.forbid_money_requests && new RegExp(p.money_request_regex,"i").test(lower))
-        issues.push("💸 Don't ask for payments/fees in SMS.");
+        issues.push("💸 Do not ask for payments, wires, Zelle, fees, deposits or retainers in SMS.");
+
+      // SHAFT
+      if (d.enable_shaft_checks){
+        const hit = [
+          new RegExp(p.shaft_sex_regex,     "i").test(lower) ? "Sex/Adult"      : "",
+          new RegExp(p.shaft_hate_regex,    "i").test(lower) ? "Hate"           : "",
+          new RegExp(p.shaft_alcohol_regex, "i").test(lower) ? "Alcohol"        : "",
+          new RegExp(p.shaft_firearms_regex,"i").test(lower) ? "Firearms"       : "",
+          new RegExp(p.shaft_tobacco_regex, "i").test(lower) ? "Tobacco/Vaping" : ""
+        ].filter(Boolean);
+        if (hit.length)
+          issues.push(`🚫 Restricted content detected (${hit.join(", ")}). Carriers will block this message.`);
+      }
+
+      // URL shorteners
       if (d.enable_behavior_checks && d.forbid_url_shorteners &&
           new RegExp(p.url_shortener_regex,"i").test(lower))
-        issues.push("✂️ Avoid URL shorteners—use a branded link.");
+        issues.push("✂️ Avoid URL shorteners (bit.ly, tinyurl, etc.). Use a branded link.");
+
+      // Message length
       if (d.limit_message_length){
-        const L = text.length, max320 = d.sms_two_segment_chars ?? 320;
-        if (L > max320) issues.push(`📝 Message too long (${L}). Keep under ${max320}.`);
+        const L = text.length;
+        const max160 = d.sms_single_segment_chars ?? 160;
+        const max320 = d.sms_two_segment_chars    ?? 320;
+        if (L > max320)
+          issues.push(`📝 Message is long (${L} chars). Keep under ${max320} or trim to ${max160} to avoid extra segments.`);
+        else if (L > max160)
+          tips.push(`Over ${max160} characters (${L}). This may split into multiple segments.`);
       }
-      return { status: issues.length ? "fail" : "pass", issues, tips };
+
+      // Style: ALL CAPS
+      const style = d.style_checks || {};
+      const letters = (text || "").replace(/[^A-Za-z]/g,"");
+      if (letters.length && style.flag_all_caps_threshold){
+        const ratio = letters.replace(/[^A-Z]/g,"").length / letters.length;
+        if (ratio >= style.flag_all_caps_threshold)
+          issues.push("🔊 Avoid ALL-CAPS text. Use sentence case.");
+      }
+
+      // Style: urgency
+      if (style.flag_urgency_phrases && p.urgency_regex &&
+          new RegExp(p.urgency_regex,"i").test(lower))
+        issues.push("⏰ Avoid pushy urgency phrases (e.g., 'Act NOW'). Keep the message clear and professional.");
+
+      // Verdict — matches background.js logic
+      const status = issues.length
+        ? (issues.some(i => /Remove mentions|Remove lead-gen|Avoid URL shorteners|Do not|Carriers will block|PII|payments?/i.test(i)) ? "fail" : "warn")
+        : "pass";
+
+      return { status, issues, tips };
     }
 
     async function serverCheck(message){
