@@ -1,21 +1,20 @@
 // api/sbg-rules.js
-// Version: 2026-04-02.sbg.full.6
-// Changes from v5:
-//   - Added all lenders from screenshots (BHG, Gillman Bagley, Good Funding, Headway,
-//     Idea Financial, KCG, LCF, Legend Funding, LoanBud, Lynks Capital, Pearl, SmartBiz,
-//     Specialty Funding, Revenued, Samson, Rapid Finance, Peac Solutions)
-//   - Added "broker" and related lead-gen brokering terms to risky_terms_regex
-//   - Added lead_gen_solicitation_regex (new check): catches the exact patterns
-//     flagged by the carrier — probing questions, pre-approval claims, cold outreach
-//   - Expanded risky_terms_regex with carrier-flagged financial spam triggers:
-//     pre-approved, pre-qualify, guaranteed funding, low rate, high-risk,
-//     working capital advance, get funded, fast funding, same-day approval,
-//     how much do you qualify for, apply now, 100k approved, etc.
-//   - urgency_regex expanded with additional carrier-flagged phrases
+// Version: 2026-04-06.sbg.full.7
+// Changes from v6:
+//   - lead_gen_solicitation_regex rewritten against CTIA §5.1 (Exhibit II), §5.3.1
+//     and T-Mobile CoC §5.2 (Non-Direct Lenders / lead gen data sharing),
+//     §5.3 (phishing), §5.4/5.5 (fraud, deceptive marketing / FTC Truth in Advertising)
+//   - Removed false-positive-prone patterns:
+//       "interested in (funding...)" — catches legitimate inbound follow-ups (CTIA §4.1 implied consent)
+//       "(doctor|dentist...).{0,30}(funding...)" — wildcard caused false positives
+//       "best (rate|offer|deal) for you" — too generic, not grounded in either doc
+//   - Added non-direct lender / data sharing patterns (T-Mobile CoC §5.2 explicitly disallowed)
+//   - Added phishing-adjacent bank/lender impersonation (T-Mobile CoC §5.3)
+//   - Tightened approval claim patterns to require financing context
 
 let STORE = {
   schema: "sbg-10dlc-rules/v1",
-  version: "2026-04-02.sbg.full.6",
+  version: "2026-04-06.sbg.full.7",
 
   defaults: {
     require_brand_in_each_message: false,
@@ -186,36 +185,47 @@ let STORE = {
         "build your wealth" +
       ")\\b",
 
-    // ── NEW: Lead-gen solicitation patterns ────────────────────────────────────
-    // Directly addresses the carrier's complaint about probing questions,
-    // pre-approval claims, and cold outreach targeting by profession.
-    // Examples flagged: "You are looking for help with funding, correct?"
-    //                   "Just got 100k approved for you!"
-    //                   "Doctor, did you get any financing anytime this year?"
+    // ── Lead-gen solicitation patterns ────────────────────────────────────────
+    // Grounded in:
+    //   CTIA §5.1 Exhibit II — promotional messaging (prompts action) requires
+    //     express written consent; qualifying questions turn informational → promotional
+    //   CTIA §5.3.1 — prohibits misleading, deceptive, privacy-invading content
+    //   T-Mobile CoC §5.2 — explicitly disallows Non-Direct Lenders and lead gen
+    //     with data sharing to third parties
+    //   T-Mobile CoC §5.3 — phishing (impersonating reputable companies)
+    //   T-Mobile CoC §5.4/5.5 — fraud/scam, deceptive marketing per FTC Truth in Advertising
     lead_gen_solicitation_regex:
       "(" +
-        // Probing / qualifying questions
-        "looking for (help with|capital|funding|financing)(,?\\s?correct)?|" +
-        "are you (looking|searching|seeking) for (funding|capital|financing|a loan)|" +
-        "do you need (funding|capital|financing|a loan|business funding)|" +
-        "did you get (any )?(financing|funding|a loan)|" +
-        "have you (applied|been approved|received) (for )?(funding|financing|a loan)|" +
-        "interested in (funding|financing|a loan|working capital)|" +
-        // Pre-approval / approval claims
-        "approved for you|" +
-        "just got .{0,20}approved|" +
-        "got you approved|" +
-        "you.?re (pre[\\s-]?)?approved|" +
-        "you qualify for|" +
+        // ── Unsolicited probing / qualifying questions ─────────────────────────
+        // CTIA §5.1 — one-way alert that prompts consumer to take action = promotional
+        // Requires express written consent before sending
+        "are you (currently )?(looking|searching|seeking) for (funding|capital|financing|a (business )?loan)|" +
+        "do you (currently )?(need|require) (funding|capital|financing|a (business )?loan)|" +
+        "did you (ever |recently )?(get|receive|obtain) (any )?(financing|funding|a loan)|" +
+        "have you (applied|been approved) (for )?(funding|financing|a loan)|" +
+        "looking for (help with|capital|funding|financing)(,?\\s?(correct|right|yes))?|" +
+        "you (are|were) (looking|searching) for (funding|capital|financing)(,?\\s?(correct|right))?|" +
+        // ── Deceptive pre-approval / approval claims ──────────────────────────
+        // T-Mobile CoC §5.5 — deceptive marketing / FTC Truth in Advertising
+        // CTIA §5.3.1 — content that deceives or intends to deceive
         "you.?ve been (pre[\\s-]?)?approved|" +
-        // Cold professional targeting (doctor, dentist, etc.)
-        "(doctor|dentist|attorney|lawyer|physician|contractor|realtor|agent),?.{0,30}(funding|financing|loan|capital|approved)|" +
-        // Explicit lead gen / broker solicitation
-        "we (buy|purchase|acquire) (leads|data|lists)|" +
-        "we can get you funded|" +
-        "we.?ll find you (a lender|funding|financing)|" +
-        "match(ed)? you with (a lender|funding)|" +
-        "best (rate|offer|deal) for you" +
+        "you.?re (pre[\\s-]?)?approved|" +
+        "just got .{0,15} approved for you|" +
+        "got you (pre[\\s-]?)?approved|" +
+        "you qualify for .{0,20}(funding|capital|financing)|" +
+        // ── Non-direct lender / third-party data sharing ──────────────────────
+        // T-Mobile CoC §5.2 — explicitly disallowed category: Non-Direct Lenders
+        // and lead gen indicating sharing of collected information with third parties
+        "we (buy|purchase|acquire|sell) (leads|contact lists|data|phone numbers)|" +
+        "we.?ll (match|connect) you with (a lender|multiple lenders|funding sources)|" +
+        "we work with (multiple|many|hundreds of) lenders|" +
+        "submitted (your|the) (information|application|details) to|" +
+        "sharing (your|the) (information|details) with|" +
+        // ── Phishing-adjacent impersonation ───────────────────────────────────
+        // T-Mobile CoC §5.3 — phishing: appearing to come from reputable companies
+        // to trick consumers into revealing personal information
+        "your (bank|lender|financial institution) (has|have) (approved|flagged|reviewed)|" +
+        "we.?re (calling|reaching out) on behalf of (your|a) (bank|lender|financial institution)" +
       ")",
 
     // ── PII ────────────────────────────────────────────────────────────────────
