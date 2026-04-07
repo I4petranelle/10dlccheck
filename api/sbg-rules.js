@@ -1,20 +1,8 @@
 // api/sbg-rules.js
-// Version: 2026-04-06.sbg.full.7
-// Changes from v6:
-//   - lead_gen_solicitation_regex rewritten against CTIA §5.1 (Exhibit II), §5.3.1
-//     and T-Mobile CoC §5.2 (Non-Direct Lenders / lead gen data sharing),
-//     §5.3 (phishing), §5.4/5.5 (fraud, deceptive marketing / FTC Truth in Advertising)
-//   - Removed false-positive-prone patterns:
-//       "interested in (funding...)" — catches legitimate inbound follow-ups (CTIA §4.1 implied consent)
-//       "(doctor|dentist...).{0,30}(funding...)" — wildcard caused false positives
-//       "best (rate|offer|deal) for you" — too generic, not grounded in either doc
-//   - Added non-direct lender / data sharing patterns (T-Mobile CoC §5.2 explicitly disallowed)
-//   - Added phishing-adjacent bank/lender impersonation (T-Mobile CoC §5.3)
-//   - Tightened approval claim patterns to require financing context
-
+// Version: 2026-04-06.sbg.full.8
 let STORE = {
   schema: "sbg-10dlc-rules/v1",
-  version: "2026-04-06.sbg.full.7",
+  version: "2026-04-06.sbg.full.8",
 
   defaults: {
     require_brand_in_each_message: false,
@@ -199,12 +187,16 @@ let STORE = {
         // ── Unsolicited probing / qualifying questions ─────────────────────────
         // CTIA §5.1 — one-way alert that prompts consumer to take action = promotional
         // Requires express written consent before sending
-        "are you (currently )?(looking|searching|seeking) for (funding|capital|financing|a (business )?loan)|" +
+        // "are you looking for working capital, a line of credit, or just comparing rates?"
+        // [^?]{0,60} allows up to 60 chars of options/qualifiers before the finance term
+        "are you (currently )?(looking|searching|seeking) for [^?]{0,60}(working capital|line of credit|funding|capital|financing|a (business )?loan)|" +
         "do you (currently )?(need|require) (funding|capital|financing|a (business )?loan)|" +
         "did you (ever |recently )?(get|receive|obtain) (any )?(financing|funding|a loan)|" +
         "have you (applied|been approved) (for )?(funding|financing|a loan)|" +
         "looking for (help with|capital|funding|financing)(,?\\s?(correct|right|yes))?|" +
         "you (are|were) (looking|searching) for (funding|capital|financing)(,?\\s?(correct|right))?|" +
+        // "I'm curious — are you looking for working capital..." style follow-up questions
+        "i.?m curious[^.?!]{0,80}(working capital|line of credit|funding|capital|financing|rates)|" +
         // ── Deceptive pre-approval / approval claims ──────────────────────────
         // T-Mobile CoC §5.5 — deceptive marketing / FTC Truth in Advertising
         // CTIA §5.3.1 — content that deceives or intends to deceive
