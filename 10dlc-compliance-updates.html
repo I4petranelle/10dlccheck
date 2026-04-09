@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10DLC Compliance Updates 2025-2026 | CTIA Rules, TCR Changes & Carrier Policy Log</title>
+  <meta name="description" content="A chronological log of 10DLC regulation changes, CTIA messaging best practices updates, TCR policy changes, FCC enforcement actions, and carrier filtering rules." />
+  <link rel="canonical" href="https://10dlccheck.com/10dlc-compliance-updates" />
+  <meta name="robots" content="index, follow" />
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are unregistered 10DLC messages blocked by US carriers?","acceptedAnswer":{"@type":"Answer","text":"Yes. As of February 1, 2025, all three major US carriers block 100% of unregistered A2P long-code traffic with no grace period."}},{"@type":"Question","name":"What are the CTIA consent rules for 10DLC SMS?","acceptedAnswer":{"@type":"Answer","text":"Under CTIA Section 5.1.2.2, every campaign requires its own explicit opt-in. Consent from one program cannot transfer to another, and renting or selling opt-in lists is prohibited."}}]}
+  </script>
+
+  <style>
+    /* ── tokens from index.html ── */
+    :root {
+      --ink:    #1C2D40;
+      --muted:  #334155;
+      --sky:    #58AEDD;
+      --line:   #e2e8f0;
+      --bg:     #f0f4f8;
+      --white:  #ffffff;
+      --accent: #2563EB;
+      --r-sm:   6px;
+      --r-md:   10px;
+      --r-lg:   14px;
+      --r-xl:   18px;
+      --shadow-md: 0 4px 12px rgba(28,45,64,.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--sky); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── hero — matches index exactly ── */
+    .hero {
+      background: #0a1628;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
+      letter-spacing: .04em; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; color: #fff;
+      letter-spacing: -.02em; line-height: 1.15; margin-bottom: 12px;
+    }
+    .hero h1 span { color: var(--sky); }
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,.72);
+      max-width: 580px; margin: 0 auto 0; font-weight: 400; line-height: 1.6;
+    }
+
+    /* ── page body ── */
+    .page-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── entries ── */
+    .page-label {
+      font-size: .7rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .07em;
+      margin-bottom: 6px;
+    }
+    .result-count { font-size: .8rem; color: #64748b; margin-bottom: 16px; }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 0 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .entry-date { padding-top: 1px; }
+    .date-month { font-size: .75rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .05em; }
+    .date-day   { font-size: .875rem; color: #94a3b8; margin-top: 1px; }
+
+    .entry-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .8rem; color: #64748b; margin-bottom: 5px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-breaking  { background: #ef4444; }
+    .dot-important { background: #f59e0b; }
+    .dot-fyi       { background: #3b82f6; }
+    .dot-pricing   { background: #10b981; }
+
+    .entry h2 {
+      font-size: .95rem; font-weight: 600; color: var(--ink);
+      line-height: 1.45; margin-bottom: 6px;
+    }
+    .entry p {
+      font-size: .875rem; color: var(--muted);
+      line-height: 1.75; margin-bottom: 8px;
+    }
+    .entry-src { font-size: .8rem; color: var(--sky); font-weight: 500; }
+    .entry-src:hover { text-decoration: underline; }
+
+    #empty { display: none; padding: 28px 0; font-size: .875rem; color: #64748b; }
+
+    /* ── sidebar ── */
+    .sidebar { position: sticky; top: 24px; }
+
+    .sidebar-label {
+      font-size: .7rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px;
+    }
+    .sidebar input[type=search] {
+      width: 100%; padding: 6px 10px; font-size: .8rem;
+      border: 1.5px solid var(--line); border-radius: var(--r-sm);
+      outline: none; background: #fff; color: var(--ink);
+      font-family: inherit; margin-bottom: 14px;
+    }
+    .sidebar input[type=search]:focus { border-color: var(--sky); }
+
+    .filter-group label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .875rem; color: var(--muted);
+      padding: 4px 0; cursor: pointer;
+    }
+    .filter-group label:hover { color: var(--ink); }
+    .filter-group input[type=checkbox] {
+      accent-color: var(--ink); width: 13px; height: 13px; cursor: pointer;
+    }
+
+    /* ── CTA — matches index learn-link card style ── */
+    .cta-card {
+      margin-top: 24px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .cta-card a { color: var(--sky); font-weight: 600; }
+
+    /* ── footer section — matches index ctia-section ── */
+    .footer-section {
+      background: #EEF6FB;
+      border-top: 1px solid #CCE3F2;
+      padding: 48px 24px 56px;
+      text-align: center;
+    }
+    .footer-section p {
+      font-size: .875rem; color: var(--muted); margin-bottom: 14px;
+    }
+    .footer-cta {
+      display: inline-block;
+      background: var(--sky); color: #fff;
+      font-weight: 600; font-size: .925rem;
+      padding: 11px 26px; border-radius: var(--r-md);
+      transition: background .15s;
+    }
+    .footer-cta:hover { background: var(--accent); text-decoration: none; }
+
+    /* ── responsive ── */
+    @media (max-width: 760px) {
+      .page-body { grid-template-columns: 1fr; gap: 0; }
+      .sidebar { position: static; border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 20px; }
+      .entry { grid-template-columns: 68px 1fr; gap: 0 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- header from index — loaded via include in production -->
+<div class="topbar-slot" data-include="/partials/topbar.html"></div>
+
+<!-- hero matching index style -->
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-tag">Changelog &nbsp;·&nbsp; Last updated April 2026</p>
+    <h1>10DLC <span>Compliance</span> Updates</h1>
+    <p class="hero-sub">A chronological record of 10DLC regulation changes, CTIA guideline updates, TCR policy shifts, carrier enforcement deadlines, and FCC actions.</p>
+  </div>
+</header>
+
+<div class="page-body">
+
+  <!-- entries -->
+  <div>
+    <p class="result-count" id="count">Showing 18 of 18 updates</p>
+    <div id="log">
+
+      <article class="entry" data-s="breaking" data-t="auth 2.0 deadline legacy public profit brands october 2025 TCR verification campaign suspension identity">
+        <div class="entry-date">
+          <div class="date-month">Oct 2025</div>
+          <div class="date-day">30</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-breaking"></span> Breaking</div>
+          <h2>Auth+ 2.0 deadline: legacy public-profit brands must verify by October 30, 2025</h2>
+          <p>TCR's Authentication+ 2.0 program requires all public, for-profit brands registered before October 17, 2024 with at least one active campaign to complete identity verification by this date. New public-profit brands registering from August 7, 2025 face mandatory Auth+ vetting at registration, with a fee of $12.50 per brand. Brands that miss the deadline risk campaign suspension.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/intro-auth-2-0/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="breaking" data-t="opt-out STOP request 10 business days April 2025 compliance carrier requirement campaign suspension">
+        <div class="entry-date">
+          <div class="date-month">Apr 2025</div>
+          <div class="date-day">11</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-breaking"></span> Breaking</div>
+          <h2>Opt-out requests must now be honored within 10 business days</h2>
+          <p>As of April 11, 2025, senders must process STOP opt-out requests within 10 business days. This is now a formalized carrier requirement, not a best practice recommendation. Failure to honor opt-outs within this window can result in campaign suspension and escalating penalties. Senders using shared opt-out lists across multiple campaigns must track and revoke consent per campaign.</p>
+          <a class="entry-src" href="https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business" target="_blank" rel="noopener">Ref: FTC CAN-SPAM &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="breaking" data-t="unregistered 10DLC traffic blocked february 2025 AT&T T-Mobile Verizon mandatory registration A2P">
+        <div class="entry-date">
+          <div class="date-month">Feb 2025</div>
+          <div class="date-day">1</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-breaking"></span> Breaking</div>
+          <h2>All unregistered 10DLC traffic fully blocked by US carriers, no exceptions</h2>
+          <p>As of February 1, 2025, all three major US carriers block 100% of unregistered A2P long-code traffic. Messages from unregistered numbers are silently dropped or returned with an error code. There is no grace period. Any business using 10-digit numbers for automated, bulk, or scheduled SMS or MMS must have completed both Brand and Campaign registration through TCR before sending.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="breaking" data-t="Syniverse DCA cutoff December 2024 unregistered sole proprietor last aggregator long code">
+        <div class="entry-date">
+          <div class="date-month">Dec 2024</div>
+          <div class="date-day">1</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-breaking"></span> Breaking</div>
+          <h2>Syniverse, the last major DCA supporting unregistered traffic, ended service on December 1, 2024</h2>
+          <p>Syniverse was the last Direct Connect Aggregator still allowing unregistered 10DLC traffic to pass through. Their cutoff closed every remaining unregistered pathway, including for sole proprietors without EINs. Businesses relying on this route were required to complete TCR registration immediately. Sole Proprietor use cases require the separate SP 2.0 registration process with per-carrier rate limits and monthly reporting obligations.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="Authentication+ TCR October 2024 identity verification public brand impersonation smishing 2FA fraud">
+        <div class="entry-date">
+          <div class="date-month">Oct 2024</div>
+          <div class="date-day">17</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>TCR launches Authentication+ to reduce brand impersonation and smishing</h2>
+          <p>TCR introduced Authentication+ as a one-time brand-representative identity check to combat impersonation, spoofing, and consumer-targeted fraud including smishing. At launch it applies to public, for-profit brands only. An authorized employee receives an email with a 2FA verification link. Brands owned by publicly traded parent companies should confirm whether they fall within scope.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/intro-auth-2-0/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="pricing" data-t="carrier surcharge unregistered A2P SMS MMS fee June 2024 $0.012 $0.021 per message cost">
+        <div class="entry-date">
+          <div class="date-month">Jun 2024</div>
+          <div class="date-day">1</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-pricing"></span> Pricing</div>
+          <h2>Carrier surcharges raised: unregistered SMS now $0.012 per message, MMS $0.021</h2>
+          <p>Carriers raised per-message fees for unregistered A2P traffic. Unregistered SMS moved to $0.012 per message and MMS to $0.021 per message, significantly above registered campaign rates. These surcharges apply on top of normal messaging costs and compounded with the risk of complete blocking that followed later in the year.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="SHAFT content fines $10000 per violation carrier penalty sex hate alcohol firearms tobacco prohibited 10DLC 2024">
+        <div class="entry-date">
+          <div class="date-month">2024</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>Carriers impose fines up to $10,000 per violation for prohibited SHAFT content in SMS</h2>
+          <p>Carriers actively fine senders for messages containing SHAFT content: Sex, Hate, Alcohol, Firearms, and Tobacco. Fines reach up to $10,000 per violation regardless of registration status. Violations can result in number blacklisting and account suspension in addition to monetary penalties. The CTIA Messaging Principles define SHAFT as a restricted content category for all A2P messaging.</p>
+          <a class="entry-src" href="https://api.ctia.org/wp-content/uploads/2023/05/230523-CTIA-Messaging-Principles-and-Best-Practices-FINAL.pdf" target="_blank" rel="noopener">Source: CTIA Best Practices &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="pricing" data-t="TCR fee schedule August 2025 Auth+ $12.50 registration pricing update public brand campaign">
+        <div class="entry-date">
+          <div class="date-month">Aug 2025</div>
+          <div class="date-day">1</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-pricing"></span> Pricing</div>
+          <h2>TCR fee schedule updated: Auth+ verification set at $12.50 per public brand</h2>
+          <p>TCR implemented an updated registration fee schedule effective August 1, 2025. The Auth+ identity verification fee for public, for-profit brands is $12.50 per brand. CSPs and messaging platforms may pass these costs through at different rates. Confirm your exact amounts with your provider or directly through the TCR portal.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="sole proprietor SP 2.0 rate limits monthly reporting CNP DCA 2023 requirements registration">
+        <div class="entry-date">
+          <div class="date-month">2023</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>Sole Proprietor 2.0: strict per-carrier rate limits and monthly TCR reporting now required</h2>
+          <p>TCR's Sole Proprietor 2.0 requirements impose per-carrier, per-campaign rate limits and mandatory monthly message reporting to TCR for each active SP campaign. Software providers enabling SP messaging must vet their SP customers, enforce carrier rate limits, submit monthly reports to TCR, and work with a CNP whose DCA supports the SP use case. That unregistered pathway is now fully closed as of December 2024.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="breaking" data-t="unregistered 10DLC blocked September 2023 US carriers first hard enforcement date registration deadline">
+        <div class="entry-date">
+          <div class="date-month">Sep 2023</div>
+          <div class="date-day">1</div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-breaking"></span> Breaking</div>
+          <h2>First hard enforcement date: US carriers begin blocking all unregistered 10DLC traffic</h2>
+          <p>September 1, 2023 was the first industry-wide hard enforcement date for 10DLC registration. US carriers began blocking all unregistered A2P messages sent from local 10-digit numbers. Numbers not yet registered with TCR experienced immediate delivery failures. Completing both Brand and Campaign registration through TCR was required before sending could resume.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="CTIA messaging principles best practices May 2023 update Non-Consumer A2P consent opt-in opt-out privacy policy">
+        <div class="entry-date">
+          <div class="date-month">May 2023</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>CTIA publishes updated Messaging Principles and Best Practices, replacing the 2019 edition</h2>
+          <p>CTIA published its updated Messaging Principles and Best Practices in May 2023. Key changes include renaming A2P messaging as Non-Consumer messaging, expanded consent requirements including explicit opt-in per campaign, a requirement to confirm opt-in for recurring programs, stronger rules against renting or selling opt-in lists, and updated guidance on embedded links and shared short codes.</p>
+          <a class="entry-src" href="https://api.ctia.org/wp-content/uploads/2023/05/230523-CTIA-Messaging-Principles-and-Best-Practices-FINAL.pdf" target="_blank" rel="noopener">Source: CTIA Best Practices (PDF) &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="CTIA one opt-in per campaign consent scope separate programs transfer prohibited Section 5.1.2.2 recurring">
+        <div class="entry-date">
+          <div class="date-month">May 2023</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>CTIA Section 5.1.2.2: one opt-in per campaign, consent cannot transfer across programs</h2>
+          <p>The updated CTIA guidelines explicitly require one opt-in per campaign. Consent obtained for one messaging program cannot be applied to a different service, product, or campaign. Renting, selling, or sharing opt-in lists is prohibited. Businesses running multiple campaign types such as promotional and transactional must collect and document separate opt-ins for each.</p>
+          <a class="entry-src" href="https://api.ctia.org/wp-content/uploads/2023/05/230523-CTIA-Messaging-Principles-and-Best-Practices-FINAL.pdf" target="_blank" rel="noopener">Source: CTIA Section 5.1.2.2 &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="CTIA embedded links branded HTTPS URL public shortener bit.ly tinyurl carrier filtering Section 5.3.2">
+        <div class="entry-date">
+          <div class="date-month">May 2023</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>CTIA Section 5.3.2: branded HTTPS links required, public URL shorteners flagged as high risk</h2>
+          <p>CTIA Section 5.3.2 states that embedded links in SMS messages must use branded, secure HTTPS domains. Public URL shorteners including bit.ly, tinyurl.com, and goo.gl are considered high risk and are subject to carrier-level filtering. Using public shorteners is one of the most common causes of campaign filtering and blocking.</p>
+          <a class="entry-src" href="https://api.ctia.org/wp-content/uploads/2023/05/230523-CTIA-Messaging-Principles-and-Best-Practices-FINAL.pdf" target="_blank" rel="noopener">Source: CTIA Section 5.3.2 &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="fyi" data-t="CTIA prohibits snowshoe messaging grey routes proxy number abuse Sections 5.5.2 5.5.3 carrier suspension">
+        <div class="entry-date">
+          <div class="date-month">May 2023</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-fyi"></span> FYI</div>
+          <h2>CTIA Sections 5.5.2 and 5.5.3: snowshoe messaging and grey routing explicitly prohibited</h2>
+          <p>The 2023 CTIA Best Practices formally prohibit snowshoe messaging, which is distributing bulk traffic across many numbers to evade filters; grey routing, which bypasses carrier networks to avoid filtering or fees; and misuse of proxy numbers. These practices can result in immediate suspension across all numbers and campaigns associated with the sender.</p>
+          <a class="entry-src" href="https://api.ctia.org/wp-content/uploads/2023/05/230523-CTIA-Messaging-Principles-and-Best-Practices-FINAL.pdf" target="_blank" rel="noopener">Source: CTIA Sections 5.5.2-5.5.3 &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="fyi" data-t="FCC enforcement unlawful communications robocall spoofing TCPA illegal messaging bureau priority consent">
+        <div class="entry-date">
+          <div class="date-month">Ongoing</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-fyi"></span> FYI</div>
+          <h2>FCC Enforcement Bureau lists unlawful A2P messaging, spoofing, and TCPA violations as a top priority</h2>
+          <p>The FCC Enforcement Bureau lists unlawful communications including illegal robocalls, spoofed caller ID, and unsolicited commercial text messages as a top priority. The FCC coordinates with carriers to block traffic at the network level and pursues civil penalties under the TCPA and Communications Act. Senders should maintain documented consent records and ensure clear sender identification in every message.</p>
+          <a class="entry-src" href="https://www.fcc.gov/enforcement/bureau-priorities/unlawful-communications" target="_blank" rel="noopener">Source: FCC Enforcement Bureau &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="fyi" data-t="FTC CAN-SPAM Act commercial SMS text messaging opt-out unsubscribe civil penalties compliance business guide">
+        <div class="entry-date">
+          <div class="date-month">Ongoing</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-fyi"></span> FYI</div>
+          <h2>FTC CAN-SPAM Act applies to commercial SMS: opt-outs must be honored promptly</h2>
+          <p>The FTC CAN-SPAM Compliance Guide applies to commercial electronic messages including SMS. Key requirements include clear sender identification, honest message content, a working opt-out mechanism, and prompt honoring of unsubscribe requests. The FTC can impose civil penalties per violation. Treat CAN-SPAM as a compliance floor, not a ceiling.</p>
+          <a class="entry-src" href="https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business" target="_blank" rel="noopener">Source: FTC CAN-SPAM Guide &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="important" data-t="verbal opt-in confirmation first message call to action consent campaign registration vetting 2024 documentation">
+        <div class="entry-date">
+          <div class="date-month">2024</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-important"></span> Important</div>
+          <h2>Verbal opt-in requires written confirmation in the first message with an explicit call to action</h2>
+          <p>When a subscriber agrees to join a campaign verbally, such as in-store or over the phone, the business must confirm that consent in the first SMS sent. The confirmation must explain what program the consumer has joined, how often they will receive messages, and how to opt out. This must be documented alongside sample messages in TCR registration materials.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+      <article class="entry" data-s="fyi" data-t="Campaign Registry TCR launched 2020 brand campaign trust score tier throughput vetting history A2P long code">
+        <div class="entry-date">
+          <div class="date-month">2020</div>
+          <div class="date-day"></div>
+        </div>
+        <div>
+          <div class="entry-badge"><span class="dot dot-fyi"></span> FYI</div>
+          <h2>The Campaign Registry (TCR) launched in 2020 as the central authority for A2P 10DLC registration</h2>
+          <p>TCR was established in 2020 by major US carriers to serve as the central registry for A2P 10DLC messaging. Brands receive a Trust Score from 0 to 100 based on vetting, which determines their carrier throughput tier. CSPs submit registrations on behalf of brands, and DCAs perform additional compliance vetting before campaigns are approved for traffic.</p>
+          <a class="entry-src" href="https://www.campaignregistry.com/" target="_blank" rel="noopener">Source: TCR &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+    <div id="empty">No updates match your filter.</div>
+  </div>
+
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Filter</div>
+    <input type="search" id="q" placeholder="Search..." />
+    <div class="filter-group">
+      <label><input type="checkbox" checked data-f="all" /> All</label>
+      <label><input type="checkbox" checked data-f="breaking" /><span class="dot dot-breaking"></span> Breaking</label>
+      <label><input type="checkbox" checked data-f="important" /><span class="dot dot-important"></span> Important</label>
+      <label><input type="checkbox" checked data-f="fyi" /><span class="dot dot-fyi"></span> FYI</label>
+      <label><input type="checkbox" checked data-f="pricing" /><span class="dot dot-pricing"></span> Pricing</label>
+    </div>
+    <div class="cta-card">
+      Not sure if your messages are compliant? <a href="https://10dlccheck.com/">Run a free check &rarr;</a>
+    </div>
+  </aside>
+
+</div>
+
+<!-- footer — matches index ctia-section style -->
+<section class="footer-section">
+  <p>Stay on top of 10DLC rules. Check your messages for compliance before they get blocked.</p>
+  <a class="footer-cta" href="https://10dlccheck.com/">Run Free 10DLC Compliance Check &rarr;</a>
+</section>
+
+<div class="footer-slot" data-include="/partials/footer.html"></div>
+
+<script>
+  var entries = Array.from(document.querySelectorAll('.entry'));
+  var checkboxes = Array.from(document.querySelectorAll('.filter-group input[type=checkbox]'));
+  var allBox = document.querySelector('[data-f="all"]');
+  var q = document.getElementById('q');
+  var empty = document.getElementById('empty');
+  var count = document.getElementById('count');
+  var total = entries.length;
+
+  function getActive() {
+    return checkboxes.filter(function(c) { return c.dataset.f !== 'all' && c.checked; }).map(function(c) { return c.dataset.f; });
+  }
+
+  function filter() {
+    var term = q.value.toLowerCase().trim();
+    var active = getActive();
+    var shown = 0;
+    entries.forEach(function(el) {
+      var match = active.includes(el.dataset.s) &&
+                  (!term || (el.dataset.t + ' ' + el.textContent).toLowerCase().includes(term));
+      el.style.display = match ? '' : 'none';
+      if (match) shown++;
+    });
+    count.textContent = 'Showing ' + shown + ' of ' + total + ' updates';
+    empty.style.display = shown === 0 ? 'block' : 'none';
+  }
+
+  allBox.addEventListener('change', function() {
+    checkboxes.forEach(function(c) { c.checked = allBox.checked; });
+    filter();
+  });
+
+  checkboxes.forEach(function(c) {
+    if (c.dataset.f === 'all') return;
+    c.addEventListener('change', function() {
+      var cats = ['breaking','important','fyi','pricing'];
+      allBox.checked = cats.every(function(cat) { return getActive().includes(cat); });
+      filter();
+    });
+  });
+
+  q.addEventListener('input', filter);
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+   {
+     "@type": "Question",
+     "name": "What are CTIA messaging guidelines?",
+     "acceptedAnswer": {
+       "@type": "Answer",
+       "text": "They are industry standards for consent, transparency, and responsible SMS messaging."
+     }
+   },
+   {
+     "@type": "Question",
+     "name": "Are CTIA rules legally required?",
+     "acceptedAnswer": {
+       "@type": "Answer",
+       "text": "No, but carriers enforce them alongside legal regulations."
+     }
+   }
+ ]
+}
+</script>
+
+<!-- READ TIME -->
+ <script>
+    // 1) Include partials
+    (async function includePartials(){
+      const slots = document.querySelectorAll('[data-include]');
+      await Promise.all(Array.from(slots).map(async el=>{
+        try{ const url = el.getAttribute('data-include');
+             const r = await fetch(url,{cache:'no-store'});
+             if(r.ok) el.innerHTML = await r.text(); } catch(_){}
+      }));
+    })();
+
+    // 2) Build TOC from H2s
+    (function buildTOC(){
+      const toc = document.getElementById('toc-list');
+      if(!toc) return;
+      const sections = Array.from(document.querySelectorAll('#article h2'));
+      sections.forEach(h=>{
+        const id = h.id || h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id = id;
+        if(!h.querySelector('.anchor')){
+          const anc = document.createElement('a');
+          anc.className = 'anchor'; anc.href = '#'+id; anc.textContent = '#';
+          anc.setAttribute('aria-label','Link to this section');
+          h.appendChild(anc);
+        }
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#'+id; a.textContent = h.textContent.replace('#','').trim();
+        li.appendChild(a); toc.appendChild(li);
+      });
+    })();
+
+  
+
+    // 4) Read time (~225 wpm)
+    (function readTime(){
+      const el = document.getElementById('article');
+      const rt = document.getElementById('read-time');
+      if(!el || !rt) return;
+      const words = (el.innerText||'').trim().split(/\s+/).length;
+      const mins = Math.max(1, Math.round(words/225));
+      rt.textContent = `~${mins} min read`;
+    })();
+
+  </script>
+  
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-C64QWDBMQZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
+</body>
+</html>
