@@ -1,8 +1,28 @@
 // api/sbg-rules.js
+<<<<<<< HEAD
 // Version: 2026-04-06.sbg.full.8
 let STORE = {
   schema: "sbg-10dlc-rules/v1",
   version: "2026-04-06.sbg.full.8",
+=======
+// Version: 2026-04-02.sbg.full.6
+// Changes from v5:
+//   - Added all lenders from screenshots (BHG, Gillman Bagley, Good Funding, Headway,
+//     Idea Financial, KCG, LCF, Legend Funding, LoanBud, Lynks Capital, Pearl, SmartBiz,
+//     Specialty Funding, Revenued, Samson, Rapid Finance, Peac Solutions)
+//   - Added "broker" and related lead-gen brokering terms to risky_terms_regex
+//   - Added lead_gen_solicitation_regex (new check): catches the exact patterns
+//     flagged by the carrier — probing questions, pre-approval claims, cold outreach
+//   - Expanded risky_terms_regex with carrier-flagged financial spam triggers:
+//     pre-approved, pre-qualify, guaranteed funding, low rate, high-risk,
+//     working capital advance, get funded, fast funding, same-day approval,
+//     how much do you qualify for, apply now, 100k approved, etc.
+//   - urgency_regex expanded with additional carrier-flagged phrases
+
+let STORE = {
+  schema: "sbg-10dlc-rules/v1",
+  version: "2026-04-02.sbg.full.6",
+>>>>>>> b234df9 (Initial commit)
 
   defaults: {
     require_brand_in_each_message: false,
@@ -173,6 +193,7 @@ let STORE = {
         "build your wealth" +
       ")\\b",
 
+<<<<<<< HEAD
     // ── Lead-gen solicitation patterns ────────────────────────────────────────
     // Grounded in:
     //   CTIA §5.1 Exhibit II — promotional messaging (prompts action) requires
@@ -218,6 +239,38 @@ let STORE = {
         // to trick consumers into revealing personal information
         "your (bank|lender|financial institution) (has|have) (approved|flagged|reviewed)|" +
         "we.?re (calling|reaching out) on behalf of (your|a) (bank|lender|financial institution)" +
+=======
+    // ── NEW: Lead-gen solicitation patterns ────────────────────────────────────
+    // Directly addresses the carrier's complaint about probing questions,
+    // pre-approval claims, and cold outreach targeting by profession.
+    // Examples flagged: "You are looking for help with funding, correct?"
+    //                   "Just got 100k approved for you!"
+    //                   "Doctor, did you get any financing anytime this year?"
+    lead_gen_solicitation_regex:
+      "(" +
+        // Probing / qualifying questions
+        "looking for (help with|capital|funding|financing)(,?\\s?correct)?|" +
+        "are you (looking|searching|seeking) for (funding|capital|financing|a loan)|" +
+        "do you need (funding|capital|financing|a loan|business funding)|" +
+        "did you get (any )?(financing|funding|a loan)|" +
+        "have you (applied|been approved|received) (for )?(funding|financing|a loan)|" +
+        "interested in (funding|financing|a loan|working capital)|" +
+        // Pre-approval / approval claims
+        "approved for you|" +
+        "just got .{0,20}approved|" +
+        "got you approved|" +
+        "you.?re (pre[\\s-]?)?approved|" +
+        "you qualify for|" +
+        "you.?ve been (pre[\\s-]?)?approved|" +
+        // Cold professional targeting (doctor, dentist, etc.)
+        "(doctor|dentist|attorney|lawyer|physician|contractor|realtor|agent),?.{0,30}(funding|financing|loan|capital|approved)|" +
+        // Explicit lead gen / broker solicitation
+        "we (buy|purchase|acquire) (leads|data|lists)|" +
+        "we can get you funded|" +
+        "we.?ll find you (a lender|funding|financing)|" +
+        "match(ed)? you with (a lender|funding)|" +
+        "best (rate|offer|deal) for you" +
+>>>>>>> b234df9 (Initial commit)
       ")",
 
     // ── PII ────────────────────────────────────────────────────────────────────

@@ -9,7 +9,7 @@
 var COUNT_KEY = 'tdlc_local_validation_count';
 var GLOBAL_SEED_KEY = 'tdlc_global_seed_v1';
 var GLOBAL_DAY_KEY = 'tdlc_global_day_v1';
-var lastDurations = []; // for avg analysis time
+var lastDurations = [];
 
 function getLocalCount() {
   var n = Number(localStorage.getItem(COUNT_KEY));
@@ -34,13 +34,13 @@ function initGlobalEstimateSeed() {
   var day  = localStorage.getItem(GLOBAL_DAY_KEY);
 
   if (!isFinite(seed)) {
-    seed = 800 + Math.floor(Math.random() * 600);            // initial believable baseline
+    seed = 800 + Math.floor(Math.random() * 600);
     localStorage.setItem(GLOBAL_SEED_KEY, String(seed));
     localStorage.setItem(GLOBAL_DAY_KEY, today);
     return seed;
   }
   if (day !== today) {
-    seed += 50 + Math.floor(Math.random() * 30);              // gentle daily bump
+    seed += 50 + Math.floor(Math.random() * 30);
     localStorage.setItem(GLOBAL_SEED_KEY, String(seed));
     localStorage.setItem(GLOBAL_DAY_KEY, today);
   }
@@ -51,15 +51,12 @@ function getGlobalEstimate() {
 }
 
 function renderStats() {
-  // Local
   var lEl = document.getElementById('localCount');
   if (lEl) lEl.textContent = getLocalCount();
 
-  // Global estimate (will be replaced by real value if API is configured)
   var gEl = document.getElementById('globalCount');
   if (gEl) gEl.textContent = getGlobalEstimate();
 
-  // Avg time placeholder
   var aEl = document.getElementById('avgTime');
   if (aEl && !aEl.textContent) aEl.textContent = '—';
 }
@@ -72,21 +69,19 @@ function setAvgTime(ms) {
   if (el) el.textContent = avg + ' ms';
 }
 
-// Try to fetch a real global count from /api/global-count (if env keys were set)
 function tryFetchRealGlobal() {
   fetch('/api/global-count', { method: 'GET' })
     .then(function(res){ if (!res.ok) return null; return res.json(); })
     .then(function(data){
-      if (!data || typeof data.total !== 'number') return;    // fall back to estimate silently
+      if (!data || typeof data.total !== 'number') return;
       var gEl = document.getElementById('globalCount');
       if (!gEl) return;
       var current = Number(gEl.textContent) || 0;
       animateCount(gEl, current, data.total, 500);
     })
-    .catch(function(){ /* ignore if API not configured */ });
+    .catch(function(){});
 }
 
-// Increment real global count (no-op if API not configured)
 function postIncrementGlobal() {
   fetch('/api/global-count', { method: 'POST' })
     .then(function(res){ return res.ok ? res.json() : null; })
@@ -97,13 +92,13 @@ function postIncrementGlobal() {
       var current = Number(gEl.textContent) || 0;
       animateCount(gEl, current, data.total, 500);
     })
-    .catch(function(){ /* ignore if API not configured */ });
+    .catch(function(){});
 }
 
 // -------------------------------
 // Suggestions endpoint (Cloudflare Worker)
 // -------------------------------
-const SUGGEST_URL = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/"; // <-- your worker URL
+const SUGGEST_URL = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/";
 
 function ensureSuggestionsContainer() {
   let box = document.getElementById("suggestions");
@@ -160,7 +155,7 @@ function showSuggestions(data) {
 
 // -------------------------------
 // Built-in fallback rules (minimal)
-// Only used if /api/rules.js can't be fetched
+// Only used if /api/public-rules can't be fetched
 // -------------------------------
 var complianceRulesFallback = {
   version: "fallback",
@@ -253,7 +248,6 @@ var complianceRulesFallback = {
     message: "Consent scope ambiguity — clarify what users opted into",
     suggestion: "State the specific program, message frequency, fees, HELP/STOP"
   },
-  // store regex source as string; we'll compile it at load
   urlSecurity: {
     shortenerPattern: "(bit\\.ly|tinyurl\\.com|goo\\.gl|t\\.co|is\\.gd|ow\\.ly|rebrand\\.ly|cutt\\.ly)",
     severity: "medium",
@@ -263,42 +257,40 @@ var complianceRulesFallback = {
   advice: {
     linkTip: "Consider adding a helpful link (if relevant).",
     optOutTip: "Include STOP to opt out and HELP for assistance when opt-in is unknown.",
-    optOutTipExcludeModes: ["pill"] // extension pill mode excludes STOP/HELP tip; web uses 'web'
+    optOutTipExcludeModes: ["pill"]
   },
   aggressiveFinancialClaims: {
-  keywords: ["guaranteed approval","instant approval","no credit check","pre-approved","risk-free","no obligation"],
-  severity: "high",
-  message: "Aggressive financial claims trigger filtering.",
-  suggestion: "Avoid guarantees or unverifiable approval promises."
-},
-loginHarvesting: {
-  keywords: ["log in","login","sign in","secure login","account verification","verify account","verify your account","needs verification","account suspended","avoid suspension","account locked"],
-  severity: "high",
-  message: "Login or credential collection language detected.",
-  suggestion: "Avoid directing users to log in via SMS. Use neutral notifications instead."
-},
-missingBrandIdentification: {
-  severity: "medium",
-  message: "Brand identification missing at start of message.",
-  suggestion: "Include your brand name at the beginning (e.g., “Acme: ...”)."
-}
+    keywords: ["guaranteed approval","instant approval","no credit check","pre-approved","risk-free","no obligation"],
+    severity: "high",
+    message: "Aggressive financial claims trigger filtering.",
+    suggestion: "Avoid guarantees or unverifiable approval promises."
+  },
+  loginHarvesting: {
+    keywords: ["log in","login","sign in","secure login","account verification","verify account","verify your account","needs verification","account suspended","avoid suspension","account locked"],
+    severity: "high",
+    message: "Login or credential collection language detected.",
+    suggestion: "Avoid directing users to log in via SMS. Use neutral notifications instead."
+  },
+  missingBrandIdentification: {
+    severity: "medium",
+    message: "Brand identification missing at start of message.",
+    suggestion: "Include your brand name at the beginning (e.g., Acme: ...)."
+  }
 };
 
 // -------------------------------
 // Rules loading (external JSON with fallback)
 // -------------------------------
 var RULES = null;
-var URL_SHORTENER_REGEX = null; // compiled at load
+var URL_SHORTENER_REGEX = null;
 
 async function loadRules() {
   try {
-    // Fetch from the new API endpoint first
     var res = await fetch('/api/public-rules', { cache: 'no-store' });
     if (!res.ok) throw new Error('API fetch failed');
 
     var data = await res.json();
 
-    // Compile URL shortener regex if present
     if (data && data.urlSecurity && data.urlSecurity.shortenerPattern) {
       URL_SHORTENER_REGEX = new RegExp(data.urlSecurity.shortenerPattern, 'i');
     } else {
@@ -309,13 +301,11 @@ async function loadRules() {
     return data;
 
   } catch (e) {
-    console.warn('⚠️ Using fallback rules. Reason:', e && e.message ? e.message : e);
+    console.warn('Using fallback rules. Reason:', e && e.message ? e.message : e);
     URL_SHORTENER_REGEX = new RegExp(complianceRulesFallback.urlSecurity.shortenerPattern, 'i');
     return complianceRulesFallback;
   }
 }
-
-
 
 // -------------------------------
 // Utilities
@@ -327,48 +317,50 @@ function safeWordCount(text) {
 function hasHttpUrl(text) { return /https?:\/\//i.test(text); }
 
 // -------------------------------
-// Category metadata (name + impact labels shown in UI)
+// Category metadata
 // -------------------------------
 var CATEGORY_META = {
-  // --- Public + fallback (shared) ---
-  highRiskFinancial:{name:'High-Risk Financial Services',impact:'RESTRICTED – May require carrier pre-approval'},
-  getRichQuick:{name:'Get-Rich-Quick / Prize Language',impact:'PROHIBITED – Likely campaign rejection'},
-  thirdPartyServices:{name:'Third-Party Services',impact:'RESTRICTED – Must promote only direct/registered services'},
-  controlledSubstances:{name:'Controlled Substances',impact:'PROHIBITED – Campaign will be rejected'},
-  shaft:{name:'SHAFT Content',impact:'PROHIBITED – Sex, Hate, Alcohol, Firearms, Tobacco, or Profanity'},
-  scams:{name:'Suspicious / Scam Content',impact:'PROHIBITED – Likely phishing or deceptive messaging'},
-  aggressiveMarketing:{name:'Aggressive Marketing Language',impact:'HIGH RISK – Carriers actively filter pressure tactics'},
-  consentScope:{name:'Consent Scope',impact:'MEDIUM RISK – Message may exceed original opt-in scope'},
-  urlSecurity:{name:'URL Security / Shorteners',impact:'MEDIUM RISK – Prefer branded HTTPS links'},
-  competitorMention:{name:'Competitor Mentions',impact:'LOW RISK – May cause brand confusion'},
-  optOutDisclosureMissing:{name:'Missing STOP / HELP Disclosure',impact:'MEDIUM RISK – STOP and HELP disclosures are required'},
-
-  // --- Public-only (but safe to keep even if fallback) ---
-  aggressiveFinancialClaims:{name:'Aggressive Financial Claims',impact:'PROHIBITED – Approval/guarantee claims are filtered'},
-  sensitivePersonalInfo:{name:'Sensitive Personal Information',impact:'PROHIBITED – Never request SSN, passwords, or bank data via SMS'},
-  loginHarvesting:{name:'Login / Credential Harvesting',impact:'PROHIBITED – Login, verification, or suspension language detected'},
-  missingBrandIdentification:{name:'Missing Brand Identification',impact:'MEDIUM RISK – Brand name should appear at message start'},
-
-  // --- Fallback-only (legacy categories) ---
-  charity:{name:'Charity / Donation Appeals',impact:'CASE-BY-CASE – May require additional approval'},
-  personalFinancialQuestions:{name:'Personal Financial Questions',impact:'HIGH RISK – Privacy/security concerns'},
-  consentDocumentation:{name:'Consent Documentation',impact:'LOW RISK – Maintain opt-in/HELP/STOP records'},
-
-  // --- Aliases so fallback + public both work ---
-  personalInfo:{name:'Sensitive Personal Information',impact:'PROHIBITED – Never request SSN, passwords, or bank data via SMS'}
+  highRiskFinancial:        { name: 'High-Risk Financial Services',      impact: 'RESTRICTED – May require carrier pre-approval' },
+  getRichQuick:             { name: 'Get-Rich-Quick / Prize Language',   impact: 'PROHIBITED – Likely campaign rejection' },
+  thirdPartyServices:       { name: 'Third-Party Services',              impact: 'RESTRICTED – Must promote only direct/registered services' },
+  controlledSubstances:     { name: 'Controlled Substances',             impact: 'PROHIBITED – Campaign will be rejected' },
+  shaft:                    { name: 'SHAFT Content',                     impact: 'PROHIBITED – Sex, Hate, Alcohol, Firearms, Tobacco, or Profanity' },
+  scams:                    { name: 'Suspicious / Scam Content',         impact: 'PROHIBITED – Likely phishing or deceptive messaging' },
+  aggressiveMarketing:      { name: 'Aggressive Marketing Language',     impact: 'HIGH RISK – Carriers actively filter pressure tactics' },
+  consentScope:             { name: 'Consent Scope',                     impact: 'MEDIUM RISK – Message may exceed original opt-in scope' },
+  urlSecurity:              { name: 'URL Security / Shorteners',         impact: 'MEDIUM RISK – Prefer branded HTTPS links' },
+  competitorMention:        { name: 'Competitor Mentions',               impact: 'LOW RISK – May cause brand confusion' },
+  optOutDisclosureMissing:  { name: 'Missing STOP / HELP Disclosure',    impact: 'MEDIUM RISK – STOP and HELP disclosures are required' },
+  aggressiveFinancialClaims:{ name: 'Aggressive Financial Claims',       impact: 'PROHIBITED – Approval/guarantee claims are filtered' },
+  sensitivePersonalInfo:    { name: 'Sensitive Personal Information',    impact: 'PROHIBITED – Never request SSN, passwords, or bank data via SMS' },
+  loginHarvesting:          { name: 'Login / Credential Harvesting',     impact: 'PROHIBITED – Login, verification, or suspension language detected' },
+  missingBrandIdentification:{ name: 'Missing Brand Identification',     impact: 'MEDIUM RISK – Brand name should appear at message start' },
+  charity:                  { name: 'Charity / Donation Appeals',        impact: 'CASE-BY-CASE – May require additional approval' },
+  personalFinancialQuestions:{ name: 'Personal Financial Questions',     impact: 'HIGH RISK – Privacy/security concerns' },
+  consentDocumentation:     { name: 'Consent Documentation',             impact: 'LOW RISK – Maintain opt-in/HELP/STOP records' },
+  personalInfo:             { name: 'Sensitive Personal Information',    impact: 'PROHIBITED – Never request SSN, passwords, or bank data via SMS' }
 };
 
-
-// Build the category list dynamically from RULES keys present
+// -------------------------------
+// Build category list — respects use-case filter if active
+// CHANGED: uses RULES.evaluationOrder when a use case is selected,
+// otherwise falls back to all keys present in CATEGORY_META + rules.
+// -------------------------------
 function buildCategoryList(rules) {
-  var keys = Object.keys(CATEGORY_META).filter(function(k){ return rules[k]; });
-  return keys.map(function(k){
-    return { key: k, name: CATEGORY_META[k].name, impact: CATEGORY_META[k].impact };
-  });
+  // If use-case-filter.js has set an active use case, use the filtered order
+  var order = (rules.evaluationOrder && rules.evaluationOrder.length)
+    ? rules.evaluationOrder
+    : Object.keys(CATEGORY_META);
+
+  return order
+    .filter(function(k) { return CATEGORY_META[k] && rules[k]; })
+    .map(function(k) {
+      return { key: k, name: CATEGORY_META[k].name, impact: CATEGORY_META[k].impact };
+    });
 }
 
 // -------------------------------
-// Compliance check (uses external RULES with fallback)
+// Compliance check
 // -------------------------------
 function performComplianceCheck(message) {
   var rules = RULES || complianceRulesFallback;
@@ -392,21 +384,19 @@ function performComplianceCheck(message) {
     });
   }
 
-  // Keyword categories (dynamic)
+  // Keyword categories — filtered by use case if one is selected
   var categories = buildCategoryList(rules);
-  categories.forEach(function(cat){
+  categories.forEach(function(cat) {
     var rule = rules[cat.key];
     var found = [];
 
-    // keyword-based categories
     if (Array.isArray(rule.keywords)) {
-      found = rule.keywords.filter(function(k){
+      found = rule.keywords.filter(function(k) {
         var esc = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         return new RegExp('\\b' + esc + '\\b', 'i').test(lower);
       });
     }
 
-    // special urlSecurity regex
     if (cat.key === 'urlSecurity' && URL_SHORTENER_REGEX && URL_SHORTENER_REGEX.test(lower)) {
       found.push('public shortener');
     }
@@ -423,7 +413,7 @@ function performComplianceCheck(message) {
 
   // Advice tips (non-blocking)
   var tips = [];
-  var mode = 'web'; // website experience (extension uses 'pill' sometimes)
+  var mode = 'web';
   if (rules.advice) {
     if (!hasHttpUrl(message) && rules.advice.linkTip) tips.push('🔗 ' + rules.advice.linkTip);
     var exclude = Array.isArray(rules.advice.optOutTipExcludeModes) ? rules.advice.optOutTipExcludeModes : [];
@@ -432,22 +422,11 @@ function performComplianceCheck(message) {
     }
   }
 
-    // -------------------------------
-  // Compliance scoring + status
-  // -------------------------------
-  var severityPoints = (RULES && RULES.scoring && RULES.scoring.severityPoints) || {
-    low: 1,
-    medium: 3,
-    high: 5
-  };
+  // Scoring
+  var severityPoints = (RULES && RULES.scoring && RULES.scoring.severityPoints) || { low: 1, medium: 3, high: 5 };
+  var thresholds     = (RULES && RULES.scoring && RULES.scoring.thresholds)     || { pass: 0, warn: 3, fail: 5 };
 
-  var thresholds = (RULES && RULES.scoring && RULES.scoring.thresholds) || {
-    pass: 0,
-    warn: 3,
-    fail: 5
-  };
-
-  var score = issues.reduce(function(sum, i){
+  var score = issues.reduce(function(sum, i) {
     var sev = (i.severity || 'low').toLowerCase();
     return sum + (severityPoints[sev] || 0);
   }, 0);
@@ -458,9 +437,9 @@ function performComplianceCheck(message) {
     'pass';
 
   return {
-    isCompliant: status === 'pass', // backward compatible
-    status: status,                 // NEW: pass | warn | fail
-    score: score,                   // NEW: numeric score
+    isCompliant: status === 'pass',
+    status: status,
+    score: score,
     issues: issues,
     tips: tips,
     messageLength: message.length,
@@ -470,11 +449,10 @@ function performComplianceCheck(message) {
   };
 }
 
-
 // -------------------------------
-// Results rendering — Variant A (flat, no buttons)
+// Results rendering
 // -------------------------------
-function escapeHTML(s){
+function escapeHTML(s) {
   return String(s)
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
@@ -483,48 +461,41 @@ function escapeHTML(s){
     .replace(/'/g,'&#39;');
 }
 
-function resultIcon(isCompliant){
-  // Explicit size prevents oversized “checkbox” appearance if CSS is missing
+function resultIcon(isCompliant) {
   return isCompliant
     ? '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
     : '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
 }
-function resultIconByStatus(status){
-  if (status === 'pass') return resultIcon(true);
 
+function resultIconByStatus(status) {
+  if (status === 'pass') return resultIcon(true);
   if (status === 'warn') {
-    // yellow warning icon
     return '<svg class="icon" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor" viewBox="0 0 20 20">' +
            '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-12.5a.75.75 0 00-1.5 0v5a.75.75 0 001.5 0v-5zM10 14.25a1 1 0 110 2 1 1 0 010-2z" clip-rule="evenodd"></path>' +
            '</svg>';
   }
-
-  // fail
   return resultIcon(false);
 }
 
 function displayResults(analysis) {
   var resultsDiv = document.getElementById('results');
   var isCompliant = !!analysis.isCompliant;
-  resultsDiv.className = 'results ' + statusClass;
 
-  // quick counts
   var issues = Array.isArray(analysis.issues) ? analysis.issues : [];
   var high = issues.filter(function(i){ return i.severity === 'high'; }).length;
   var med  = issues.filter(function(i){ return i.severity === 'medium'; }).length;
   var low  = issues.filter(function(i){ return i.severity === 'low'; }).length;
 
-  // detected categories
   var cats = analysis.detectedCategories || [];
-  var catBadges = cats.map(function(c){
+  var catBadges = cats.map(function(c) {
     var cls =
       c.impact.indexOf('PROHIBITED') > -1 ? 'bad-prohib' :
       c.impact.indexOf('RESTRICTED') > -1 ? 'bad-restrict' :
-      c.impact.indexOf('HIGH RISK') > -1 ? 'bad-warn' : 'bad-info';
+      c.impact.indexOf('HIGH RISK')  > -1 ? 'bad-warn' : 'bad-info';
     return '<span class="badge ' + cls + '" title="' + escapeHTML(c.impact) + '">' + escapeHTML(c.name) + '</span>';
   }).join('');
 
-  var catDetails = cats.map(function(c){
+  var catDetails = cats.map(function(c) {
     var impactText = (c.impact.split(' - ')[1] || c.impact);
     return (
       '<div class="cat-item">' +
@@ -534,65 +505,60 @@ function displayResults(analysis) {
         '</div>' +
         (c.keywords && c.keywords.length
           ? '<div class="cat-body"><strong>Keywords:</strong> "' + escapeHTML(c.keywords.join('", "')) + '"</div>'
-          : ''
-        ) +
+          : '') +
       '</div>'
-    );
-  }).join('');
-
-  var issueItems = issues.map(function(issue){
-    var sev = escapeHTML(issue.severity || 'low');
-    var msg = escapeHTML(issue.message || '');
-    var sug = issue.suggestion ? '<div class="issue-sug">' + escapeHTML(issue.suggestion) + '</div>' : '';
-    return (
-      '<li class="issue ' + sev + '">' +
-        '<div class="issue-msg">' + msg + '</div>' +
-        sug +
-      '</li>'
     );
   }).join('');
 
   var status = analysis.status || (isCompliant ? 'pass' : 'fail');
 
-var title =
-  status === 'pass' ? 'Message looks 10DLC compliant' :
-  status === 'warn' ? 'Compliant, but risks detected' :
-  'Not 10DLC compliant';
+  var title =
+    status === 'pass' ? 'Message looks 10DLC compliant' :
+    status === 'warn' ? 'Compliant, but risks detected' :
+    'Not 10DLC compliant';
 
-var statusClass =
-  status === 'pass' ? 'compliant' :
-  status === 'warn' ? 'warning' :
-  'non-compliant';
+  var statusClass =
+    status === 'pass' ? 'compliant' :
+    status === 'warn' ? 'warning' :
+    'non-compliant';
 
-var html =
-  '<section class="res-card ' + statusClass + '">' +
-    '<header class="res-header">' +
-      '<div class="res-title">' +
-        resultIconByStatus(status) +
-        '<h3>' + title + '</h3>' +
-      '</div>' +
-      '<div class="res-metrics">' +
-        '<div class="chip"><span class="chip-k">Chars</span><span class="chip-v">' + analysis.messageLength + '</span></div>' +
-        '<div class="chip"><span class="chip-k">Words</span><span class="chip-v">' + analysis.wordCount + '</span></div>' +
-        '<div class="chip"><span class="chip-k">Issues</span><span class="chip-v">' + (high+med+low) + '</span></div>' +
-      '</div>' +
-    '</header>';
+  // Show which use case was active, if any
+  var useCaseNote = '';
+  if (RULES && RULES._activeUseCase) {
+    var ucLabel = RULES._activeUseCase.replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    useCaseNote = '<div style="font-size:.8rem;color:#6b7280;margin-top:4px;">Checked against: <strong>' + escapeHTML(ucLabel) + '</strong> rules</div>';
+  }
 
+  var html =
+    '<section class="res-card ' + statusClass + '">' +
+      '<header class="res-header">' +
+        '<div class="res-title">' +
+          resultIconByStatus(status) +
+          '<div>' +
+            '<h3>' + title + '</h3>' +
+            useCaseNote +
+          '</div>' +
+        '</div>' +
+        '<div class="res-metrics">' +
+          '<div class="chip"><span class="chip-k">Chars</span><span class="chip-v">' + analysis.messageLength + '</span></div>' +
+          '<div class="chip"><span class="chip-k">Words</span><span class="chip-v">' + analysis.wordCount + '</span></div>' +
+          '<div class="chip"><span class="chip-k">Issues</span><span class="chip-v">' + (high+med+low) + '</span></div>' +
+        '</div>' +
+      '</header>';
 
   if (cats.length) {
-  html +=
-    '<section class="res-block">' +
-      '<div class="okline" style="background:#fff8e6;border-color:#f59e0b;color:#92400e;">⚠️ Potential Compliance Risks Detected</div>' +
-      '<div class="badge-row" style="margin-top:10px">' + catBadges + '</div>' +
-      '<div class="cat-grid" style="margin-top:10px">' + catDetails + '</div>' +
-    '</section>';
-} else if (!issues.length) {
-  html +=
-    '<section class="res-block">' +
-      '<div class="okline">✅ No compliance issues detected. Your message appears to follow 10DLC guidelines.</div>' +
-    '</section>';
-}
-
+    html +=
+      '<section class="res-block">' +
+        '<div class="okline" style="background:#fff8e6;border-color:#f59e0b;color:#92400e;">Potential Compliance Risks Detected</div>' +
+        '<div class="badge-row" style="margin-top:10px">' + catBadges + '</div>' +
+        '<div class="cat-grid" style="margin-top:10px">' + catDetails + '</div>' +
+      '</section>';
+  } else if (!issues.length) {
+    html +=
+      '<section class="res-block">' +
+        '<div class="okline">No compliance issues detected. Your message appears to follow 10DLC guidelines.</div>' +
+      '</section>';
+  }
 
   if (analysis.tips && analysis.tips.length) {
     html +=
@@ -602,12 +568,12 @@ var html =
       '</section>';
   }
 
-  html += '</section>'; // res-card
+  html += '</section>';
 
+  resultsDiv.className = 'results ' + statusClass;
   resultsDiv.innerHTML = html;
   resultsDiv.style.display = 'block';
 
-  // If you still render any legacy toggle buttons somewhere else, this block won’t attach because elements don’t exist.
   var tIssues = document.getElementById('toggleIssuesBtn');
   var issuesList = document.getElementById('issuesList');
   if (tIssues && issuesList) {
@@ -629,7 +595,7 @@ var html =
 }
 
 // -------------------------------
-// Collapses helper (used by g1/g2 lists on page)
+// Collapses helper
 // -------------------------------
 function toggleCollapse(headerEl, listEl) {
   var expanded = listEl.classList.contains('expanded');
@@ -638,15 +604,14 @@ function toggleCollapse(headerEl, listEl) {
 }
 
 // -------------------------------
-// Main wiring (no inline handlers)
+// Main wiring
 // -------------------------------
 document.addEventListener('DOMContentLoaded', async function(){
-  // Load external rules (with fallback)
   RULES = await loadRules();
   console.log("[rules] version", RULES.version || "(fallback)");
 
-  renderStats();          // show local + estimated global
-  tryFetchRealGlobal();   // replace estimate with real total if API is configured
+  renderStats();
+  tryFetchRealGlobal();
 
   var btn     = document.getElementById('checkBtn');
   var message = document.getElementById('message');
@@ -669,39 +634,32 @@ document.addEventListener('DOMContentLoaded', async function(){
   }
 });
 
-
-// app.js — global site script for 10dlccheck.com
-
+// -------------------------------
+// Partials loader
+// -------------------------------
 (async function loadPartials() {
-  // Load Topbar
   const topbar = document.getElementById('site-topbar');
   if (topbar) {
     try {
       const res = await fetch('/partials/topbar.html', { cache: 'no-store' });
       topbar.innerHTML = res.ok ? await res.text() : '<p>Navigation failed to load</p>';
       initTopbar();
-    } catch (err) {
-      console.error('Topbar load failed:', err);
-    }
+    } catch (err) { console.error('Topbar load failed:', err); }
   }
 
-  // Load Footer
   const footer = document.getElementById('site-footer');
   if (footer) {
     try {
       const res = await fetch('/partials/footer.html', { cache: 'no-store' });
       footer.innerHTML = res.ok ? await res.text() : '<p>Footer failed to load</p>';
-    } catch (err) {
-      console.error('Footer load failed:', err);
-    }
+    } catch (err) { console.error('Footer load failed:', err); }
   }
 })();
 
-// Initialize the topbar toggle (mobile nav)
 function initTopbar() {
   const host = document.getElementById('site-topbar') || document;
-  const btn = host.querySelector('#menuBtn');
-  const nav = host.querySelector('#primaryNav');
+  const btn  = host.querySelector('#menuBtn');
+  const nav  = host.querySelector('#primaryNav');
   if (!btn || !nav) return;
 
   function toggle(open) {
@@ -717,19 +675,17 @@ function initTopbar() {
   const mq = window.matchMedia('(max-width: 800px)');
   mq.addEventListener('change', e => { if (!e.matches) toggle(false); });
 }
-// Make sure the function runs after the page loads
+
 if (document.readyState !== 'loading') {
   initTopbar();
 } else {
-  document.addEventListener('DOMContentLoaded', initTopbar, { once:true });
+  document.addEventListener('DOMContentLoaded', initTopbar, { once: true });
 }
-
-
 
 // -------------------------------
 // Analyze -> render -> suggestions -> metrics
 // -------------------------------
-function analyzeMessage(){
+function analyzeMessage() {
   var messageText = (document.getElementById('message').value || '').trim();
   if (!messageText) {
     alert('Please enter a message to analyze.');
@@ -748,25 +704,19 @@ function analyzeMessage(){
 
   setTimeout(function(){
     try {
-      // compliance
       var analysis = performComplianceCheck(messageText);
       displayResults(analysis);
-
-      // suggestions
       getSuggestions(messageText);
 
-      // local counter
       var next = getLocalCount() + 1;
       setLocalCount(next);
       var lEl = document.getElementById('localCount');
       if (lEl) animateCount(lEl, Number(lEl.textContent) || 0, next, 400);
 
-      // global: update estimate and try real POST increment
       var gEl = document.getElementById('globalCount');
       if (gEl) animateCount(gEl, Number(gEl.textContent) || 0, getGlobalEstimate(), 400);
       postIncrementGlobal();
 
-      // avg duration
       var dur = Math.round(performance.now() - t0);
       setAvgTime(dur);
     } catch (err) {

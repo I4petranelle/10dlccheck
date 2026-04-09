@@ -30,7 +30,7 @@
 .learn .hero{background:#fff;border-bottom:1px solid var(--line);padding:32px 0}
 .learn .hero .wrap{padding:0 16px}
 .learn .eyebrow{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.learn h1{margin:0 0 12px;font-size:2.5rem;font-weight:800;line-height:1.2}
+.learn h1{margin:0 0 12px;font-size:2.5rem;font-weight:700;line-height:1.2}
 .learn .sub{margin:0 0 20px;color:var(--muted);font-size:1.2rem;max-width:800px}
 .learn .meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.95rem;padding-top:16px;border-top:1px solid var(--line)}
 
@@ -110,7 +110,7 @@
 /* ===== Learn Hub (index) – minimal add-ons using existing tokens ===== */
 .learn .hub-hero{background:#1f2937;color:#fff;padding:48px 0 40px}
 .learn .hub-hero .wrap{max-width:1200px;margin:0 auto;padding:0 16px;}
-.learn .hub-hero h1{font-size:2.2rem;font-weight:800;line-height:1.2;margin:0 0 10px}
+.learn .hub-hero h1{font-size:2.2rem;font-weight:700;line-height:1.2;margin:0 0 10px}
 .learn .hub-hero p.sub{color:#e5e7eb;font-size:1.05rem;margin:0}
 
 
