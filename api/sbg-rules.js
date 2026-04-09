@@ -1,28 +1,9 @@
 // api/sbg-rules.js
-<<<<<<< HEAD
 // Version: 2026-04-06.sbg.full.8
-let STORE = {
-  schema: "sbg-10dlc-rules/v1",
-  version: "2026-04-06.sbg.full.8",
-=======
-// Version: 2026-04-02.sbg.full.6
-// Changes from v5:
-//   - Added all lenders from screenshots (BHG, Gillman Bagley, Good Funding, Headway,
-//     Idea Financial, KCG, LCF, Legend Funding, LoanBud, Lynks Capital, Pearl, SmartBiz,
-//     Specialty Funding, Revenued, Samson, Rapid Finance, Peac Solutions)
-//   - Added "broker" and related lead-gen brokering terms to risky_terms_regex
-//   - Added lead_gen_solicitation_regex (new check): catches the exact patterns
-//     flagged by the carrier — probing questions, pre-approval claims, cold outreach
-//   - Expanded risky_terms_regex with carrier-flagged financial spam triggers:
-//     pre-approved, pre-qualify, guaranteed funding, low rate, high-risk,
-//     working capital advance, get funded, fast funding, same-day approval,
-//     how much do you qualify for, apply now, 100k approved, etc.
-//   - urgency_regex expanded with additional carrier-flagged phrases
 
 let STORE = {
   schema: "sbg-10dlc-rules/v1",
-  version: "2026-04-02.sbg.full.6",
->>>>>>> b234df9 (Initial commit)
+  version: "2026-04-06.sbg.full.8",
 
   defaults: {
     require_brand_in_each_message: false,
@@ -33,7 +14,7 @@ let STORE = {
     forbid_pii_requests: true,
     forbid_money_requests: true,
     forbid_risky_terms: true,
-    forbid_lead_gen_solicitation: true,   // NEW — catches carrier-flagged probing/cold-outreach phrases
+    forbid_lead_gen_solicitation: true,
     enable_shaft_checks: true,
     enable_behavior_checks: true,
     forbid_url_shorteners: true,
@@ -66,10 +47,6 @@ let STORE = {
     url: "(https?://\\S+)",
 
     // ── Other lenders ──────────────────────────────────────────────────────────
-    // Boundary: (?:^|[^A-Za-z0-9]) … (?![A-Za-z0-9])  (no lookbehind — Safari safe)
-    // ADDED in v6: bhg, gillman bagley, good funding, headway, idea financial,
-    //   kcg, lcf, legend funding, loanbud, lynks capital, pearl, smartbiz,
-    //   specialty funding, revenued, samson, rapid finance, peac solutions
     other_lenders_regex:
       "(?:(?:^|[^A-Za-z0-9]))(" +
         "headway|" +
@@ -126,18 +103,11 @@ let STORE = {
       ")(?![A-Za-z0-9])",
 
     // ── Risky financial terms ──────────────────────────────────────────────────
-    // ADDED in v6:
-    //   broker, brokering, lead gen, cold outreach, pre-approv*, pre-qualif*,
-    //   guaranteed funding, get funded, fast funding, same-day approval,
-    //   high-risk lender, working capital advance, 100% approval, apply now,
-    //   how much do you qualify, what's your revenue, need funding,
-    //   looking for capital, looking for funding
     risky_terms_regex:
       "\\b(" +
-        // Original terms
         "payday loan|" +
         "cash advance|" +
-        "(?<!working )loan(?!\\s?bud)|" +      // "loan" but not "working capital loan" or "loanbud"
+        "(?<!working )loan(?!\\s?bud)|" +
         "merchant cash advance|" +
         "\\bmca\\b|" +
         "short[\\s-]?term loan|" +
@@ -160,14 +130,12 @@ let STORE = {
         "stock alert|" +
         "investment loan|" +
         "crypto funding|" +
-        // NEW in v6 — broker / lead-gen brokering
         "\\bbroker\\b|" +
         "brokering|" +
         "referral fee|" +
         "finder.?s fee|" +
         "ISO partner|" +
         "revenue share|" +
-        // NEW in v6 — carrier-flagged financial spam triggers
         "pre[\\s-]?approv(ed|al)|" +
         "pre[\\s-]?qualif(y|ied|ication)|" +
         "guaranteed funding|" +
@@ -193,84 +161,38 @@ let STORE = {
         "build your wealth" +
       ")\\b",
 
-<<<<<<< HEAD
     // ── Lead-gen solicitation patterns ────────────────────────────────────────
     // Grounded in:
-    //   CTIA §5.1 Exhibit II — promotional messaging (prompts action) requires
-    //     express written consent; qualifying questions turn informational → promotional
-    //   CTIA §5.3.1 — prohibits misleading, deceptive, privacy-invading content
-    //   T-Mobile CoC §5.2 — explicitly disallows Non-Direct Lenders and lead gen
-    //     with data sharing to third parties
-    //   T-Mobile CoC §5.3 — phishing (impersonating reputable companies)
-    //   T-Mobile CoC §5.4/5.5 — fraud/scam, deceptive marketing per FTC Truth in Advertising
+    //   CTIA §5.1 — promotional messaging requires express written consent
+    //   CTIA §5.3.1 — prohibits misleading/deceptive content
+    //   T-Mobile CoC §5.2 — disallows Non-Direct Lenders and lead gen
+    //   T-Mobile CoC §5.3 — phishing / impersonation
+    //   T-Mobile CoC §5.4/5.5 — fraud/scam, deceptive marketing
     lead_gen_solicitation_regex:
       "(" +
-        // ── Unsolicited probing / qualifying questions ─────────────────────────
-        // CTIA §5.1 — one-way alert that prompts consumer to take action = promotional
-        // Requires express written consent before sending
-        // "are you looking for working capital, a line of credit, or just comparing rates?"
-        // [^?]{0,60} allows up to 60 chars of options/qualifiers before the finance term
+        // Unsolicited probing / qualifying questions
         "are you (currently )?(looking|searching|seeking) for [^?]{0,60}(working capital|line of credit|funding|capital|financing|a (business )?loan)|" +
         "do you (currently )?(need|require) (funding|capital|financing|a (business )?loan)|" +
         "did you (ever |recently )?(get|receive|obtain) (any )?(financing|funding|a loan)|" +
         "have you (applied|been approved) (for )?(funding|financing|a loan)|" +
         "looking for (help with|capital|funding|financing)(,?\\s?(correct|right|yes))?|" +
         "you (are|were) (looking|searching) for (funding|capital|financing)(,?\\s?(correct|right))?|" +
-        // "I'm curious — are you looking for working capital..." style follow-up questions
         "i.?m curious[^.?!]{0,80}(working capital|line of credit|funding|capital|financing|rates)|" +
-        // ── Deceptive pre-approval / approval claims ──────────────────────────
-        // T-Mobile CoC §5.5 — deceptive marketing / FTC Truth in Advertising
-        // CTIA §5.3.1 — content that deceives or intends to deceive
+        // Deceptive pre-approval / approval claims
         "you.?ve been (pre[\\s-]?)?approved|" +
         "you.?re (pre[\\s-]?)?approved|" +
         "just got .{0,15} approved for you|" +
         "got you (pre[\\s-]?)?approved|" +
         "you qualify for .{0,20}(funding|capital|financing)|" +
-        // ── Non-direct lender / third-party data sharing ──────────────────────
-        // T-Mobile CoC §5.2 — explicitly disallowed category: Non-Direct Lenders
-        // and lead gen indicating sharing of collected information with third parties
+        // Non-direct lender / third-party data sharing
         "we (buy|purchase|acquire|sell) (leads|contact lists|data|phone numbers)|" +
         "we.?ll (match|connect) you with (a lender|multiple lenders|funding sources)|" +
         "we work with (multiple|many|hundreds of) lenders|" +
         "submitted (your|the) (information|application|details) to|" +
         "sharing (your|the) (information|details) with|" +
-        // ── Phishing-adjacent impersonation ───────────────────────────────────
-        // T-Mobile CoC §5.3 — phishing: appearing to come from reputable companies
-        // to trick consumers into revealing personal information
+        // Phishing-adjacent impersonation
         "your (bank|lender|financial institution) (has|have) (approved|flagged|reviewed)|" +
         "we.?re (calling|reaching out) on behalf of (your|a) (bank|lender|financial institution)" +
-=======
-    // ── NEW: Lead-gen solicitation patterns ────────────────────────────────────
-    // Directly addresses the carrier's complaint about probing questions,
-    // pre-approval claims, and cold outreach targeting by profession.
-    // Examples flagged: "You are looking for help with funding, correct?"
-    //                   "Just got 100k approved for you!"
-    //                   "Doctor, did you get any financing anytime this year?"
-    lead_gen_solicitation_regex:
-      "(" +
-        // Probing / qualifying questions
-        "looking for (help with|capital|funding|financing)(,?\\s?correct)?|" +
-        "are you (looking|searching|seeking) for (funding|capital|financing|a loan)|" +
-        "do you need (funding|capital|financing|a loan|business funding)|" +
-        "did you get (any )?(financing|funding|a loan)|" +
-        "have you (applied|been approved|received) (for )?(funding|financing|a loan)|" +
-        "interested in (funding|financing|a loan|working capital)|" +
-        // Pre-approval / approval claims
-        "approved for you|" +
-        "just got .{0,20}approved|" +
-        "got you approved|" +
-        "you.?re (pre[\\s-]?)?approved|" +
-        "you qualify for|" +
-        "you.?ve been (pre[\\s-]?)?approved|" +
-        // Cold professional targeting (doctor, dentist, etc.)
-        "(doctor|dentist|attorney|lawyer|physician|contractor|realtor|agent),?.{0,30}(funding|financing|loan|capital|approved)|" +
-        // Explicit lead gen / broker solicitation
-        "we (buy|purchase|acquire) (leads|data|lists)|" +
-        "we can get you funded|" +
-        "we.?ll find you (a lender|funding|financing)|" +
-        "match(ed)? you with (a lender|funding)|" +
-        "best (rate|offer|deal) for you" +
->>>>>>> b234df9 (Initial commit)
       ")",
 
     // ── PII ────────────────────────────────────────────────────────────────────
@@ -293,8 +215,7 @@ let STORE = {
       "\\b(bit\\.ly|tinyurl\\.com|t\\.co|goo\\.gl|ow\\.ly|is\\.gd|buff\\.ly|rebrand\\.ly|bitly\\.com|shorturl\\.at|rb\\.gy|lnkd\\.in|cutt\\.ly)\\b",
     emoji_regex: "[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}]",
 
-    // ── Urgency ─────────────────────────────────────────────────────────────── 
-    // EXPANDED in v6 with additional carrier-flagged urgency triggers
+    // ── Urgency ────────────────────────────────────────────────────────────────
     urgency_regex:
       "\\b(" +
         "act now|" +
@@ -305,7 +226,6 @@ let STORE = {
         "final hours|" +
         "today only|" +
         "offer ends|" +
-        // NEW in v6
         "respond (immediately|now|asap)|" +
         "reply (immediately|now|asap)|" +
         "call (immediately|now|asap|today)|" +
@@ -316,11 +236,10 @@ let STORE = {
         "only \\d+ (spot|seat|opening)s? (left|remaining)|" +
         "while (supplies|funding|spots) last|" +
         "exclusive offer|" +
-        "apply now" +   // duplicated intentionally — urgency AND risky term
+        "apply now" +
       ")\\b"
   },
 
-  // Editable parts (managed via PUT):
   rules: [],
   lenders: []
 };
