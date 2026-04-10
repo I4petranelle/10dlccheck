@@ -69,11 +69,9 @@
     white-space:pre-wrap;border:1px solid var(--border);border-radius:12px;
     padding:12px;background:#f9fbff;min-height:100px;font-size:14px;line-height:1.5;
   }
-  .aiTitle{margin:6px 2px 0;font-size:13px;color:var(--navy);font-weight:700}
-  .privacyLabel{
-    font-size:13px;display:flex;align-items:center;gap:8px;
-    margin:-6px 0 4px 2px;color:#6B6B6B;
-  }
+  .aiTitle{display:none!important}
+  .privacyLabel{display:none!important}
+  #sbgResponse{display:none!important}
 
   /* Extension panel - light theme */
   .ext-toggle-btn{
@@ -352,7 +350,7 @@
             <a class="cta-install"
                href="https://chromewebstore.google.com/detail/jncjkdalngjloeacigpeoikcbfffpfon?utm_source=landing-page-sbg-ext-panel"
                target="_blank" rel="noopener">
-              🧩 Add to Chrome - It's Free
+              🧩 Add to Chrome, It's Free
             </a>
             <div class="cta-note">Works on Salesforce and Lightning Force pages.<br>No account needed. Installs in seconds.</div>
           </div>
@@ -361,7 +359,197 @@
       </div>
     </div>
     <!-- End Extension Panel -->
+<!-- ============================================================
+     SAMPLE MESSAGES WIDGET
+     Paste this block inside .container, between the checker card
+     and the Chrome Extension panel section.
+     ============================================================ -->
 
+<div class="card" id="sampleMsgs">
+
+  <div class="row">
+    <strong>Sample Compliant Messages</strong>
+    <span id="smMeta" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+
+  <div id="smGrid" style="display:grid;gap:10px"></div>
+
+  <div style="display:flex;justify-content:flex-end">
+    <button type="button" id="smShuffle" class="secondary">Shuffle</button>
+  </div>
+
+</div>
+
+<style>
+  .sm-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #f9fbff;
+    transition: border-color .15s, background .15s;
+  }
+  .sm-card:hover { border-color: #c5d5f0; background: #f0f5ff; }
+  .sm-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+    color: var(--muted);
+  }
+  .sm-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .sm-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+  .sm-btn {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--blue);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background .12s, border-color .12s;
+  }
+  .sm-btn:hover { background: #f0f5ff; border-color: #c5d5f0; }
+  .sm-toast {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 10px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+    z-index: 9999;
+  }
+  .sm-toast.show { opacity: 1; }
+</style>
+
+<div class="sm-toast" id="smToast"></div>
+
+<script>
+/* ============================================================
+   SAMPLE MESSAGES LIST
+   Organized by section/use case.
+   To add a new message: copy any line, paste before the closing
+   ]; and give it the next id number.
+   ============================================================ */
+const SBG_SAMPLE_MESSAGES = [
+
+  // Section 1: Initial Inquiry Follow-Ups
+  { id: 1,  text: "Hi {!FirstName}, following up on your request for business financing. I am here to help with next steps. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 2,  text: "Hi {!FirstName}, following up on your recent inquiry. Happy to review next steps whenever you are ready. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 3,  text: "Hi {!FirstName}, following up on your inquiry for business financing options. I am here to help you move forward when you are ready. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 4,  text: "Hi {!FirstName}, following up on your request. I can help guide you through the process. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 5,  text: "Hi {!FirstName}, following up on your request. I am available to assist whenever it works for you. {!SMS_Signature__c} Reply STOP to opt out" },
+
+  // Section 2: Application / In-Process Messages
+  { id: 6,  text: "Hi {!FirstName}, I am reviewing your application with SBG Funding and wanted to connect. I will help with next steps. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 7,  text: "Hi {!FirstName}, I am going through your application and working on your file. I will help keep things moving forward. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 8,  text: "Hi {!FirstName}, I am working on your application and wanted to follow up. I will help guide you through the process. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 9,  text: "Hi {!FirstName}, I am reviewing your application and will help keep everything moving smoothly. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 10, text: "Hi {!FirstName}, I just started reviewing your application and wanted to reach out. I will help make this process as smooth as possible. {!SMS_Signature__c} Reply STOP to opt out" },
+
+  // Section 3: General Follow-Ups
+  { id: 11, text: "Hi {!FirstName}, following up on your request. I am here if you need anything along the way. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 12, text: "Hi {!FirstName}, reaching out regarding your application. Happy to go over the process whenever you are ready. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 13, text: "Hi {!FirstName}, I am reviewing your submission and wanted to connect. I will help you stay on track with the process. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 14, text: "Hi {!FirstName}, I am working on your application and keeping things moving forward. I will guide you through each step. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 15, text: "Hi {!FirstName}, following up on your recent request with SBG Funding. I am here to help with next steps whenever you are ready. {!SMS_Signature__c} Reply STOP to opt out" },
+
+  // Section 4: Additional Inquiry Variations
+  { id: 16, text: "Hi {!FirstName}, I saw your inquiry come through and wanted to connect. I am available to assist as you move forward. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 17, text: "Hi {!FirstName}, reaching out regarding your recent submission. I am here to support you through the process. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 18, text: "Hi {!FirstName}, I received your request and wanted to follow up. I can help guide you through the next steps. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 19, text: "Hi {!FirstName}, I saw your information come through and wanted to introduce myself. I am here to help as you move forward. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 20, text: "Hi {!FirstName}, following up on your recent inquiry with SBG Funding. I will help keep everything moving smoothly. {!SMS_Signature__c} Reply STOP to opt out" },
+
+  // Section 5: Voicemail Follow-Ups
+  { id: 21, text: "Hi {!FirstName}, I tried calling earlier and left a voicemail regarding your inquiry. Wanted to follow up here as well. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 22, text: "Hi {!FirstName}, I gave you a call and left a voicemail about your request. Just following up here to stay connected. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 23, text: "Hi {!FirstName}, I tried reaching you and left a voicemail regarding your submission. Wanted to follow up here as well. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 24, text: "Hi {!FirstName}, I called earlier and left a voicemail about your inquiry with SBG Funding. Just checking in here as well. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 25, text: "Hi {!FirstName}, I attempted to reach you and left a voicemail regarding your request. Following up here to stay connected. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 26, text: "Hi {!FirstName}, I just tried calling and left a voicemail about your inquiry. Wanted to send a quick follow-up here as well. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 27, text: "Hi {!FirstName}, I reached out by phone and left a voicemail regarding your application. Following up here in case this is easier. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 28, text: "Hi {!FirstName}, I gave you a call earlier and left a voicemail about your request. Just wanted to follow up here as well. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 29, text: "Hi {!FirstName}, I tried connecting by phone and left a voicemail regarding your inquiry. Sending a quick follow-up here too. {!SMS_Signature__c} Reply STOP to opt out" },
+  { id: 30, text: "Hi {!FirstName}, I called earlier and left a voicemail about your submission. Wanted to reach out here as well to stay connected. {!SMS_Signature__c} Reply STOP to opt out" },
+
+  /* ADD NEW MESSAGES BELOW — copy a line above, paste here, update id + text */
+];
+/* ============================================================ */
+(function () {
+  const SHOW = 10;
+  const grid    = document.getElementById("smGrid");
+  const meta    = document.getElementById("smMeta");
+  const toast   = document.getElementById("smToast");
+  let toastTimer;
+
+  meta.textContent = SBG_SAMPLE_MESSAGES.length + " messages total";
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2000);
+  }
+
+  function render() {
+    const picked = SBG_SAMPLE_MESSAGES.slice().sort(() => Math.random() - 0.5).slice(0, SHOW);
+    grid.innerHTML = "";
+
+    picked.forEach((msg, idx) => {
+      const card = document.createElement("div");
+      card.className = "sm-card";
+      card.innerHTML = `
+        <div class="sm-num">${idx + 1}</div>
+        <div class="sm-text">${msg.text}</div>
+        <div class="sm-actions">
+          <button class="sm-btn sm-use-btn" type="button">Use</button>
+          <button class="sm-btn sm-copy-btn" type="button">Copy</button>
+        </div>
+      `;
+
+      card.querySelector(".sm-use-btn").addEventListener("click", () => {
+        const ta = document.getElementById("msg");
+        if (ta) {
+          ta.value = msg.text;
+          ta.dispatchEvent(new Event("input", { bubbles: true }));
+          ta.scrollIntoView({ behavior: "smooth", block: "center" });
+          ta.focus();
+          showToast("Loaded into checker.");
+        }
+      });
+
+      card.querySelector(".sm-copy-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(msg.text)
+          .then(() => showToast("Copied to clipboard."))
+          .catch(() => showToast("Copy failed — try manually."));
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById("smShuffle").addEventListener("click", render);
+  render();
+})();
+</script>
   </div>
 
   <script>
@@ -546,9 +734,8 @@
     document.getElementById("checkBtn").addEventListener("click", async () => {
       try{
         const text = (msgEl.value || "").trim();
-        if (!text){ resEl.textContent = "Please enter a message."; aiBox.textContent = "Suggestion will appear here."; return; }
+        if (!text){ resEl.textContent = "Please enter a message."; return; }
         resEl.textContent = "Checking…";
-        aiBox.textContent = "-";
 
         const rules  = await loadRules();
         const result = rules ? evalWithRules(text, rules) : await serverCheck(text);
@@ -564,22 +751,9 @@
 
         await bumpGlobal(result.status);
         await refreshGlobal();
-
-        const allowAI = document.getElementById("privacyToggle")?.checked !== false;
-        if (!allowAI){ aiBox.textContent = "Privacy mode ON - message not sent to AI."; return; }
-
-        aiBox.textContent = "Getting suggestion…";
-        const resp = await fetch(SBG_API, {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify({ brand:"SBG Funding", message: text })
-        });
-        const data = await resp.json();
-        aiBox.textContent = data?.suggestion || "No suggestion returned.";
       }catch(e){
         console.error(e);
         resEl.textContent = "Error: " + (e?.message || String(e));
-        aiBox.textContent = "Suggestion unavailable.";
       }
     });
 
@@ -590,7 +764,6 @@
     document.getElementById("clearBtn").addEventListener("click", () => {
       msgEl.value = ""; updateChars();
       resEl.textContent = "Result will appear here.";
-      aiBox.textContent = "Suggestion will appear here.";
     });
 
     refreshGlobal();
