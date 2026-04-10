@@ -9,11 +9,47 @@
   <meta name="robots" content="index, follow" />
 
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are unregistered 10DLC messages blocked by US carriers?","acceptedAnswer":{"@type":"Answer","text":"Yes. As of February 1, 2025, all three major US carriers block 100% of unregistered A2P long-code traffic with no grace period."}},{"@type":"Question","name":"What are the CTIA consent rules for 10DLC SMS?","acceptedAnswer":{"@type":"Answer","text":"Under CTIA Section 5.1.2.2, every campaign requires its own explicit opt-in. Consent from one program cannot transfer to another, and renting or selling opt-in lists is prohibited."}}]}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Are unregistered 10DLC messages blocked by US carriers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. As of February 1, 2025, all three major US carriers block 100% of unregistered A2P long-code traffic with no grace period. Any business using 10-digit numbers for automated, bulk, or scheduled SMS or MMS must complete both Brand and Campaign registration through TCR before sending."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the CTIA consent rules for 10DLC SMS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Under CTIA Section 5.1.2.2, every campaign requires its own explicit opt-in. Consent obtained for one messaging program cannot be applied to a different service, product, or campaign. Renting, selling, or sharing opt-in lists is prohibited. Businesses running multiple campaign types such as promotional and transactional must collect and document separate opt-ins for each."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are CTIA messaging guidelines?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CTIA Messaging Principles and Best Practices are industry standards covering consent, opt-in and opt-out requirements, prohibited content categories (SHAFT), embedded link rules, and carrier enforcement guidelines for A2P SMS and MMS messaging in the United States. The most recent edition was published in May 2023."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are CTIA rules legally required?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CTIA guidelines are not laws, but US carriers enforce them alongside legal regulations such as the TCPA and CAN-SPAM Act. Non-compliance can result in message blocking, campaign suspension, number blacklisting, and monetary fines of up to $10,000 per violation for prohibited SHAFT content."
+        }
+      }
+    ]
+  }
   </script>
 
   <style>
-    /* ── tokens from index.html ── */
     :root {
       --ink:    #1C2D40;
       --muted:  #334155;
@@ -43,7 +79,6 @@
     a { color: var(--sky); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ── hero — matches index exactly ── */
     .hero {
       background: #0a1628;
       padding: 48px 24px 40px;
@@ -66,7 +101,6 @@
       max-width: 580px; margin: 0 auto 0; font-weight: 400; line-height: 1.6;
     }
 
-    /* ── page body ── */
     .page-body {
       max-width: 1200px;
       margin: 0 auto;
@@ -77,7 +111,6 @@
       align-items: start;
     }
 
-    /* ── entries ── */
     .page-label {
       font-size: .7rem; font-weight: 600; color: var(--muted);
       text-transform: uppercase; letter-spacing: .07em;
@@ -120,7 +153,6 @@
 
     #empty { display: none; padding: 28px 0; font-size: .875rem; color: #64748b; }
 
-    /* ── sidebar ── */
     .sidebar { position: sticky; top: 24px; }
 
     .sidebar-label {
@@ -145,7 +177,6 @@
       accent-color: var(--ink); width: 13px; height: 13px; cursor: pointer;
     }
 
-    /* ── CTA — matches index learn-link card style ── */
     .cta-card {
       margin-top: 24px;
       background: var(--white);
@@ -158,7 +189,6 @@
     }
     .cta-card a { color: var(--sky); font-weight: 600; }
 
-    /* ── footer section — matches index ctia-section ── */
     .footer-section {
       background: #EEF6FB;
       border-top: 1px solid #CCE3F2;
@@ -177,7 +207,6 @@
     }
     .footer-cta:hover { background: var(--accent); text-decoration: none; }
 
-    /* ── responsive ── */
     @media (max-width: 760px) {
       .page-body { grid-template-columns: 1fr; gap: 0; }
       .sidebar { position: static; border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 20px; }
@@ -187,10 +216,8 @@
 </head>
 <body>
 
-<!-- header from index — loaded via include in production -->
 <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
-<!-- hero matching index style -->
 <header class="hero">
   <div class="hero-inner">
     <p class="hero-tag">Changelog &nbsp;·&nbsp; Last updated April 2026</p>
@@ -201,7 +228,6 @@
 
 <div class="page-body">
 
-  <!-- entries -->
   <div>
     <p class="result-count" id="count">Showing 18 of 18 updates</p>
     <div id="log">
@@ -444,7 +470,6 @@
     <div id="empty">No updates match your filter.</div>
   </div>
 
-  <!-- sidebar -->
   <aside class="sidebar">
     <div class="sidebar-label">Filter</div>
     <input type="search" id="q" placeholder="Search..." />
@@ -462,7 +487,6 @@
 
 </div>
 
-<!-- footer — matches index ctia-section style -->
 <section class="footer-section">
   <p>Stay on top of 10DLC rules. Check your messages for compliance before they get blocked.</p>
   <a class="footer-cta" href="https://10dlccheck.com/">Run Free 10DLC Compliance Check &rarr;</a>
@@ -512,87 +536,27 @@
   });
 
   q.addEventListener('input', filter);
-</script>
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "FAQPage",
- "mainEntity": [
-   {
-     "@type": "Question",
-     "name": "What are CTIA messaging guidelines?",
-     "acceptedAnswer": {
-       "@type": "Answer",
-       "text": "They are industry standards for consent, transparency, and responsible SMS messaging."
-     }
-   },
-   {
-     "@type": "Question",
-     "name": "Are CTIA rules legally required?",
-     "acceptedAnswer": {
-       "@type": "Answer",
-       "text": "No, but carriers enforce them alongside legal regulations."
-     }
-   }
- ]
-}
+
+  (async function includePartials(){
+    const slots = document.querySelectorAll('[data-include]');
+    await Promise.all(Array.from(slots).map(async el=>{
+      try{
+        const url = el.getAttribute('data-include');
+        const r = await fetch(url,{cache:'no-store'});
+        if(r.ok) el.innerHTML = await r.text();
+      } catch(_){}
+    }));
+  })();
 </script>
 
-<!-- READ TIME -->
- <script>
-    // 1) Include partials
-    (async function includePartials(){
-      const slots = document.querySelectorAll('[data-include]');
-      await Promise.all(Array.from(slots).map(async el=>{
-        try{ const url = el.getAttribute('data-include');
-             const r = await fetch(url,{cache:'no-store'});
-             if(r.ok) el.innerHTML = await r.text(); } catch(_){}
-      }));
-    })();
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-C64QWDBMQZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 
-    // 2) Build TOC from H2s
-    (function buildTOC(){
-      const toc = document.getElementById('toc-list');
-      if(!toc) return;
-      const sections = Array.from(document.querySelectorAll('#article h2'));
-      sections.forEach(h=>{
-        const id = h.id || h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-');
-        h.id = id;
-        if(!h.querySelector('.anchor')){
-          const anc = document.createElement('a');
-          anc.className = 'anchor'; anc.href = '#'+id; anc.textContent = '#';
-          anc.setAttribute('aria-label','Link to this section');
-          h.appendChild(anc);
-        }
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = '#'+id; a.textContent = h.textContent.replace('#','').trim();
-        li.appendChild(a); toc.appendChild(li);
-      });
-    })();
-
-  
-
-    // 4) Read time (~225 wpm)
-    (function readTime(){
-      const el = document.getElementById('article');
-      const rt = document.getElementById('read-time');
-      if(!el || !rt) return;
-      const words = (el.innerText||'').trim().split(/\s+/).length;
-      const mins = Math.max(1, Math.round(words/225));
-      rt.textContent = `~${mins} min read`;
-    })();
-
-  </script>
-  
-  <!-- Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-  <script>
-    window.dataLayer=window.dataLayer||[];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js',new Date());
-    gtag('config','G-C64QWDBMQZ');
-  </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9999330125838654" crossorigin="anonymous"></script>
 </body>
 </html>
