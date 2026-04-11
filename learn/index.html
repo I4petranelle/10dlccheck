@@ -4,8 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Learn 10DLC Compliance | 10DLC Compliance Checker</title>
-
-  <!-- SEO + Social -->
   <meta name="description" content="Everything you need to master 10DLC SMS compliance: clear guides, checklists, and advanced tips to improve deliverability." />
   <link rel="canonical" href="https://10dlccheck.com/learn/" />
   <meta name="robots" content="index,follow" />
@@ -13,25 +11,23 @@
   <meta property="og:description" content="Guides, checklists, and advanced topics for SMS compliance." />
   <meta property="og:url" content="https://10dlccheck.com/learn/" />
   <meta property="og:type" content="website" />
-
-  <link rel="stylesheet" href="/learn/style.css?v=2">
+  <link rel="stylesheet" href="/learn/style.css?v=4">
 </head>
 
 <body class="learn">
-  <!-- Topbar include -->
   <div class="topbar-slot" data-include="/partials/topbar.html"></div>
 
   <main>
     <!-- Hero -->
-    <section class="hero hub-hero">
+    <section class="hub-hero">
       <div class="wrap">
         <h1>10DLC Knowledge Base</h1>
         <p class="sub">Clear guides and checklists to help you stay compliant and improve deliverability.</p>
       </div>
     </section>
 
-    <!-- Content -->
-    <div class="wrap">
+    <div class="wrap" style="padding-top:32px;padding-bottom:60px;">
+
       <!-- Quick Tips -->
       <section class="quick-tips" aria-labelledby="quick-tips-title">
         <h2 id="quick-tips-title">Quick Compliance Tips</h2>
@@ -45,62 +41,104 @@
         </div>
       </section>
 
-      <!-- Getting Started -->
-      <section class="category-section articles" data-category="Getting Started">
+      <!-- ═══ What Is 10DLC — merged section ═══ -->
+      <section class="what-section" id="what-is-10dlc" aria-labelledby="what-heading">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+          <div>
+            <span class="badge badge-green" style="margin-bottom:8px;display:inline-block;">Primer</span>
+            <h2 id="what-heading" style="margin:0;">What Is 10DLC?</h2>
+          </div>
+          <a href="/learn/what-is-10dlc" style="font-size:.82rem;color:var(--accent);white-space:nowrap;margin-top:4px;">Full article →</a>
+        </div>
+
+        <p><strong>10DLC</strong> (ten-digit long code) is the U.S. standard for business-to-consumer A2P text messaging sent from local phone numbers. Carriers introduced it to reduce spam, verify senders, and align message throughput with a brand's trust level and campaign type.</p>
+
+        <p>To send A2P traffic on 10DLC you must register your <strong>brand</strong> and a <strong>campaign</strong> through <strong>The Campaign Registry (TCR)</strong> via your messaging provider. After review, carriers assign throughput limits based on your use case and trust score.</p>
+
+        <div class="channel-cards">
+          <div class="channel-card">
+            <h4>10DLC</h4>
+            <p>Local alerts &amp; two-way messaging. Recognizable local number, lower cost. Requires brand &amp; campaign registration.</p>
+          </div>
+          <div class="channel-card">
+            <h4>Short Code</h4>
+            <p>High-volume national programs. Very high throughput. More expensive with a longer approval process.</p>
+          </div>
+          <div class="channel-card">
+            <h4>Toll-Free SMS</h4>
+            <p>Support or notifications with nationwide reach. Verification recommended; content rules still apply.</p>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:20px;">
+          <strong>Stay compliant:</strong> always include your brand name, reply to STOP/HELP automatically, use branded links, and only text users who opted in.
+        </div>
+
+        <!-- Message examples -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius);padding:14px 16px;font-size:.85rem;">
+            <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#16a34a;margin-bottom:6px;">✅ Compliant</div>
+            <p style="margin:0;color:#166534;line-height:1.6;">"Welcome to BrandName alerts. Msg&amp;data rates may apply. Up to 3 msgs/week. Reply STOP to opt out."</p>
+          </div>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);padding:14px 16px;font-size:.85rem;">
+            <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#dc2626;margin-bottom:6px;">⚠️ Risky</div>
+            <p style="margin:0;color:#991b1b;line-height:1.6;">"50% off today only! Click bit.ly/offer" — no brand name, no STOP, public short link.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+          <p style="font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:10px;">Registration steps</p>
+          <ol style="padding-left:1.2em;font-size:.875rem;color:#374151;line-height:2;">
+            <li><strong>Brand registration</strong> — submit legal name, EIN, address and website.</li>
+            <li><strong>Campaign registration</strong> — describe your use case, opt-in process and submit 3 sample messages.</li>
+            <li><strong>Assign numbers</strong> — link long codes to your campaign before sending traffic.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Articles -->
+      <section class="category-section articles" data-category="Getting Started" style="margin-top:12px;">
         <div class="section-head">
-          <h2>Getting Started</h2>
+          <h2>Guides</h2>
           <span class="count" data-count>—</span>
         </div>
 
         <div class="articles-grid">
-          <a class="article-card" href="/learn/what-is-10dlc">
-            <h3>What Is 10DLC?</h3>
-            <p>What 10DLC is, why it exists, and how it differs from short codes and toll-free numbers.</p>
-            <div class="article-footer">
-              <span class="badge">Beginner</span>
-              <span class="read-time">1 min</span>
-            </div>
-          </a>
-
           <a class="article-card" href="/learn/ctia-guidelines-explained">
-            <h3>CTIA Messaging Guidelines</h3>
-            <p>Consent requirements, brand identification, STOP/HELP behavior, and content restrictions.</p>
+            <h3>CTIA Messaging Guidelines &amp; Compliance Checklist</h3>
+            <p>Consent requirements, brand identification, STOP/HELP behavior, content restrictions, and a pre-send compliance checklist.</p>
             <div class="article-footer">
               <span class="badge">Beginner</span>
-              <span class="read-time">2 min</span>
+              <span class="read-time">4 min</span>
             </div>
           </a>
 
-          <a class="article-card" href="/learn/sms-compliance-checklist">
-            <h3>Pre-Send Compliance Checklist</h3>
-            <p>Quick checks to reduce blocks, complaints, and carrier fees before you send.</p>
+          <a class="article-card" href="/learn/10dlc-faq.html">
+            <h3>10DLC FAQ (2025 Guide)</h3>
+            <p>Answers to the most common questions on registration, consent, spam filtering, and carrier rules.</p>
             <div class="article-footer">
               <span class="badge">Beginner</span>
-              <span class="read-time">1 min</span>
+              <span class="read-time">3 min</span>
             </div>
           </a>
         </div>
       </section>
 
-      <!-- Inline article container (appears when a card is clicked) -->
-      <div id="article-container"></div>
-
       <!-- CTA -->
-      <section class="cta-section" aria-labelledby="cta-title">
-        <h2 id="cta-title">Ready to Check Your Messages?</h2>
+      <div class="cta-section" style="margin-top:32px;">
+        <h3>Ready to check your messages?</h3>
         <p>Use our free compliance checker to validate campaigns before sending.</p>
         <div class="cta-buttons">
           <a class="btn" href="/#checker?utm_source=learn&utm_medium=site&utm_campaign=cta_checker">Try Compliance Checker</a>
           <a class="btn secondary" target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk?utm_source=learn&utm_medium=site&utm_campaign=cta_extension">Get the Chrome Extension</a>
         </div>
-      </section>
-    </div>
+      </div>
+
+    </div><!-- .wrap -->
   </main>
 
-  <!-- Footer include -->
   <div class="footer-slot" data-include="/partials/footer.html"></div>
 
-  <!-- Partials include loader -->
   <script>
     (async () => {
       const inc = document.querySelectorAll('[data-include]');
@@ -111,101 +149,16 @@
         } catch (_) {}
       }));
     })();
-  </script>
 
-  <!-- Search + counts (kept for future search box) -->
-  <script>
-    const q = document.getElementById('kb-search');
-    const cards = [...document.querySelectorAll('.article-card')];
+    // Article counts
     const sections = [...document.querySelectorAll('.category-section')];
-
-    function updateCounts() {
-      sections.forEach(sec => {
-        const visible = sec.querySelectorAll('.article-card:not([hidden])').length;
-        const countEl = sec.querySelector('[data-count]');
-        if (countEl) countEl.textContent = visible + (visible === 1 ? ' article' : ' articles');
-        sec.style.display = visible ? '' : 'none';
-      });
-    }
-
-    function filterArticles(term) {
-      const t = (term || '').trim().toLowerCase();
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.hidden = t && !text.includes(t);
-      });
-      updateCounts();
-    }
-
-    q?.addEventListener('input', e => filterArticles(e.target.value));
-    updateCounts();
+    sections.forEach(sec => {
+      const cards = sec.querySelectorAll('.article-card');
+      const countEl = sec.querySelector('[data-count]');
+      if (countEl) countEl.textContent = cards.length + (cards.length === 1 ? ' article' : ' articles');
+    });
   </script>
 
-  <!-- Inline article preview (same-origin only) -->
-  <script>
-    (() => {
-      const container = document.getElementById('article-container');
-      const cards = [...document.querySelectorAll('.article-card')];
-
-      function show(msg, color = '#64748b') {
-        container.style.display = 'block';
-        container.innerHTML = `<p style="padding:32px 20px;margin:0;color:${color}">${msg}</p>`;
-      }
-
-      async function loadInline(urlStr) {
-        try {
-          const url = new URL(urlStr, location.origin);
-          if (url.origin !== location.origin) { show('Cannot load external article (cross-origin).', '#b91c1c'); return; }
-
-          container.style.display = 'block';
-          container.innerHTML = '<p style="text-align:center;padding:40px 0;color:#64748b;">Loading article…</p>';
-
-          const res = await fetch(url.pathname + url.search, { cache: 'no-store' });
-          if (!res.ok) { show(`Error ${res.status} loading ${url.pathname}.`, '#b91c1c'); return; }
-
-          const html = await res.text();
-          const doc = new DOMParser().parseFromString(html, 'text/html');
-          const node = doc.querySelector('article.content') || doc.querySelector('main') || doc.querySelector('article') || doc.querySelector('.container');
-
-          if (!node || !node.innerHTML.trim()) { show('Article loaded, but no content section found.', '#b91c1c'); return; }
-
-          container.innerHTML = `
-            <article class="preview-article">
-              ${node.innerHTML}
-              <div style="text-align:center">
-                <button id="close-article" type="button">Close</button>
-              </div>
-            </article>`;
-          document.getElementById('close-article').onclick = () => { container.style.display = 'none'; container.innerHTML = ''; history.pushState('', '', location.pathname); };
-          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } catch (err) {
-          show(\`Failed: \${err?.message || err}\`, '#b91c1c');
-        }
-      }
-
-      cards.forEach(card => {
-        card.addEventListener('click', e => {
-          const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-          if (modified) return;
-          e.preventDefault();
-          const href = card.getAttribute('href'); if (!href) return;
-          history.pushState('', '', \`#article=\${encodeURIComponent(href)}\`);
-          loadInline(href);
-        });
-      });
-
-      const m = location.hash.match(/#article=([^&]+)/);
-      if (m) loadInline(decodeURIComponent(m[1]));
-
-      window.addEventListener('popstate', () => {
-        const m2 = location.hash.match(/#article=([^&]+)/);
-        if (m2) loadInline(decodeURIComponent(m2[1]));
-        else { container.style.display = 'none'; container.innerHTML = ''; }
-      });
-    })();
-  </script>
-
-  <!-- Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
