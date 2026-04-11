@@ -494,7 +494,8 @@ body.learn, .learn {
 
 /* ── CTA ────────────────────────────────────────────────── */
 .learn .cta-section {
-  background: linear-gradient(160deg, var(--hero-bg) 0%, var(--hero-bg-sec) 100%);
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: var(--r-xl);
   padding: 28px 32px;
   margin: 40px 0 24px;
@@ -506,12 +507,12 @@ body.learn, .learn {
 .learn .cta-section h3 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
   margin: 0;
   letter-spacing: -.01em;
 }
 
-.learn .cta-section p { color: rgba(255,255,255,.65); margin: 0; font-size: .875rem; }
+.learn .cta-section p { color: var(--muted); margin: 0; font-size: .875rem; }
 
 .learn .cta-section .cta-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 
