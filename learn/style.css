@@ -516,7 +516,6 @@ body.learn {
 
 /* ── Hub hero (learn index only) ────────────────────────── */
 body.learn .hub-hero {
-  background: linear-gradient(180deg, var(--hero-bg) 0%, var(--hero-bg-sec) 100%);
   padding: 60px 0 52px;
   text-align: center;
 }
@@ -524,7 +523,7 @@ body.learn .hub-hero {
 body.learn .hub-hero h1 {
   font-size: clamp(1.75rem, 4vw, 2.6rem);
   font-weight: 800;
-  color: #fff;
+  color: #1C2D40;
   letter-spacing: -.03em;
   line-height: 1.15;
   margin-bottom: 10px;
