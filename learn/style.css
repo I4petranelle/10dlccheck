@@ -522,7 +522,7 @@ body.learn .hub-hero {
 
 body.learn .hub-hero h1 {
   font-size: clamp(1.75rem, 4vw, 2.6rem);
-  font-weight: 800;
+  font-weight: 700;
   color: #1C2D40;
   letter-spacing: -.03em;
   line-height: 1.15;
@@ -532,7 +532,7 @@ body.learn .hub-hero h1 {
 
 body.learn .hub-hero p.sub {
   font-size: 1rem;
-  color: rgba(255,255,255,.65);
+  color: #1C2D40;
   max-width: 560px;
   margin: 0 auto;
   line-height: 1.6;
