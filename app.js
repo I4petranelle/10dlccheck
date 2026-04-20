@@ -632,6 +632,36 @@ document.addEventListener('DOMContentLoaded', async function(){
       }
     });
   }
+
+  // GA4: Copy Report
+  var copyBtn = document.getElementById('copyReportBtn');
+  if (copyBtn) copyBtn.addEventListener('click', function(){
+    try { gtag('event', 'copy_report', { event_category: 'engagement' }); } catch(e) {}
+  });
+
+  // GA4: Email Report
+  var emailBtn = document.getElementById('emailReportBtn');
+  if (emailBtn) emailBtn.addEventListener('click', function(){
+    try { gtag('event', 'email_report', { event_category: 'engagement' }); } catch(e) {}
+  });
+
+  // GA4: Get AI-Powered Fix clicked
+  var aiFixBtn = document.getElementById('aiFixBtn');
+  if (aiFixBtn) aiFixBtn.addEventListener('click', function(){
+    try { gtag('event', 'ai_fix_clicked', { event_category: 'lead_gen' }); } catch(e) {}
+  });
+
+  // GA4: AI Fix email submitted (highest-value conversion)
+  var signupForm = document.getElementById('signupForm');
+  if (signupForm) signupForm.addEventListener('submit', function(){
+    var email = document.getElementById('leadEmail');
+    try {
+      gtag('event', 'ai_fix_email_submitted', {
+        event_category: 'lead_gen',
+        has_email: !!(email && email.value)
+      });
+    } catch(e) {}
+  });
 });
 
 // -------------------------------
@@ -692,6 +722,9 @@ function analyzeMessage() {
     return;
   }
 
+  // GA4: user clicked Check Compliance
+  try { gtag('event', 'compliance_check_started', { event_category: 'engagement', message_length: messageText.length }); } catch(e) {}
+
   var loading = document.getElementById('loading');
   var results = document.getElementById('results');
   var btn     = document.getElementById('checkBtn');
@@ -708,6 +741,16 @@ function analyzeMessage() {
       displayResults(analysis);
       getSuggestions(messageText);
 
+      // GA4: track result status and issue count
+      try {
+        gtag('event', 'compliance_check_result', {
+          event_category: 'engagement',
+          result_status: analysis.status,       // 'pass', 'warn', or 'fail'
+          issue_count: analysis.issues ? analysis.issues.length : 0,
+          message_length: messageText.length
+        });
+      } catch(e) {}
+
       var next = getLocalCount() + 1;
       setLocalCount(next);
       var lEl = document.getElementById('localCount');
@@ -720,6 +763,8 @@ function analyzeMessage() {
       var dur = Math.round(performance.now() - t0);
       setAvgTime(dur);
     } catch (err) {
+      // GA4: track analysis errors
+      try { gtag('event', 'compliance_check_error', { event_category: 'error', error_message: err && err.message ? err.message : 'unknown' }); } catch(e) {}
       if (results) {
         results.innerHTML =
           '<div class="error-message"><strong>Analysis Failed:</strong> ' +

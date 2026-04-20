@@ -15,6 +15,16 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://10dlccheck.com/" />
 
+  <!-- GA4 — must load before app.js so gtag() is available -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    function track(eventName, params){ try{ gtag('event', eventName, params || {}); }catch(e){} }
+    gtag('js', new Date());
+    gtag('config', 'G-C64QWDBMQZ');
+  </script>
+
   <style>
   :root {
     --ink:      #1C2D40;
@@ -758,11 +768,3 @@
 <script src="./app.js"></script>
 <script src="/use-case-filter.js" defer></script>
 <script src="./main.js"></script>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-C64QWDBMQZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  function track(eventName, params){ try{ gtag('event', eventName, params || {}); }catch(e){} }
-  gtag('js', new Date());
-  gtag(
