@@ -98,7 +98,7 @@ function postIncrementGlobal() {
 // -------------------------------
 // Suggestions endpoint (Cloudflare Worker)
 // -------------------------------
-const SUGGEST_URL = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/";
+const SUGGEST_URL = "https://ai-suggest-10dlccheck.ipetranelle.workers.dev/suggest";
 
 function ensureSuggestionsContainer() {
   let box = document.getElementById("suggestions");
