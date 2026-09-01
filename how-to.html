@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How It Works — 10DLC Compliance Checker | 10dlccheck.com</title>
+  <meta name="description" content="See exactly how the 10DLC Compliance Checker works. Paste your A2P SMS, run instant CTIA compliance checks, review flagged issues, and send with confidence. Free, no account needed." />
+  <link rel="canonical" href="https://10dlccheck.com/how-it-works" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="How It Works — 10DLC SMS Compliance Checker" />
+  <meta property="og:description" content="Paste. Analyze. Fix. Send. How 10dlccheck validates your A2P SMS against CTIA rules in seconds." />
+  <meta property="og:url" content="https://10dlccheck.com/how-it-works" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Check SMS Compliance with 10dlccheck","description":"Step-by-step guide to validating A2P SMS messages against CTIA 10DLC rules before sending.","url":"https://10dlccheck.com/how-it-works","step":[{"@type":"HowToStep","name":"Paste your message","text":"Enter your A2P SMS into the compliance checker input field."},{"@type":"HowToStep","name":"Run compliance checks","text":"The tool instantly scans for CTIA violations including brand identity, opt-out keywords, link safety, SHAFT content and more."},{"@type":"HowToStep","name":"Review flagged issues","text":"Read plain-English explanations for every FAIL, WARN, and PASS result."},{"@type":"HowToStep","name":"Fix and send","text":"Apply fixes, re-run the checker, and send your compliant message with confidence."}]}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+:root{
+  --bg-hero:#0d1b2e;--bg-page:#f0f4f8;--bg-card:#fff;
+  --ink:#1C2D40;--ink-strong:#0d1b2e;--muted:#5a7184;--faint:#94a3b8;
+  --border:#dde4ee;--sky:#58AEDD;--sky-dark:#2563EB;--sky-light:#e8f4fd;
+  --success:#10b981;--success-bg:#ecfdf5;--success-bd:#a7f3d0;
+  --danger:#ef4444;--danger-bg:#fef2f2;--danger-bd:#fca5a5;
+  --warn:#f59e0b;--warn-bg:#fffbeb;--warn-bd:#fde68a;
+  --font:'Inter',-apple-system,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg-page);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* SCROLL BAR */
+#scrollBar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--sky);z-index:500;transition:width .06s linear}
+
+/* TOPNAV */
+.topnav{position:fixed;top:2px;left:0;right:0;z-index:400;height:56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1rem;font-weight:700;color:var(--sky)}
+.nav-logo-box{width:30px;height:30px;background:var(--ink-strong);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:28px;margin-left:auto}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--ink);text-decoration:none;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--sky)}
+.btn-ext{background:var(--sky);color:#fff !important;padding:8px 18px;border-radius:6px;font-size:.82rem;font-weight:600;text-decoration:none;transition:background .15s}
+.btn-ext:hover{background:var(--sky-dark) !important}
+
+/* HERO */
+.hero{background:linear-gradient(180deg,var(--bg-hero) 0%,#0e2244 100%);padding:120px 40px 80px;text-align:center}
+.hero-eyebrow{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px}
+.hero h1{font-size:clamp(2rem,4.5vw,2.9rem);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px}
+.hero h1 .sky{color:var(--sky)}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,.55);max-width:540px;margin:0 auto 40px;line-height:1.72}
+.hero-stats{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-bottom:44px}
+.hero-stat{padding:14px 28px;border-right:1px solid rgba(255,255,255,.08);text-align:center}
+.hero-stat:last-child{border-right:none}
+.hs-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px}
+.hs-val{font-size:1.25rem;font-weight:800;color:#fff;line-height:1}
+.hs-val.sky{color:var(--sky)}
+.hero-steps{display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap}
+.h-step{display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px}
+.h-step-n{width:22px;height:22px;border-radius:50%;background:var(--sky);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.h-step-t{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.8)}
+.h-arr{color:rgba(255,255,255,.2);padding:0 8px;font-size:.9rem}
+
+/* SECTION INTRO */
+.section-intro{text-align:center;padding:72px 40px 0;max-width:760px;margin:0 auto}
+.section-intro h2{font-size:clamp(1.4rem,2.8vw,1.85rem);font-weight:800;color:var(--ink-strong);letter-spacing:-.025em;margin-bottom:10px}
+.section-intro p{font-size:.95rem;color:var(--muted);line-height:1.72}
+
+/* STEP ROWS */
+.steps-wrap{max-width:1200px;margin:0 auto;padding:0 40px 80px}
+.step-row{display:grid;grid-template-columns:360px 1fr;gap:72px;align-items:start;padding:72px 0;border-bottom:1px solid var(--border);opacity:0;transform:translateY(36px);transition:opacity .65s ease,transform .65s ease}
+.step-row.flip{grid-template-columns:1fr 360px}
+.step-row.flip .step-visual{order:1}
+.step-row.flip .step-copy{order:2}
+.step-row:last-child{border-bottom:none}
+.step-row.visible{opacity:1;transform:translateY(0)}
+.step-copy{position:sticky;top:80px}
+.step-badge{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--bg-hero);color:var(--sky);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(88,174,221,.35);flex-shrink:0}
+.step-tag{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sky)}
+.step-copy h3{font-size:clamp(1.15rem,2vw,1.5rem);font-weight:800;color:var(--ink-strong);letter-spacing:-.02em;line-height:1.25;margin-bottom:12px}
+.step-copy p{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:18px}
+.step-bullets{list-style:none;display:flex;flex-direction:column;gap:9px}
+.step-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--muted);line-height:1.55}
+.bul{width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
+.bul.ok{background:var(--success-bg);color:var(--success)}
+.bul.sky{background:var(--sky-light);color:var(--sky)}
+.bul.warn{background:var(--warn-bg);color:var(--warn)}
+.bul.fail{background:var(--danger-bg);color:var(--danger)}
+.step-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-size:.84rem;font-weight:600;color:var(--sky);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.step-link:hover{border-color:var(--sky)}
+.step-link.btn{background:var(--sky);color:#fff;padding:11px 22px;border-radius:7px;border-bottom:none;font-size:.88rem}
+.step-link.btn:hover{background:var(--sky-dark)}
+.step-example-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sel-title{font-size:.72rem;font-weight:700;color:var(--muted)}
+.sel-sub{font-size:.62rem;color:var(--faint)}
+.sel-sub.green{color:var(--success);font-weight:600}
+
+/* BROWSER FRAME */
+.browser-frame{background:#fff;border-radius:10px;border:1px solid #c8d4e0;box-shadow:0 20px 60px rgba(13,27,46,.12),0 4px 16px rgba(13,27,46,.07);overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
+.browser-frame:hover{transform:translateY(-4px);box-shadow:0 28px 72px rgba(13,27,46,.17),0 8px 24px rgba(13,27,46,.1)}
+.chrome-bar{background:#f1f3f6;border-bottom:1px solid #dde2ea;padding:9px 12px;display:flex;align-items:center;gap:10px}
+.chrome-dots{display:flex;gap:5px;flex-shrink:0}
+.cd{width:10px;height:10px;border-radius:50%}
+.cd-r{background:#fc5f57}.cd-y{background:#fdbb2d}.cd-g{background:#28ca41}
+.chrome-url{flex:1;background:#fff;border:1px solid #d4dae4;border-radius:5px;padding:4px 10px;font-size:.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.url-lock{color:var(--success);margin-right:4px}
+
+/* MOCK SITE NAV */
+.mock-topnav{background:#fff;border-bottom:1px solid var(--border);padding:9px 18px;display:flex;align-items:center}
+.mock-logo{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--sky)}
+.mock-logo-box{width:22px;height:22px;background:var(--ink-strong);border-radius:4px;flex-shrink:0}
+.mock-nav-r{display:flex;gap:14px;align-items:center;margin-left:auto}
+.mock-nav-r span{font-size:.62rem;font-weight:500;color:var(--ink)}
+.mock-btn-ext{background:var(--sky);color:#fff;padding:4px 10px;border-radius:4px;font-size:.58rem;font-weight:700}
+
+/* MOCK HERO */
+.mock-hero{background:linear-gradient(180deg,var(--bg-hero) 0%,#112244 100%);padding:20px 18px 16px;text-align:center}
+.mock-eyebrow{font-size:.5rem;letter-spacing:.12em;color:rgba(255,255,255,.38);margin-bottom:6px;text-transform:uppercase;font-weight:600}
+.mock-title{font-size:1.05rem;font-weight:900;color:#fff;letter-spacing:-.02em;line-height:1.15;margin-bottom:5px}
+.mock-title .sky{color:var(--sky)}
+.mock-tagline{font-size:.55rem;color:rgba(255,255,255,.48);margin-bottom:10px}
+.mock-stats{display:flex;border-top:1px solid rgba(255,255,255,.08)}
+.mock-stat{flex:1;padding:7px 0;border-right:1px solid rgba(255,255,255,.08);text-align:center;background:rgba(255,255,255,.04)}
+.mock-stat:last-child{border-right:none}
+.ms-lbl{font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:3px;font-weight:700}
+.ms-val{font-size:.76rem;font-weight:800;color:#fff}
+.ms-val.sky{color:var(--sky)}
+
+/* MOCK BODY */
+.mock-body{background:var(--bg-page);padding:12px 14px;display:grid;grid-template-columns:1fr 210px;gap:10px}
+.mock-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:13px}
+.mock-card-title{font-size:.73rem;font-weight:700;color:var(--ink-strong);margin-bottom:3px}
+.mock-card-sub{font-size:.56rem;color:var(--muted);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.mock-lbl{font-size:.6rem;font-weight:600;color:var(--ink);margin-bottom:5px;display:block}
+.mock-input{width:100%;border:1.5px solid var(--sky);border-radius:6px;padding:8px 10px;font-size:.58rem;color:var(--ink);background:#fff;font-family:var(--font);line-height:1.55;min-height:66px;resize:none;display:block;outline:none;box-shadow:0 0 0 2px rgba(88,174,221,.15)}
+.mock-char{font-size:.48rem;color:var(--faint);text-align:right;margin:3px 0 7px}
+.mock-btn{background:var(--sky);color:#fff;border:none;border-radius:5px;padding:7px 14px;font-size:.6rem;font-weight:700;cursor:pointer;font-family:var(--font);display:block;width:100%}
+.mock-sidebar{}
+.sidebar-block{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 11px;margin-bottom:8px}
+.sb-title{font-size:.53rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-strong);margin-bottom:8px}
+.sb-item{display:flex;align-items:flex-start;gap:6px;font-size:.55rem;color:var(--muted);line-height:1.45;margin-bottom:5px}
+.sb-item:last-child{margin-bottom:0}
+.sb-check{width:13px;height:13px;border-radius:50%;background:var(--sky-light);color:var(--sky);font-size:.44rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sb-tag{display:inline-block;background:#f0f4f8;border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:.48rem;font-weight:700;color:var(--ink);margin:2px 2px 0 0}
+
+/* RESULTS SCREEN */
+.results-wrap{padding:12px 14px;background:var(--bg-page)}
+.results-hdr{background:var(--bg-hero);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.score-ring{width:42px;height:42px;border-radius:50%;border:2.5px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.score-ring.bad{border-color:var(--danger)}
+.score-ring.good{border-color:var(--success)}
+.sr-num{font-size:.74rem;font-weight:800;line-height:1}
+.score-ring.bad .sr-num{color:var(--danger)}
+.score-ring.good .sr-num{color:var(--success)}
+.sr-lbl{font-size:.37rem;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-top:1px;text-transform:uppercase}
+.rh-title{font-size:.68rem;font-weight:700;color:#fff}
+.rh-sub{font-size:.55rem;color:rgba(255,255,255,.5);margin-top:2px}
+.rr-list{display:flex;flex-direction:column;gap:4px}
+.rr{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;border:1px solid;font-size:.56rem;font-weight:500;opacity:0;transform:translateX(-6px)}
+.rr.show{animation:slideIn .3s ease forwards}
+@keyframes slideIn{to{opacity:1;transform:translateX(0)}}
+.rr.fail{background:var(--danger-bg);border-color:var(--danger-bd);color:#7f1d1d}
+.rr.warn{background:var(--warn-bg);border-color:var(--warn-bd);color:#78350f}
+.rr.pass{background:var(--success-bg);border-color:var(--success-bd);color:#064e3b}
+.rr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rr.fail .rr-dot{background:var(--danger)}
+.rr.warn .rr-dot{background:var(--warn)}
+.rr.pass .rr-dot{background:var(--success)}
+.rr-txt{flex:1;line-height:1.4}
+.rr-badge{font-size:.44rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0}
+.msg-preview{font-size:.56rem;font-weight:500;color:var(--muted);margin-bottom:6px;padding:0 2px}
+.msg-preview em{color:var(--faint);font-style:italic}
+
+/* COMPARE SCREEN */
+.compare-wrap{padding:12px 14px;background:var(--bg-page)}
+.cmp-blk{border-radius:6px;padding:9px 11px;margin-bottom:6px}
+.cmp-blk.bad{background:var(--danger-bg);border:1px solid var(--danger-bd)}
+.cmp-blk.good{background:var(--success-bg);border:1px solid var(--success-bd)}
+.cmp-tag{font-size:.48rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
+.cmp-blk.bad .cmp-tag{color:var(--danger)}
+.cmp-blk.good .cmp-tag{color:var(--success)}
+.cmp-txt{font-size:.58rem;line-height:1.55;color:var(--ink)}
+.hl-g{background:rgba(16,185,129,.2);border-radius:2px;padding:0 2px;font-weight:600}
+.hl-b{text-decoration:line-through;opacity:.6}
+.fix-list{display:flex;flex-direction:column;gap:4px;margin-top:7px}
+.fix-item{display:flex;align-items:flex-start;gap:6px;font-size:.54rem;color:#064e3b;background:var(--success-bg);border:1px solid var(--success-bd);border-radius:5px;padding:5px 7px;line-height:1.45;opacity:0}
+.fix-item.show{animation:slideIn .3s ease forwards}
+
+/* ALL-CLEAR SCREEN */
+.allclear-wrap{padding:12px 14px;background:var(--bg-page)}
+.ac-hdr{background:linear-gradient(135deg,#083a1f,#0d4a28);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.ac-list{display:flex;flex-direction:column;gap:4px}
+.ac-row{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--success-bg);border:1px solid var(--success-bd);border-radius:5px;font-size:.56rem;font-weight:500;color:#064e3b;opacity:0}
+.ac-row.show{animation:slideIn .3s ease forwards}
+.ac-row-check{color:var(--success);font-weight:800;font-size:.65rem;flex-shrink:0}
+.ready-box{background:#f0fdf4;border:1px solid var(--success-bd);border-radius:6px;padding:8px 10px;margin-top:7px;font-size:.58rem;color:#064e3b;line-height:1.55;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+.ready-box.show{opacity:1;transform:translateY(0)}
+
+/* CHECKS GRID */
+.checks-section{max-width:1200px;margin:0 auto;padding:72px 40px 0}
+.checks-heading{text-align:center;margin-bottom:40px}
+.checks-heading h2{font-size:clamp(1.3rem,2.5vw,1.75rem);font-weight:800;color:var(--ink-strong);letter-spacing:-.025em;margin-bottom:8px}
+.checks-heading p{font-size:.9rem;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.65}
+.checks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:80px}
+.check-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s,box-shadow .2s}
+.check-card.visible{opacity:1;transform:translateY(0)}
+.check-card:hover{border-color:var(--sky);box-shadow:0 4px 20px rgba(88,174,221,.1);transform:translateY(-2px)}
+.cc-badge{font-size:.56rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-bottom:11px;display:inline-block}
+.cc-badge.fail{background:var(--danger-bg);color:var(--danger)}
+.cc-badge.warn{background:var(--warn-bg);color:#92400e}
+.cc-badge.ok{background:var(--success-bg);color:var(--success)}
+.check-card h3{font-size:.9rem;font-weight:700;color:var(--ink-strong);margin-bottom:6px}
+.check-card p{font-size:.78rem;color:var(--muted);line-height:1.62}
+
+/* FINAL CTA */
+.final-cta{background:linear-gradient(160deg,var(--bg-hero) 0%,#102040 100%);padding:88px 40px;text-align:center}
+.final-cta h2{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:12px}
+.final-cta p{font-size:.95rem;color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 30px;line-height:1.72}
+.cta-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-pri{background:var(--sky);color:#fff;padding:12px 28px;border-radius:7px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .15s,transform .1s;box-shadow:0 4px 20px rgba(88,174,221,.3)}
+.btn-pri:hover{background:var(--sky-dark);color:#fff;transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);padding:12px 24px;border-radius:7px;font-size:.88rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.14);transition:background .15s}
+.btn-ghost:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* FOOTER */
+.site-footer{background:#07111f;border-top:1px solid rgba(255,255,255,.06);padding:28px 40px;text-align:center;font-size:.75rem;color:rgba(255,255,255,.3)}
+.site-footer a{color:rgba(255,255,255,.45);text-decoration:none}
+.site-footer a:hover{color:var(--sky)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* CURSOR */
+.cursor{display:inline-block;width:1.5px;height:.82em;background:var(--sky);vertical-align:text-bottom;animation:blink .75s step-end infinite;margin-left:1px}
+@keyframes blink{50%{opacity:0}}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .step-row,.step-row.flip{grid-template-columns:1fr;gap:32px;padding:52px 0}
+  .step-row.flip .step-visual,.step-row.flip .step-copy{order:0}
+  .step-copy{position:static}
+  .checks-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .topnav{padding:0 16px}.nav-links{display:none}
+  .steps-wrap,.checks-section{padding-left:16px;padding-right:16px}
+  .hero{padding:100px 16px 64px}
+  .hero-stats{flex-direction:column;display:flex;width:100%;max-width:320px;margin-left:auto;margin-right:auto}
+  .hero-stat{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
+  .checks-grid{grid-template-columns:1fr}
+  .mock-body{grid-template-columns:1fr}
+  .mock-sidebar{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="scrollBar"></div>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="#58AEDD" stroke-width="2"/><path d="M8 10h8M8 13h5" stroke="#58AEDD" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    10DLC Check
+  </a>
+  <div class="nav-links">
+    <a href="/learn/">Learn</a>
+    <a href="/#checker">Checker</a>
+    <a href="/how-it-works" class="active">How It Works</a>
+    <a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk" class="btn-ext" target="_blank" rel="noopener">Extension</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Free Tool &nbsp;&middot;&nbsp; No Account Needed</div>
+  <h1>How the <span class="sky">10DLC Compliance</span><br>Checker Works</h1>
+  <p class="hero-sub">Paste your A2P SMS, get instant CTIA compliance results, fix what's flagged, and send with confidence. Four steps, under 30 seconds.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hs-label">Checks per message</div><div class="hs-val">8</div></div>
+    <div class="hero-stat"><div class="hs-label">Avg analysis time</div><div class="hs-val">&lt; 1s</div></div>
+    <div class="hero-stat"><div class="hs-label">Account required</div><div class="hs-val">None</div></div>
+    <div class="hero-stat"><div class="hs-label">Rules updated</div><div class="hs-val sky">April 2026</div></div>
+  </div>
+  <div class="hero-steps">
+    <div class="h-step"><div class="h-step-n">1</div><div class="h-step-t">Paste message</div></div>
+    <div class="h-arr">&#8594;</div>
+    <div class="h-step"><div class="h-step-n">2</div><div class="h-step-t">Run checks</div></div>
+    <div class="h-arr">&#8594;</div>
+    <div class="h-step"><div class="h-step-n">3</div><div class="h-step-t">Review results</div></div>
+    <div class="h-arr">&#8594;</div>
+    <div class="h-step"><div class="h-step-n">4</div><div class="h-step-t">Fix &amp; send</div></div>
+  </div>
+</section>
+
+<!-- STEPS INTRO -->
+<div class="section-intro reveal" style="margin-bottom:0">
+  <h2>Step-by-step walkthrough</h2>
+  <p>Three real campaign examples — marketing, appointment reminder, and OTP — showing exactly what happens at each stage.</p>
+</div>
+
+<div class="steps-wrap">
+
+  <!-- STEP 1 -->
+  <div class="step-row" id="step1">
+    <div class="step-copy">
+      <div class="step-badge"><div class="step-num">1</div><span class="step-tag">Paste your message</span></div>
+      <h3>Enter the A2P SMS you are about to send</h3>
+      <p>No login, no setup. Paste your draft directly into the checker. Works with any 10DLC campaign type: marketing promotions, appointment reminders, transactional alerts, or OTP codes.</p>
+      <ul class="step-bullets">
+        <li><div class="bul sky">&#10003;</div><span>Supports up to <strong>320 characters</strong> with live SMS segment counting</span></li>
+        <li><div class="bul sky">&#10003;</div><span>Use your real draft — the more realistic the message, the more accurate the result</span></li>
+        <li><div class="bul sky">&#10003;</div><span>Runs entirely in your browser — your message is <strong>never stored or transmitted</strong></span></li>
+        <li><div class="bul ok">&#10003;</div><span>Optional AI grammar and clarity suggestions available alongside compliance results</span></li>
+      </ul>
+      <a href="/#checker" class="step-link btn" style="margin-top:24px;">Open the checker &#8594;</a>
+    </div>
+    <div class="step-visual">
+      <div class="step-example-label">
+        <span class="sel-title">Example 1 of 3 &mdash; Marketing promotion</span>
+        <span class="sel-sub">Non-compliant draft being entered</span>
+      </div>
+      <div class="browser-frame">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div>
+          <div class="chrome-url"><span class="url-lock">&#128274;</span>10dlccheck.com/#checker</div>
+        </div>
+        <div class="mock-topnav">
+          <div class="mock-logo"><div class="mock-logo-box"></div>10DLC Check</div>
+          <div class="mock-nav-r"><span>Learn</span><span>Checker</span><span>About</span><span class="mock-btn-ext">Extension</span></div>
+        </div>
+        <div class="mock-hero">
+          <div class="mock-eyebrow">FREE TOOL &nbsp;&middot;&nbsp; NO ACCOUNT NEEDED</div>
+          <div class="mock-title"><span class="sky">10DLC Compliance</span> Checker</div>
+          <div class="mock-tagline">Analyze your SMS messages for US A2P 10DLC compliance before sending.</div>
+          <div class="mock-stats">
+            <div class="mock-stat"><div class="ms-lbl">Your Checks</div><div class="ms-val">24</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Global Checks</div><div class="ms-val">2,206</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Avg Analysis</div><div class="ms-val">912 ms</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Rules Updated</div><div class="ms-val sky">April 2026</div></div>
+          </div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-card">
+            <div class="mock-card-title">Message Compliance Scan</div>
+            <div class="mock-card-sub">Paste your A2P SMS and run a free compliance check against current CTIA rules.</div>
+            <label class="mock-lbl">Enter your SMS message to check for 10DLC compliance:</label>
+            <textarea class="mock-input" id="ta1" readonly></textarea>
+            <div class="mock-char" id="ch1">0 / 320 (1 segment)</div>
+            <button class="mock-btn">Run Compliance Check</button>
+          </div>
+          <div class="mock-sidebar">
+            <div class="sidebar-block">
+              <div class="sb-title">2026 Compliance Checklist</div>
+              <div class="sb-item"><div class="sb-check">&#10003;</div><span><strong>Explicit consent</strong> documented before first message.</span></div>
+              <div class="sb-item"><div class="sb-check">&#10003;</div><span><strong>Brand name</strong> appears at start of every message.</span></div>
+              <div class="sb-item"><div class="sb-check">&#10003;</div><span><strong>Opt-out keywords</strong> supported and honored.</span></div>
+              <div class="sb-item"><div class="sb-check">&#10003;</div><span><strong>HELP response</strong> delivers support instructions.</span></div>
+            </div>
+            <div class="sidebar-block">
+              <div class="sb-title">Mandatory Opt-Out Keywords</div>
+              <span class="sb-tag">STOP</span><span class="sb-tag">END</span><span class="sb-tag">QUIT</span><span class="sb-tag">CANCEL</span><span class="sb-tag">UNSUBSCRIBE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-row flip" id="step2">
+    <div class="step-visual">
+      <div class="step-example-label">
+        <span class="sel-title">Example 2 of 3 &mdash; Appointment reminder</span>
+        <span class="sel-sub">Results returned instantly</span>
+      </div>
+      <div class="browser-frame">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div>
+          <div class="chrome-url"><span class="url-lock">&#128274;</span>10dlccheck.com/#checker</div>
+        </div>
+        <div class="mock-topnav">
+          <div class="mock-logo"><div class="mock-logo-box"></div>10DLC Check</div>
+          <div class="mock-nav-r"><span>Learn</span><span>Checker</span><span>About</span><span class="mock-btn-ext">Extension</span></div>
+        </div>
+        <div class="mock-hero" style="padding:11px 18px 10px">
+          <div class="mock-title" style="font-size:.82rem"><span class="sky">10DLC Compliance</span> Checker</div>
+          <div class="mock-stats">
+            <div class="mock-stat"><div class="ms-lbl">Your Checks</div><div class="ms-val">25</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Global Checks</div><div class="ms-val">2,207</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Avg Analysis</div><div class="ms-val">834 ms</div></div>
+            <div class="mock-stat"><div class="ms-lbl">Rules Updated</div><div class="ms-val sky">April 2026</div></div>
+          </div>
+        </div>
+        <div class="results-wrap">
+          <div class="results-hdr">
+            <div class="score-ring bad" id="s2-ring"><span class="sr-num" id="s2-num">&#8212;</span><span class="sr-lbl">Score</span></div>
+            <div><div class="rh-title" id="s2-title">Analyzing message...</div><div class="rh-sub" id="s2-sub">Running 8 compliance checks</div></div>
+          </div>
+          <div class="msg-preview" id="s2-preview"></div>
+          <div class="rr-list" id="s2-rows"></div>
+        </div>
+      </div>
+    </div>
+    <div class="step-copy">
+      <div class="step-badge"><div class="step-num">2</div><span class="step-tag">Instant analysis</span></div>
+      <h3>8 compliance checks run in under a second</h3>
+      <p>The rule engine scans your message against CTIA Messaging Principles and carrier enforcement patterns — entirely in your browser, no server round-trip, no waiting.</p>
+      <ul class="step-bullets">
+        <li><div class="bul ok">&#10003;</div><span><strong>Brand identity</strong> — is your company name clearly present?</span></li>
+        <li><div class="bul ok">&#10003;</div><span><strong>STOP / HELP keywords</strong> — are opt-out paths properly included?</span></li>
+        <li><div class="bul ok">&#10003;</div><span><strong>Link safety</strong> — public shorteners like bit.ly are flagged automatically</span></li>
+        <li><div class="bul warn">!</div><span><strong>SHAFT content</strong> — restricted category pattern detection</span></li>
+        <li><div class="bul warn">!</div><span><strong>Urgency and financial claims</strong> — known spam signal matching</span></li>
+        <li><div class="bul ok">&#10003;</div><span><strong>Message length</strong> — segment count and character limit tracking</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-row" id="step3">
+    <div class="step-copy">
+      <div class="step-badge"><div class="step-num">3</div><span class="step-tag">Review your results</span></div>
+      <h3>Every issue explained — no compliance jargon</h3>
+      <p>Results are color-coded FAIL, WARN, and PASS with plain-English explanations for each flag. You know exactly what to fix and why carriers enforce that specific rule.</p>
+      <ul class="step-bullets">
+        <li><div class="bul fail">&#10005;</div><span><strong>FAIL</strong> — will likely trigger carrier filtering. Must be fixed before sending.</span></li>
+        <li><div class="bul warn">!</div><span><strong>WARN</strong> — elevated risk. Review the wording and consider revising.</span></li>
+        <li><div class="bul ok">&#10003;</div><span><strong>PASS</strong> — this check is clear. No action needed.</span></li>
+        <li><div class="bul sky">&#10003;</div><span>Each result links to the relevant CTIA rule or carrier guideline for reference</span></li>
+      </ul>
+      <a href="/learn/ctia-guidelines-explained" class="step-link">Read the full CTIA guidelines &#8594;</a>
+    </div>
+    <div class="step-visual">
+      <div class="step-example-label">
+        <span class="sel-title">Example 3 of 3 &mdash; OTP / transactional message</span>
+        <span class="sel-sub">Before and after comparison</span>
+      </div>
+      <div class="browser-frame">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div>
+          <div class="chrome-url"><span class="url-lock">&#128274;</span>10dlccheck.com/#checker</div>
+        </div>
+        <div class="mock-topnav">
+          <div class="mock-logo"><div class="mock-logo-box"></div>10DLC Check</div>
+          <div class="mock-nav-r"><span>Learn</span><span>Checker</span><span>About</span><span class="mock-btn-ext">Extension</span></div>
+        </div>
+        <div class="compare-wrap">
+          <div style="font-size:.65rem;font-weight:700;color:var(--ink-strong);margin-bottom:8px;">Compliance Results &mdash; OTP / Verification Message</div>
+          <div class="cmp-blk bad">
+            <span class="cmp-tag">Non-compliant draft</span>
+            <span class="cmp-txt">Your code is 847291. <span class="hl-b">Verify here: bit.ly/vfy</span> &mdash; <span class="hl-b">Expires soon!</span></span>
+          </div>
+          <div class="cmp-blk good">
+            <span class="cmp-tag">Compliant version</span>
+            <span class="cmp-txt"><span class="hl-g">TechCo:</span> Your verification code is 847291. Valid for 10 minutes. Reply <span class="hl-g">STOP</span> to opt out.</span>
+          </div>
+          <div class="fix-list" id="s3-fixes">
+            <div class="fix-item"><strong>Brand name added</strong>&nbsp;&mdash;&nbsp;"TechCo:" at start of message</div>
+            <div class="fix-item"><strong>Public shortener removed</strong>&nbsp;&mdash;&nbsp;bit.ly replaced with plain text</div>
+            <div class="fix-item"><strong>STOP keyword added</strong>&nbsp;&mdash;&nbsp;opt-out path included at end</div>
+            <div class="fix-item"><strong>Urgency language corrected</strong>&nbsp;&mdash;&nbsp;"Expires soon" replaced with specific timeframe</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-row flip" id="step4">
+    <div class="step-visual">
+      <div class="step-example-label">
+        <span class="sel-title">Message re-checked after applying fixes</span>
+        <span class="sel-sub green">All checks passed</span>
+      </div>
+      <div class="browser-frame">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div>
+          <div class="chrome-url"><span class="url-lock">&#128274;</span>10dlccheck.com/#checker</div>
+        </div>
+        <div class="mock-topnav">
+          <div class="mock-logo"><div class="mock-logo-box"></div>10DLC Check</div>
+          <div class="mock-nav-r"><span>Learn</span><span>Checker</span><span>About</span><span class="mock-btn-ext">Extension</span></div>
+        </div>
+        <div class="allclear-wrap">
+          <div class="ac-hdr">
+            <div class="score-ring good"><span class="sr-num" style="color:var(--success)">6/6</span><span class="sr-lbl">Score</span></div>
+            <div><div class="rh-title">All checks passed</div><div class="rh-sub">Your message meets CTIA requirements</div></div>
+          </div>
+          <div class="ac-list" id="s4-list">
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>Brand identity present &mdash; "TechCo:" confirmed at start</div>
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>STOP keyword included &mdash; opt-out path confirmed</div>
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>No public shorteners detected in message</div>
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>No SHAFT restricted content found</div>
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>Urgency language within acceptable range</div>
+            <div class="ac-row"><span class="ac-row-check">&#10003;</span>Message length: 82 characters &mdash; 1 segment</div>
+          </div>
+          <div class="ready-box" id="s4-ready"><strong>Ready to send.</strong> This message meets CTIA Messaging Principles and current carrier best practices. Your 10DLC brand trust score is protected.</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-copy">
+      <div class="step-badge"><div class="step-num">4</div><span class="step-tag">Fix and send</span></div>
+      <h3>Apply the fixes, re-check, and send with confidence</h3>
+      <p>A clean score means your message aligns with CTIA Messaging Principles and carrier enforcement — reducing filtering risk and protecting your 10DLC brand trust score over time.</p>
+      <ul class="step-bullets">
+        <li><div class="bul ok">&#10003;</div><span>Re-run the checker as many times as needed — completely free, no limits</span></li>
+        <li><div class="bul ok">&#10003;</div><span>Use the <a href="https://chromewebstore.google.com/detail/ihjdlojfbdminclolkfkblmdlbjlbbhk" target="_blank" style="color:var(--sky)">Chrome Extension</a> to check directly inside your messaging platform</span></li>
+        <li><div class="bul ok">&#10003;</div><span>Keep the <a href="/learn/ctia-guidelines-explained" style="color:var(--sky)">pre-send checklist</a> open alongside for additional verification</span></li>
+        <li><div class="bul sky">&#10003;</div><span>Messages are never stored — privacy-first by design</span></li>
+      </ul>
+      <a href="/#checker" class="step-link btn" style="margin-top:24px;">Check a message now &#8594;</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- WHAT GETS CHECKED -->
+<section class="checks-section">
+  <div class="checks-heading reveal">
+    <h2>What gets checked &mdash; and why it matters</h2>
+    <p>Every check maps to a CTIA rule or active carrier enforcement pattern. Violations reduce your 10DLC brand trust score and increase the risk of message filtering.</p>
+  </div>
+  <div class="checks-grid" id="checksGrid">
+    <div class="check-card"><span class="cc-badge fail">Must Fix</span><h3>Brand identity</h3><p>CTIA requires businesses to identify themselves in every A2P message. Missing brand names are among the most common filtering triggers across all major US carriers.</p></div>
+    <div class="check-card"><span class="cc-badge fail">Must Fix</span><h3>STOP / opt-out keyword</h3><p>All A2P campaigns must support STOP. First messages must include opt-out instructions. Campaigns without STOP support face suspension under CTIA Messaging Principles.</p></div>
+    <div class="check-card"><span class="cc-badge fail">Must Fix</span><h3>Public link shorteners</h3><p>Bit.ly, tinyurl, and similar services are associated with spam and phishing campaigns. Branded or first-party domains are required to maintain delivery rates on 10DLC.</p></div>
+    <div class="check-card"><span class="cc-badge warn">High Risk</span><h3>SHAFT content</h3><p>Sex, Hate, Alcohol, Firearms, and Tobacco are restricted categories. Registered campaigns still face strict filtering for SHAFT content regardless of campaign type.</p></div>
+    <div class="check-card"><span class="cc-badge warn">Review</span><h3>Financial and urgency claims</h3><p>Get-rich-quick language, aggressive urgency phrases, and unlicensed financial claims match known spam patterns that activate carrier machine-learning filters.</p></div>
+    <div class="check-card"><span class="cc-badge warn">Review</span><h3>HELP keyword support</h3><p>Responses to HELP must deliver business contact information. This check flags message flows where opt-in language implies ongoing communication without HELP support configured.</p></div>
+    <div class="check-card"><span class="cc-badge fail">Must Fix</span><h3>Deceptive language patterns</h3><p>Fake prize claims, misleading calls-to-action, and scam-adjacent phrasing are detected by both carrier ML systems and our rule engine, causing immediate filtering.</p></div>
+    <div class="check-card"><span class="cc-badge ok">Advisory</span><h3>Message length and segments</h3><p>Messages over 160 characters split into multiple billing segments. The checker counts segments in real time and warns when you approach limits that increase campaign cost.</p></div>
+    <div class="check-card"><span class="cc-badge ok">Optional</span><h3>AI clarity suggestions</h3><p>Opt-in grammar and tone analysis helps make your compliant message as clear and effective as possible, returned alongside the compliance check results.</p></div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Ready to check your message?</h2>
+  <p>Free, instant, browser-based. No account required. Paste your SMS and get results in under a second.</p>
+  <div class="cta-row">
+    <a href="/#checker" class="btn-pri">Check a message now &#8594;</a>
+    <a href="/learn/ctia-guidelines-explained" class="btn-ghost">Read the CTIA guide</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p><a href="/">10dlccheck.com</a> &nbsp;&middot;&nbsp; <a href="/learn/">Learn</a> &nbsp;&middot;&nbsp; <a href="/learn/ctia-guidelines-explained">CTIA Guidelines</a> &nbsp;&middot;&nbsp; <a href="/learn/10dlc-faq">10DLC FAQ</a> &nbsp;&middot;&nbsp; <a href="/how-it-works">How It Works</a></p>
+  <p style="margin-top:8px">Free SMS compliance checker &nbsp;&middot;&nbsp; No account required &nbsp;&middot;&nbsp; Rules updated April 2026</p>
+</footer>
+
+<script>
+// Scroll progress
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollBar').style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+},{passive:true});
+
+// Reveal on scroll
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.step-row,.reveal').forEach(el=>io.observe(el));
+
+// Check cards stagger
+const gridIo=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    gridIo.unobserve(e.target);
+    document.querySelectorAll('.check-card').forEach((c,i)=>setTimeout(()=>c.classList.add('visible'),i*60));
+  });
+},{threshold:.08});
+const grid=document.getElementById('checksGrid');
+if(grid)gridIo.observe(grid);
+
+// STEP 1 — typing animation: bad marketing message
+const MSG1="bit.ly/sale99 — You're pre-approved for 50% OFF! Claim NOW before the deal expires.";
+const ta1=document.getElementById('ta1'),ch1=document.getElementById('ch1');
+function typeMsg1(){
+  ta1.value='';let i=0;
+  const t=setInterval(()=>{
+    if(i<MSG1.length){ta1.value=MSG1.slice(0,++i);ch1.textContent=`${i} / 320 (1 segment)`;}
+    else{clearInterval(t);setTimeout(typeMsg1,4200);}
+  },34);
+}
+typeMsg1();
+
+// STEP 2 — animated compliance results: appointment reminder
+const MSG2="Your appt is tomorrow at 2pm. Confirm here: bit.ly/appt123";
+const RESULTS2=[
+  {type:'fail',text:'No brand name detected in message',badge:'MISSING'},
+  {type:'fail',text:'No STOP / opt-out keyword found',badge:'MISSING'},
+  {type:'fail',text:'Public shortener detected: bit.ly',badge:'FLAGGED'},
+  {type:'pass',text:'No SHAFT restricted content found',badge:'CLEAN'},
+  {type:'pass',text:'No financial claim patterns detected',badge:'CLEAN'},
+  {type:'pass',text:'Message length OK — 60 chars, 1 segment',badge:'OK'},
+];
+function animateResults(){
+  const ring=document.getElementById('s2-ring'),
+        num=document.getElementById('s2-num'),
+        title=document.getElementById('s2-title'),
+        sub=document.getElementById('s2-sub'),
+        preview=document.getElementById('s2-preview'),
+        rows=document.getElementById('s2-rows');
+  num.textContent='—';ring.className='score-ring bad';
+  title.textContent='Analyzing message...';sub.textContent='Running 8 compliance checks';
+  preview.innerHTML=`Checking: <em>"${MSG2}"</em>`;rows.innerHTML='';
+  RESULTS2.forEach((item,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.className=`rr ${item.type}`;
+      el.innerHTML=`<div class="rr-dot"></div><span class="rr-txt">${item.text}</span><span class="rr-badge">${item.badge}</span>`;
+      rows.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));
+      if(i===RESULTS2.length-1){
+        setTimeout(()=>{
+          num.textContent='3/6';title.textContent='3 issues found — fix before sending';
+          sub.textContent='Brand name, STOP keyword, and shortener flagged';
+        },300);
+      }
+    },i*360+700);
+  });
+  setTimeout(animateResults,RESULTS2.length*360+5200);
+}
+animateResults();
+
+// STEP 3 — fix rows: OTP example
+function animateFixes(){
+  const fixes=document.querySelectorAll('#s3-fixes .fix-item');
+  fixes.forEach(f=>f.classList.remove('show'));
+  fixes.forEach((f,i)=>setTimeout(()=>f.classList.add('show'),i*260+400));
+  setTimeout(animateFixes,fixes.length*260+4800);
+}
+animateFixes();
+
+// STEP 4 — all-clear rows
+function animateAllClear(){
+  const rows=document.querySelectorAll('#s4-list .ac-row'),ready=document.getElementById('s4-ready');
+  rows.forEach(r=>r.classList.remove('show'));ready.classList.remove('show');
+  rows.forEach((r,i)=>setTimeout(()=>r.classList.add('show'),i*190+300));
+  setTimeout(()=>ready.classList.add('show'),rows.length*190+600);
+  setTimeout(animateAllClear,rows.length*190+5800);
+}
+animateAllClear();
+</script>
+</body>
+</html>
